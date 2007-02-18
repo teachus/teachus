@@ -79,6 +79,6 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 
 	@Transactional(readOnly=true)
 	public Person getPerson(Long personId) {
-		return (Person) getHibernateTemplate().load(TeacherImpl.class, personId);
+		return (Person) getHibernateTemplate().load(PersonImpl.class, personId);
 	}
 }

@@ -72,5 +72,10 @@ public class PupilsPage extends PersonsPage {
 		
 		return showNewPersonLink;
 	}
+	
+	@Override
+	protected PersonPage getPersonPage(Person person) {
+		return new PupilPage((Pupil) person);
+	}
 
 }

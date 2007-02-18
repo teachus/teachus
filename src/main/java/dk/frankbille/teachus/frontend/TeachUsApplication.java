@@ -50,6 +50,7 @@ public class TeachUsApplication extends WebApplication {
 		
 		Teacher teacher = new TeacherImpl();
 		teacher.setName("Signe Stauner"); //$NON-NLS-1$
+		teacher.setEmail("signe@signestauner.dk");
 		teacher.setUsername("uv1"); //$NON-NLS-1$
 		teacher.setPassword("u"); //$NON-NLS-1$
 		teacher.setLocale(new Locale("da", "DK", "singers")); //$NON-NLS-1$ //$NON-NLS-2$

@@ -49,5 +49,10 @@ public class AdminsPage extends PersonsPage {
 	protected boolean showNewPersonLink() {
 		return true;
 	}
+	
+	@Override
+	protected PersonPage getPersonPage(Person person) {
+		return new AdminPage((Admin) person);
+	}
 
 }

@@ -136,14 +136,19 @@ form input.inputText {
 }
 
 .form {
-	border: 1px solid gray;
 	margin: 10px;
+	width: 600px;
 }
 
 .form td {
 	padding: 2px;
 	padding-left: 7px;
 	padding-right: 7px;	
+}
+
+.form td.label {
+	width: 1%;
+	white-space: nowrap;
 }
 
 .toolbar {

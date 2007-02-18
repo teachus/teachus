@@ -49,5 +49,10 @@ public class TeachersPage extends PersonsPage {
 	protected boolean showNewPersonLink() {
 		return true;
 	}
+	
+	@Override
+	protected PersonPage getPersonPage(Person person) {
+		return new TeacherPage((Teacher) person);
+	}
 
 }

@@ -12,7 +12,10 @@ import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.link.Link;
 import wicket.markup.repeater.RepeatingView;
 import wicket.protocol.http.WebApplication;
+import dk.frankbille.teachus.domain.Admin;
 import dk.frankbille.teachus.domain.Person;
+import dk.frankbille.teachus.domain.Pupil;
+import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.utils.Icons;
@@ -27,8 +30,23 @@ public abstract class AuthenticatedBasePage extends BasePage {
 			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
 		}
 		
-		Person person = teachUsSession.getPerson();
-		add(new Label("teacherName", person.getName())); //$NON-NLS-1$
+		final Person person = teachUsSession.getPerson();
+		Link personLink = new Link("personLink") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onClick() {
+				if (person instanceof Pupil) {
+					getRequestCycle().setResponsePage(new PupilPage((Pupil) person));
+				} else if (person instanceof Teacher) {
+					getRequestCycle().setResponsePage(new TeacherPage((Teacher) person));
+				} else if (person instanceof Admin) {
+					getRequestCycle().setResponsePage(new AdminPage((Admin) person));
+				}
+			}			
+		};
+		add(personLink);
+		personLink.add(new Label("personName", person.getName())); //$NON-NLS-1$
 		
 		Label menuHelp = new Label("menuHelp"); //$NON-NLS-1$
 		menuHelp.setOutputMarkupId(true);
@@ -69,12 +87,17 @@ public abstract class AuthenticatedBasePage extends BasePage {
 	}
 	
 	@Override
-	protected void onAttach() {
+	protected final void onAttach() {
 		if (attached == false) {
 			add(new Image("pageIcon", getPageIcon())); //$NON-NLS-1$
 			add(new Label("pageLabel", getPageLabel())); //$NON-NLS-1$
 			attached = true;
 		}
+		
+		onAttach2();
+	}
+	
+	protected void onAttach2() {
 	}
 	
 	protected abstract String getPageLabel();

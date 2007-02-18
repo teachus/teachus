@@ -1,9 +1,9 @@
-package dk.frankbille.teachus.frontend.components;
-
+package dk.frankbille.teachus.frontend.pages;
 
 import java.util.List;
 import java.util.Locale;
 
+import wicket.RestartResponseAtInterceptPageException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.form.AjaxSubmitButton;
 import wicket.behavior.SimpleAttributeModifier;
@@ -17,25 +17,33 @@ import wicket.markup.html.form.validation.EmailAddressPatternValidator;
 import wicket.markup.html.form.validation.EqualInputValidator;
 import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.FeedbackPanel;
-import wicket.markup.html.panel.Panel;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.PropertyModel;
+import wicket.protocol.http.WebApplication;
 import wicket.util.string.Strings;
 import dk.frankbille.teachus.dao.PersonDAO;
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
+import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.utils.LocaleChoiceRenderer;
 
-public abstract class PersonPanel extends Panel {
+public abstract class PersonPage extends AuthenticatedBasePage {	
+	private Person person;
 	
 	protected String password1;
 	protected String password2;
 	private FeedbackPanel feedbackPanel;
-
-	public PersonPanel(String id, final Person person) {
-		super(id);
+	
+	public PersonPage(UserLevel userLevel, final Person person) {
+		super(userLevel);
+		
+		if (allowUserEditing(TeachUsSession.get().getPerson(), person) == false) {
+			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+		}
+		
+		this.person = person;
 		
 		Form form = new Form("form", new CompoundPropertyModel(person)); //$NON-NLS-1$
 		form.setOutputMarkupId(true);
@@ -114,7 +122,7 @@ public abstract class PersonPanel extends Panel {
 					TeachUsSession.get().changeLocale(person.getLocale());
 				}
 				
-				personSaved(target);
+				getRequestCycle().setResponsePage(getPersonsPageClass());
 			}		
 			
 			@Override
@@ -126,6 +134,12 @@ public abstract class PersonPanel extends Panel {
 		form.add(saveButton);
 	}
 	
-	protected abstract void personSaved(AjaxRequestTarget target);
-
+	@Override
+	protected String getPageLabel() {
+		return person.getName();
+	}
+	
+	protected abstract boolean allowUserEditing(Person loggedInPerson, Person editPerson);
+	
+	protected abstract Class<? extends PersonsPage> getPersonsPageClass();
 }
