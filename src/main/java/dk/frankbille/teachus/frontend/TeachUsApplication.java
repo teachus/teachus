@@ -135,6 +135,8 @@ public class TeachUsApplication extends WebApplication {
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
 		
+		getResourceSettings().setStripJavascriptCommentsAndWhitespace(false);
+		
 		// Bookmarkable pages
 		mountBookmarkablePage("/signin", SignInPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signout", SignOutPage.class); //$NON-NLS-1$
