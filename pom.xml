@@ -4,7 +4,7 @@
 	<groupId>dk.frankbille</groupId>
 	<artifactId>teachus</artifactId>
 	<packaging>war</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>TeachUs</name>
 	<description>Scheduling system for private teachers.</description>
 
@@ -141,8 +141,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/trunk</connection>
-		<developerConnection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/trunk</developerConnection>
+		<connection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/releases/teachus-1.0</connection>
+		<developerConnection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/releases/teachus-1.0</developerConnection>
 	</scm>
 	
 	<developers>
