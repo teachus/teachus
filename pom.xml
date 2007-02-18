@@ -100,4 +100,23 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<ciManagement>
+		<system>continuum</system>
+		<url>http://continuum.billen.dk/continuum</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<sendOnSuccess>false</sendOnSuccess>
+				<configuration>
+					<address>dev@maven.apache.org</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+
+	<scm>
+		<connection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/trunk</connection>
+		<developerConnection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/trunk</developerConnection>
+	</scm>
 </project>
