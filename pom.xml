@@ -150,4 +150,12 @@
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
+	
+	<repositories>
+		<repository>
+			<id>frankbille</id>
+			<url>http://maven.billen.dk</url>
+		</repository>
+	</repositories>	
+	
 </project>
