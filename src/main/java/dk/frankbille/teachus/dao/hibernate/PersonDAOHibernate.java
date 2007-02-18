@@ -29,6 +29,7 @@ import dk.frankbille.teachus.domain.impl.AdminImpl;
 import dk.frankbille.teachus.domain.impl.PersonImpl;
 import dk.frankbille.teachus.domain.impl.PupilImpl;
 import dk.frankbille.teachus.domain.impl.TeacherImpl;
+import dk.frankbille.teachus.utils.ApplicationUtils;
 
 @Transactional(propagation=Propagation.REQUIRED)
 public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO {
@@ -141,7 +142,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 				String text = template.substring(template.indexOf('\n'));
 				message.setText(text, true);
 
-				mimeMessage.addHeader("X-Mailer", "TeachUs");
+				mimeMessage.addHeader("X-Mailer", "TeachUs ("+ApplicationUtils.getVersion()+")");
 			}
 		});
 	}

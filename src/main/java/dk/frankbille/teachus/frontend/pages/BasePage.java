@@ -1,8 +1,10 @@
 package dk.frankbille.teachus.frontend.pages;
 
+import dk.frankbille.teachus.frontend.TeachUsSession;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
 import wicket.markup.html.WebPage;
+import wicket.markup.html.basic.Label;
 import wicket.markup.html.resources.CompressedResourceReference;
 import wicket.markup.html.resources.JavascriptResourceReference;
 
@@ -13,6 +15,8 @@ public abstract class BasePage extends WebPage {
 	public BasePage() {
 		add(HeaderContributor.forCss(CSS_MAIN));
 		add(HeaderContributor.forJavaScript(JS_PROTOTYPE));
+		
+		add(new Label("title", TeachUsSession.get().getString("General.teachUsTitle")));
 	}
 	
 }

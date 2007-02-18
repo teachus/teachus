@@ -39,6 +39,7 @@ import dk.frankbille.teachus.frontend.pages.PupilsPage;
 import dk.frankbille.teachus.frontend.pages.SignInPage;
 import dk.frankbille.teachus.frontend.pages.SignOutPage;
 import dk.frankbille.teachus.frontend.pages.TeachersPage;
+import dk.frankbille.teachus.utils.ApplicationUtils;
 
 public class TeachUsApplication extends WebApplication {
 	
@@ -199,5 +200,9 @@ public class TeachUsApplication extends WebApplication {
 				new Locale("da", "DK"),
 				new Locale("da", "DK", "singers")
 		});
+	}
+	
+	public String getVersion() {
+		return ApplicationUtils.getVersion();
 	}
 }
