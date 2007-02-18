@@ -1,5 +1,7 @@
 package dk.frankbille.teachus.frontend.pages;
 
+import java.util.List;
+
 import wicket.ResourceReference;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
@@ -7,7 +9,6 @@ import wicket.markup.repeater.RepeatingView;
 import wicket.model.Model;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.domain.PupilBooking;
-import dk.frankbille.teachus.domain.PupilBookings;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
@@ -27,7 +28,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 		Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 		
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		PupilBookings bookings = bookingDAO.getFutureBookingsForTeacher(teacher);
+		List<PupilBooking> bookings = bookingDAO.getFutureBookingsForTeacher(teacher);
 		
 		// HEADER
 		add(new Label("pupil", TeachUsSession.get().getString("General.pupil"))); //$NON-NLS-1$ //$NON-NLS-2$
@@ -39,7 +40,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 		RepeatingView rows = new RepeatingView("rows"); //$NON-NLS-1$
 		add(rows);
 		
-		for (PupilBooking booking : bookings.getBookingList()) {
+		for (PupilBooking booking : bookings) {
 			WebMarkupContainer row = new WebMarkupContainer(rows.newChildId());
 			rows.add(row);
 			

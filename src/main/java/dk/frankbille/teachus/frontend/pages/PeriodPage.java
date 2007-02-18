@@ -51,7 +51,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
+			public void onEvent(AjaxRequestTarget target) {
 				Period period = new PeriodImpl();
 				period.setTeacher(teacher);
 				target.addComponent(createPeriodForm(period));

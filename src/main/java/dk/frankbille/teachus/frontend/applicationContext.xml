@@ -44,7 +44,7 @@
 					dk/frankbille/teachus/dao/hibernate/Period.hbm.xml
 				</value>
 				<value>
-					dk/frankbille/teachus/dao/hibernate/PupilBooking.hbm.xml
+					dk/frankbille/teachus/dao/hibernate/Booking.hbm.xml
 				</value>
 			</list>
 		</property>

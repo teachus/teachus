@@ -6,7 +6,7 @@ import dk.frankbille.teachus.bean.MailBean;
 import dk.frankbille.teachus.bean.NewBookings;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.dao.PersonDAO;
-import dk.frankbille.teachus.domain.PupilBookings;
+import dk.frankbille.teachus.domain.PupilBooking;
 import dk.frankbille.teachus.domain.Teacher;
 
 public class NewBookingsImpl implements NewBookings {
@@ -26,7 +26,7 @@ public class NewBookingsImpl implements NewBookings {
 		List<Teacher> teachers = personDAO.getPersons(Teacher.class);
 		
 		for (Teacher teacher : teachers) {
-			PupilBookings pupilBookings = bookingDAO.getUnsentBookings(teacher);
+			List<PupilBooking> pupilBookings = bookingDAO.getUnsentBookings(teacher);
 			
 			mailBean.sendNewBookingsMail(teacher, pupilBookings);
 			

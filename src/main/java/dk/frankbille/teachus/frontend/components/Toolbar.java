@@ -47,7 +47,7 @@ public class Toolbar extends Panel {
 			this.label = label;
 		}
 
-		protected abstract void onEvent(AjaxRequestTarget target);
+		public abstract void onEvent(AjaxRequestTarget target);
 	}
 
 }

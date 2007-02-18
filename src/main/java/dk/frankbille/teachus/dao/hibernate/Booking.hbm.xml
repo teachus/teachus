@@ -5,14 +5,14 @@
 
 <hibernate-mapping package="dk.frankbille.teachus.domain.impl" default-lazy="false">
 
-    <class name="PupilBookingImpl" table="pupil_booking">
+    <class abstract="true" name="BookingImpl" table="booking">
 		<id name="id" column="id" access="field">
             <generator class="native"/>
         </id>
         
-		<version name="version" access="field" />
+		<discriminator column="booking_type" type="string" />
         
-        <many-to-one name="pupil" column="pupil_id" class="PupilImpl" cascade="none" fetch="join" />
+		<version name="version" access="field" />
         
         <many-to-one name="period" column="period_id" class="PeriodImpl" cascade="none" fetch="join" />
         
@@ -20,7 +20,15 @@
 		
 		<property name="createDate" column="create_date" type="timestamp" />
 		
-		<property name="notificationSent" column="notification_sent" />
+		<subclass name="PupilBookingImpl" discriminator-value="PUPIL">
+			<many-to-one name="pupil" column="pupil_id" class="PupilImpl" cascade="none" fetch="join" />
+		
+			<property name="notificationSent" column="notification_sent" />
+		</subclass>
+		
+		<subclass name="TeacherBookingImpl" discriminator-value="TEACHER">
+			<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
+		</subclass>
     </class>
 
 </hibernate-mapping>

@@ -1,5 +1,6 @@
 package dk.frankbille.teachus.frontend.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import wicket.ResourceReference;
@@ -77,4 +78,20 @@ public class PupilsPage extends PersonsPage<Pupil> {
 		return new PupilPage(person);
 	}
 
+	@Override
+	protected List<FunctionItem> getFunctions() {
+		List<FunctionItem> functions = new ArrayList<FunctionItem>();
+		
+		functions.add(new FunctionItem(TeachUsSession.get().getString("General.calendar")) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onEvent(Pupil pupil) {
+				getRequestCycle().setResponsePage(new PupilCalendarPage(pupil));
+			}			
+		});
+		
+		return functions;
+	}
+	
 }

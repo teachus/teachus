@@ -1,5 +1,6 @@
 package dk.frankbille.teachus.frontend.pages;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
+			public void onEvent(AjaxRequestTarget target) {
 				getRequestCycle().setResponsePage(getPersonPage(getNewPerson()));
 			}			
 		});
@@ -45,10 +46,20 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		// Placeholder
 		add(new WebComponent(PLACEHOLDER).setOutputMarkupId(true));
 		
+		final List<FunctionItem> functions = getFunctions();
+		
 		// HEADERS
 		add(new Label("name", TeachUsSession.get().getString("General.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("username", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("email", TeachUsSession.get().getString("General.email"))); //$NON-NLS-1$ //$NON-NLS-2$
+		add(new Label("functions", TeachUsSession.get().getString("General.functions")) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return functions != null && functions.isEmpty() == false;
+			}
+		});
 		
 		// DATA
 		RepeatingView rows = new RepeatingView("rows"); //$NON-NLS-1$
@@ -72,6 +83,32 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				row.add(link);
 				row.add(new Label("username")); //$NON-NLS-1$
 				row.add(new Label("email")); //$NON-NLS-1$
+				
+				WebMarkupContainer functionsCell = new WebMarkupContainer("functions") {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean isVisible() {
+						return functions != null && functions.isEmpty() == false;
+					}
+				};
+				row.add(functionsCell);
+				RepeatingView functionsView = new RepeatingView("functions");
+				functionsCell.add(functionsView);
+				if (functions != null) {
+					for (final FunctionItem function : functions) {
+						Link functionLink = new Link(functionsView.newChildId()) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onClick() {
+								function.onEvent(person);								
+							}
+						};
+						functionsView.add(functionLink);
+						functionLink.add(new Label("label", function.getLabel()));
+					}
+				}
 			}
 		}
 	}
@@ -85,4 +122,22 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 	protected abstract boolean showNewPersonLink();
 	
 	protected abstract PersonPage getPersonPage(P person);
+	
+	protected List<FunctionItem> getFunctions() {
+		return null;
+	}
+	
+	public abstract class FunctionItem implements Serializable {
+		private String label;
+		
+		public FunctionItem(String label) {
+			this.label = label;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		protected abstract void onEvent(P person);
+	}
 }

@@ -1,5 +1,7 @@
 package dk.frankbille.teachus.frontend.pages;
 
+import java.util.List;
+
 import wicket.ResourceReference;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -11,7 +13,7 @@ import wicket.model.Model;
 import wicket.protocol.http.WebApplication;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.domain.Pupil;
-import dk.frankbille.teachus.domain.PupilBookings;
+import dk.frankbille.teachus.domain.PupilBooking;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
@@ -29,7 +31,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 		super(UserLevel.PUPIL);
 		
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		PupilBookings pupilBookings = null;
+		List<PupilBooking> pupilBookings = null;
 		if (TeachUsSession.get().getPerson() instanceof Pupil) {
 			pupilBookings = bookingDAO.getUnpaidBookings((Pupil) TeachUsSession.get().getPerson());
 		} else if (TeachUsSession.get().getPerson() instanceof Teacher) {
@@ -41,7 +43,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 		init(pupilBookings);
 	}
 	
-	private void init(final PupilBookings pupilBookings) {
+	private void init(final List<PupilBooking> pupilBookings) {
 		IColumn[] columns = new IColumn[] {
 				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", new DateChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
@@ -49,7 +51,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", new CurrencyChoiceRenderer()) //$NON-NLS-1$ //$NON-NLS-2$
 		};
 
-		DataTable dataTable = new DataTable("list", columns, new ListDataProvider(pupilBookings.getBookingList()), 20); //$NON-NLS-1$
+		DataTable dataTable = new DataTable("list", columns, new ListDataProvider(pupilBookings), 20); //$NON-NLS-1$
 		dataTable.addTopToolbar(new HeadersToolbar(dataTable, null));
 		add(dataTable);		
 	}

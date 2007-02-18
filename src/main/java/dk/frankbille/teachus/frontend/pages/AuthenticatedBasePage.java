@@ -69,7 +69,11 @@ public abstract class AuthenticatedBasePage extends BasePage {
 			}
 			if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
 				menuItemsList.add(new MenuItem(PaymentPage.class, Icons.PAYMENT_SMALL, TeachUsSession.get().getString("General.payment"))); //$NON-NLS-1$
-				menuItemsList.add(new MenuItem(CalendarPage.class, Icons.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
+			}
+			if (UserLevel.PUPIL == teachUsSession.getUserLevel()) {
+				menuItemsList.add(new MenuItem(PupilCalendarPage.class, Icons.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
+			} else if (UserLevel.TEACHER == teachUsSession.getUserLevel()) {
+				menuItemsList.add(new MenuItem(TeacherCalendarPage.class, Icons.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
 			}
 		}
 		if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {

@@ -21,7 +21,7 @@ public class HomePage extends BasePage {
 			} else if (person instanceof Teacher) {
 				page = PupilsPage.class;
 			} else if (person instanceof Pupil) {
-				page = CalendarPage.class;
+				page = PupilCalendarPage.class;
 			}
 		} else {
 			page = SignInPage.class;

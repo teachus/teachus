@@ -19,7 +19,6 @@ import dk.frankbille.teachus.bean.MailBean;
 import dk.frankbille.teachus.bean.VelocityBean;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.PupilBooking;
-import dk.frankbille.teachus.domain.PupilBookings;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.utils.ApplicationUtils;
 
@@ -69,8 +68,8 @@ public class MailBeanImpl implements MailBean {
 		});
 	}
 	
-	public void sendNewBookingsMail(final Teacher teacher, final PupilBookings pupilBookings) {
-		if (pupilBookings.getBookingList().isEmpty() == false) {
+	public void sendNewBookingsMail(final Teacher teacher, final List<PupilBooking> pupilBookings) {
+		if (pupilBookings.isEmpty() == false) {
 			mailSender.send(new MimeMessagePreparator() {
 				public void prepare(MimeMessage mimeMessage) throws Exception {
 					MimeMessageHelper message = new MimeMessageHelper(mimeMessage, false, "UTF-8");
@@ -86,7 +85,7 @@ public class MailBeanImpl implements MailBean {
 					
 					// Build up bookingslist and format date
 					List<FormattedPupilBooking> pupilBookingList = new ArrayList<FormattedPupilBooking>();
-					for (PupilBooking pupilBooking : pupilBookings.getBookingList()) {
+					for (PupilBooking pupilBooking : pupilBookings) {
 						FormattedPupilBooking formattedPupilBooking = new FormattedPupilBooking();
 						formattedPupilBooking.setPupilBooking(pupilBooking);
 						SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);

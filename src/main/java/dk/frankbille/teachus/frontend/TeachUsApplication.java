@@ -31,7 +31,7 @@ import dk.frankbille.teachus.domain.impl.TeacherImpl;
 import dk.frankbille.teachus.domain.impl.PeriodImpl.WeekDay;
 import dk.frankbille.teachus.frontend.pages.AdminsPage;
 import dk.frankbille.teachus.frontend.pages.AgendaPage;
-import dk.frankbille.teachus.frontend.pages.CalendarPage;
+import dk.frankbille.teachus.frontend.pages.PupilCalendarPage;
 import dk.frankbille.teachus.frontend.pages.HomePage;
 import dk.frankbille.teachus.frontend.pages.PaymentPage;
 import dk.frankbille.teachus.frontend.pages.PeriodPage;
@@ -50,7 +50,7 @@ public class TeachUsApplication extends WebApplication {
 		BookingDAO bookingDAO = getBookingDAO();
 		
 		Teacher teacher = new TeacherImpl();
-		teacher.setName("Signe Stauner æøå"); //$NON-NLS-1$
+		teacher.setName("Signe Stauner"); //$NON-NLS-1$
 		teacher.setEmail("signe@billen.dk");
 		teacher.setUsername("uv1"); //$NON-NLS-1$
 		teacher.setPassword("u"); //$NON-NLS-1$
@@ -59,7 +59,7 @@ public class TeachUsApplication extends WebApplication {
 		
 		
 		Pupil pupil1 = new PupilImpl();
-		pupil1.setName("Sanne æøå"); //$NON-NLS-1$
+		pupil1.setName("Sanne"); //$NON-NLS-1$
 		pupil1.setUsername("sanger1"); //$NON-NLS-1$
 		pupil1.setPassword("s"); //$NON-NLS-1$
 		pupil1.setEmail("sanger1@billen.dk"); //$NON-NLS-1$
@@ -67,7 +67,7 @@ public class TeachUsApplication extends WebApplication {
 		personDAO.save(pupil1);
 		
 		Pupil pupil2 = new PupilImpl();
-		pupil2.setName("Martin æøå"); //$NON-NLS-1$
+		pupil2.setName("Martin"); //$NON-NLS-1$
 		pupil2.setUsername("sanger2"); //$NON-NLS-1$
 		pupil2.setPassword("s"); //$NON-NLS-1$
 		pupil2.setEmail("sanger2@billen.dk"); //$NON-NLS-1$
@@ -75,7 +75,7 @@ public class TeachUsApplication extends WebApplication {
 		personDAO.save(pupil2);
 		
 		Pupil pupil3 = new PupilImpl();
-		pupil3.setName("Bernadette æøå"); //$NON-NLS-1$
+		pupil3.setName("Bernadette"); //$NON-NLS-1$
 		pupil3.setUsername("sanger3"); //$NON-NLS-1$
 		pupil3.setPassword("s"); //$NON-NLS-1$
 		pupil3.setEmail("sanger3@billen.dk"); //$NON-NLS-1$
@@ -107,44 +107,44 @@ public class TeachUsApplication extends WebApplication {
 		booking.setPeriod(p);
 		booking.setPupil(pupil1);
 		booking.setDate(new DateTime(2007, 2, 12, 12, 0, 0, 0).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		booking = new PupilBookingImpl();
 		booking.setPeriod(p);
 		booking.setPupil(pupil1);
 		booking.setDate(new DateTime(2007, 2, 19, 12, 0, 0, 0).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		booking = new PupilBookingImpl();
 		booking.setPeriod(p);
 		booking.setPupil(pupil1);
 		booking.setDate(new DateTime(2007, 2, 26, 12, 0, 0, 0).toDate());
 		booking.setCreateDate(new DateTime().minusHours(2).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		booking = new PupilBookingImpl();
 		booking.setPeriod(p);
 		booking.setPupil(pupil2);
 		booking.setDate(new DateTime(2007, 2, 12, 13, 0, 0, 0).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		booking = new PupilBookingImpl();
 		booking.setPeriod(p);
 		booking.setPupil(pupil2);
 		booking.setDate(new DateTime(2007, 2, 26, 13, 0, 0, 0).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		booking = new PupilBookingImpl();
 		booking.setPeriod(p);
 		booking.setPupil(pupil3);
 		booking.setDate(new DateTime(2007, 2, 15, 14, 0, 0, 0).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		booking = new PupilBookingImpl();
 		booking.setPeriod(p);
 		booking.setPupil(pupil3);
 		booking.setDate(new DateTime(2007, 2, 22, 14, 0, 0, 0).toDate());
-		bookingDAO.bookPupil(booking);
+		bookingDAO.book(booking);
 		
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
@@ -152,7 +152,7 @@ public class TeachUsApplication extends WebApplication {
 		// Bookmarkable pages
 		mountBookmarkablePage("/signin", SignInPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signout", SignOutPage.class); //$NON-NLS-1$
-		mount("/calendar", new IndexedParamUrlCodingStrategy("/calendar", CalendarPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
+		mount("/calendar", new IndexedParamUrlCodingStrategy("/calendar", PupilCalendarPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
 		mount("/pupils", new IndexedParamUrlCodingStrategy("/pupils", PupilsPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
 		mount("/teachers", new IndexedParamUrlCodingStrategy("/teachers", TeachersPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
 		mount("/admins", new IndexedParamUrlCodingStrategy("/admins", AdminsPage.class)); //$NON-NLS-1$ //$NON-NLS-2$

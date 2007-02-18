@@ -2,20 +2,25 @@ package dk.frankbille.teachus.dao;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import dk.frankbille.teachus.domain.Booking;
+import dk.frankbille.teachus.domain.Bookings;
 import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.PupilBooking;
-import dk.frankbille.teachus.domain.PupilBookings;
 import dk.frankbille.teachus.domain.Teacher;
+import dk.frankbille.teachus.domain.TeacherBooking;
 
 public interface BookingDAO extends Serializable {
 
-	void bookPupil(PupilBooking pupilBooking);
+	void book(Booking booking);
 	
-	PupilBooking createBookingObject();
+	PupilBooking createPupilBookingObject();
 
-	void deleteBooking(PupilBooking booking);
+	TeacherBooking createTeacherBookingObject();
+
+	void deleteBooking(Booking booking);
 
 	/**
 	 * 
@@ -23,16 +28,16 @@ public interface BookingDAO extends Serializable {
 	 * @param date Only the date part of the date will be used in the search
 	 * @return
 	 */
-	PupilBookings getBookingsForDate(Period period, Date date);
+	Bookings getBookingsForDate(Period period, Date date);
 
-	PupilBookings getFutureBookingsForTeacher(Teacher teacher);
+	List<PupilBooking> getFutureBookingsForTeacher(Teacher teacher);
 
-	PupilBookings getUnpaidBookings(Pupil pupil);
+	List<PupilBooking> getUnpaidBookings(Pupil pupil);
 
-	PupilBookings getUnpaidBookings(Teacher teacher);
+	List<PupilBooking> getUnpaidBookings(Teacher teacher);
 
-	PupilBookings getUnsentBookings(Teacher teacher);
+	List<PupilBooking> getUnsentBookings(Teacher teacher);
 
-	void newBookingsMailSent(PupilBookings pupilBookings);
+	void newBookingsMailSent(List<PupilBooking> pupilBookings);
 	
 }
