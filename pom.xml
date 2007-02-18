@@ -4,7 +4,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dk.frankbille</groupId>
-	<artifactId>teachus.frontend</artifactId>
+	<artifactId>teachus</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>TeachUs</name>
