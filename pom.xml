@@ -154,7 +154,7 @@
 	<repositories>
 		<repository>
 			<id>frankbille</id>
-			<url>http://maven.billen.dk</url>
+			<url>http://maven.billen.dk/</url>
 		</repository>
 	</repositories>	
 	
