@@ -17,6 +17,10 @@
         <many-to-one name="period" column="period_id" class="PeriodImpl" cascade="none" fetch="join" />
         
 		<property name="date" column="date" type="timestamp" />
+		
+		<property name="createDate" column="create_date" type="timestamp" />
+		
+		<property name="notificationSent" column="notification_sent" />
     </class>
 
 </hibernate-mapping>

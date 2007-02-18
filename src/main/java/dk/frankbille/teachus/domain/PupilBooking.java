@@ -14,4 +14,10 @@ public interface PupilBooking extends Serializable {
 	
 	Date getDate();
 	void setDate(Date date);
+	
+	Date getCreateDate();
+	void setCreateDate(Date createDate);
+	
+	boolean isNotificationSent();
+	void setNotificationSent(boolean notificationSent);
 }

@@ -16,7 +16,7 @@ import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
 
-public abstract class PersonsPage extends AuthenticatedBasePage {
+public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
 
 	private static final String PLACEHOLDER = "placeholder"; //$NON-NLS-1$
 
@@ -54,9 +54,9 @@ public abstract class PersonsPage extends AuthenticatedBasePage {
 		RepeatingView rows = new RepeatingView("rows"); //$NON-NLS-1$
 		add(rows);
 		
-		List<Person> persons = getPersons();
+		List<P> persons = getPersons();
 		if (persons != null) {
-			for (final Person person : persons) {
+			for (final P person : persons) {
 				WebMarkupContainer row = new WebMarkupContainer(rows.newChildId(), new CompoundPropertyModel(person));
 				rows.add(row);
 				
@@ -76,13 +76,13 @@ public abstract class PersonsPage extends AuthenticatedBasePage {
 		}
 	}
 
-	protected abstract List<Person> getPersons();
+	protected abstract List<P> getPersons();
 	
-	protected abstract Person getNewPerson();
+	protected abstract P getNewPerson();
 	
 	protected abstract String getNewPersonLabel();
 	
 	protected abstract boolean showNewPersonLink();
 	
-	protected abstract PersonPage getPersonPage(Person person);
+	protected abstract PersonPage getPersonPage(P person);
 }

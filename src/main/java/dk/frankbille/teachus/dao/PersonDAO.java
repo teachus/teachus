@@ -2,7 +2,6 @@ package dk.frankbille.teachus.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Locale;
 
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.domain.Pupil;
@@ -14,12 +13,12 @@ public interface PersonDAO extends Serializable {
 
 	Person authenticatePerson(String username, String password);
 
-	List<Person> getPersons(Class<? extends Person> personClass);
+	<P extends Person> List<P> getPersons(Class<P> personClass);
 
 	List<Pupil> getPupils(Teacher teacher);
 	
 	Person getPerson(Long personId);
 	
-	void sendWelcomeMail(Long personId, Locale locale);
+	void sendWelcomeMail(Long pupilId);
 
 }

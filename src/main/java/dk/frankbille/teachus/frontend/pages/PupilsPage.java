@@ -1,6 +1,5 @@
 package dk.frankbille.teachus.frontend.pages;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import wicket.ResourceReference;
@@ -15,7 +14,7 @@ import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.utils.Icons;
 
-public class PupilsPage extends PersonsPage {
+public class PupilsPage extends PersonsPage<Pupil> {
 	private static final long serialVersionUID = 1L;
 	
 	public PupilsPage() {
@@ -33,13 +32,13 @@ public class PupilsPage extends PersonsPage {
 	}
 
 	@Override
-	protected List<Person> getPersons() {
-		List<Person> persons = null;
+	protected List<Pupil> getPersons() {
+		List<Pupil> persons = null;
 		
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		Person person = TeachUsSession.get().getPerson();
 		if (person instanceof Teacher) {
-			persons = new ArrayList<Person>(personDAO.getPupils((Teacher) person));
+			persons = personDAO.getPupils((Teacher) person);
 		} else if (person instanceof Admin) {
 			persons = personDAO.getPersons(Pupil.class);
 		}
@@ -48,7 +47,7 @@ public class PupilsPage extends PersonsPage {
 	}
 
 	@Override
-	protected Person getNewPerson() {
+	protected Pupil getNewPerson() {
 		Person person = TeachUsSession.get().getPerson();
 		Teacher teacher = (Teacher) person;
 		Pupil pupil = new PupilImpl();
@@ -74,8 +73,8 @@ public class PupilsPage extends PersonsPage {
 	}
 	
 	@Override
-	protected PersonPage getPersonPage(Person person) {
-		return new PupilPage((Pupil) person);
+	protected PersonPage getPersonPage(Pupil person) {
+		return new PupilPage(person);
 	}
 
 }

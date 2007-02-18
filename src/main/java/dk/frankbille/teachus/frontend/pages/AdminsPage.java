@@ -5,14 +5,13 @@ import java.util.List;
 import wicket.ResourceReference;
 import dk.frankbille.teachus.dao.PersonDAO;
 import dk.frankbille.teachus.domain.Admin;
-import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.domain.impl.AdminImpl;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.utils.Icons;
 
-public class AdminsPage extends PersonsPage {
+public class AdminsPage extends PersonsPage<Admin> {
 	private static final long serialVersionUID = 1L;
 	
 	public AdminsPage() {
@@ -30,12 +29,12 @@ public class AdminsPage extends PersonsPage {
 	}
 
 	@Override
-	protected Person getNewPerson() {
+	protected Admin getNewPerson() {
 		return new AdminImpl();
 	}
 
 	@Override
-	protected List<Person> getPersons() {
+	protected List<Admin> getPersons() {
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		return personDAO.getPersons(Admin.class);
 	}
@@ -51,8 +50,8 @@ public class AdminsPage extends PersonsPage {
 	}
 	
 	@Override
-	protected PersonPage getPersonPage(Person person) {
-		return new AdminPage((Admin) person);
+	protected PersonPage getPersonPage(Admin person) {
+		return new AdminPage(person);
 	}
 
 }

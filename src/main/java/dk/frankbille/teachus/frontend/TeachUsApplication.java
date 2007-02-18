@@ -119,6 +119,7 @@ public class TeachUsApplication extends WebApplication {
 		booking.setPeriod(p);
 		booking.setPupil(pupil1);
 		booking.setDate(new DateTime(2007, 2, 26, 12, 0, 0, 0).toDate());
+		booking.setCreateDate(new DateTime().minusHours(2).toDate());
 		bookingDAO.bookPupil(booking);
 		
 		booking = new PupilBookingImpl();

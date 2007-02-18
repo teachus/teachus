@@ -68,10 +68,10 @@
 				class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
 		</property>
 	</bean>
-
-	<!-- ==================== -->
-	<!--         DAOS         -->
-	<!-- ==================== -->
+	
+	<!-- ===================== -->
+	<!--         BEANS         -->
+	<!-- ===================== -->
 	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="localhost"/>
@@ -90,12 +90,20 @@
 		<constructor-arg ref="velocityEngine" />
 	</bean>   
 	
+	<bean id="mailBean" class="dk.frankbille.teachus.bean.impl.MailBeanImpl">
+		<constructor-arg ref="mailSender" />
+		<constructor-arg ref="velocityBean" />	
+	</bean>
+
+	<!-- ==================== -->
+	<!--         DAOS         -->
+	<!-- ==================== -->
+		
 	<bean id="personDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
 				class="dk.frankbille.teachus.dao.hibernate.PersonDAOHibernate">
-				<constructor-arg ref="mailSender" />
-				<constructor-arg ref="velocityBean" />
+				<constructor-arg ref="mailBean" />
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>
@@ -125,5 +133,33 @@
 		</property>
 	</bean>
 
+	<!-- ========================== -->
+	<!--         SCHEDULING         -->
+	<!-- ========================== -->
+
+	<bean id="newBookings" class="dk.frankbille.teachus.bean.impl.NewBookingsImpl">
+		<constructor-arg ref="bookingDao" />
+		<constructor-arg ref="personDao" />
+		<constructor-arg ref="mailBean" />
+	</bean>
+	
+	<bean id="newBookingsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="newBookings" />
+		<property name="targetMethod" value="sendNewBookingsMail" />
+	</bean>
+	
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="newBookingsJob" />
+		<!-- run 10 minutes past every hour -->
+		<property name="cronExpression" value="0 10 * * * ?" />
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
 
 </beans>

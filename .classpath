@@ -39,5 +39,6 @@
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.2/spring-support-2.0.2.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.2/spring-src.zip"/>
 	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="/M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.4/velocity-1.4.jar"/>
+	<classpathentry kind="var" path="M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar" sourcepath="/M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

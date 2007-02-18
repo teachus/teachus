@@ -114,4 +114,38 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		return new PupilBookingsImpl(result);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public PupilBookings getUnsentBookings(Teacher teacher) {
+		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
+		
+		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
+		c.add(Restrictions.eq("notificationSent", false));
+		c.add(Restrictions.lt("createDate", new DateTime().minusHours(1).toDate()));
+		
+		List<PupilBooking> result = getHibernateTemplate().findByCriteria(c);
+		
+		return new PupilBookingsImpl(result);
+	}
+	
+	public void newBookingsMailSent(PupilBookings pupilBookings) {
+		if (pupilBookings.getBookingList().isEmpty() == false) {
+			StringBuilder hql = new StringBuilder();
+			
+			hql.append("UPDATE PupilBookingImpl SET notificationSent=true WHERE id IN(");
+			
+			String sep = "";
+			for (PupilBooking pupilBooking : pupilBookings.getBookingList()) {
+				hql.append(sep);
+				hql.append(pupilBooking.getId());
+				sep = ",";
+			}
+			
+			hql.append(")");
+			
+			getHibernateTemplate().bulkUpdate(hql.toString());
+			getHibernateTemplate().flush();
+		}
+	}
+
 }

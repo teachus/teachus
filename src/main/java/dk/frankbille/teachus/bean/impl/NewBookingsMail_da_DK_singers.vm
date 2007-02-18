@@ -1,0 +1,26 @@
+Nye bookninger af sangundervisning
+<html>
+	<body>
+		<p>
+			Nedenst&aring;ende sangere har booket tid:
+		</p>
+		
+		<table cellspacing="0" cellpadding="10" border="0">
+			<tr>
+				<th>${pupilHeader}</th>
+				<th>${dateHeader}</th>
+			</tr>
+#foreach( $pupilBooking in $pupilBookingList )
+			<tr>
+				<td>${pupilBooking.pupilBooking.pupil.name}</td>
+				<td>${pupilBooking.formattedDate}</td>
+			</tr>
+#end
+		</table>
+		
+		<p>
+			Med venlig hilsen<br />
+			${from}
+		</p>
+	</body>
+</html>
