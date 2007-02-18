@@ -119,4 +119,13 @@
 		<connection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/trunk</connection>
 		<developerConnection>scm:svn:http://svn.billen.dk/dk.frankbille.teachus/trunk</developerConnection>
 	</scm>
+	
+	<developers>
+		<developer>
+			<name>Frank Bille</name>
+			<id>fb</id>
+			<email>frank at billen.dk</email>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
 </project>
