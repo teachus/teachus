@@ -73,10 +73,29 @@
 	<!--         DAOS         -->
 	<!-- ==================== -->
 	
-	<bean id="periodDao" parent="txProxyTemplate">
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="localhost"/>
+	</bean>   
+	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="velocityBean" class="dk.frankbille.teachus.bean.impl.VelocityBeanImpl">
+		<constructor-arg ref="velocityEngine" />
+	</bean>   
+	
+	<bean id="personDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
-				class="dk.frankbille.teachus.dao.hibernate.PeriodDAOHibernate">
+				class="dk.frankbille.teachus.dao.hibernate.PersonDAOHibernate">
+				<constructor-arg ref="mailSender" />
+				<constructor-arg ref="velocityBean" />
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>
@@ -84,10 +103,10 @@
 		</property>
 	</bean>
 	
-	<bean id="personDao" parent="txProxyTemplate">
+	<bean id="periodDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
-				class="dk.frankbille.teachus.dao.hibernate.PersonDAOHibernate">
+				class="dk.frankbille.teachus.dao.hibernate.PeriodDAOHibernate">
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>

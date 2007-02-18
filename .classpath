@@ -35,5 +35,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-datetime"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
+	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="/M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-support/2.0.2/spring-support-2.0.2.jar" sourcepath="/M2_REPO/org/springframework/spring/2.0.2/spring-src.zip"/>
+	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="/M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/velocity/velocity/1.4/velocity-1.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

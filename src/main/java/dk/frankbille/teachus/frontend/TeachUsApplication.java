@@ -49,8 +49,8 @@ public class TeachUsApplication extends WebApplication {
 		BookingDAO bookingDAO = getBookingDAO();
 		
 		Teacher teacher = new TeacherImpl();
-		teacher.setName("Signe Stauner"); //$NON-NLS-1$
-		teacher.setEmail("signe@signestauner.dk");
+		teacher.setName("Signe Stauner æøå"); //$NON-NLS-1$
+		teacher.setEmail("signe@billen.dk");
 		teacher.setUsername("uv1"); //$NON-NLS-1$
 		teacher.setPassword("u"); //$NON-NLS-1$
 		teacher.setLocale(new Locale("da", "DK", "singers")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -58,32 +58,33 @@ public class TeachUsApplication extends WebApplication {
 		
 		
 		Pupil pupil1 = new PupilImpl();
-		pupil1.setName("Sanne"); //$NON-NLS-1$
+		pupil1.setName("Sanne æøå"); //$NON-NLS-1$
 		pupil1.setUsername("sanger1"); //$NON-NLS-1$
 		pupil1.setPassword("s"); //$NON-NLS-1$
-		pupil1.setEmail("sanger1@hotmail.com"); //$NON-NLS-1$
+		pupil1.setEmail("sanger1@billen.dk"); //$NON-NLS-1$
 		pupil1.setTeacher(teacher);
 		personDAO.save(pupil1);
 		
 		Pupil pupil2 = new PupilImpl();
-		pupil2.setName("Martin"); //$NON-NLS-1$
+		pupil2.setName("Martin æøå"); //$NON-NLS-1$
 		pupil2.setUsername("sanger2"); //$NON-NLS-1$
 		pupil2.setPassword("s"); //$NON-NLS-1$
-		pupil2.setEmail("sanger2@hotmail.com"); //$NON-NLS-1$
+		pupil2.setEmail("sanger2@billen.dk"); //$NON-NLS-1$
 		pupil2.setTeacher(teacher);
 		personDAO.save(pupil2);
 		
 		Pupil pupil3 = new PupilImpl();
-		pupil3.setName("Bernadette"); //$NON-NLS-1$
+		pupil3.setName("Bernadette æøå"); //$NON-NLS-1$
 		pupil3.setUsername("sanger3"); //$NON-NLS-1$
 		pupil3.setPassword("s"); //$NON-NLS-1$
-		pupil3.setEmail("sanger3@hotmail.com"); //$NON-NLS-1$
+		pupil3.setEmail("sanger3@billen.dk"); //$NON-NLS-1$
 		pupil3.setTeacher(teacher);
 		personDAO.save(pupil3);
 				
 		
 		Admin admin = new AdminImpl();
 		admin.setName("Frank Bille"); //$NON-NLS-1$
+		admin.setEmail("frank@billen.dk");
 		admin.setUsername("admin"); //$NON-NLS-1$
 		admin.setPassword("a"); //$NON-NLS-1$
 		personDAO.save(admin);

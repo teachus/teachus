@@ -1,0 +1,30 @@
+Welcome to TeachUs booking system
+<html>
+	<body>
+		<h3>Welcome ${name}</h3>
+		
+		<p>
+			You can now log in to TeachUs, using the following username and password:
+		</p>
+		
+		<table cellspacing="0" cellpadding="10" border="0">
+			<tr>
+				<td><b>Server:</b></td>
+				<td><a href="${server}">${server}</a></td>
+			</tr>
+			<tr>
+				<td><b>Username:</b></td>
+				<td>${username}</td>
+			</tr>
+			<tr>
+				<td><b>Password:</b></td>
+				<td>${password}</td>
+			</tr>
+		</table>
+		
+		<p>
+			Kindly regards,<br />
+			${from}
+		</p>
+	</body>
+</html>

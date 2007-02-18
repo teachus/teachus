@@ -1,0 +1,30 @@
+Velkommen til TeachUs booking system
+<html>
+	<body>
+		<h3>Velkommen ${name}</h3>
+		
+		<p>
+			Du kan nu logge dig in i TeachUs med f&oslash;lgende brugernavn og kodeord:
+		</p>
+		
+		<table cellspacing="0" cellpadding="10" border="0">
+			<tr>
+				<td><b>Server:</b></td>
+				<td><a href="${server}">${server}</a></td>
+			</tr>
+			<tr>
+				<td><b>Brugernavn:</b></td>
+				<td>${username}</td>
+			</tr>
+			<tr>
+				<td><b>Kodeord:</b></td>
+				<td>${password}</td>
+			</tr>
+		</table>
+		
+		<p>
+			Med venlig hilsen<br />
+			${from}
+		</p>
+	</body>
+</html>

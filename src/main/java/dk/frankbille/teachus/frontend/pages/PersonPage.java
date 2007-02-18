@@ -109,6 +109,8 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
+				boolean newPerson = person.getId() == null;
+				
 				if (Strings.isEmpty(password1) == false) {
 					person.setPassword(password1);
 				}
@@ -117,9 +119,10 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 				
 				personDAO.save(person);
 				
-				// Set the locale on current session if set
-				if (person.getLocale() != null) {
-					TeachUsSession.get().changeLocale(person.getLocale());
+				// Send welcome mail if the person is new AND a pupil
+				if (newPerson && person instanceof Pupil) {
+					Pupil pupil = (Pupil) person;
+					personDAO.sendWelcomeMail(person.getId(), pupil.getTeacher().getLocale());
 				}
 				
 				getRequestCycle().setResponsePage(getPersonsPageClass());
