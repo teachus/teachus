@@ -9,6 +9,10 @@ html, body, table {
 	font-family: Garamond,'Copperplate Gothic Light',Georgia,'Times New Roman',Serif;
 }
 
+img, input { 
+	behavior: url(iepngfix.htc); 
+}
+
 form {
 	margin: 0;
 }
