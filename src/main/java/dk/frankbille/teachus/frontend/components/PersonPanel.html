@@ -1,0 +1,39 @@
+<wicket:panel>
+<form wicket:id="form">
+<span wicket:id="feedback" />
+<table class="form" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td wicket:id="nameLabel"></td>
+		<td><input type="text" wicket:id="name" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="emailLabel"></td>
+		<td><input type="text" wicket:id="email" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="usernameLabel"></td>
+		<td><input type="text" wicket:id="username" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="password1Label"></td>
+		<td><input type="password" wicket:id="password" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="password2Label"></td>
+		<td><input type="password" wicket:id="password2" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="localeLabel"></td>
+		<td><select wicket:id="locale" /></td>
+	</tr>
+	<tr wicket:id="teacherRow">
+		<td wicket:id="teacherNameLabel"></td>
+		<td wicket:id="teacher.name"></td>
+	</tr>	<tr>
+		<td colspan="2" align="right">
+			<input type="submit" wicket:id="saveButton" />
+		</td>
+	</tr>
+</table>
+</form>
+</wicket:panel>

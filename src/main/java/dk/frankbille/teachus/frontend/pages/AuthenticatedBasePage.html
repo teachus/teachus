@@ -1,0 +1,32 @@
+<wicket:extend>
+	<table cellspacing="0" cellpadding="0" border="0" width="100%">
+		<tr>
+			<td align="center">
+				<table cellspacing="0" cellpadding="0" border="0" style="width: 1%; margin-top: 75px;">
+					<tr>
+						<td align="left" valign="bottom" wicket:id="teacherName"></td>
+						<td align="right" class="menu">
+							<span wicket:id="menuHelp"></span>
+							<a wicket:id="menuLink"><img wicket:id="menuIcon" /></a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+							<table cellpadding="0" cellspacing="20" border="0" id="main">
+								<tr>
+									<td width="1%"><img wicket:id="pageIcon" /></td>
+									<td wicket:id="pageLabel" class="pageLabel" valign="bottom"></td>
+								</tr>
+								<tr>
+									<td colspan="2" class="mainContent">
+										<wicket:child />
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</wicket:extend>

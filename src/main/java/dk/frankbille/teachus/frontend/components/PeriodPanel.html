@@ -1,0 +1,41 @@
+<wicket:panel>
+<form wicket:id="form">
+<span wicket:id="feedback" />
+<table class="form" cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td wicket:id="nameLabel"></td>
+		<td><input type="text" wicket:id="name" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="beginDateLabel"></td>
+		<td wicket:id="beginDate"></td>
+	</tr>
+	<tr>
+		<td wicket:id="endDateLabel"></td>
+		<td wicket:id="endDate"></td>
+	</tr>
+	<tr>
+		<td wicket:id="startTimeLabel"></td>
+		<td><select wicket:id="startTime" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="endTimeLabel"></td>
+		<td><select wicket:id="endTime" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="priceLabel"></td>
+		<td><input type="text" wicket:id="price" /></td>
+	</tr>
+	<tr>
+		<td wicket:id="weekDaysLabel" valign="top"></td>
+		<td wicket:id="weekDays"></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="right">
+			<input type="button" wicket:id="cancelButton" />
+			<input type="submit" wicket:id="saveButton" />
+		</td>
+	</tr>
+</table>
+</form>
+</wicket:panel>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="dk.frankbille.teachus.domain.impl" default-lazy="false">
+
+    <class name="PupilBookingImpl" table="pupil_booking">
+		<id name="id" column="id" access="field">
+            <generator class="native"/>
+        </id>
+        
+		<version name="version" access="field" />
+        
+        <many-to-one name="pupil" column="pupil_id" class="PupilImpl" cascade="none" fetch="join" />
+        
+        <many-to-one name="period" column="period_id" class="PeriodImpl" cascade="none" fetch="join" />
+        
+		<property name="date" column="date" type="timestamp" />
+    </class>
+
+</hibernate-mapping>

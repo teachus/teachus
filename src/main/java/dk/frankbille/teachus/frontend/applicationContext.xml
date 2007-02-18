@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/teachus.properties" />
+	</bean>
+
+	<bean id="hibernatePropertiesBean"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="/WEB-INF/teachus.properties" />
+	</bean>
+
+	<!-- Data source -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>${db.driverClassName}</value>
+		</property>
+		<property name="url">
+			<value>${db.url}</value>
+		</property>
+		<property name="username">
+			<value>${db.username}</value>
+		</property>
+		<property name="password">
+			<value>${db.password}</value>
+		</property>
+	</bean>
+
+	<!-- Hibernate SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref local="dataSource" />
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>
+					dk/frankbille/teachus/dao/hibernate/Person.hbm.xml
+				</value>
+				<value>
+					dk/frankbille/teachus/dao/hibernate/Period.hbm.xml
+				</value>
+				<value>
+					dk/frankbille/teachus/dao/hibernate/PupilBooking.hbm.xml
+				</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<ref local="hibernatePropertiesBean" />
+		</property>
+	</bean>
+
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="txProxyTemplate" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+		</property>
+	</bean>
+
+	<!-- ==================== -->
+	<!--         DAOS         -->
+	<!-- ==================== -->
+	
+	<bean id="periodDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.frankbille.teachus.dao.hibernate.PeriodDAOHibernate">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="personDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.frankbille.teachus.dao.hibernate.PersonDAOHibernate">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="bookingDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.frankbille.teachus.dao.hibernate.BookingDAOHibernate">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+</beans>

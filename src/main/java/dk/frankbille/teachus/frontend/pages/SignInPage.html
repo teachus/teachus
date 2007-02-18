@@ -1,0 +1,31 @@
+<wicket:extend>
+	<table cellspacing="0" cellpadding="0" border="0" width="100%" height="100%">
+		<tr>
+			<td align="center">
+				<form wicket:id="signInForm">
+					<table cellpadding="0" cellspacing="20" border="0" id="signin">
+						<tr>
+							<td rowspan="4" valign="top"><img wicket:id="signInIcon" /></td>
+							<td><h1 wicket:id="signInLabel"></h1></td>
+						</tr>
+						<tr>
+							<td>
+								<span wicket:id="usernameLabel"></span><br />
+								<input type="text" class="inputText" size="24" wicket:id="username" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span wicket:id="passwordLabel"></span><br />
+								<input type="password" class="inputText" size="24" wicket:id="password" />
+							</td>
+						</tr>
+						<tr>
+							<td align="right"><input type="image" wicket:id="signIn" /></td>
+						</tr>
+					</table>
+				</form>
+			</td>
+		</tr>
+	</table>
+</wicket:extend>

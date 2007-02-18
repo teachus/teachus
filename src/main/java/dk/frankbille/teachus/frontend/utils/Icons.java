@@ -1,0 +1,32 @@
+package dk.frankbille.teachus.frontend.utils;
+
+import wicket.ResourceReference;
+import dk.frankbille.teachus.frontend.pages.AdminsPage;
+import dk.frankbille.teachus.frontend.pages.CalendarPage;
+import dk.frankbille.teachus.frontend.pages.PupilsPage;
+import dk.frankbille.teachus.frontend.pages.SignInPage;
+import dk.frankbille.teachus.frontend.pages.SignOutPage;
+import dk.frankbille.teachus.frontend.pages.TeachersPage;
+
+public abstract class Icons {
+
+	public static final ResourceReference CALENDAR = new ResourceReference(CalendarPage.class, "resources/calendar.png"); //$NON-NLS-1$
+	public static final ResourceReference AVAILABLE = new ResourceReference(CalendarPage.class, "resources/available.png"); //$NON-NLS-1$
+	public static final ResourceReference SIGN_IN = new ResourceReference(SignInPage.class, "resources/signin.png"); //$NON-NLS-1$
+	public static final ResourceReference LOCK = new ResourceReference(SignInPage.class, "resources/lock.png"); //$NON-NLS-1$
+	public static final ResourceReference SIGNOUT_SMALL = new ResourceReference(SignOutPage.class, "resources/signout_small.png"); //$NON-NLS-1$
+	public static final ResourceReference CALENDAR_SMALL = new ResourceReference(CalendarPage.class, "resources/calendar_small.png"); //$NON-NLS-1$
+	public static final ResourceReference PUPIL_SMALL = new ResourceReference(PupilsPage.class, "resources/pupil_small.png"); //$NON-NLS-1$
+	public static final ResourceReference TEACHER_SMALL = new ResourceReference(TeachersPage.class, "resources/teacher_small.png"); //$NON-NLS-1$
+	public static final ResourceReference ADMIN_SMALL = new ResourceReference(AdminsPage.class, "resources/admin_small.png"); //$NON-NLS-1$
+	public static final ResourceReference PERIOD_SMALL = new ResourceReference(AdminsPage.class, "resources/period_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference AGENDA_SMALL = new ResourceReference(AdminsPage.class, "resources/agenda_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAYMENT_SMALL = new ResourceReference(AdminsPage.class, "resources/payment_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference ADMIN = new ResourceReference(AdminsPage.class, "resources/admin.png"); //$NON-NLS-1$
+	public static final ResourceReference PUPIL = new ResourceReference(AdminsPage.class, "resources/pupil.png"); //$NON-NLS-1$
+	public static final ResourceReference TEACHER = new ResourceReference(AdminsPage.class, "resources/teacher.png"); //$NON-NLS-1$
+	public static final ResourceReference PERIOD = new ResourceReference(AdminsPage.class, "resources/period.png"); //$NON-NLS-1$;
+	public static final ResourceReference AGENDA = new ResourceReference(AdminsPage.class, "resources/agenda.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAYMENT = new ResourceReference(AdminsPage.class, "resources/payment.png"); //$NON-NLS-1$;
+	
+}
