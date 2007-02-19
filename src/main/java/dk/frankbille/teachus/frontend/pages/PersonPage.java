@@ -66,9 +66,7 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 		form.add(emailField);
 		
 		form.add(new Label("phoneNumberLabel", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
-		TextField phoneNumberField = new TextField("phoneNumber"); //$NON-NLS-1$
-		phoneNumberField.setRequired(true);
-		form.add(phoneNumberField);
+		form.add(new TextField("phoneNumber")); //$NON-NLS-1$
 		
 		form.add(new Label("usernameLabel", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
 		TextField usernameField = new TextField("username") {
