@@ -19,6 +19,6 @@ public interface PersonDAO extends Serializable {
 	
 	Person getPerson(Long personId);
 	
-	void sendWelcomeMail(Long pupilId);
+	void sendWelcomeMail(Long pupilId, String serverName);
 
 }

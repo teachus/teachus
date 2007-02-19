@@ -33,7 +33,7 @@ public class MailBeanImpl implements MailBean {
 		this.velocityBean = velocityBean;
 	}
 
-	public void sendWelcomeMail(final Pupil pupil) {
+	public void sendWelcomeMail(final Pupil pupil, final String serverName) {
 		new Thread(new Runnable() {
 			public void run() {
 				mailSender.send(new MimeMessagePreparator() {
@@ -49,7 +49,7 @@ public class MailBeanImpl implements MailBean {
 						
 						// Parse the template
 						Map<String, Object> model = new HashMap<String, Object>();
-						model.put("server", "http://teachus.billen.dk/");
+						model.put("server", serverName);
 						model.put("from", HtmlUtils.htmlEscape(fromName));
 						model.put("name", HtmlUtils.htmlEscape(pupil.getName()));
 						model.put("username", HtmlUtils.htmlEscape(pupil.getUsername()));

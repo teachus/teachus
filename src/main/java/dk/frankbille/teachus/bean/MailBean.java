@@ -9,7 +9,7 @@ import dk.frankbille.teachus.domain.Teacher;
 
 public interface MailBean extends Serializable {
 
-	void sendWelcomeMail(Pupil pupil);
+	void sendWelcomeMail(Pupil pupil, String serverName);
 	
 	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings);
 	

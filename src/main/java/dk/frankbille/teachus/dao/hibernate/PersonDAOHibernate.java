@@ -89,7 +89,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		return (Person) getHibernateTemplate().load(PersonImpl.class, personId);
 	}
 	
-	public void sendWelcomeMail(Long pupilId) {
+	public void sendWelcomeMail(Long pupilId, String serverName) {
 		Person person = getPerson(pupilId);
 		
 		if (person instanceof Pupil == false) {
@@ -98,6 +98,6 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		
 		Pupil pupil = (Pupil) person;
 		
-		mailBean.sendWelcomeMail(pupil);
+		mailBean.sendWelcomeMail(pupil, serverName);
 	}
 }

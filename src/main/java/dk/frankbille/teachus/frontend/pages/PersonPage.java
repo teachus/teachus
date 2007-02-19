@@ -121,7 +121,7 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 				
 				// Send welcome mail if the person is new AND a pupil
 				if (newPerson && person instanceof Pupil) {
-					personDAO.sendWelcomeMail(person.getId());
+					personDAO.sendWelcomeMail(person.getId(), TeachUsApplication.get().getServerName());
 				}
 				
 				getRequestCycle().setResponsePage(getPersonsPageClass());

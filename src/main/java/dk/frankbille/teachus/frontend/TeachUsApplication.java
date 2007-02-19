@@ -4,13 +4,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import wicket.ISessionFactory;
 import wicket.Request;
+import wicket.RequestCycle;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
+import wicket.protocol.http.WebRequestCycle;
 import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.dao.PeriodDAO;
@@ -193,5 +197,23 @@ public class TeachUsApplication extends WebApplication {
 	
 	public String getVersion() {
 		return ApplicationUtils.getVersion();
+	}
+	
+	public String getServerName() {
+		WebRequestCycle requestCycle = (WebRequestCycle) RequestCycle.get();
+		HttpServletRequest httpServletRequest = requestCycle.getWebRequest().getHttpServletRequest();
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(httpServletRequest.getScheme());
+		sb.append("://");
+		sb.append(httpServletRequest.getServerName());
+		if (httpServletRequest.getServerPort() != 80) {
+			sb.append(":");
+			sb.append(httpServletRequest.getServerPort());
+		}
+		sb.append("/");
+		sb.append(httpServletRequest.getContextPath());
+		
+		return sb.toString();
 	}
 }
