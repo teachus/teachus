@@ -34,6 +34,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 		add(new Label("pupil", TeachUsSession.get().getString("General.pupil"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("date", TeachUsSession.get().getString("General.date"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("time", TeachUsSession.get().getString("General.time"))); //$NON-NLS-1$ //$NON-NLS-2$
+		add(new Label("phoneNumber", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("price", TeachUsSession.get().getString("General.price"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// BODY
@@ -47,6 +48,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 			row.add(new Label("name", booking.getPupil().getName())); //$NON-NLS-1$
 			row.add(new RenderingLabel("date", new Model(booking.getDate()), new DateChoiceRenderer())); //$NON-NLS-1$
 			row.add(new RenderingLabel("time", new Model(booking.getDate()), new TimeChoiceRenderer())); //$NON-NLS-1$
+			row.add(new Label("phoneNumber", booking.getPupil().getPhoneNumber())); //$NON-NLS-1$
 			row.add(new RenderingLabel("price", new Model(booking.getPeriod().getPrice()), new CurrencyChoiceRenderer())); //$NON-NLS-1$
 		}
 	}

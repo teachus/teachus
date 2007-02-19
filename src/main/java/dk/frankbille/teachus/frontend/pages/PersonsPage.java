@@ -52,6 +52,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		add(new Label("name", TeachUsSession.get().getString("General.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("username", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("email", TeachUsSession.get().getString("General.email"))); //$NON-NLS-1$ //$NON-NLS-2$
+		add(new Label("phoneNumber", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("functions", TeachUsSession.get().getString("General.functions")) {
 			private static final long serialVersionUID = 1L;
 
@@ -83,6 +84,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				row.add(link);
 				row.add(new Label("username")); //$NON-NLS-1$
 				row.add(new Label("email")); //$NON-NLS-1$
+				row.add(new Label("phoneNumber")); //$NON-NLS-1$
 				
 				WebMarkupContainer functionsCell = new WebMarkupContainer("functions") {
 					private static final long serialVersionUID = 1L;

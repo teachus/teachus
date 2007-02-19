@@ -5,6 +5,7 @@ import dk.frankbille.teachus.domain.Admin;
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.Teacher;
+import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.utils.Icons;
 
@@ -40,6 +41,16 @@ public class PupilPage extends PersonPage {
 		}
 		
 		return allow;
+	}
+	
+	@Override
+	protected boolean isUsernameEnabled() {
+		return UserLevel.TEACHER.authorized(TeachUsSession.get().getUserLevel());
+	}
+	
+	@Override
+	protected boolean isLocaleVisible() {
+		return false;
 	}
 
 }

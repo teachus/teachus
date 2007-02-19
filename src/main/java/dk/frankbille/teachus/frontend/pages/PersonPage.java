@@ -65,8 +65,20 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 		emailField.add(EmailAddressPatternValidator.getInstance());
 		form.add(emailField);
 		
+		form.add(new Label("phoneNumberLabel", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
+		TextField phoneNumberField = new TextField("phoneNumber"); //$NON-NLS-1$
+		phoneNumberField.setRequired(true);
+		form.add(phoneNumberField);
+		
 		form.add(new Label("usernameLabel", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
-		TextField usernameField = new TextField("username"); //$NON-NLS-1$
+		TextField usernameField = new TextField("username") {
+			private static final long serialVersionUID = 1L; //$NON-NLS-1$
+
+			@Override
+			public boolean isEnabled() {
+				return isUsernameEnabled();
+			}
+		};
 		usernameField.setRequired(true);
 		usernameField.add(StringValidator.lengthBetween(3, 50));
 		form.add(usernameField);
@@ -87,9 +99,18 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 		form.add(new EqualInputValidator(passwordTextField1, passwordTextField2));
 		
 		// Locale row
-		form.add(new Label("localeLabel", TeachUsSession.get().getString("General.locale"))); //$NON-NLS-1$ //$NON-NLS-2$
+		WebMarkupContainer localeRow = new WebMarkupContainer("localeRow") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return isLocaleVisible();
+			}
+		};
+		form.add(localeRow);
+		localeRow.add(new Label("localeLabel", TeachUsSession.get().getString("General.locale"))); //$NON-NLS-1$ //$NON-NLS-2$
 		List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
-		form.add(new DropDownChoice("locale", availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$
+		localeRow.add(new DropDownChoice("locale", availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$
 		
 		// Teacher row
 		WebMarkupContainer teacherRow = new WebMarkupContainer("teacherRow") { //$NON-NLS-1$
@@ -144,4 +165,12 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 	protected abstract boolean allowUserEditing(Person loggedInPerson, Person editPerson);
 	
 	protected abstract Class<? extends PersonsPage> getPersonsPageClass();
+	
+	protected boolean isUsernameEnabled() {
+		return true;
+	}
+	
+	protected boolean isLocaleVisible() {
+		return true;
+	}
 }

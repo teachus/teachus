@@ -13,6 +13,8 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	private String email;
 
+	private String phoneNumber;
+
 	private Locale locale;
 
 	public String getEmail() {
@@ -29,6 +31,10 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
 	public String getUsername() {
@@ -49,6 +55,10 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
 	public void setUsername(String username) {

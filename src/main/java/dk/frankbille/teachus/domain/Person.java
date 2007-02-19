@@ -18,6 +18,9 @@ public interface Person extends Serializable {
 	String getEmail();
 	void setEmail(String email);
 	
+	String getPhoneNumber();
+	void setPhoneNumber(String phoneNumber);
+	
 	Locale getLocale();
 	void setLocale(Locale locale);
 }
