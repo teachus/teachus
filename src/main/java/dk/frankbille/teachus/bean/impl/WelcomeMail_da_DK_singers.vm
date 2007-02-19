@@ -4,7 +4,7 @@ Velkommen til TeachUs booking system
 		<h3>Velkommen ${name}</h3>
 		
 		<p>
-			Du kan nu logge dig in i TeachUs med f&oslash;lgende brugernavn og kodeord:
+			Du kan nu logge dig ind i TeachUs med f&oslash;lgende brugernavn og kodeord:
 		</p>
 		
 		<table cellspacing="0" cellpadding="10" border="0">
