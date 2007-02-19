@@ -58,7 +58,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 	
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.PAYMENT;
+		return Icons.PAYMENT2;
 	}
 
 	@Override

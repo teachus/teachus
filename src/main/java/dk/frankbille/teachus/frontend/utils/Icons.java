@@ -22,12 +22,16 @@ public abstract class Icons {
 	public static final ResourceReference PERIOD_SMALL = new ResourceReference(AdminsPage.class, "resources/period_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference AGENDA_SMALL = new ResourceReference(AdminsPage.class, "resources/agenda_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAYMENT_SMALL = new ResourceReference(AdminsPage.class, "resources/payment_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAYMENT1_SMALL = new ResourceReference(AdminsPage.class, "resources/payment1_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAYMENT2_SMALL = new ResourceReference(AdminsPage.class, "resources/payment2_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference ADMIN = new ResourceReference(AdminsPage.class, "resources/admin.png"); //$NON-NLS-1$
 	public static final ResourceReference PUPIL = new ResourceReference(AdminsPage.class, "resources/pupil.png"); //$NON-NLS-1$
 	public static final ResourceReference TEACHER = new ResourceReference(AdminsPage.class, "resources/teacher.png"); //$NON-NLS-1$
 	public static final ResourceReference PERIOD = new ResourceReference(AdminsPage.class, "resources/period.png"); //$NON-NLS-1$;
 	public static final ResourceReference AGENDA = new ResourceReference(AdminsPage.class, "resources/agenda.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAYMENT = new ResourceReference(AdminsPage.class, "resources/payment.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAYMENT1 = new ResourceReference(AdminsPage.class, "resources/payment1.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAYMENT2 = new ResourceReference(AdminsPage.class, "resources/payment2.png"); //$NON-NLS-1$;
 	public static final ResourceReference LEFT = new ResourceReference(PupilCalendarPage.class, "resources/left.png"); //$NON-NLS-1$;
 	public static final ResourceReference RIGHT = new ResourceReference(PupilCalendarPage.class, "resources/right.png"); //$NON-NLS-1$;
 	
