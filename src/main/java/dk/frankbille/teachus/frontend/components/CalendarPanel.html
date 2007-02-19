@@ -1,38 +1,41 @@
 <wicket:panel>
-	<table width="100%">
-		<tbody>
-			<tr>
-				<td><a wicket:id="backLink"><img wicket:id="backIcon" /></a></td>
-				<td align="right"><a wicket:id="forwardLink"><img wicket:id="forwardIcon" /></a></td>
-			</tr>
-		</tbody>	
-	</table>
-	<table width="100%">
-		<tbody>
-			<tr>
-				<td wicket:id="weeks" valign="top">
-					<table class="border">
-						<thead>
-							<tr>
-								<th wicket:id="weekHeader"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td wicket:id="days" valign="top">
-									<table>
-										<tbody>
-											<tr wicket:id="periods">
-												<td><span wicket:id="period" /></td>
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+	<div wicket:id="calendar">
+		<table width="100%">
+			<tbody>
+				<tr>
+					<td><a wicket:id="backLink"><img wicket:id="backIcon" /></a></td>
+					<td align="right"><a wicket:id="forwardLink"><img wicket:id="forwardIcon" /></a></td>
+				</tr>
+			</tbody>	
+		</table>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<td wicket:id="weeks" valign="top">
+						<table class="border">
+							<thead>
+								<tr>
+									<th wicket:id="weekHeader"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td wicket:id="days" valign="top">
+										<table>
+											<tbody>
+												<tr wicket:id="periods">
+													<td><span wicket:id="period" /></td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<span wicket:id="statusMessage"></span>
 </wicket:panel>
