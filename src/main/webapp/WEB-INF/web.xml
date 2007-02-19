@@ -22,10 +22,10 @@
 				dk.frankbille.teachus.frontend.TeachUsApplication
 			</param-value>
 		</init-param>
-		<!--<init-param>
+		<init-param>
 			<param-name>configuration</param-name>
 			<param-value>DEPLOYMENT</param-value>           
-		</init-param>-->
+		</init-param>
 	</filter>
 
 	<filter-mapping>
