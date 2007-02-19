@@ -17,7 +17,6 @@
 	<classpathentry kind="var" path="M2_REPO/joda-time/joda-time/1.4/joda-time-1.4.jar" sourcepath="/M2_REPO/joda-time/joda-time/1.4/joda-time-1.4-src-ide.zip"/>
 	<classpathentry kind="var" path="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar" sourcepath="M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.0.4/mysql-connector-java-5.0.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/pull-parser/pull-parser/2/pull-parser-2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.3/servlet-api-2.3.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.3/servlet-api-2.3-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-context/2.0.2/spring-context-2.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar" sourcepath="M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1-sources.jar"/>
