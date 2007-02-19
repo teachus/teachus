@@ -1,5 +1,6 @@
 package dk.frankbille.teachus.frontend.pages;
 
+import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import wicket.ResourceReference;
 import wicket.behavior.HeaderContributor;
@@ -11,12 +12,14 @@ import wicket.markup.html.resources.JavascriptResourceReference;
 public abstract class BasePage extends WebPage {
 	private static final ResourceReference CSS_MAIN = new CompressedResourceReference(BasePage.class, "resources/main.css"); //$NON-NLS-1$
 	private static final ResourceReference JS_PROTOTYPE = new JavascriptResourceReference(BasePage.class, "resources/prototype.js"); //$NON-NLS-1$
-	
+
 	public BasePage() {
 		add(HeaderContributor.forCss(CSS_MAIN));
 		add(HeaderContributor.forJavaScript(JS_PROTOTYPE));
-		
-		add(new Label("title", TeachUsSession.get().getString("General.teachUsTitle")));
+
+		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle"));
+		sb.append(" ");
+		sb.append(TeachUsApplication.get().getVersion());
+		add(new Label("title", sb.toString()));
 	}
-	
 }
