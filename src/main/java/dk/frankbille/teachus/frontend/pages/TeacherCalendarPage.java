@@ -23,6 +23,8 @@ import wicket.protocol.http.WebApplication;
 public class TeacherCalendarPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
+	private Teacher teacher;
+	
 	public TeacherCalendarPage() {
 		this(new DateMidnight());
 	}
@@ -36,7 +38,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 		
 		PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
 		
-		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();		
+		teacher = (Teacher) TeachUsSession.get().getPerson();		
 		
 		final Periods periods = periodDAO.getPeriods(teacher);
 		
@@ -82,7 +84,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.calendar");
+		return TeachUsSession.get().getString("General.calendarFor")+" "+teacher.getName();
 	}
 
 }

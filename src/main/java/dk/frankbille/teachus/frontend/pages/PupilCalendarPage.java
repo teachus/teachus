@@ -3,13 +3,10 @@ package dk.frankbille.teachus.frontend.pages;
 import java.util.Date;
 
 import org.joda.time.DateMidnight;
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormatter;
 
-import wicket.PageParameters;
 import wicket.ResourceReference;
 import wicket.markup.html.link.Link;
-import wicket.util.string.Strings;
 import dk.frankbille.teachus.dao.PeriodDAO;
 import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Periods;
@@ -27,23 +24,10 @@ import dk.frankbille.teachus.frontend.utils.Icons;
 public class PupilCalendarPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
-	public PupilCalendarPage(PageParameters pageParameters) {
-		super(UserLevel.PUPIL);
-		
-		DateMidnight pageDate = null;
-		DateTimeFormatter formatIsoDate = Formatters.getFormatIsoDate();
-		
-		String dateString = pageParameters.getString("0"); //$NON-NLS-1$
-		if (Strings.isEmpty(dateString) == false) {
-			pageDate = formatIsoDate.parseDateTime(dateString).toDateMidnight();
-		} else {
-			pageDate = new DateMidnight(ISOChronology.getInstance());
-		}
-		
-		if (TeachUsSession.get().getUserLevel() == UserLevel.PUPIL) {
-			Pupil pupil = (Pupil) TeachUsSession.get().getPerson();
-			initializePupilCalendar(pageDate, formatIsoDate, pupil);
-		}
+	private Pupil pupil;
+	
+	public PupilCalendarPage() {
+		this((Pupil) TeachUsSession.get().getPerson());
 	}
 	
 	public PupilCalendarPage(Pupil pupil) {
@@ -52,6 +36,8 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	
 	public PupilCalendarPage(Date pageDate, Pupil pupil) {
 		super(UserLevel.PUPIL);
+		
+		this.pupil = pupil;
 		
 		DateTimeFormatter formatIsoDate = Formatters.getFormatIsoDate();
 		initializePupilCalendar(new DateMidnight(pageDate), formatIsoDate, pupil);
@@ -104,7 +90,7 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.calendar"); //$NON-NLS-1$
+		return TeachUsSession.get().getString("General.calendarFor")+" "+pupil.getName(); //$NON-NLS-1$
 	}
 	
 }
