@@ -24,6 +24,8 @@
 			<many-to-one name="pupil" column="pupil_id" class="PupilImpl" cascade="none" fetch="join" />
 		
 			<property name="notificationSent" column="notification_sent" />
+			
+			<property name="paid" />
 		</subclass>
 		
 		<subclass name="TeacherBookingImpl" discriminator-value="TEACHER">

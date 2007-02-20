@@ -34,5 +34,7 @@ public abstract class Icons {
 	public static final ResourceReference PAYMENT2 = new ResourceReference(AdminsPage.class, "resources/payment2.png"); //$NON-NLS-1$;
 	public static final ResourceReference LEFT = new ResourceReference(PupilCalendarPage.class, "resources/left.png"); //$NON-NLS-1$;
 	public static final ResourceReference RIGHT = new ResourceReference(PupilCalendarPage.class, "resources/right.png"); //$NON-NLS-1$;
+	public static final ResourceReference UNPAID = new ResourceReference(PupilCalendarPage.class, "resources/unpaid.png"); //$NON-NLS-1$;
+	public static final ResourceReference PAID = new ResourceReference(PupilCalendarPage.class, "resources/paid.png"); //$NON-NLS-1$;
 	
 }

@@ -7,7 +7,6 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
@@ -97,7 +96,8 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.add(Restrictions.eq("pupil", pupil));
-		c.add(Restrictions.lt("date", new DateMidnight().toDate()));
+		c.add(Restrictions.lt("date", new Date()));
+		c.add(Restrictions.eq("paid", false));
 		
 		c.addOrder(Order.asc("date"));
 		
@@ -110,7 +110,8 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
-		c.add(Restrictions.lt("date", new DateMidnight().toDate()));
+		c.add(Restrictions.lt("date", new Date()));
+		c.add(Restrictions.eq("paid", false));
 		
 		c.addOrder(Order.asc("date"));
 		
@@ -147,6 +148,13 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 			getHibernateTemplate().bulkUpdate(hql.toString());
 			getHibernateTemplate().flush();
 		}
+	}
+	
+	public void changePaidStatus(PupilBooking pupilBooking) {
+		pupilBooking.setPaid(pupilBooking.isPaid() == false);
+		
+		getHibernateTemplate().update(pupilBooking);
+		getHibernateTemplate().flush();
 	}
 
 }

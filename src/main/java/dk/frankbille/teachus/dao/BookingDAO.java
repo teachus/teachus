@@ -39,5 +39,7 @@ public interface BookingDAO extends Serializable {
 	List<PupilBooking> getUnsentBookings(Teacher teacher);
 
 	void newBookingsMailSent(List<PupilBooking> pupilBookings);
+
+	void changePaidStatus(PupilBooking pupilBooking);
 	
 }
