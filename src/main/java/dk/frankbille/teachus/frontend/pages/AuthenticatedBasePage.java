@@ -18,6 +18,7 @@ import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
+import dk.frankbille.teachus.frontend.pages.stats.StatsPage;
 import dk.frankbille.teachus.frontend.utils.Icons;
 
 public abstract class AuthenticatedBasePage extends BasePage {

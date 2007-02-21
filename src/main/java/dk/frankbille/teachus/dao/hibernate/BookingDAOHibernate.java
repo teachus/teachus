@@ -159,11 +159,19 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getPaidBookings(Teacher teacher) {
+	public List<PupilBooking> getPaidBookings(Teacher teacher, Date startDate, Date endDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
 		c.add(Restrictions.eq("paid", true));
+		
+		if (startDate != null && endDate != null) {
+			c.add(Restrictions.between("date", startDate, endDate));
+		} else if (startDate != null) {
+			c.add(Restrictions.gt("date", startDate));
+		} else if (endDate != null) {
+			c.add(Restrictions.lt("date", endDate));
+		}
 		
 		c.addOrder(Order.asc("date"));
 		

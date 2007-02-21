@@ -21,6 +21,11 @@ form input.inputText {
 	border: 1px solid gray;	
 }
 
+h1 {
+	padding-left: 10px;
+	font-size: 1.5em;
+}
+
 .menu a {
 	padding-left: 10px;
 }
@@ -33,6 +38,10 @@ form input.inputText {
 	border: 1px solid gray;
 	background: white url(white_withoutlogo_1600x1200_indexed.jpg) top center;
 	text-align: left;
+}
+
+#main {
+	width: 600px;
 }
 
 #signin h1 {

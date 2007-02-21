@@ -14,6 +14,11 @@ public class MenuItem implements Serializable {
 
 	private String helpText;
 
+	public MenuItem(Class<? extends WebPage> bookmarkablePage, String helpText) {
+		this.bookmarkablePage = bookmarkablePage;
+		this.helpText = helpText;
+	}
+
 	public MenuItem(Class<? extends WebPage> bookmarkablePage, ResourceReference icon, String helpText) {
 		this.bookmarkablePage = bookmarkablePage;
 		this.icon = icon;
