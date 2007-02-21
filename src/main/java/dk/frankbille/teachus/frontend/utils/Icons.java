@@ -24,6 +24,7 @@ public abstract class Icons {
 	public static final ResourceReference PAYMENT_SMALL = new ResourceReference(AdminsPage.class, "resources/payment_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAYMENT1_SMALL = new ResourceReference(AdminsPage.class, "resources/payment1_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAYMENT2_SMALL = new ResourceReference(AdminsPage.class, "resources/payment2_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference STATS_SMALL = new ResourceReference(PupilCalendarPage.class, "resources/stats_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference ADMIN = new ResourceReference(AdminsPage.class, "resources/admin.png"); //$NON-NLS-1$
 	public static final ResourceReference PUPIL = new ResourceReference(AdminsPage.class, "resources/pupil.png"); //$NON-NLS-1$
 	public static final ResourceReference TEACHER = new ResourceReference(AdminsPage.class, "resources/teacher.png"); //$NON-NLS-1$
@@ -36,5 +37,6 @@ public abstract class Icons {
 	public static final ResourceReference RIGHT = new ResourceReference(PupilCalendarPage.class, "resources/right.png"); //$NON-NLS-1$;
 	public static final ResourceReference UNPAID = new ResourceReference(PupilCalendarPage.class, "resources/unpaid.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAID = new ResourceReference(PupilCalendarPage.class, "resources/paid.png"); //$NON-NLS-1$;
+	public static final ResourceReference STATS = new ResourceReference(PupilCalendarPage.class, "resources/stats.png"); //$NON-NLS-1$;
 	
 }

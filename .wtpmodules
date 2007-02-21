@@ -1,8 +1,8 @@
 <project-modules id="moduleCoreId">
-  <wb-module deploy-name="teachus.frontend">
+  <wb-module deploy-name="teachus">
     <module-type module-type-id="jst.web">
       <version>2.3</version>
-      <property name="context-root" value="teachus.frontend"/>
+      <property name="context-root" value="teachus"/>
     </module-type>
     <wb-resource deploy-path="/" source-path="/src/main/webapp"/>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar">
@@ -17,7 +17,10 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-hibernate3/2.0.2/spring-hibernate3-2.0.2.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.0.4/commons-logging-1.0.4.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-support/2.0.2/spring-support-2.0.2.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/quartz/quartz/1.5.2/quartz-1.5.2.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-dao/2.0.2/spring-dao-2.0.2.jar">
@@ -26,10 +29,13 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-core/2.0.2/spring-core-2.0.2.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-beans/2.0.2/spring-beans-2.0.2.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-beans/2.0.2/spring-beans-2.0.2.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/logkit/logkit/1.0.1/logkit-1.0.1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar">
@@ -38,31 +44,46 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/asm/asm/1.5.3/asm-1.5.3.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/avalon-framework/avalon-framework/4.1.3/avalon-framework-4.1.3.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/hibernate/hibernate/3.2.1.ga/hibernate-3.2.1.ga.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/wicket/wicket-extensions/1.3-incubating-SNAPSHOT/wicket-extensions-1.3-incubating-SNAPSHOT.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/wicket/wicket-datetime/1.3-incubating-beta/wicket-datetime-1.3-incubating-beta.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/joda-time/joda-time/1.4/joda-time-1.4.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/jfree/jcommon/1.0.6/jcommon-1.0.6.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/jfree/jfreechart/1.0.3/jfreechart-1.0.3.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/javax/activation/activation/1.1/activation-1.1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/net/sf/ehcache/ehcache/1.2.3/ehcache-1.2.3.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/joda-time/joda-time/1.4/joda-time-1.4.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/mysql/mysql-connector-java/5.0.4/mysql-connector-java-5.0.4.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/pull-parser/pull-parser/2/pull-parser-2.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/velocity/velocity-dep/1.4/velocity-dep-1.4.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-logging/commons-logging/1.1/commons-logging-1.1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-context/2.0.2/spring-context-2.0.2.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/wicket/wicket/1.3-incubating-beta/wicket-1.3-incubating-beta.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/xpp3/xpp3/1.1.3.3/xpp3-1.1.3.3.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/springframework/spring-aop/2.0.2/spring-aop-2.0.2.jar">
@@ -77,10 +98,10 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/asm/asm-attrs/1.5.3/asm-attrs-1.5.3.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/wicket/wicket/1.3-incubating-SNAPSHOT/wicket-1.3-incubating-SNAPSHOT.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/javax/mail/mail/1.4/mail-1.4.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/stax/stax-api/1.0/stax-api-1.0.jar">
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/velocity/velocity/1.4/velocity-1.4.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/commons-collections/commons-collections/2.1.1/commons-collections-2.1.1.jar">
@@ -92,13 +113,13 @@
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/jaxen/jaxen/1.1-beta-6/jaxen-1.1-beta-6.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
+    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/wicket/wicket-extensions/1.3-incubating-beta/wicket-extensions-1.3-incubating-beta.jar">
+      <dependency-type>uses</dependency-type>
+    </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/msv/xsdlib/20030807/xsdlib-20030807.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/msv/relaxngDatatype/20030807/relaxngDatatype-20030807.jar">
-      <dependency-type>uses</dependency-type>
-    </dependent-module>
-    <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/var/M2_REPO/org/apache/wicket/wicket-datetime/1.3-incubating-SNAPSHOT/wicket-datetime-1.3-incubating-SNAPSHOT.jar">
       <dependency-type>uses</dependency-type>
     </dependent-module>
     <wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>

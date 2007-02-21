@@ -48,6 +48,20 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-hibernate3</artifactId>
 			<version>2.0.2</version>
+			<exclusions>
+				<exclusion>
+					<groupId>pull-parser</groupId>
+					<artifactId>pull-parser</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>xpp3</groupId>
+					<artifactId>xpp3</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>stax</groupId>
+					<artifactId>stax-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -83,6 +97,11 @@
 			<groupId>quartz</groupId>
 			<artifactId>quartz</artifactId>
 			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.3</version>
 		</dependency>
 	</dependencies>
 

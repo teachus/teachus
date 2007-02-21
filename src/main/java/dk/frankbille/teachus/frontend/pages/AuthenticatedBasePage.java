@@ -66,6 +66,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 				menuItemsList.add(new MenuItem(PupilsPage.class, Icons.PUPIL_SMALL, TeachUsSession.get().getString("General.pupils"))); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(PeriodPage.class, Icons.PERIOD_SMALL, TeachUsSession.get().getString("General.periods"))); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(AgendaPage.class, Icons.AGENDA_SMALL, TeachUsSession.get().getString("General.agenda"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(StatsPage.class, Icons.STATS_SMALL, "Statistik")); //$NON-NLS-1$
 			}
 			if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
 				menuItemsList.add(new MenuItem(PaymentPage.class, Icons.PAYMENT2_SMALL, TeachUsSession.get().getString("General.payment"))); //$NON-NLS-1$

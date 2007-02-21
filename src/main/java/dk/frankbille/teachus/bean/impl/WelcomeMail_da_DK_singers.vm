@@ -4,6 +4,23 @@ Velkommen til TeachUs booking system
 		<h3>Velkommen ${name}</h3>
 		
 		<p>
+			Jeg har f&aring;et lavet et nyt system, s&aring; du nu selv kan booke sangtimer hos mig.<br />
+			Det g&oslash;r det lettere for dig at se hvorn&aring;r der er ledige tider.
+		</p>
+		
+		<p>
+			Jeg h&aring;ber du vil bruge det!
+		</p>
+
+		<p>
+			Du kan stadig ringe eller sende mails hvis du hellere vil det.
+			Hvis tiderne passer dig d&aring;rligt er du altid velkommen til at skrive og 
+			h&oslash;re om der er mulighed for tidligere eller senere tider.
+			Men jeg fors&oslash;ger at f&aring; lagt timerne efter hinanden s&aring; jeg ikke har for 
+			mange mellem timer!
+		</p>
+		
+		<p>
 			Du kan nu logge dig ind i TeachUs med f&oslash;lgende brugernavn og kodeord:
 		</p>
 		

@@ -157,4 +157,17 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		getHibernateTemplate().flush();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<PupilBooking> getPaidBookings(Teacher teacher) {
+		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
+		
+		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
+		c.add(Restrictions.eq("paid", true));
+		
+		c.addOrder(Order.asc("date"));
+		
+		return getHibernateTemplate().findByCriteria(c);
+	}
+
 }
