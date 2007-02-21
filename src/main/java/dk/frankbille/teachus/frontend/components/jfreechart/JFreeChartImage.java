@@ -17,8 +17,8 @@ public class JFreeChartImage extends NonCachingImage {
 	protected void onComponentTag(ComponentTag tag) {
 		super.onComponentTag(tag);
 		
-		tag.put("width", jFreeChartResource.getWidth());
-		tag.put("height", jFreeChartResource.getHeight());
+		tag.put("width", jFreeChartResource.getWidth()); //$NON-NLS-1$
+		tag.put("height", jFreeChartResource.getHeight()); //$NON-NLS-1$
 	}
 
 }

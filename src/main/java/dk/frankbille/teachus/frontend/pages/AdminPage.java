@@ -4,7 +4,7 @@ import wicket.ResourceReference;
 import dk.frankbille.teachus.domain.Admin;
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.frontend.UserLevel;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class AdminPage extends PersonPage {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +20,7 @@ public class AdminPage extends PersonPage {
 
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.ADMIN;
+		return Resources.ADMIN;
 	}
 
 	@Override

@@ -46,16 +46,16 @@ public class IncomePerPupilPage extends AbstractStatisticsPage {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		
-		Form form = new Form("form", new CompoundPropertyModel(this));
+		Form form = new Form("form", new CompoundPropertyModel(this)); //$NON-NLS-1$
 		add(form);
 		
-		form.add(new Label("startDateLabel", TeachUsSession.get().getString("General.startDate")));
-		form.add(new DateField("startDate"));
+		form.add(new Label("startDateLabel", TeachUsSession.get().getString("General.startDate"))); //$NON-NLS-1$ //$NON-NLS-2$
+		form.add(new DateField("startDate")); //$NON-NLS-1$
 		
-		form.add(new Label("endDateLabel", TeachUsSession.get().getString("General.endDate")));
-		form.add(new DateField("endDate"));
+		form.add(new Label("endDateLabel", TeachUsSession.get().getString("General.endDate"))); //$NON-NLS-1$ //$NON-NLS-2$
+		form.add(new DateField("endDate")); //$NON-NLS-1$
 		
-		form.add(new Button("execute", new Model("Execute")) {
+		form.add(new Button("execute", new Model(TeachUsSession.get().getString("IncomePerPupilPage.execute"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -68,7 +68,7 @@ public class IncomePerPupilPage extends AbstractStatisticsPage {
 	}
 
 	private void createPercentDistribution() {
-		add(new Label("pctDistribution", "Percentage distribution"));
+		add(new Label("pctDistribution", TeachUsSession.get().getString("IncomePerPupilPage.percentageDistribution"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 		List<PupilBooking> bookings = bookingDAO.getPaidBookings(getTeacher(), startDate, endDate);
@@ -95,12 +95,12 @@ public class IncomePerPupilPage extends AbstractStatisticsPage {
 		
 		// Sheet
 		IColumn[] columns = new IColumn[] {
-				new PropertyColumn(new Model("Sanger"), "pupil.name"),
-				new RendererPropertyColumn(new Model("Total"), "total", new CurrencyChoiceRenderer()),
-				new RendererPropertyColumn(new Model("Procent"), "percent", new PercentChoiceRenderer())
+				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.percent")), "percent", new PercentChoiceRenderer()) //$NON-NLS-1$ //$NON-NLS-2$
 		};
 		
-		DataTable pctDistributionSheet = new DataTable("pctDistributionSheet", columns, new ListDataProvider(sumList), 20);
+		DataTable pctDistributionSheet = new DataTable("pctDistributionSheet", columns, new ListDataProvider(sumList), 20); //$NON-NLS-1$
 		pctDistributionSheet.addTopToolbar(new HeadersToolbar(pctDistributionSheet, null));
 		add(pctDistributionSheet);
 		
@@ -110,12 +110,12 @@ public class IncomePerPupilPage extends AbstractStatisticsPage {
 			pieDataset.setValue(summary.getPupil().getName(), summary.getTotal());
 		}
 		
-		add(new JFreeChartImage("pctDistributionChart", new PieChartResource(600, 300, pieDataset)));
+		add(new JFreeChartImage("pctDistributionChart", new PieChartResource(600, 300, pieDataset))); //$NON-NLS-1$
 	}
 
 	@Override
 	protected String getPageLabel() {
-		return "Income per pupil";
+		return TeachUsSession.get().getString("General.incomePerPupil"); //$NON-NLS-1$
 	}
 
 	public Date getEndDate() {

@@ -14,7 +14,7 @@ import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.components.CalendarPanel;
 import dk.frankbille.teachus.frontend.components.PeriodDateComponent;
 import dk.frankbille.teachus.frontend.components.TeacherPeriodDateComponent;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import wicket.ResourceReference;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.markup.html.link.Link;
@@ -42,7 +42,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 		
 		final Periods periods = periodDAO.getPeriods(teacher);
 		
-		add(new CalendarPanel("calendar", pageDate, periods) {
+		add(new CalendarPanel("calendar", pageDate, periods) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -79,12 +79,12 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.CALENDAR;
+		return Resources.CALENDAR;
 	}
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.calendarFor")+" "+teacher.getName();
+		return TeachUsSession.get().getString("General.calendarFor")+" "+teacher.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

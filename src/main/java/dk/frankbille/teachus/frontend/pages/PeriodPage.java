@@ -26,7 +26,7 @@ import dk.frankbille.teachus.frontend.components.RenderingLabel;
 import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.frankbille.teachus.frontend.utils.DateChoiceRenderer;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import dk.frankbille.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
@@ -116,7 +116,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.PERIOD;
+		return Resources.PERIOD;
 	}
 
 	@Override

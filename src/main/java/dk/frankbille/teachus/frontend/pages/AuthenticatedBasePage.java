@@ -19,7 +19,7 @@ import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.pages.stats.StatsPage;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public abstract class AuthenticatedBasePage extends BasePage {
 	private boolean attached = false;
@@ -32,7 +32,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		}
 		
 		final Person person = teachUsSession.getPerson();
-		Link personLink = new Link("personLink") {
+		Link personLink = new Link("personLink") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -59,27 +59,27 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
 		
 		if (UserLevel.ADMIN.authorized(teachUsSession.getUserLevel())) {
-			menuItemsList.add(new MenuItem(AdminsPage.class, Icons.ADMIN_SMALL, TeachUsSession.get().getString("General.administrators"))); //$NON-NLS-1$
-			menuItemsList.add(new MenuItem(TeachersPage.class, Icons.TEACHER_SMALL, TeachUsSession.get().getString("General.teachers"))); //$NON-NLS-1$
+			menuItemsList.add(new MenuItem(AdminsPage.class, Resources.ADMIN_SMALL, TeachUsSession.get().getString("General.administrators"))); //$NON-NLS-1$
+			menuItemsList.add(new MenuItem(TeachersPage.class, Resources.TEACHER_SMALL, TeachUsSession.get().getString("General.teachers"))); //$NON-NLS-1$
 		}
 		if (UserLevel.ADMIN != teachUsSession.getUserLevel()) {
 			if (UserLevel.TEACHER.authorized(teachUsSession.getUserLevel())) {
-				menuItemsList.add(new MenuItem(PupilsPage.class, Icons.PUPIL_SMALL, TeachUsSession.get().getString("General.pupils"))); //$NON-NLS-1$
-				menuItemsList.add(new MenuItem(PeriodPage.class, Icons.PERIOD_SMALL, TeachUsSession.get().getString("General.periods"))); //$NON-NLS-1$
-				menuItemsList.add(new MenuItem(AgendaPage.class, Icons.AGENDA_SMALL, TeachUsSession.get().getString("General.agenda"))); //$NON-NLS-1$
-				menuItemsList.add(new MenuItem(StatsPage.class, Icons.STATS_SMALL, "Statistik")); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(PupilsPage.class, Resources.PUPIL_SMALL, TeachUsSession.get().getString("General.pupils"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(PeriodPage.class, Resources.PERIOD_SMALL, TeachUsSession.get().getString("General.periods"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(AgendaPage.class, Resources.AGENDA_SMALL, TeachUsSession.get().getString("General.agenda"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(StatsPage.class, Resources.STATS_SMALL, "Statistik")); //$NON-NLS-1$
 			}
 			if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
-				menuItemsList.add(new MenuItem(PaymentPage.class, Icons.PAYMENT2_SMALL, TeachUsSession.get().getString("General.payment"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(PaymentPage.class, Resources.PAYMENT2_SMALL, TeachUsSession.get().getString("General.payment"))); //$NON-NLS-1$
 			}
 			if (UserLevel.PUPIL == teachUsSession.getUserLevel()) {
-				menuItemsList.add(new MenuItem(PupilCalendarPage.class, Icons.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(PupilCalendarPage.class, Resources.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
 			} else if (UserLevel.TEACHER == teachUsSession.getUserLevel()) {
-				menuItemsList.add(new MenuItem(TeacherCalendarPage.class, Icons.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(TeacherCalendarPage.class, Resources.CALENDAR_SMALL, TeachUsSession.get().getString("General.calendar"))); //$NON-NLS-1$
 			}
 		}
 		if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
-			menuItemsList.add(new MenuItem(SignOutPage.class, Icons.SIGNOUT_SMALL, TeachUsSession.get().getString("AuthenticatedBasePage.signOut"))); //$NON-NLS-1$
+			menuItemsList.add(new MenuItem(SignOutPage.class, Resources.SIGNOUT_SMALL, TeachUsSession.get().getString("AuthenticatedBasePage.signOut"))); //$NON-NLS-1$
 		}
 		
 		for (MenuItem menuItem : menuItemsList) {

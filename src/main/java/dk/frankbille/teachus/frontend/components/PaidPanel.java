@@ -3,7 +3,7 @@ package dk.frankbille.teachus.frontend.components;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.domain.PupilBooking;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.RequestCycle;
@@ -21,7 +21,7 @@ public class PaidPanel extends Panel {
 	public PaidPanel(String id, final IModel model) {
 		super(id, model);
 		
-		AjaxLink link = new AjaxLink("link") {
+		AjaxLink link = new AjaxLink("link") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -35,8 +35,8 @@ public class PaidPanel extends Panel {
 			}
 		};
 		link.setOutputMarkupId(true);
-		WebComponent image = new WebComponent("image");
-		image.add(new AttributeModifier("src", true, new ImageModel(model)));
+		WebComponent image = new WebComponent("image"); //$NON-NLS-1$
+		image.add(new AttributeModifier("src", true, new ImageModel(model))); //$NON-NLS-1$
 		link.add(image);
 		add(link);
 	}
@@ -55,9 +55,9 @@ public class PaidPanel extends Panel {
 			PupilBooking pupilBooking = (PupilBooking) rowModel.getObject(component);
 			ResourceReference icon;
 			if (pupilBooking.isPaid()) {
-				icon = Icons.PAID;
+				icon = Resources.PAID;
 			} else {
-				icon = Icons.UNPAID;
+				icon = Resources.UNPAID;
 			}
 			
 			return RequestCycle.get().urlFor(icon);

@@ -20,7 +20,7 @@ import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Periods;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.utils.Formatters;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public abstract class CalendarPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public abstract class CalendarPanel extends Panel {
 		
 		final boolean showCalendar = periods.getPeriods().isEmpty() == false;
 		
-		Label statusMessage = new Label("statusMessage", TeachUsSession.get().getString("General.noPeriodsConfigured")) {
+		Label statusMessage = new Label("statusMessage", TeachUsSession.get().getString("General.noPeriodsConfigured")) { //$NON-NLS-1$ //$NON-NLS-2$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -40,7 +40,7 @@ public abstract class CalendarPanel extends Panel {
 		};
 		add(statusMessage);
 		
-		WebMarkupContainer calendar = new WebMarkupContainer("calendar") {
+		WebMarkupContainer calendar = new WebMarkupContainer("calendar") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -104,7 +104,7 @@ public abstract class CalendarPanel extends Panel {
 					WebMarkupContainer periodCell = new WebMarkupContainer(periodsView.newChildId());
 					periodsView.add(periodCell);
 					
-					periodCell.add(createPeriodDateComponent("period", period, date));
+					periodCell.add(createPeriodDateComponent("period", period, date)); //$NON-NLS-1$
 				}
 				
 				daysInWeek++;
@@ -116,12 +116,12 @@ public abstract class CalendarPanel extends Panel {
 			
 					
 			// Navigation
-			Link backLink = createBackLink("backLink", firstWeekDate.minusWeeks(periods.calculateNumberOfWeeks(firstWeekDate.minusDays(1).toDate(), 7)));
-			backLink.add(new Image("backIcon", Icons.LEFT)); //$NON-NLS-1$ //$NON-NLS-2$
+			Link backLink = createBackLink("backLink", firstWeekDate.minusWeeks(periods.calculateNumberOfWeeks(firstWeekDate.minusDays(1).toDate(), 7))); //$NON-NLS-1$
+			backLink.add(new Image("backIcon", Resources.LEFT)); //$NON-NLS-1$ //$NON-NLS-2$
 			calendar.add(backLink);
 			
-			Link forwardLink = createForwardLink("forwardLink", weekDate);
-			forwardLink.add(new Image("forwardIcon", Icons.RIGHT)); //$NON-NLS-1$ //$NON-NLS-2$
+			Link forwardLink = createForwardLink("forwardLink", weekDate); //$NON-NLS-1$
+			forwardLink.add(new Image("forwardIcon", Resources.RIGHT)); //$NON-NLS-1$ //$NON-NLS-2$
 			calendar.add(forwardLink);
 		}
 	}

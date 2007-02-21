@@ -7,7 +7,7 @@ import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.pages.AuthenticatedBasePage;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public abstract class AbstractStatisticsPage extends AuthenticatedBasePage {
 	
@@ -25,7 +25,7 @@ public abstract class AbstractStatisticsPage extends AuthenticatedBasePage {
 	
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.STATS;
+		return Resources.STATS;
 	}
 
 }

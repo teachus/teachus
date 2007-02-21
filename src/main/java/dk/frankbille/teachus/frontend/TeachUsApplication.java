@@ -92,9 +92,9 @@ public class TeachUsApplication extends WebApplication {
 
 	public List<Locale> getAvailableLocales() {
 		return Arrays.asList(new Locale[] {
-				new Locale("en", "US"),
-				new Locale("da", "DK"),
-				new Locale("da", "DK", "singers")
+				new Locale("en", "US"), //$NON-NLS-1$ //$NON-NLS-2$
+				new Locale("da", "DK"), //$NON-NLS-1$ //$NON-NLS-2$
+				new Locale("da", "DK", "singers") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		});
 	}
 	
@@ -108,13 +108,13 @@ public class TeachUsApplication extends WebApplication {
 		
 		StringBuilder sb = new StringBuilder();
 		sb.append(httpServletRequest.getScheme());
-		sb.append("://");
+		sb.append("://"); //$NON-NLS-1$
 		sb.append(httpServletRequest.getServerName());
 		if (httpServletRequest.getServerPort() != 80) {
-			sb.append(":");
+			sb.append(":"); //$NON-NLS-1$
 			sb.append(httpServletRequest.getServerPort());
 		}
-		sb.append("/");
+		sb.append("/"); //$NON-NLS-1$
 		sb.append(httpServletRequest.getContextPath());
 		
 		return sb.toString();

@@ -25,7 +25,7 @@ import dk.frankbille.teachus.frontend.components.PaidPanel;
 import dk.frankbille.teachus.frontend.components.RendererPropertyColumn;
 import dk.frankbille.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.DateChoiceRenderer;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import dk.frankbille.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.YesNoRenderer;
 
@@ -50,7 +50,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 	
 	private void init(final List<PupilBooking> pupilBookings) {
 		IColumn paidColumn;
-		Model paidHeader = new Model(TeachUsSession.get().getString("General.paid"));
+		Model paidHeader = new Model(TeachUsSession.get().getString("General.paid")); //$NON-NLS-1$
 		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
 			paidColumn = new AbstractColumn(paidHeader) {
 				private static final long serialVersionUID = 1L;
@@ -78,7 +78,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 	
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.PAYMENT2;
+		return Resources.PAYMENT2;
 	}
 
 	@Override

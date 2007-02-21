@@ -13,7 +13,7 @@ import dk.frankbille.teachus.domain.impl.PupilImpl;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class PupilsPage extends PersonsPage<Pupil> {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.PUPIL;
+		return Resources.PUPIL;
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	protected List<FunctionItem> getFunctions() {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 		
-		functions.add(new FunctionItem(TeachUsSession.get().getString("General.calendar")) {
+		functions.add(new FunctionItem(TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override

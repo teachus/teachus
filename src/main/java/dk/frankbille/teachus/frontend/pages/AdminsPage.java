@@ -9,7 +9,7 @@ import dk.frankbille.teachus.domain.impl.AdminImpl;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class AdminsPage extends PersonsPage<Admin> {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +20,7 @@ public class AdminsPage extends PersonsPage<Admin> {
 	
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.ADMIN;
+		return Resources.ADMIN;
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.components.RenderingLabel;
 import dk.frankbille.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.DateChoiceRenderer;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import dk.frankbille.teachus.frontend.utils.TimeChoiceRenderer;
 
 public class AgendaPage extends AuthenticatedBasePage {
@@ -55,7 +55,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.AGENDA;
+		return Resources.AGENDA;
 	}
 
 	@Override

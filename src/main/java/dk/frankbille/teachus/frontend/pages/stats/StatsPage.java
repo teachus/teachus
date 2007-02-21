@@ -9,6 +9,7 @@ import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.link.Link;
 import wicket.markup.repeater.RepeatingView;
 
+import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.pages.MenuItem;
 
 
@@ -18,26 +19,26 @@ public class StatsPage extends AbstractStatisticsPage {
 	public StatsPage() {
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 		
-		menuItems.add(new MenuItem(IncomePerPupilPage.class, "Income per pupil"));
+		menuItems.add(new MenuItem(IncomePerPupilPage.class, TeachUsSession.get().getString("General.incomePerPupil"))); //$NON-NLS-1$
 		
 		
-		RepeatingView items = new RepeatingView("items");
+		RepeatingView items = new RepeatingView("items"); //$NON-NLS-1$
 		add(items);
 		
 		for (MenuItem item : menuItems) {
 			WebMarkupContainer li = new WebMarkupContainer(items.newChildId());
 			items.add(li);
 			
-			Link link = new BookmarkablePageLink("link", item.getBookmarkablePage());
+			Link link = new BookmarkablePageLink("link", item.getBookmarkablePage()); //$NON-NLS-1$
 			li.add(link);
 			
-			link.add(new Label("label", item.getHelpText()));
+			link.add(new Label("label", item.getHelpText())); //$NON-NLS-1$
 		}
 	}
 
 	@Override
 	protected String getPageLabel() {
-		return "Statistik";
+		return TeachUsSession.get().getString("General.statistics"); //$NON-NLS-1$
 	}
 
 }

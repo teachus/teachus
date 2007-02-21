@@ -28,7 +28,7 @@ public class TeacherPeriodDateComponentPanel extends Panel {
 			PupilBooking pupilBooking = (PupilBooking) booking;
 			
 			add(new WebComponent("link").setVisible(false)); //$NON-NLS-1$
-			add(new Label("label", pupilBooking.getPupil().getName()));
+			add(new Label("label", pupilBooking.getPupil().getName())); //$NON-NLS-1$
 		} else {
 			final TeacherBooking teacherBooking;
 			if (booking != null && booking instanceof TeacherBooking) {

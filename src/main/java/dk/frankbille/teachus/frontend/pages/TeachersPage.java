@@ -9,7 +9,7 @@ import dk.frankbille.teachus.domain.impl.TeacherImpl;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class TeachersPage extends PersonsPage<Teacher> {
 	private static final long serialVersionUID = 1L;
@@ -20,7 +20,7 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.TEACHER;
+		return Resources.TEACHER;
 	}
 
 	@Override

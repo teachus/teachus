@@ -69,7 +69,7 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 		form.add(new TextField("phoneNumber")); //$NON-NLS-1$
 		
 		form.add(new Label("usernameLabel", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
-		TextField usernameField = new TextField("username") {
+		TextField usernameField = new TextField("username") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L; //$NON-NLS-1$
 
 			@Override
@@ -82,7 +82,7 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 		form.add(usernameField);
 		
 		form.add(new Label("password1Label", TeachUsSession.get().getString("General.password"))); //$NON-NLS-1$ //$NON-NLS-2$
-		PasswordTextField passwordTextField1 = new PasswordTextField("password", new PropertyModel(this, "password1")); //$NON-NLS-1$
+		PasswordTextField passwordTextField1 = new PasswordTextField("password", new PropertyModel(this, "password1")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (person.getId() != null) {
 			passwordTextField1.setRequired(false);
 		}
@@ -97,7 +97,7 @@ public abstract class PersonPage extends AuthenticatedBasePage {
 		form.add(new EqualInputValidator(passwordTextField1, passwordTextField2));
 		
 		// Locale row
-		WebMarkupContainer localeRow = new WebMarkupContainer("localeRow") {
+		WebMarkupContainer localeRow = new WebMarkupContainer("localeRow") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override

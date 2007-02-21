@@ -53,7 +53,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		add(new Label("username", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("email", TeachUsSession.get().getString("General.email"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("phoneNumber", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
-		add(new Label("functions", TeachUsSession.get().getString("General.functions")) {
+		add(new Label("functions", TeachUsSession.get().getString("General.functions")) { //$NON-NLS-1$ //$NON-NLS-2$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -72,7 +72,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				WebMarkupContainer row = new WebMarkupContainer(rows.newChildId(), new CompoundPropertyModel(person));
 				rows.add(row);
 				
-				Link link = new Link("link") {
+				Link link = new Link("link") { //$NON-NLS-1$
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -86,7 +86,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				row.add(new Label("email")); //$NON-NLS-1$
 				row.add(new Label("phoneNumber")); //$NON-NLS-1$
 				
-				WebMarkupContainer functionsCell = new WebMarkupContainer("functions") {
+				WebMarkupContainer functionsCell = new WebMarkupContainer("functions") { //$NON-NLS-1$
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -95,7 +95,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 					}
 				};
 				row.add(functionsCell);
-				RepeatingView functionsView = new RepeatingView("functions");
+				RepeatingView functionsView = new RepeatingView("functions"); //$NON-NLS-1$
 				functionsCell.add(functionsView);
 				if (functions != null) {
 					for (final FunctionItem function : functions) {
@@ -108,7 +108,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 							}
 						};
 						functionsView.add(functionLink);
-						functionLink.add(new Label("label", function.getLabel()));
+						functionLink.add(new Label("label", function.getLabel())); //$NON-NLS-1$
 					}
 				}
 			}

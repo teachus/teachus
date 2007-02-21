@@ -2,24 +2,19 @@ package dk.frankbille.teachus.frontend.pages;
 
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
-import wicket.ResourceReference;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import wicket.behavior.HeaderContributor;
 import wicket.markup.html.WebPage;
 import wicket.markup.html.basic.Label;
-import wicket.markup.html.resources.CompressedResourceReference;
-import wicket.markup.html.resources.JavascriptResourceReference;
 
 public abstract class BasePage extends WebPage {
-	private static final ResourceReference CSS_MAIN = new CompressedResourceReference(BasePage.class, "resources/main.css"); //$NON-NLS-1$
-	private static final ResourceReference JS_PROTOTYPE = new JavascriptResourceReference(BasePage.class, "resources/prototype.js"); //$NON-NLS-1$
-
 	public BasePage() {
-		add(HeaderContributor.forCss(CSS_MAIN));
-		add(HeaderContributor.forJavaScript(JS_PROTOTYPE));
+		add(HeaderContributor.forCss(Resources.CSS_MAIN));
+		add(HeaderContributor.forJavaScript(Resources.JS_PROTOTYPE));
 
-		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle"));
-		sb.append(" ");
+		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle")); //$NON-NLS-1$
+		sb.append(" "); //$NON-NLS-1$
 		sb.append(TeachUsApplication.get().getVersion());
-		add(new Label("title", sb.toString()));
+		add(new Label("title", sb.toString())); //$NON-NLS-1$
 	}
 }

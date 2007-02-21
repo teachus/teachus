@@ -18,7 +18,7 @@ import dk.frankbille.teachus.frontend.components.CalendarPanel;
 import dk.frankbille.teachus.frontend.components.PeriodDateComponent;
 import dk.frankbille.teachus.frontend.components.PupilPeriodDateComponent;
 import dk.frankbille.teachus.frontend.utils.Formatters;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 
 public class PupilCalendarPage extends AuthenticatedBasePage {
@@ -49,7 +49,7 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 		
 		final Periods periods = periodDAO.getPeriods(pupil.getTeacher());
 		
-		add(new CalendarPanel("calendar", pageDate, periods) {
+		add(new CalendarPanel("calendar", pageDate, periods) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -78,19 +78,19 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 
 			@Override
 			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date) {
-				return new PupilPeriodDateComponent("period", pupil, period, new DateMidnight(date));
+				return new PupilPeriodDateComponent("period", pupil, period, new DateMidnight(date)); //$NON-NLS-1$
 			}			
 		});
 	}
 
 	@Override
 	protected ResourceReference getPageIcon() {
-		return Icons.CALENDAR;
+		return Resources.CALENDAR;
 	}
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.calendarFor")+" "+pupil.getName(); //$NON-NLS-1$
+		return TeachUsSession.get().getString("General.calendarFor")+" "+pupil.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
 }

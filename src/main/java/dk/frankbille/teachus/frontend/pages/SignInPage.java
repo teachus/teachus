@@ -14,7 +14,7 @@ import wicket.markup.html.image.Image;
 import wicket.model.CompoundPropertyModel;
 import wicket.protocol.http.WebApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
-import dk.frankbille.teachus.frontend.utils.Icons;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class SignInPage extends BasePage {
 	private static final long serialVersionUID = 1L;
@@ -38,7 +38,7 @@ public class SignInPage extends BasePage {
 		};
 		add(signInForm);
 
-		signInForm.add(new Image("signInIcon", Icons.LOCK)); //$NON-NLS-1$
+		signInForm.add(new Image("signInIcon", Resources.LOCK)); //$NON-NLS-1$
 		
 		signInForm.add(new Label("signInLabel", TeachUsSession.get().getString("SignInPage.signIn"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
@@ -50,7 +50,7 @@ public class SignInPage extends BasePage {
 		signInForm.add(new Label("passwordLabel", TeachUsSession.get().getString("General.password"))); //$NON-NLS-1$ //$NON-NLS-2$
 		signInForm.add(new PasswordTextField("password")); //$NON-NLS-1$
 		
-		signInForm.add(new ImageButton("signIn", Icons.SIGN_IN)); //$NON-NLS-1$
+		signInForm.add(new ImageButton("signIn", Resources.SIGN_IN)); //$NON-NLS-1$
 		
 		add(new HeaderContributor(new IHeaderContributor() {
 			private static final long serialVersionUID = 1L;
