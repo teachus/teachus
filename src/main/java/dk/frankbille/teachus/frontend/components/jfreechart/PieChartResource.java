@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.resources;
+package dk.frankbille.teachus.frontend.components.jfreechart;
 
 import org.jfree.chart.plot.PiePlot3D;
 import org.jfree.chart.plot.Plot;

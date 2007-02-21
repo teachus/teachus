@@ -1,8 +1,7 @@
-package dk.frankbille.teachus.frontend.components;
+package dk.frankbille.teachus.frontend.components.jfreechart;
 
 import wicket.markup.ComponentTag;
 import wicket.markup.html.image.NonCachingImage;
-import dk.frankbille.teachus.frontend.resources.JFreeChartResource;
 
 public class JFreeChartImage extends NonCachingImage {
 	private static final long serialVersionUID = 1L;

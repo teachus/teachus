@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.resources;
+package dk.frankbille.teachus.frontend.components.jfreechart;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

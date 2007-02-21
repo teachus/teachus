@@ -25,9 +25,9 @@ import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.PupilBooking;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
-import dk.frankbille.teachus.frontend.components.JFreeChartImage;
 import dk.frankbille.teachus.frontend.components.RendererPropertyColumn;
-import dk.frankbille.teachus.frontend.resources.PieChartResource;
+import dk.frankbille.teachus.frontend.components.jfreechart.JFreeChartImage;
+import dk.frankbille.teachus.frontend.components.jfreechart.PieChartResource;
 import dk.frankbille.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.PercentChoiceRenderer;
 
