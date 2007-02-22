@@ -41,6 +41,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		
 		c.add(Restrictions.eq("username", username));
 		c.add(Restrictions.eq("password", password));
+		c.add(Restrictions.eq("active", true));
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 		
 		List<Person> persons = getHibernateTemplate().findByCriteria(c);
@@ -78,6 +79,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 	public List<Pupil> getPupils(Teacher teacher) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilImpl.class);
 		
+		c.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("teacher", teacher));
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 
@@ -99,5 +101,11 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		Pupil pupil = (Pupil) person;
 		
 		mailBean.sendWelcomeMail(pupil, serverName);
+	}
+	
+	public void setInactive(Long personId) {
+		Person person = getPerson(personId);
+		person.setActive(false);
+		save(person);
 	}
 }

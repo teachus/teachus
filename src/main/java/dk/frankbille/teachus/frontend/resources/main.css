@@ -148,6 +148,10 @@ h1 {
 	text-decoration: underline;
 }
 
+.list .functions a {
+	margin-right: 10px;
+}
+
 .form {
 	margin: 10px;
 	width: 600px;

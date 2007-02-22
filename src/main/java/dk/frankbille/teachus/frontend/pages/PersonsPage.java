@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.WebComponent;
+import wicket.behavior.SimpleAttributeModifier;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.Link;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.CompoundPropertyModel;
+import wicket.util.string.JavascriptUtils;
+import wicket.util.string.Strings;
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
@@ -18,9 +20,6 @@ import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
 
 public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
-
-	private static final String PLACEHOLDER = "placeholder"; //$NON-NLS-1$
-
 	protected PersonsPage(UserLevel userLevel) {
 		super(userLevel);
 		
@@ -42,9 +41,6 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				return showNewPersonLink();
 			}
 		});
-		
-		// Placeholder
-		add(new WebComponent(PLACEHOLDER).setOutputMarkupId(true));
 		
 		final List<FunctionItem> functions = getFunctions();
 		
@@ -107,6 +103,15 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 								function.onEvent(person);								
 							}
 						};
+						String clickConfirmText = function.getClickConfirmText(person);
+						if (Strings.isEmpty(clickConfirmText) == false) {
+							StringBuilder confirmJavascript = new StringBuilder();
+							confirmJavascript.append("return confirm('");
+							confirmJavascript.append(JavascriptUtils.escapeQuotes(clickConfirmText));
+							confirmJavascript.append("');");
+							SimpleAttributeModifier onClickModifier = new SimpleAttributeModifier("onclick", confirmJavascript.toString());
+							functionLink.add(onClickModifier);
+						}
 						functionsView.add(functionLink);
 						functionLink.add(new Label("label", function.getLabel())); //$NON-NLS-1$
 					}
@@ -141,5 +146,9 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		}
 
 		protected abstract void onEvent(P person);
+		
+		protected String getClickConfirmText(P person) {
+			return null;
+		}
 	}
 }

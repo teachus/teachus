@@ -16,6 +16,8 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 	private String phoneNumber;
 
 	private Locale locale;
+	
+	private boolean active;
 
 	public String getEmail() {
 		return email;
@@ -39,6 +41,14 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	public String getUsername() {
 		return username;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 	public void setEmail(String email) {

@@ -26,6 +26,11 @@
         
         <property name="locale" length="20" />
         
+        <property name="active" not-null="true">
+        	<column name="active" default="true" />
+        </property>
+        
+        <!-- SUBCLASSES -->
         <subclass name="AdminImpl" discriminator-value="ADMIN" />
         
         <subclass name="TeacherImpl" discriminator-value="TEACHER" />

@@ -38,6 +38,13 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 			throw new IllegalArgumentException("The period can not be booked on this date");
 		}
 		
+		if (booking instanceof PupilBooking) {
+			PupilBooking pupilBooking = (PupilBooking) booking;
+			if (pupilBooking.getPupil().isActive() == false) {
+				throw new IllegalArgumentException("Can only book for active pupils");
+			}
+		}
+		
 		getHibernateTemplate().save(booking);
 	}
 
@@ -63,6 +70,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DateTime start = new DateTime(date).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 		DateTime end = new DateTime(date).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
+		c.createCriteria("pupil").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("period", period));
 		c.add(Restrictions.between("date", start.toDate(), end.toDate()));
 		
@@ -80,7 +88,9 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		
 		DateTime end = new DateTime().minusDays(1).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
-		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("pupil")
+				.add(Restrictions.eq("teacher", teacher))
+				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.gt("date", end.toDate()));
 		
 		c.addOrder(Order.asc("date"));
@@ -94,7 +104,8 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	@Transactional(readOnly=true)
 	public List<PupilBooking> getUnpaidBookings(Pupil pupil) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
-		
+
+		c.createCriteria("pupil").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("pupil", pupil));
 		c.add(Restrictions.lt("date", new Date()));
 		c.add(Restrictions.eq("paid", false));
@@ -109,7 +120,9 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	public List<PupilBooking> getUnpaidBookings(Teacher teacher) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
-		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("pupil")
+				.add(Restrictions.eq("teacher", teacher))
+				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.lt("date", new Date()));
 		c.add(Restrictions.eq("paid", false));
 		
@@ -123,7 +136,9 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	public List<PupilBooking> getUnsentBookings(Teacher teacher) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
-		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("pupil")
+				.add(Restrictions.eq("teacher", teacher))
+				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("notificationSent", false));
 		c.add(Restrictions.lt("createDate", new DateTime().minusHours(1).toDate()));
 		
@@ -162,7 +177,9 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	public List<PupilBooking> getPaidBookings(Teacher teacher, Date startDate, Date endDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
-		c.createCriteria("pupil").add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("pupil")
+				.add(Restrictions.eq("teacher", teacher))
+				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("paid", true));
 		
 		if (startDate != null && endDate != null) {
@@ -183,7 +200,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithPaidBookings(Teacher teacher) {
-		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p WHERE p.teacher = ? AND b.paid = true GROUP BY year(b.date)", teacher);
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p WHERE p.teacher = ? AND p.active = true AND b.paid = true GROUP BY year(b.date)", teacher);
 		
 		return years;
 	}

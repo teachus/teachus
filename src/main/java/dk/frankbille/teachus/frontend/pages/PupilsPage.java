@@ -81,16 +81,33 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	@Override
 	protected List<FunctionItem> getFunctions() {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
-		
+
 		functions.add(new FunctionItem(TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onEvent(Pupil pupil) {
 				getRequestCycle().setResponsePage(new PupilCalendarPage(pupil));
-			}			
+			}
 		});
 		
+		functions.add(new FunctionItem("Slet") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onEvent(Pupil person) {
+				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+				personDAO.setInactive(person.getId());
+				
+				getRequestCycle().setResponsePage(PupilsPage.class);
+			}
+			
+			@Override
+			protected String getClickConfirmText(Pupil person) {
+				return "Er du sikker på du vil slette "+person.getName();
+			}
+		});
+
 		return functions;
 	}
 	

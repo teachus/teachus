@@ -23,4 +23,7 @@ public interface Person extends Serializable {
 	
 	Locale getLocale();
 	void setLocale(Locale locale);
+	
+	boolean isActive();
+	void setActive(boolean active);
 }
