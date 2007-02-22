@@ -66,6 +66,13 @@ public abstract class Formatters {
 				.toFormatter()
 				.withLocale(Session.get().getLocale());
 	}
+	
+	public static DateTimeFormatter getFormatOnlyMonth() {
+		return new DateTimeFormatterBuilder()
+				.appendMonthOfYearText()
+				.toFormatter()
+				.withLocale(Session.get().getLocale());
+	}
 
 	public static DateTimeFormatter getFormatWeekOfYear() {
 		return new DateTimeFormatterBuilder()

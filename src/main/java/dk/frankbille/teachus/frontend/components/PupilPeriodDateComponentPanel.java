@@ -2,7 +2,6 @@ package dk.frankbille.teachus.frontend.components;
 
 import org.joda.time.DateTime;
 
-import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.behavior.AttributeAppender;
@@ -17,7 +16,7 @@ import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.PupilBooking;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
-import dk.frankbille.teachus.frontend.pages.PupilCalendarPage;
+import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class PupilPeriodDateComponentPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -37,7 +36,7 @@ public class PupilPeriodDateComponentPanel extends Panel {
 		
 		if (occupied) {
 			add(new WebComponent("link").setVisible(false)); //$NON-NLS-1$
-			add(new Image("icon", new ResourceReference(PupilCalendarPage.class, "resources/occupied.png"))); //$NON-NLS-1$ //$NON-NLS-2$
+			add(new Image("icon", Resources.OCCUPIED)); //$NON-NLS-1$ //$NON-NLS-2$
 		} else {
 			final PupilBooking pupilBooking = (PupilBooking) booking;
 			

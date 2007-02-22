@@ -44,4 +44,6 @@ public interface BookingDAO extends Serializable {
 
 	List<PupilBooking> getPaidBookings(Teacher teacher, Date startDate, Date endDate);
 	
+	List<Integer> getYearsWithPaidBookings(Teacher teacher);
+	
 }

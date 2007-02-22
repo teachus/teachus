@@ -22,7 +22,7 @@ public abstract class JFreeChartResource extends RenderedDynamicImageResource {
 		plot.setForegroundAlpha(0.5f);
 		plot.setBackgroundPaint(JFreeChart.DEFAULT_BACKGROUND_PAINT);
 		
-		JFreeChart chart = new JFreeChart(plot);
+		JFreeChart chart = new JFreeChart(null, null, plot, getCreateLegend());
 		chart.setBackgroundPaint(Color.WHITE);
 		
 		chart.draw(graphics, new Rectangle2D.Double(0, 0, getWidth(), getHeight()));		
@@ -31,5 +31,9 @@ public abstract class JFreeChartResource extends RenderedDynamicImageResource {
 	}
 
 	protected abstract Plot getPlot();
+	
+	protected boolean getCreateLegend() {
+		return false;
+	}
 	
 }

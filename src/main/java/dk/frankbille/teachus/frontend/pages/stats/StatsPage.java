@@ -20,6 +20,7 @@ public class StatsPage extends AbstractStatisticsPage {
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 		
 		menuItems.add(new MenuItem(IncomePerPupilPage.class, TeachUsSession.get().getString("General.incomePerPupil"))); //$NON-NLS-1$
+		menuItems.add(new MenuItem(IncomePerPeriodPage.class, TeachUsSession.get().getString("General.incomePerPeriod"))); //$NON-NLS-1$
 		
 		
 		RepeatingView items = new RepeatingView("items"); //$NON-NLS-1$
