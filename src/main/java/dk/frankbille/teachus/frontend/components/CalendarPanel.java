@@ -1,5 +1,6 @@
 package dk.frankbille.teachus.frontend.components;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,12 +10,17 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.format.DateTimeFormatter;
 
 import wicket.behavior.SimpleAttributeModifier;
+import wicket.extensions.yui.calendar.DateField;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.form.Button;
+import wicket.markup.html.form.Form;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.RepeatingView;
+import wicket.model.Model;
+import wicket.model.PropertyModel;
 import dk.frankbille.teachus.domain.DatePeriod;
 import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Periods;
@@ -28,6 +34,7 @@ public abstract class CalendarPanel extends Panel {
 	public CalendarPanel(String wicketId, DateMidnight pageDate, final Periods periods) {
 		super(wicketId);
 		
+		// Status message
 		final boolean showCalendar = periods.getPeriods().isEmpty() == false;
 		
 		Label statusMessage = new Label("statusMessage", TeachUsSession.get().getString("General.noPeriodsConfigured")) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -40,6 +47,8 @@ public abstract class CalendarPanel extends Panel {
 		};
 		add(statusMessage);
 		
+		
+		// Calendar
 		WebMarkupContainer calendar = new WebMarkupContainer("calendar") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
@@ -51,6 +60,23 @@ public abstract class CalendarPanel extends Panel {
 		add(calendar);
 		
 		if (showCalendar) {
+			// Navigation form
+			Form navigationForm = new Form("navigationForm");
+			calendar.add(navigationForm);
+			
+			final NavigationModel navigationModel = new NavigationModel(pageDate.toDate());
+			navigationForm.add(new DateField("date", new PropertyModel(navigationModel, "date")));
+			navigationForm.add(new Button("goto", new Model("Gå til")) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public void onSubmit() {
+					navigationDateSelected(new DateMidnight(navigationModel.getDate()));
+				}
+			});
+			
+			
+			// Calendar
 			DateMidnight weekDate = pageDate.withDayOfWeek(DateTimeConstants.MONDAY);
 			final DateMidnight firstWeekDate = weekDate;
 			List<DatePeriod> dates = new ArrayList<DatePeriod>();
@@ -131,5 +157,25 @@ public abstract class CalendarPanel extends Panel {
 	protected abstract Link createForwardLink(String wicketId, DateMidnight nextWeekDate);
 	
 	protected abstract PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date);
+	
+	protected abstract void navigationDateSelected(DateMidnight date);
+	
+	private static class NavigationModel implements Serializable {
+		private static final long serialVersionUID = 1L;
+
+		private Date date;
+
+		public NavigationModel(Date date) {
+			this.date = date;
+		}
+
+		public Date getDate() {
+			return date;
+		}
+
+		public void setDate(Date date) {
+			this.date = date;
+		}
+	}
 
 }

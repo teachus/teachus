@@ -3,8 +3,18 @@
 		<table width="100%">
 			<tbody>
 				<tr>
-					<td><a wicket:id="backLink"><img wicket:id="backIcon" /></a></td>
-					<td align="right"><a wicket:id="forwardLink"><img wicket:id="forwardIcon" /></a></td>
+					<td width="10%"><a wicket:id="backLink"><img wicket:id="backIcon" /></a></td>
+					<td width="80%" align="center">
+						<form wicket:id="navigationForm">
+							<table cellpadding="5" cellspacing="0" border="0">
+								<tr>
+									<td><span wicket:id="date" /></td>
+									<td><input type="submit" wicket:id="goto" /></td>
+								</tr>
+							</table>
+						</form>
+					</td>
+					<td width="10%" align="right"><a wicket:id="forwardLink"><img wicket:id="forwardIcon" /></a></td>
 				</tr>
 			</tbody>	
 		</table>

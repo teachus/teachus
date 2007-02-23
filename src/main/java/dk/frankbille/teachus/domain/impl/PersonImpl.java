@@ -17,7 +17,7 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	private Locale locale;
 	
-	private boolean active;
+	private boolean active = true;
 
 	public String getEmail() {
 		return email;

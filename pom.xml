@@ -103,6 +103,14 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+		
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

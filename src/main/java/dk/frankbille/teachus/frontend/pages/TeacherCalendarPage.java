@@ -74,6 +74,11 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 				return new TeacherPeriodDateComponent(wicketId, teacher, period, new DateMidnight(date));
 			}
 			
+			@Override
+			protected void navigationDateSelected(DateMidnight date) {
+				getRequestCycle().setResponsePage(new TeacherCalendarPage(date));
+			}
+			
 		});
 	}
 

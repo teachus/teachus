@@ -79,7 +79,12 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 			@Override
 			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date) {
 				return new PupilPeriodDateComponent("period", pupil, period, new DateMidnight(date)); //$NON-NLS-1$
-			}			
+			}
+			
+			@Override
+			protected void navigationDateSelected(DateMidnight date) {
+				getRequestCycle().setResponsePage(new PupilCalendarPage(date.toDate(), pupil));
+			}
 		});
 	}
 
