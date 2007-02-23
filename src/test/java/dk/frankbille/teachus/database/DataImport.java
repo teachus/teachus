@@ -1,8 +1,9 @@
-package dk.frankbille.teachus.utils;
+package dk.frankbille.teachus.database;
 
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.Statement;
 
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseSequenceFilter;
@@ -10,10 +11,10 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
-import org.dbunit.dataset.xml.FlatDtdDataSet;
-import org.dbunit.dataset.xml.FlatXmlWriter;
+import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.operation.DatabaseOperation;
 
-public class DataExport {
+public class DataImport {
 	public static void main(String[] args) throws Exception {
 		// database connection
 		Class.forName("com.mysql.jdbc.Driver");
@@ -22,14 +23,18 @@ public class DataExport {
 
 		// Create dataset
 		ITableFilter filter = new DatabaseSequenceFilter(connection);
-		IDataSet dataset = new FilteredDataSet(filter, connection.createDataSet());
+		IDataSet dataSet = new FilteredDataSet(filter, new FlatXmlDataSet(new FileInputStream("src/test/resources/full.xml")));
 		
-        // write DTD file
-        FlatDtdDataSet.write(dataset, new FileOutputStream("src/test/resources/full.dtd"));
-		
-		// full database export
-		FlatXmlWriter datasetWriter = new FlatXmlWriter( new FileOutputStream("src/test/resources/full.xml")); 
-	    datasetWriter.setDocType("src/test/resources/full.dtd"); 
-	    datasetWriter.write(dataset);
+		// Clean and insert
+		try {
+			Statement statement = jdbcConnection.createStatement();
+			statement.executeUpdate("UPDATE person SET teacher_id = NULL");
+			statement.close();
+			
+			DatabaseOperation.TRUNCATE_TABLE.execute(connection, dataSet);
+			DatabaseOperation.INSERT.execute(connection, dataSet);
+		} finally {
+			connection.close();
+		}
 	}
 }
