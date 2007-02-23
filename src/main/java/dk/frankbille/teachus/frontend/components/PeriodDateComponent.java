@@ -9,7 +9,9 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.RepeatingView;
+import wicket.model.Model;
 import dk.frankbille.teachus.domain.Period;
+import dk.frankbille.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.Formatters;
 
 public abstract class PeriodDateComponent extends Panel {
@@ -35,6 +37,7 @@ public abstract class PeriodDateComponent extends Panel {
 			// Header
 			{
 				add(new Label("weekday", Formatters.getFormatWeekDay().print(date))); //$NON-NLS-1$
+				add(new RenderingLabel("price", new Model(period.getPrice()), new CurrencyChoiceRenderer())); //$NON-NLS-1$
 				add(new Label("date", Formatters.getFormatPrettyDate().print(date))); //$NON-NLS-1$
 			}
 			
