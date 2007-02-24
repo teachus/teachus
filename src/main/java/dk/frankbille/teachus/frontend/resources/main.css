@@ -168,6 +168,12 @@ h1 {
 	white-space: nowrap;
 }
 
+.form textarea {
+	width: 100%;
+	border: 1px solid gray;
+	height: 300px;
+}
+
 .toolbar {
 	border-bottom: 1px solid gray;
 	width: 100%;

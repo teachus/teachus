@@ -1,29 +1,31 @@
-Welcome to TeachUs booking system
+${subject}
 <html>
 	<body>
-		<h3>Welcome ${name}</h3>
+		<h3>${welcome}${name}</h3>
+		
+		${teacherIntroduction}
 		
 		<p>
-			You can now log in to TeachUs, using the following username and password:
+			${introduction}
 		</p>
 		
 		<table cellspacing="0" cellpadding="10" border="0">
 			<tr>
-				<td><b>Server:</b></td>
+				<td><b>${serverLabel}</b></td>
 				<td><a href="${server}">${server}</a></td>
 			</tr>
 			<tr>
-				<td><b>Username:</b></td>
+				<td><b>${usernameLabel}</b></td>
 				<td>${username}</td>
 			</tr>
 			<tr>
-				<td><b>Password:</b></td>
+				<td><b>${passwordLabel}</b></td>
 				<td>${password}</td>
 			</tr>
 		</table>
 		
 		<p>
-			Kindly regards,<br />
+			${regard}<br />
 			${from}
 		</p>
 	</body>

@@ -8,7 +8,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
@@ -22,7 +22,9 @@ public class DataExport {
 
 		// Create dataset
 		ITableFilter filter = new DatabaseSequenceFilter(connection);
-		IDataSet dataset = new FilteredDataSet(filter, connection.createDataSet());
+//		IDataSet dataset = new FilteredDataSet(filter, connection.createDataSet());
+		ReplacementDataSet dataset = new ReplacementDataSet(new FilteredDataSet(filter, connection.createDataSet()));
+		dataset.addReplacementSubstring("\n", "\\n");
 		
         // write DTD file
         FlatDtdDataSet.write(dataset, new FileOutputStream("src/test/resources/full.dtd"));

@@ -23,6 +23,7 @@ public abstract class Resources {
 	public static final ResourceReference PAYMENT1_SMALL = new ResourceReference(TeachUsApplication.class, "resources/payment1_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAYMENT2_SMALL = new ResourceReference(TeachUsApplication.class, "resources/payment2_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference STATS_SMALL = new ResourceReference(TeachUsApplication.class, "resources/stats_small.png"); //$NON-NLS-1$;
+	public static final ResourceReference SETTINGS_SMALL = new ResourceReference(TeachUsApplication.class, "resources/settings_small.png"); //$NON-NLS-1$;
 	public static final ResourceReference ADMIN = new ResourceReference(TeachUsApplication.class, "resources/admin.png"); //$NON-NLS-1$
 	public static final ResourceReference PUPIL = new ResourceReference(TeachUsApplication.class, "resources/pupil.png"); //$NON-NLS-1$
 	public static final ResourceReference TEACHER = new ResourceReference(TeachUsApplication.class, "resources/teacher.png"); //$NON-NLS-1$
@@ -36,8 +37,10 @@ public abstract class Resources {
 	public static final ResourceReference UNPAID = new ResourceReference(TeachUsApplication.class, "resources/unpaid.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAID = new ResourceReference(TeachUsApplication.class, "resources/paid.png"); //$NON-NLS-1$;
 	public static final ResourceReference STATS = new ResourceReference(TeachUsApplication.class, "resources/stats.png"); //$NON-NLS-1$;
+	public static final ResourceReference SETTINGS = new ResourceReference(TeachUsApplication.class, "resources/settings.png"); //$NON-NLS-1$;
 	
 	public static final ResourceReference CSS_MAIN = new CompressedResourceReference(TeachUsApplication.class, "resources/main.css"); //$NON-NLS-1$
 	public static final ResourceReference JS_PROTOTYPE = new JavascriptResourceReference(TeachUsApplication.class, "resources/prototype.js"); //$NON-NLS-1$
+	
 	
 }

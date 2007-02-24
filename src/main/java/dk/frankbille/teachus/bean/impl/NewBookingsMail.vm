@@ -1,8 +1,8 @@
-New bookings in TeachUs
+${subject}
 <html>
 	<body>
 		<p>
-			The following pupils has booked a lesson:
+			${followingPupilsHasBookings}
 		</p>
 		
 		<table cellspacing="0" cellpadding="10" border="0">
@@ -19,7 +19,7 @@ New bookings in TeachUs
 		</table>
 		
 		<p>
-			Kindly regards,<br />
+			${regard}<br />
 			${from}
 		</p>
 	</body>

@@ -16,6 +16,7 @@ import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequestCycle;
 import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
+import dk.frankbille.teachus.bean.MailBean;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.dao.PeriodDAO;
 import dk.frankbille.teachus.dao.PersonDAO;
@@ -66,6 +67,10 @@ public class TeachUsApplication extends WebApplication {
 
 	public PeriodDAO getPeriodDAO() {
 		return (PeriodDAO) getApplicationContext().getBean("periodDao"); //$NON-NLS-1$
+	}
+
+	public MailBean getMailBean() {
+		return (MailBean) getApplicationContext().getBean("mailBean"); //$NON-NLS-1$
 	}
 	
 	private ApplicationContext getApplicationContext() {

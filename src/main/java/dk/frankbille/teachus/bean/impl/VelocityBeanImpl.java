@@ -22,6 +22,10 @@ public class VelocityBeanImpl implements VelocityBean {
 		this.velocityEngine = velocityEngine;
 	}
 	
+	public String mergeTemplate(String template, Map<String, Object> model) throws VelocityException {
+		return VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, template, model);
+	}
+	
 	public String mergeTemplate(String template, Map<String, Object> model, Locale locale) throws VelocityException {
 		StringBuilder templateLocation = new StringBuilder(template);
 		
@@ -41,7 +45,7 @@ public class VelocityBeanImpl implements VelocityBean {
 			templateLocation.append(VM);
 		}
 		
-		return VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, templateLocation.toString(), model);
+		return mergeTemplate(templateLocation.toString(), model);
 	}
 	
 }

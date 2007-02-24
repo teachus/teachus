@@ -9,12 +9,13 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import dk.frankbille.teachus.bean.MailBean;
 import dk.frankbille.teachus.dao.PersonDAO;
 import dk.frankbille.teachus.domain.Admin;
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.Teacher;
+import dk.frankbille.teachus.domain.TeacherAttribute;
+import dk.frankbille.teachus.domain.impl.AbstractTeacherAttribute;
 import dk.frankbille.teachus.domain.impl.AdminImpl;
 import dk.frankbille.teachus.domain.impl.PersonImpl;
 import dk.frankbille.teachus.domain.impl.PupilImpl;
@@ -23,12 +24,6 @@ import dk.frankbille.teachus.domain.impl.TeacherImpl;
 @Transactional(propagation=Propagation.REQUIRED)
 public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO {
 	private static final long serialVersionUID = 1L;
-
-	private MailBean mailBean;
-	
-	public PersonDAOHibernate(MailBean mailBean) {
-		this.mailBean = mailBean;
-	}
 
 	public void save(Person person) {
 		getHibernateTemplate().saveOrUpdate(person);
@@ -91,21 +86,64 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		return (Person) getHibernateTemplate().load(PersonImpl.class, personId);
 	}
 	
-	public void sendWelcomeMail(Long pupilId, String serverName) {
-		Person person = getPerson(pupilId);
-		
-		if (person instanceof Pupil == false) {
-			throw new IllegalArgumentException("pupilId doesn't resolve a pupil object");
-		}
-		
-		Pupil pupil = (Pupil) person;
-		
-		mailBean.sendWelcomeMail(pupil, serverName);
-	}
+//	public void sendWelcomeMail(Long pupilId, String serverName) {
+//		Person person = getPerson(pupilId);
+//		
+//		if (person instanceof Pupil == false) {
+//			throw new IllegalArgumentException("pupilId doesn't resolve a pupil object");
+//		}
+//		
+//		Pupil pupil = (Pupil) person;
+//		
+//		mailBean.sendWelcomeMail(pupil, serverName);
+//	}
 	
 	public void setInactive(Long personId) {
 		Person person = getPerson(personId);
 		person.setActive(false);
 		save(person);
+	}
+	
+	public void saveAttribute(TeacherAttribute attribute) {
+		if (attribute.getValue() == null 
+				|| attribute.getValue().length() == 0) {
+			if (attribute.getId() != null) {
+				attribute = (TeacherAttribute) getHibernateTemplate().load(AbstractTeacherAttribute.class, attribute.getId());
+				getHibernateTemplate().delete(attribute);
+				getHibernateTemplate().flush();
+			}
+		} else {
+			getHibernateTemplate().saveOrUpdate(attribute);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<TeacherAttribute> getAttributes(Teacher teacher) {
+		DetachedCriteria c = DetachedCriteria.forClass(AbstractTeacherAttribute.class);
+		
+		c.add(Restrictions.eq("teacher", teacher));
+		
+		return getHibernateTemplate().findByCriteria(c);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public <A extends TeacherAttribute> A getAttribute(Class<A> attributeClass, Teacher teacher) {
+		DetachedCriteria c = DetachedCriteria.forClass(attributeClass);
+		
+		c.add(Restrictions.eq("teacher", teacher));
+		
+		List<A> attributes = getHibernateTemplate().findByCriteria(c);
+		
+		A attribute = null;
+		
+		if (attributes.size() == 1) {
+			attribute = attributes.get(0);
+		} else if (attributes.size() > 1) {
+			throw new IllegalStateException("Invalid state in database. Only one value per attribute per teacher");
+		}
+		
+		return attribute; 
 	}
 }

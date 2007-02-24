@@ -9,7 +9,7 @@ import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.FilteredDataSet;
-import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
@@ -23,7 +23,8 @@ public class DataImport {
 
 		// Create dataset
 		ITableFilter filter = new DatabaseSequenceFilter(connection);
-		IDataSet dataSet = new FilteredDataSet(filter, new FlatXmlDataSet(new FileInputStream("src/test/resources/full.xml")));
+		ReplacementDataSet dataSet = new ReplacementDataSet(new FilteredDataSet(filter, new FlatXmlDataSet(new FileInputStream("src/test/resources/full.xml"))));
+		dataSet.addReplacementSubstring("\\n", "\n");
 		
 		// Clean and insert
 		try {

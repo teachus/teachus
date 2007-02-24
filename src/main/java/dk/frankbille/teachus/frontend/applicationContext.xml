@@ -46,6 +46,9 @@
 				<value>
 					dk/frankbille/teachus/dao/hibernate/Booking.hbm.xml
 				</value>
+				<value>
+					dk/frankbille/teachus/dao/hibernate/TeacherAttribute.hbm.xml
+				</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -91,6 +94,7 @@
 	</bean>   
 	
 	<bean id="mailBean" class="dk.frankbille.teachus.bean.impl.MailBeanImpl">
+		<constructor-arg ref="personDao" />
 		<constructor-arg ref="mailSender" />
 		<constructor-arg ref="velocityBean" />	
 	</bean>
@@ -103,7 +107,6 @@
 		<property name="target">
 			<bean
 				class="dk.frankbille.teachus.dao.hibernate.PersonDAOHibernate">
-				<constructor-arg ref="mailBean" />
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>

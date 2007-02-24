@@ -1,7 +1,8 @@
 <!ELEMENT dataset (
     person*,
     period*,
-    booking*)>
+    booking*,
+    teacher_attribute*)>
 
 <!ELEMENT person EMPTY>
 <!ATTLIST person
@@ -44,5 +45,14 @@
     notification_sent CDATA #IMPLIED
     teacher_id CDATA #IMPLIED
     paid CDATA #IMPLIED
+>
+
+<!ELEMENT teacher_attribute EMPTY>
+<!ATTLIST teacher_attribute
+    id CDATA #REQUIRED
+    attribute CDATA #REQUIRED
+    version CDATA #REQUIRED
+    teacher_id CDATA #REQUIRED
+    value CDATA #REQUIRED
 >
 
