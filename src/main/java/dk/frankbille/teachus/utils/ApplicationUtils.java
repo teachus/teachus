@@ -1,17 +1,24 @@
 package dk.frankbille.teachus.utils;
 
-import wicket.util.string.Strings;
+import java.io.IOException;
+import java.util.Properties;
+
 
 public abstract class ApplicationUtils {
+	private static final String version;
 
-	public static String getVersion() {
-		String implVersion = null;
-		Package pkg = ApplicationUtils.class.getPackage();
-		if (pkg != null)
-		{
-			implVersion = pkg.getImplementationVersion();
+	static {
+		try {
+			Properties properties = new Properties();
+			properties.load(ApplicationUtils.class.getResourceAsStream("version.properties"));
+			version = properties.getProperty("version");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
-		return Strings.isEmpty(implVersion) ? "n/a" : implVersion;
+	}
+	
+	public static String getVersion() {
+		return version;
 	}
 	
 }
