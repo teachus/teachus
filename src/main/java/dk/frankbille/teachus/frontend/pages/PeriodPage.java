@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wicket.ResourceReference;
-import wicket.RestartResponseAtInterceptPageException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
 import wicket.markup.html.WebComponent;
@@ -12,7 +11,6 @@ import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.CompoundPropertyModel;
-import wicket.protocol.http.WebApplication;
 import dk.frankbille.teachus.dao.PeriodDAO;
 import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Periods;
@@ -35,13 +33,8 @@ public class PeriodPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public PeriodPage() {
-		super(UserLevel.TEACHER);
-		
-		// We can't handle admins here yet
-		if (TeachUsSession.get().getUserLevel() == UserLevel.ADMIN) {
-			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
-		}
-		
+		super(UserLevel.TEACHER, true);
+				
 		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 		PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
 		

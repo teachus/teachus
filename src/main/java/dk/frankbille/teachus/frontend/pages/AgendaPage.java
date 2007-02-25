@@ -23,7 +23,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public AgendaPage() {
-		super(UserLevel.TEACHER);
+		super(UserLevel.TEACHER, true);
 		
 		Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 		

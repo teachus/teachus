@@ -5,19 +5,28 @@
 				<form wicket:id="signInForm">
 					<table cellpadding="0" cellspacing="20" border="0" id="signin">
 						<tr>
-							<td rowspan="4" valign="top"><img wicket:id="signInIcon" /></td>
-							<td><h1 wicket:id="signInLabel"></h1></td>
+							<td rowspan="5" valign="top"><img wicket:id="signInIcon" /></td>
+							<td>
+								<h1 wicket:id="signInLabel"></h1>
+								<span wicket:id="feedback" />
+							</td>
 						</tr>
 						<tr>
 							<td>
-								<span wicket:id="usernameLabel"></span><br />
+								<label wicket:id="usernameLabel"><span wicket:id="usernameLabel"></span></label><br />
 								<input type="text" class="inputText" size="24" wicket:id="username" />
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<span wicket:id="passwordLabel"></span><br />
+								<label wicket:id="passwordLabel"><span wicket:id="passwordLabel"></span></label><br />
 								<input type="password" class="inputText" size="24" wicket:id="password" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox" wicket:id="remember" />
+								<label wicket:id="rememberLabel"><span wicket:id="rememberLabel"></span></label>
 							</td>
 						</tr>
 						<tr>

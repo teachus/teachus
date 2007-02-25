@@ -7,8 +7,13 @@ import java.util.Properties;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import javax.servlet.http.Cookie;
+
 import wicket.Request;
+import wicket.RequestCycle;
 import wicket.protocol.http.WebApplication;
+import wicket.protocol.http.WebRequest;
+import wicket.protocol.http.WebResponse;
 import wicket.protocol.http.WebSession;
 import dk.frankbille.teachus.dao.PersonDAO;
 import dk.frankbille.teachus.domain.Admin;
@@ -69,6 +74,18 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public void signOut() {
+		WebRequest webRequest = (WebRequest) RequestCycle.get().getRequest();
+		WebResponse webResponse = (WebResponse) RequestCycle.get().getResponse();
+		Cookie[] cookies = webRequest.getCookies();
+		
+		for (Cookie cookie : cookies) {
+			if (cookie.getName().indexOf("username") > -1
+					|| cookie.getName().indexOf("password") > -1
+					|| cookie.getName().indexOf("remember") > -1) {
+				webResponse.clearCookie(cookie);
+			}
+		}
+		
 		person = null;
 		invalidate();
 	}

@@ -27,7 +27,7 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	private Pupil pupil;
 	
 	public PupilCalendarPage() {
-		this((Pupil) TeachUsSession.get().getPerson());
+		this(null);
 	}
 	
 	public PupilCalendarPage(Pupil pupil) {
@@ -37,8 +37,12 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	public PupilCalendarPage(Date pageDate, Pupil pupil) {
 		super(UserLevel.PUPIL);
 		
-		this.pupil = pupil;
+		if (pupil == null) {
+			pupil = (Pupil) TeachUsSession.get().getPerson();
+		}
 		
+		this.pupil = pupil;
+				
 		DateTimeFormatter formatIsoDate = Formatters.getFormatIsoDate();
 		initializePupilCalendar(new DateMidnight(pageDate), formatIsoDate, pupil);
 	}

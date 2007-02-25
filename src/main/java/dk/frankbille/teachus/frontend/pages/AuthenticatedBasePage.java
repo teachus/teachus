@@ -25,10 +25,22 @@ public abstract class AuthenticatedBasePage extends BasePage {
 	private boolean attached = false;
 	
 	public AuthenticatedBasePage(UserLevel userLevel) {
+		this(userLevel, false);
+	}
+		
+	public AuthenticatedBasePage(UserLevel userLevel, boolean explicitUserLevel) {
 		TeachUsSession teachUsSession = TeachUsSession.get();
 		
 		if (userLevel.authorized(teachUsSession.getUserLevel()) == false) {
 			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+		}
+		
+		// If the userlevel is explicit, then only allow users of the same userlevel
+		// on this page.
+		if (explicitUserLevel) {
+			if (teachUsSession.getUserLevel() != userLevel) {
+				throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+			}
 		}
 		
 		final Person person = teachUsSession.getPerson();
@@ -47,7 +59,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 			}			
 		};
 		add(personLink);
-		personLink.add(new Label("personName", person.getName())); //$NON-NLS-1$
+		personLink.add(new Label("personName", person.getName()).setRenderBodyOnly(true)); //$NON-NLS-1$
 		
 		Label menuHelp = new Label("menuHelp"); //$NON-NLS-1$
 		menuHelp.setOutputMarkupId(true);

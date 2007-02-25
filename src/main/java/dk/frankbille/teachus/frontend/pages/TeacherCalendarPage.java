@@ -30,7 +30,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 	}
 	
 	public TeacherCalendarPage(DateMidnight pageDate) {
-		super(UserLevel.TEACHER);
+		super(UserLevel.TEACHER, true);
 		
 		if (TeachUsSession.get().getUserLevel() != UserLevel.TEACHER) {
 			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());

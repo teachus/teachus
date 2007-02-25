@@ -23,7 +23,7 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 	private List<TeacherAttribute> attributes;
 
 	public TeacherSettingsPage() {
-		super(UserLevel.TEACHER);
+		super(UserLevel.TEACHER, true);
 		
 		// Introduction mail text
 		final WelcomeIntroductionTeacherAttribute attribute = getAttribute(WelcomeIntroductionTeacherAttribute.class);

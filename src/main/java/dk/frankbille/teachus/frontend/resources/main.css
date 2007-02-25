@@ -26,6 +26,14 @@ h1 {
 	font-size: 1.5em;
 }
 
+a {
+	color: black;
+}
+
+a:hover {
+	color: orange;
+}
+
 .menu a {
 	padding-left: 10px;
 }
@@ -41,22 +49,13 @@ h1 {
 }
 
 #main {
-	width: 600px;
+	width: 700px;
 }
 
 #signin h1 {
 	font-size: 2em;
 	margin: 0;
 	padding: 0;
-}
-
-#main a {
-	text-decoration: none;
-	color: black;
-}
-
-#main a:hover {
-	text-decoration: underline;
 }
 
 #main a img {
@@ -126,6 +125,10 @@ h1 {
 	border-bottom: 0;
 	width: 600px;
 	margin: 10px;
+}
+
+.list tbody tr:hover td {
+	background-color: #EEEEEE;
 }
 
 .list th, .list td {

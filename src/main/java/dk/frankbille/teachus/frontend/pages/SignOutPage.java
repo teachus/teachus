@@ -2,7 +2,6 @@ package dk.frankbille.teachus.frontend.pages;
 
 import wicket.ResourceReference;
 import wicket.RestartResponseAtInterceptPageException;
-import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 
@@ -14,7 +13,7 @@ public class SignOutPage extends AuthenticatedBasePage {
 		
 		TeachUsSession.get().signOut();
 		
-		throw new RestartResponseAtInterceptPageException(TeachUsApplication.get().getHomePage());
+		throw new RestartResponseAtInterceptPageException(SignedOutPage.class);
 	}
 	
 	@Override

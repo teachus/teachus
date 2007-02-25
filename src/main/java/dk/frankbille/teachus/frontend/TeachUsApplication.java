@@ -15,7 +15,6 @@ import wicket.RequestCycle;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequestCycle;
-import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import dk.frankbille.teachus.bean.MailBean;
 import dk.frankbille.teachus.dao.BookingDAO;
 import dk.frankbille.teachus.dao.PeriodDAO;
@@ -29,6 +28,9 @@ import dk.frankbille.teachus.frontend.pages.PupilCalendarPage;
 import dk.frankbille.teachus.frontend.pages.PupilsPage;
 import dk.frankbille.teachus.frontend.pages.SignInPage;
 import dk.frankbille.teachus.frontend.pages.SignOutPage;
+import dk.frankbille.teachus.frontend.pages.SignedOutPage;
+import dk.frankbille.teachus.frontend.pages.TeacherCalendarPage;
+import dk.frankbille.teachus.frontend.pages.TeacherSettingsPage;
 import dk.frankbille.teachus.frontend.pages.TeachersPage;
 import dk.frankbille.teachus.frontend.pages.stats.IncomePerPupilPage;
 import dk.frankbille.teachus.frontend.pages.stats.StatsPage;
@@ -46,15 +48,18 @@ public class TeachUsApplication extends WebApplication {
 		// Bookmarkable pages
 		mountBookmarkablePage("/signin", SignInPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signout", SignOutPage.class); //$NON-NLS-1$
-		mount("/calendar", new IndexedParamUrlCodingStrategy("/calendar", PupilCalendarPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/pupils", new IndexedParamUrlCodingStrategy("/pupils", PupilsPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/teachers", new IndexedParamUrlCodingStrategy("/teachers", TeachersPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/admins", new IndexedParamUrlCodingStrategy("/admins", AdminsPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/periods", new IndexedParamUrlCodingStrategy("/periods", PeriodPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/agenda", new IndexedParamUrlCodingStrategy("/agenda", AgendaPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/payment", new IndexedParamUrlCodingStrategy("/payment", PaymentPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/stats", new IndexedParamUrlCodingStrategy("/stats", StatsPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
-		mount("/stats/incomeperpupil", new IndexedParamUrlCodingStrategy("/stats/incomeperpupil", IncomePerPupilPage.class)); //$NON-NLS-1$ //$NON-NLS-2$
+		mountBookmarkablePage("/signedout", SignedOutPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/calendar", PupilCalendarPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/calendar/teacher", TeacherCalendarPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/pupils", PupilsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/teachers", TeachersPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/teachersettings", TeacherSettingsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/admins", AdminsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/periods", PeriodPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/stats", StatsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {
