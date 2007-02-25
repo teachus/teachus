@@ -5,6 +5,7 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.IChoiceRenderer;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
+import wicket.util.string.Strings;
 
 public class RenderingLabel extends Label {
 	private static final long serialVersionUID = 1L;
@@ -44,7 +45,19 @@ public class RenderingLabel extends Label {
 
 		@Override
 		public Object getObject(Component component) {
-			return renderer.getDisplayValue(nestedModel.getObject(component));
+			Object displayValue;
+			if (renderer != null) {
+				displayValue = renderer.getDisplayValue(nestedModel.getObject(component));
+			} else {
+				displayValue = nestedModel.getObject(component);
+			}
+			
+			if (displayValue == null || Strings.isEmpty(displayValue.toString())) {
+				displayValue = "&nbsp;";
+				component.setEscapeModelStrings(false);
+			}
+			
+			return displayValue;
 		}
 		
 	}

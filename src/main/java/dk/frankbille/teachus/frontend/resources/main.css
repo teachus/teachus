@@ -155,6 +155,10 @@ a:hover {
 	margin-right: 10px;
 }
 
+.list tfoot td {
+	background-color: #EEEEEE;
+}
+
 .form {
 	margin: 10px;
 	width: 600px;

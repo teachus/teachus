@@ -87,7 +87,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onEvent(Pupil pupil) {
+			public void onEvent(Pupil pupil) {
 				getRequestCycle().setResponsePage(new PupilCalendarPage(pupil));
 			}
 		});
@@ -96,7 +96,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onEvent(Pupil person) {
+			public void onEvent(Pupil person) {
 				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 				personDAO.setInactive(person.getId());
 				
@@ -104,7 +104,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			}
 			
 			@Override
-			protected String getClickConfirmText(Pupil person) {
+			public String getClickConfirmText(Pupil person) {
 				return "Er du sikker på du vil slette "+person.getName();
 			}
 		});

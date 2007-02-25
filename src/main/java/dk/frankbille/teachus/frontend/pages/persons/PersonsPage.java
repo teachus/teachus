@@ -5,17 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wicket.ajax.AjaxRequestTarget;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.Link;
-import wicket.markup.repeater.RepeatingView;
-import wicket.model.CompoundPropertyModel;
-import wicket.util.string.JavascriptUtils;
-import wicket.util.string.Strings;
+import wicket.extensions.markup.html.repeater.data.table.IColumn;
+import wicket.model.Model;
 import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
+import dk.frankbille.teachus.frontend.components.FunctionsColumn;
+import dk.frankbille.teachus.frontend.components.LinkPropertyColumn;
+import dk.frankbille.teachus.frontend.components.ListPanel;
+import dk.frankbille.teachus.frontend.components.RendererPropertyColumn;
 import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.frankbille.teachus.frontend.pages.AuthenticatedBasePage;
@@ -42,83 +40,29 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				return showNewPersonLink();
 			}
 		});
+
+		List<P> persons = getPersons();
 		
 		final List<FunctionItem> functions = getFunctions();
 		
-		// HEADERS
-		add(new Label("name", TeachUsSession.get().getString("General.name"))); //$NON-NLS-1$ //$NON-NLS-2$
-		add(new Label("username", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
-		add(new Label("email", TeachUsSession.get().getString("General.email"))); //$NON-NLS-1$ //$NON-NLS-2$
-		add(new Label("phoneNumber", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
-		add(new Label("functions", TeachUsSession.get().getString("General.functions")) { //$NON-NLS-1$ //$NON-NLS-2$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isVisible() {
-				return functions != null && functions.isEmpty() == false;
-			}
-		});
-		
-		// DATA
-		RepeatingView rows = new RepeatingView("rows"); //$NON-NLS-1$
-		add(rows);
-		
-		List<P> persons = getPersons();
-		if (persons != null) {
-			for (final P person : persons) {
-				WebMarkupContainer row = new WebMarkupContainer(rows.newChildId(), new CompoundPropertyModel(person));
-				rows.add(row);
-				
-				Link link = new Link("link") { //$NON-NLS-1$
+		IColumn[] columns = new IColumn[] {
+				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") {
 					private static final long serialVersionUID = 1L;
 
+					@SuppressWarnings("unchecked")
 					@Override
-					public void onClick() {
+					protected void onClick(Object rowModelObject) {
+						P person = (P) rowModelObject;
 						getRequestCycle().setResponsePage(getPersonPage(person));
 					}					
-				};
-				link.add(new Label("name")); //$NON-NLS-1$
-				row.add(link);
-				row.add(new Label("username")); //$NON-NLS-1$
-				row.add(new Label("email")); //$NON-NLS-1$
-				row.add(new Label("phoneNumber")); //$NON-NLS-1$
-				
-				WebMarkupContainer functionsCell = new WebMarkupContainer("functions") { //$NON-NLS-1$
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					public boolean isVisible() {
-						return functions != null && functions.isEmpty() == false;
-					}
-				};
-				row.add(functionsCell);
-				RepeatingView functionsView = new RepeatingView("functions"); //$NON-NLS-1$
-				functionsCell.add(functionsView);
-				if (functions != null) {
-					for (final FunctionItem function : functions) {
-						Link functionLink = new Link(functionsView.newChildId()) {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public void onClick() {
-								function.onEvent(person);								
-							}
-						};
-						String clickConfirmText = function.getClickConfirmText(person);
-						if (Strings.isEmpty(clickConfirmText) == false) {
-							StringBuilder confirmJavascript = new StringBuilder();
-							confirmJavascript.append("return confirm('");
-							confirmJavascript.append(JavascriptUtils.escapeQuotes(clickConfirmText));
-							confirmJavascript.append("');");
-							SimpleAttributeModifier onClickModifier = new SimpleAttributeModifier("onclick", confirmJavascript.toString());
-							functionLink.add(onClickModifier);
-						}
-						functionsView.add(functionLink);
-						functionLink.add(new Label("label", function.getLabel())); //$NON-NLS-1$
-					}
-				}
-			}
-		}
+				},
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username"),
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email"),
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber"),
+				new FunctionsColumn<P>(new Model(TeachUsSession.get().getString("General.functions")), functions)
+		};
+		
+		add(new ListPanel("list", columns, persons));
 	}
 
 	protected abstract List<P> getPersons();
@@ -146,9 +90,9 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			return label;
 		}
 
-		protected abstract void onEvent(P person);
+		public abstract void onEvent(P person);
 		
-		protected String getClickConfirmText(P person) {
+		public String getClickConfirmText(P person) {
 			return null;
 		}
 	}

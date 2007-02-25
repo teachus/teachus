@@ -12,6 +12,11 @@ public class RendererPropertyColumn extends AbstractColumn {
 	private IChoiceRenderer renderer;
 	private String propertyExpressions;
 
+	public RendererPropertyColumn(IModel displayModel, String propertyExpressions) {
+		super(displayModel);
+		this.propertyExpressions = propertyExpressions;
+	}
+	
 	public RendererPropertyColumn(IModel displayModel, String propertyExpressions, IChoiceRenderer renderer) {
 		super(displayModel);
 		this.renderer = renderer;
@@ -19,6 +24,8 @@ public class RendererPropertyColumn extends AbstractColumn {
 	}
 
 	public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-		cellItem.add(new RenderingLabel(componentId, new PropertyModel(rowModel, propertyExpressions), renderer));
+		RenderingLabel renderingLabel = new RenderingLabel(componentId, new PropertyModel(rowModel, propertyExpressions), renderer);
+		renderingLabel.setRenderBodyOnly(true);
+		cellItem.add(renderingLabel);
 	}
 }
