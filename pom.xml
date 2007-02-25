@@ -159,8 +159,7 @@
 							<tasks>
 								<property name="propertyFile" value="target/classes/dk/frankbille/teachus/utils/version.properties" />
 								<replace file="${propertyFile}" token="!!version!!" value="${project.version}" />
-								<available property="test" file="${propertyFile}" />
-								<echo message="FILE: ${propertyFile} AVAILABLE: ${test}" />
+								<echo message="VERSION: ${project.version}" />
 							</tasks>
 						</configuration>
 						<goals>

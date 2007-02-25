@@ -112,7 +112,7 @@ a:hover {
 	width: 16px;
 	height: 16px;
 	display: block;
-	background: url(available.png) top left no-repeat;
+	background: url(available_booked.png) top left no-repeat;
 	margin: auto;
 }
 
@@ -123,7 +123,7 @@ a:hover {
 .list {
 	border: 1px solid silver;
 	border-bottom: 0;
-	width: 600px;
+	width: 100%;
 	margin: 10px;
 }
 

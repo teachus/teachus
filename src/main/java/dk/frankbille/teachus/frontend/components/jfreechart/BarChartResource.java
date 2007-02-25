@@ -8,6 +8,8 @@ import org.jfree.chart.plot.Plot;
 import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.data.category.CategoryDataset;
 
+import dk.frankbille.teachus.frontend.utils.Formatters;
+
 public class BarChartResource extends JFreeChartResource {
 	private static final long serialVersionUID = 1L;
 	
@@ -23,6 +25,7 @@ public class BarChartResource extends JFreeChartResource {
 	
 	public BarChartResource(int width, int height, CategoryDataset dateset, String xLabel, String yLabel) {
 		super(width, height);
+		
 		this.dateset = dateset;
 		this.xLabel = xLabel;
 		this.yLabel = yLabel;
@@ -35,7 +38,10 @@ public class BarChartResource extends JFreeChartResource {
 		
 		BarRenderer3D barRenderer3D = new BarRenderer3D(8, 8);
 		
-		CategoryPlot plot = new CategoryPlot(dateset, categoryAxis, new NumberAxis3D(yLabel), barRenderer3D);
+		NumberAxis3D yAxis = new NumberAxis3D(yLabel);
+		yAxis.setNumberFormatOverride(Formatters.getFormatCurrency());
+		
+		CategoryPlot plot = new CategoryPlot(dateset, categoryAxis, yAxis, barRenderer3D);
 		
 		return plot;
 	}

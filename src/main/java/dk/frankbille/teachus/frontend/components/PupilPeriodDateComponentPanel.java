@@ -16,6 +16,8 @@ import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.PupilBooking;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
+import dk.frankbille.teachus.frontend.TeachUsSession;
+import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class PupilPeriodDateComponentPanel extends Panel {
@@ -41,42 +43,69 @@ public class PupilPeriodDateComponentPanel extends Panel {
 			final PupilBooking pupilBooking = (PupilBooking) booking;
 			
 			final DateTime dt = time;
-			AjaxLink link = new AjaxLink("link") { //$NON-NLS-1$
-				private static final long serialVersionUID = 1L;
-
-				private PupilBooking booking = pupilBooking;
-				
-				@Override
-				public void onClick(AjaxRequestTarget target) {
-					BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-					
-					if (booking == null) {
-						booking = bookingDAO.createPupilBookingObject();
-						
-						booking.setDate(dt.toDate());
-						booking.setPupil(pupil);
-						booking.setPeriod(period);
-
-						bookingDAO.book(booking);
-
-						this.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-					} else {
-						bookingDAO.deleteBooking(booking);
-						booking = null;
-						
-						this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
-					}
-												
-					target.addComponent(this);
-				}					
-			};
-			if (booking != null) {
-				link.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			// Check if the booking state may be changed
+			if (mayChangeBooking(dt)) {
+				createBookingLink(booking, pupil, period, pupilBooking, dt);
+			} else {
+				add(new WebComponent("link").setVisible(false)); //$NON-NLS-1$
+				if (pupilBooking != null) {
+					add(new Image("icon", Resources.BOOKED));
+				} else {
+					add(new Image("icon", Resources.AVAILABLE));
+				}
 			}
-			link.setOutputMarkupId(true);
-			add(link);
-			add(new WebComponent("icon").setVisible(false)); //$NON-NLS-1$
 		}
+	}
+
+	private void createBookingLink(final Booking booking, final Pupil pupil, final Period period, final PupilBooking pupilBooking, final DateTime dt) {
+		AjaxLink link = new AjaxLink("link") { //$NON-NLS-1$
+			private static final long serialVersionUID = 1L;
+
+			private PupilBooking booking = pupilBooking;
+			
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				
+				if (booking == null) {
+					booking = bookingDAO.createPupilBookingObject();
+					
+					booking.setDate(dt.toDate());
+					booking.setPupil(pupil);
+					booking.setPeriod(period);
+
+					bookingDAO.book(booking);
+
+					this.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				} else {
+					bookingDAO.deleteBooking(booking);
+					booking = null;
+					
+					this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+											
+				target.addComponent(this);
+			}					
+		};
+		if (booking != null) {
+			link.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		link.setOutputMarkupId(true);
+		add(link);
+		add(new WebComponent("icon").setVisible(false)); //$NON-NLS-1$
+	}
+	
+	private boolean mayChangeBooking(DateTime dateTime) {
+		boolean mayChangeBooking = false;
+		
+		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
+			mayChangeBooking = true;
+		} else {
+			DateTime today = new DateTime().withTime(23, 59, 59, 999);
+			mayChangeBooking = dateTime.isAfter(today);
+		}
+		
+		return mayChangeBooking;
 	}
 
 }

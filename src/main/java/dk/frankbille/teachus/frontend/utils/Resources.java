@@ -8,7 +8,8 @@ import dk.frankbille.teachus.frontend.TeachUsApplication;
 public abstract class Resources {
 
 	public static final ResourceReference CALENDAR = new ResourceReference(TeachUsApplication.class, "resources/calendar.png"); //$NON-NLS-1$
-	public static final ResourceReference AVAILABLE = new ResourceReference(TeachUsApplication.class, "resources/available.png"); //$NON-NLS-1$
+	public static final ResourceReference AVAILABLE = new ResourceReference(TeachUsApplication.class, "resources/available_static.png"); //$NON-NLS-1$
+	public static final ResourceReference BOOKED = new ResourceReference(TeachUsApplication.class, "resources/booked.png"); //$NON-NLS-1$
 	public static final ResourceReference OCCUPIED = new ResourceReference(TeachUsApplication.class, "resources/occupied.png");
 	public static final ResourceReference SIGN_IN = new ResourceReference(TeachUsApplication.class, "resources/signin.png"); //$NON-NLS-1$
 	public static final ResourceReference LOCK = new ResourceReference(TeachUsApplication.class, "resources/lock.png"); //$NON-NLS-1$

@@ -71,29 +71,19 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		
 		
 		DefaultCategoryDataset categoryDataset = new DefaultCategoryDataset();
-		for (int i = 1; i <= 12; i++) {
-			DateMidnight month = new DateMidnight().withMonthOfYear(i);
-			double value = 0;
-			
-			if (months.containsKey(i)) {
-				value = months.get(i);
+		if (months.isEmpty() == false) {
+			for (int i = 1; i <= 12; i++) {
+				DateMidnight month = new DateMidnight().withMonthOfYear(i);
+				double value = 0;
+				
+				if (months.containsKey(i)) {
+					value = months.get(i);
+				}
+							
+				String formattedMonth = Formatters.getFormatOnlyMonth().print(month);
+				categoryDataset.addValue(value, new Integer(year), formattedMonth);
 			}
-						
-			String formattedMonth = Formatters.getFormatOnlyMonth().print(month);
-			categoryDataset.addValue(value, new Integer(year), formattedMonth);
 		}
-//		categoryDataset.addValue(4700, "2007", "Januar");
-//		categoryDataset.addValue(5550, "2007", "Februar");
-//		categoryDataset.addValue(0, "2007", "Marts");
-//		categoryDataset.addValue(0, "2007", "April");
-//		categoryDataset.addValue(0, "2007", "Maj");
-//		categoryDataset.addValue(0, "2007", "Juni");
-//		categoryDataset.addValue(0, "2007", "Juli");
-//		categoryDataset.addValue(0, "2007", "August");
-//		categoryDataset.addValue(0, "2007", "September");
-//		categoryDataset.addValue(0, "2007", "Oktober");
-//		categoryDataset.addValue(0, "2007", "November");
-//		categoryDataset.addValue(0, "2007", "December");
 		
 		add(new JFreeChartImage("perMonthChart", new BarChartResource(600, 300, categoryDataset, ""+year, "Kr")));
 	}
