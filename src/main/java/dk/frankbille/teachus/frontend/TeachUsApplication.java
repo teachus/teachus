@@ -23,7 +23,7 @@ import dk.frankbille.teachus.frontend.pages.AdminsPage;
 import dk.frankbille.teachus.frontend.pages.AgendaPage;
 import dk.frankbille.teachus.frontend.pages.HomePage;
 import dk.frankbille.teachus.frontend.pages.PaymentPage;
-import dk.frankbille.teachus.frontend.pages.PeriodPage;
+import dk.frankbille.teachus.frontend.pages.PeriodsPage;
 import dk.frankbille.teachus.frontend.pages.PupilCalendarPage;
 import dk.frankbille.teachus.frontend.pages.PupilsPage;
 import dk.frankbille.teachus.frontend.pages.SignInPage;
@@ -55,7 +55,7 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/teachers", TeachersPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/teachersettings", TeacherSettingsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/admins", AdminsPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/periods", PeriodPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/periods", PeriodsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats", StatsPage.class); //$NON-NLS-1$

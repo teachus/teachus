@@ -6,7 +6,6 @@ import java.util.List;
 import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.AjaxLink;
-import wicket.markup.html.WebComponent;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
 import wicket.markup.repeater.RepeatingView;
@@ -29,10 +28,10 @@ import dk.frankbille.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
 
-public class PeriodPage extends AuthenticatedBasePage {
+public class PeriodsPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
-	public PeriodPage() {
+	public PeriodsPage() {
 		super(UserLevel.TEACHER, true);
 				
 		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
@@ -51,10 +50,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 			}			
 		});
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
-		
-		// PLACEHOLDER
-		add(new WebComponent("placeholder").setOutputMarkupId(true)); //$NON-NLS-1$
-		
+				
 		// HEADERS
 		add(new Label("name", TeachUsSession.get().getString("General.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(new Label("startDate", TeachUsSession.get().getString("General.startDate"))); //$NON-NLS-1$ //$NON-NLS-2$
@@ -99,7 +95,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 
 			@Override
 			protected void periodSaved(AjaxRequestTarget target) {
-				getRequestCycle().setResponsePage(PeriodPage.this.getClass());
+				getRequestCycle().setResponsePage(PeriodsPage.this.getClass());
 			}
 		};
 		panel.setOutputMarkupId(true);
