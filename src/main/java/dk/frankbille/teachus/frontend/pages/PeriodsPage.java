@@ -18,7 +18,6 @@ import dk.frankbille.teachus.domain.impl.PeriodImpl;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
-import dk.frankbille.teachus.frontend.components.PeriodPanel;
 import dk.frankbille.teachus.frontend.components.RenderingLabel;
 import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
@@ -46,7 +45,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 			public void onEvent(AjaxRequestTarget target) {
 				Period period = new PeriodImpl();
 				period.setTeacher(teacher);
-				target.addComponent(createPeriodForm(period));
+				getRequestCycle().setResponsePage(new PeriodPage(period));
 			}			
 		});
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
@@ -74,7 +73,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 
 				@Override
 				public void onClick(AjaxRequestTarget target) {
-					target.addComponent(createPeriodForm(period));
+					getRequestCycle().setResponsePage(new PeriodPage(period));
 				}
 			};
 			link.add(new Label("name")); //$NON-NLS-1$
@@ -87,20 +86,6 @@ public class PeriodsPage extends AuthenticatedBasePage {
 			row.add(new RenderingLabel("endTime", timeChoiceRenderer)); //$NON-NLS-1$
 			row.add(new RenderingLabel("weekDays", new WeekDayChoiceRenderer(Format.SHORT))); //$NON-NLS-1$
 		}
-	}
-	
-	private PeriodPanel createPeriodForm(Period period) {
-		PeriodPanel panel = new PeriodPanel("placeholder", period) { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void periodSaved(AjaxRequestTarget target) {
-				getRequestCycle().setResponsePage(PeriodsPage.this.getClass());
-			}
-		};
-		panel.setOutputMarkupId(true);
-		replace(panel);		
-		return panel;
 	}
 
 	@Override

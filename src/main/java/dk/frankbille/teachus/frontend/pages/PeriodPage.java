@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.components;
+package dk.frankbille.teachus.frontend.pages;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +8,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import wicket.Component;
+import wicket.ResourceReference;
 import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.form.AjaxSubmitButton;
@@ -21,7 +22,6 @@ import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextField;
 import wicket.markup.html.panel.FeedbackPanel;
-import wicket.markup.html.panel.Panel;
 import wicket.model.AbstractModel;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.IModel;
@@ -32,16 +32,20 @@ import dk.frankbille.teachus.domain.Period;
 import dk.frankbille.teachus.domain.impl.PeriodImpl.WeekDay;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
+import dk.frankbille.teachus.frontend.UserLevel;
+import dk.frankbille.teachus.frontend.utils.Resources;
 import dk.frankbille.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
 
-public abstract class PeriodPanel extends Panel {
+public class PeriodPage extends AuthenticatedBasePage {
+	private static final long serialVersionUID = 1L;
+
 	private FeedbackPanel feedbackPanel;
-
-	public PeriodPanel(String id, final Period period) {
-		super(id);
-
+	
+	public PeriodPage(final Period period) {
+		super(UserLevel.TEACHER, true);
+		
 		Form form = new Form("form", new CompoundPropertyModel(period)); //$NON-NLS-1$
 		add(form);
 
@@ -110,7 +114,7 @@ public abstract class PeriodPanel extends Panel {
 
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
-				periodSaved(target);
+				getRequestCycle().setResponsePage(PeriodsPage.class);
 			}			
 		});
 		form.add(cancelButton);
@@ -124,7 +128,7 @@ public abstract class PeriodPanel extends Panel {
 
 				periodDAO.save(period);				
 				
-				periodSaved(target);
+				getRequestCycle().setResponsePage(PeriodsPage.class);
 			}		
 			
 			@Override
@@ -136,8 +140,16 @@ public abstract class PeriodPanel extends Panel {
 		form.add(saveButton);
 	}
 	
-	protected abstract void periodSaved(AjaxRequestTarget target);
-	
+	@Override
+	protected ResourceReference getPageIcon() {
+		return Resources.PERIOD;
+	}
+
+	@Override
+	protected String getPageLabel() {
+		return TeachUsSession.get().getString("General.periods"); //$NON-NLS-1$
+	}
+
 	private static class TimeModel extends AbstractModel {
 		private static final long serialVersionUID = 1L;
 		
@@ -167,5 +179,5 @@ public abstract class PeriodPanel extends Panel {
 		}
 		
 	}
-
+	
 }
