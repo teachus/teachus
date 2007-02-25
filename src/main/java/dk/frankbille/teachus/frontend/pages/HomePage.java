@@ -6,6 +6,8 @@ import dk.frankbille.teachus.domain.Person;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
+import dk.frankbille.teachus.frontend.pages.persons.PupilsPage;
+import dk.frankbille.teachus.frontend.pages.persons.TeachersPage;
 
 public class HomePage extends BasePage {
 	private static final long serialVersionUID = 1L;

@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.pages;
+package dk.frankbille.teachus.frontend.pages.periods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.components.RenderingLabel;
 import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
+import dk.frankbille.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.frankbille.teachus.frontend.utils.DateChoiceRenderer;
 import dk.frankbille.teachus.frontend.utils.Resources;
 import dk.frankbille.teachus.frontend.utils.TimeChoiceRenderer;

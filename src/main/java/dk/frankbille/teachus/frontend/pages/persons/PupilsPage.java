@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.pages;
+package dk.frankbille.teachus.frontend.pages.persons;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import dk.frankbille.teachus.domain.impl.PupilImpl;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
+import dk.frankbille.teachus.frontend.pages.PupilCalendarPage;
 import dk.frankbille.teachus.frontend.utils.Resources;
 
 public class PupilsPage extends PersonsPage<Pupil> {

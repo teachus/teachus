@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.pages;
+package dk.frankbille.teachus.frontend.pages.persons;
 
 import java.util.List;
 import java.util.Locale;
@@ -27,6 +27,7 @@ import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.frontend.TeachUsApplication;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
+import dk.frankbille.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.frankbille.teachus.frontend.utils.LocaleChoiceRenderer;
 
 public abstract class PersonPage extends AuthenticatedBasePage {	

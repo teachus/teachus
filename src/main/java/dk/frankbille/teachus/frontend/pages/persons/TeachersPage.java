@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.pages;
+package dk.frankbille.teachus.frontend.pages.persons;
 
 import java.util.List;
 

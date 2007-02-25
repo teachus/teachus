@@ -18,6 +18,13 @@ import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
+import dk.frankbille.teachus.frontend.pages.periods.PeriodsPage;
+import dk.frankbille.teachus.frontend.pages.persons.AdminPage;
+import dk.frankbille.teachus.frontend.pages.persons.AdminsPage;
+import dk.frankbille.teachus.frontend.pages.persons.PupilPage;
+import dk.frankbille.teachus.frontend.pages.persons.PupilsPage;
+import dk.frankbille.teachus.frontend.pages.persons.TeacherPage;
+import dk.frankbille.teachus.frontend.pages.persons.TeachersPage;
 import dk.frankbille.teachus.frontend.pages.stats.StatsPage;
 import dk.frankbille.teachus.frontend.utils.Resources;
 

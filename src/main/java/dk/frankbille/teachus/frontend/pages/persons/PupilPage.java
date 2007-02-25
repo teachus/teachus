@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.pages;
+package dk.frankbille.teachus.frontend.pages.persons;
 
 import wicket.ResourceReference;
 import dk.frankbille.teachus.domain.Admin;

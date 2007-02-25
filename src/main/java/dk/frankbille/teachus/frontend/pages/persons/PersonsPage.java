@@ -1,4 +1,4 @@
-package dk.frankbille.teachus.frontend.pages;
+package dk.frankbille.teachus.frontend.pages.persons;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import dk.frankbille.teachus.frontend.TeachUsSession;
 import dk.frankbille.teachus.frontend.UserLevel;
 import dk.frankbille.teachus.frontend.components.Toolbar;
 import dk.frankbille.teachus.frontend.components.Toolbar.ToolbarItem;
+import dk.frankbille.teachus.frontend.pages.AuthenticatedBasePage;
 
 public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
 	protected PersonsPage(UserLevel userLevel) {
