@@ -21,7 +21,7 @@ public class ListPanel extends Panel {
 	public ListPanel(String id, IColumn[] columns, List data) {
 		super(id);
 		
-		DataTable dataTable = new DataTable("table", columns, new ListDataProvider(data), 20);
+		DataTable dataTable = new DataTable("table", columns, new ListDataProvider(data), 40);
 		dataTable.addTopToolbar(new HeadersToolbar(dataTable, null));
 		dataTable.addBottomToolbar(new NavigationToolbar(dataTable) {
 			private static final long serialVersionUID = 1L;
