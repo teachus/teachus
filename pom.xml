@@ -134,7 +134,6 @@
 	<build>
 		<resources>
 			<resource>
-				<filtering>false</filtering>
 				<directory>src/main/java</directory>
 				<includes>
 					<include>**/*</include>
@@ -144,6 +143,17 @@
 				</excludes>
 			</resource>
 		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
