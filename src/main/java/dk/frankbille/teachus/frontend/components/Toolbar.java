@@ -28,7 +28,7 @@ public class Toolbar extends Panel {
 				}				
 			};
 			links.add(link);
-			link.add(new Label("label", item.getLabel())); //$NON-NLS-1$
+			link.add(new Label("label", item.getLabel()).setRenderBodyOnly(true)); //$NON-NLS-1$
 		}
 	}
 	

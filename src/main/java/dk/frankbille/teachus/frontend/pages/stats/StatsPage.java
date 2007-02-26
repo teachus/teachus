@@ -33,7 +33,7 @@ public class StatsPage extends AbstractStatisticsPage {
 			Link link = new BookmarkablePageLink("link", item.getBookmarkablePage()); //$NON-NLS-1$
 			li.add(link);
 			
-			link.add(new Label("label", item.getHelpText())); //$NON-NLS-1$
+			link.add(new Label("label", item.getHelpText()).setRenderBodyOnly(true)); //$NON-NLS-1$
 		}
 	}
 

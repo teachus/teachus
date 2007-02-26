@@ -28,7 +28,7 @@ public class ListPanel extends Panel {
 
 			@Override
 			protected WebComponent newNavigatorLabel(String navigatorId, final DataTable table) {
-				return new Label(navigatorId, new AbstractReadOnlyModel() {
+				Label label = new Label(navigatorId, new AbstractReadOnlyModel() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -53,6 +53,8 @@ public class ListPanel extends Panel {
 						return label;
 					}					
 				});
+				label.setRenderBodyOnly(true);
+				return label;
 			}
 		});
 		add(dataTable);

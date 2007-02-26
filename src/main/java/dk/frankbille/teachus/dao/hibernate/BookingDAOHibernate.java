@@ -200,7 +200,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithPaidBookings(Teacher teacher) {
-		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p WHERE p.teacher = ? AND p.active = true AND b.paid = true GROUP BY year(b.date)", teacher);
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p WHERE p.teacher = ? AND p.active = 1 AND b.paid = 1 GROUP BY year(b.date)", teacher);
 		
 		return years;
 	}
