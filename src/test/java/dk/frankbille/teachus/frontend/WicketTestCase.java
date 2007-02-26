@@ -61,6 +61,10 @@ public abstract class WicketTestCase extends AbstractAnnotationAwareTransactiona
 		public TeachUsApplication getTeachUsApplication() {
 			return (TeachUsApplication) getApplication();
 		}
+		
+		public Person getPerson(Long personId) {
+			return getTeachUsApplication().getPersonDAO().getPerson(personId);
+		}
 	}
 	
 	public static class TesterTeachUsSession extends TeachUsSession {
