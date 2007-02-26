@@ -32,6 +32,7 @@ import dk.frankbille.teachus.frontend.pages.periods.PeriodsPage;
 import dk.frankbille.teachus.frontend.pages.persons.AdminsPage;
 import dk.frankbille.teachus.frontend.pages.persons.PupilsPage;
 import dk.frankbille.teachus.frontend.pages.persons.TeachersPage;
+import dk.frankbille.teachus.frontend.pages.stats.IncomePerPeriodPage;
 import dk.frankbille.teachus.frontend.pages.stats.IncomePerPupilPage;
 import dk.frankbille.teachus.frontend.pages.stats.StatsPage;
 import dk.frankbille.teachus.utils.ApplicationUtils;
@@ -60,6 +61,7 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats", StatsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/stats/incomeperperiod", IncomePerPeriodPage.class); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {
