@@ -3,6 +3,7 @@ package dk.frankbille.teachus.dao.hibernate;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -63,6 +64,8 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		}
 		
 		DetachedCriteria c = DetachedCriteria.forClass(clazz);
+
+		c.addOrder(Order.asc("name"));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 
@@ -76,8 +79,11 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		
 		c.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("teacher", teacher));
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 
+		c.addOrder(Order.asc("name"));
+		
+		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		
 		return getHibernateTemplate().findByCriteria(c);
 	}
 
@@ -85,18 +91,6 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 	public Person getPerson(Long personId) {
 		return (Person) getHibernateTemplate().load(PersonImpl.class, personId);
 	}
-	
-//	public void sendWelcomeMail(Long pupilId, String serverName) {
-//		Person person = getPerson(pupilId);
-//		
-//		if (person instanceof Pupil == false) {
-//			throw new IllegalArgumentException("pupilId doesn't resolve a pupil object");
-//		}
-//		
-//		Pupil pupil = (Pupil) person;
-//		
-//		mailBean.sendWelcomeMail(pupil, serverName);
-//	}
 	
 	public void setInactive(Long personId) {
 		Person person = getPerson(personId);
