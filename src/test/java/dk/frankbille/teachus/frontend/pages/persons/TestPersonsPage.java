@@ -7,9 +7,9 @@ import dk.frankbille.teachus.domain.Admin;
 import dk.frankbille.teachus.domain.Pupil;
 import dk.frankbille.teachus.domain.Teacher;
 import dk.frankbille.teachus.frontend.TeachUsSession;
-import dk.frankbille.teachus.frontend.WicketTestCase;
+import dk.frankbille.teachus.frontend.WicketSpringTestCase;
 
-public class TestPersonsPage extends WicketTestCase {
+public class TestPersonsPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;
 
 	public void testPupilPageRender() {

@@ -14,7 +14,7 @@ import wicket.util.tester.WicketTester;
 import dk.frankbille.teachus.database.DataImport;
 import dk.frankbille.teachus.domain.Person;
 
-public abstract class WicketTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
+public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 
 	protected TeachUsWicketTester tester;
 	

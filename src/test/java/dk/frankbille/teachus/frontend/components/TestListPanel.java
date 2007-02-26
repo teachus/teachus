@@ -12,9 +12,9 @@ import wicket.markup.repeater.Item;
 import wicket.model.IModel;
 import wicket.model.Model;
 import wicket.util.tester.TestPanelSource;
-import dk.frankbille.teachus.frontend.WicketTestCase;
+import dk.frankbille.teachus.frontend.WicketSpringTestCase;
 
-public class TestListPanel extends WicketTestCase {
+public class TestListPanel extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;
 
 	public void testRender() {
