@@ -26,7 +26,7 @@
         
         <property name="locale" length="20" />
         
-        <property name="active" not-null="true">
+        <property name="active" not-null="true" type="dk.frankbille.teachus.dao.hibernate.BooleanType">
         	<column name="active" default="true" />
         </property>
         

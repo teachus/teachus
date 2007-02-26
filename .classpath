@@ -50,5 +50,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-datetime"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/wicket-extensions"/>
+	<classpathentry kind="var" path="M2_REPO/org/springframework/spring-mock/2.0.2/spring-mock-2.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0.7/hsqldb-1.8.0.7.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

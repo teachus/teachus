@@ -15,10 +15,24 @@ import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
 public class DataImport {
-	public static void main(String[] args) throws Exception {
+	
+	public DataImport() throws Exception {
+		this("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/teachus", "root", "");
+	}
+	
+	public DataImport(String driverClass, String url, String username, String password) throws Exception {
 		// database connection
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection jdbcConnection = DriverManager.getConnection("jdbc:mysql://localhost/teachus", "root", "");
+		Class.forName(driverClass);
+		Connection jdbcConnection = DriverManager.getConnection(url, username, password);
+		
+		doImport(jdbcConnection);
+	}
+	
+	public DataImport(Connection jdbcConnection) throws Exception {
+		doImport(jdbcConnection);
+	}
+	
+	private void doImport(Connection jdbcConnection) throws Exception {
 		IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
 
 		// Create dataset
@@ -32,10 +46,14 @@ public class DataImport {
 			statement.executeUpdate("UPDATE person SET teacher_id = NULL");
 			statement.close();
 			
-			DatabaseOperation.TRUNCATE_TABLE.execute(connection, dataSet);
+			DatabaseOperation.DELETE_ALL.execute(connection, dataSet);
 			DatabaseOperation.INSERT.execute(connection, dataSet);
 		} finally {
 			connection.close();
 		}
+	}
+	
+	public static void main(String[] args) throws Exception {
+		new DataImport();
 	}
 }

@@ -22,7 +22,6 @@ public class DataExport {
 
 		// Create dataset
 		ITableFilter filter = new DatabaseSequenceFilter(connection);
-//		IDataSet dataset = new FilteredDataSet(filter, connection.createDataSet());
 		ReplacementDataSet dataset = new ReplacementDataSet(new FilteredDataSet(filter, connection.createDataSet()));
 		dataset.addReplacementSubstring("\n", "\\n");
 		

@@ -25,7 +25,7 @@ public class TeachUsSession extends WebSession {
 	private static final long serialVersionUID = 1L;
 	private static final String BUNDLE_NAME = "dk.frankbille.teachus.frontend.messages"; //$NON-NLS-1$
 	
-	private Person person;
+	protected Person person;
 	private Properties resourceBundle;
 	
 	public TeachUsSession(WebApplication application, Request request) {

@@ -45,24 +45,25 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		
 		final List<FunctionItem> functions = getFunctions();
 		
-		IColumn[] columns = new IColumn[] {
-				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") {
-					private static final long serialVersionUID = 1L;
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") {
+			private static final long serialVersionUID = 1L;
 
-					@SuppressWarnings("unchecked")
-					@Override
-					protected void onClick(Object rowModelObject) {
-						P person = (P) rowModelObject;
-						getRequestCycle().setResponsePage(getPersonPage(person));
-					}					
-				},
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username"),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email"),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber"),
-				new FunctionsColumn<P>(new Model(TeachUsSession.get().getString("General.functions")), functions)
-		};
+			@SuppressWarnings("unchecked")
+			@Override
+			protected void onClick(Object rowModelObject) {
+				P person = (P) rowModelObject;
+				getRequestCycle().setResponsePage(getPersonPage(person));
+			}					
+		});
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username"));
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email"));
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber"));
+		if (functions != null) {
+			columns.add(new FunctionsColumn<P>(new Model(TeachUsSession.get().getString("General.functions")), functions));
+		}
 		
-		add(new ListPanel("list", columns, persons));
+		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), persons));
 	}
 
 	protected abstract List<P> getPersons();

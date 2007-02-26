@@ -23,9 +23,9 @@
 		<subclass name="PupilBookingImpl" discriminator-value="PUPIL">
 			<many-to-one name="pupil" column="pupil_id" class="PupilImpl" cascade="none" fetch="join" />
 		
-			<property name="notificationSent" column="notification_sent" />
+			<property name="notificationSent" column="notification_sent" type="dk.frankbille.teachus.dao.hibernate.BooleanType" />
 			
-			<property name="paid" />
+			<property name="paid" column="paid" type="dk.frankbille.teachus.dao.hibernate.BooleanType" />
 		</subclass>
 		
 		<subclass name="TeacherBookingImpl" discriminator-value="TEACHER">

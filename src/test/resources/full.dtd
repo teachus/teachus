@@ -13,10 +13,10 @@
     username CDATA #REQUIRED
     password CDATA #IMPLIED
     email CDATA #IMPLIED
-    locale CDATA #IMPLIED
-    teacher_id CDATA #IMPLIED
     phone_number CDATA #IMPLIED
+    locale CDATA #IMPLIED
     active CDATA #IMPLIED
+    teacher_id CDATA #IMPLIED
 >
 
 <!ELEMENT period EMPTY>
@@ -43,8 +43,8 @@
     create_date CDATA #IMPLIED
     pupil_id CDATA #IMPLIED
     notification_sent CDATA #IMPLIED
-    teacher_id CDATA #IMPLIED
     paid CDATA #IMPLIED
+    teacher_id CDATA #IMPLIED
 >
 
 <!ELEMENT teacher_attribute EMPTY>

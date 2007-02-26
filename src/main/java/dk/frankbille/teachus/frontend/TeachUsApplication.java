@@ -78,7 +78,7 @@ public class TeachUsApplication extends WebApplication {
 		return (MailBean) getApplicationContext().getBean("mailBean"); //$NON-NLS-1$
 	}
 	
-	private ApplicationContext getApplicationContext() {
+	protected ApplicationContext getApplicationContext() {
 		return WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 	}
 
