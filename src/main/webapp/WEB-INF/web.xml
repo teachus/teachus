@@ -9,7 +9,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:/dk/frankbille/teachus/frontend/applicationContext.xml
+			classpath:/dk/teachus/frontend/applicationContext.xml
 		</param-value>
 	</context-param>
  
@@ -19,7 +19,7 @@
 		<init-param>
 			<param-name>applicationClassName</param-name>
 			<param-value>
-				dk.frankbille.teachus.frontend.TeachUsApplication
+				dk.teachus.frontend.TeachUsApplication
 			</param-value>
 		</init-param>
 		<init-param>

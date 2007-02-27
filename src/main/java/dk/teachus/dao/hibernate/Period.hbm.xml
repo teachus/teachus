@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="dk.teachus.domain.impl" default-lazy="false">
+
+    <class name="PeriodImpl" table="period">
+		<id name="id" column="id" access="field">
+            <generator class="native"/>
+        </id>
+        
+		<version name="version" access="field" />
+		
+		<property name="name" length="100" />
+        
+		<property name="beginDate" column="begin_date" type="date" />
+		<property name="endDate" column="end_date" type="date" />
+				
+		<property name="startTime" column="start_time" type="time" />		
+		<property name="endTime" column="end_time" type="time" />
+		
+		<property name="weekDays" column="week_days" type="dk.teachus.dao.hibernate.WeekDaysUserType" />
+        
+        <many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" />
+        
+        <property name="price" />
+    </class>
+
+</hibernate-mapping>

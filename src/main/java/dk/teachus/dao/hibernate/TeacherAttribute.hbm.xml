@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="dk.teachus.domain.impl" default-lazy="false">
+
+    <class abstract="true" name="AbstractTeacherAttribute" table="teacher_attribute">
+		<id name="id" column="id" access="field">
+            <generator class="native"/>
+        </id>
+        
+		<discriminator column="attribute" type="string" />
+        
+        <version name="version" access="field" />
+        
+        <many-to-one name="teacher" column="teacher_id" class="TeacherImpl" not-null="true" cascade="none" fetch="join" />
+        
+        <property name="value" length="65000" not-null="true" />
+        
+        <!-- SUBCLASSES -->
+        <subclass name="WelcomeIntroductionTeacherAttribute" discriminator-value="WELCOME_INTRODUCTION" />
+    </class>
+
+</hibernate-mapping>

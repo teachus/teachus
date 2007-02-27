@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="dk.teachus.domain.impl" default-lazy="false">
+
+    <class abstract="true" name="PersonImpl" table="person">
+		<id name="id" column="id" access="field">
+            <generator class="native"/>
+        </id>
+        
+		<discriminator column="person_type" type="string" />
+        
+        <version name="version" access="field" />
+        
+        <property name="name" length="100" />
+        
+        <property name="username" length="50" not-null="true" unique="true" />
+        
+        <property name="password" length="32" />
+        
+        <property name="email" length="250" />
+        
+        <property name="phoneNumber" column="phone_number" length="20" />
+        
+        <property name="locale" length="20" />
+        
+        <property name="active" not-null="true" type="dk.teachus.dao.hibernate.BooleanType">
+        	<column name="active" default="true" />
+        </property>
+        
+        <!-- SUBCLASSES -->
+        <subclass name="AdminImpl" discriminator-value="ADMIN" />
+        
+        <subclass name="TeacherImpl" discriminator-value="TEACHER" />
+        
+        <subclass name="PupilImpl" discriminator-value="PUPIL">
+        	<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
+        </subclass>
+    </class>
+
+</hibernate-mapping>
