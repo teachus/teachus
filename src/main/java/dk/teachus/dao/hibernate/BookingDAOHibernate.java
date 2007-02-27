@@ -1,5 +1,6 @@
 package dk.teachus.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -70,13 +71,23 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DateTime start = new DateTime(date).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 		DateTime end = new DateTime(date).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
-		c.createCriteria("pupil").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("period", period));
 		c.add(Restrictions.between("date", start.toDate(), end.toDate()));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 		
 		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
+		List<Booking> filteredBookings = new ArrayList<Booking>();
+		for (Booking booking : bookings) {
+			if (booking instanceof PupilBooking) {
+				PupilBooking pupilBooking = (PupilBooking) booking;
+				if (pupilBooking.getPupil().isActive()) {
+					filteredBookings.add(booking);
+				}
+			} else {
+				filteredBookings.add(booking);
+			}
+		}
 		
 		return new BookingsImpl(bookings);
 	}
@@ -149,7 +160,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		if (pupilBookings.isEmpty() == false) {
 			StringBuilder hql = new StringBuilder();
 			
-			hql.append("UPDATE PupilBookingImpl SET notificationSent=true WHERE id IN(");
+			hql.append("UPDATE PupilBookingImpl SET notificationSent=1 WHERE id IN(");
 			
 			String sep = "";
 			for (PupilBooking pupilBooking : pupilBookings) {

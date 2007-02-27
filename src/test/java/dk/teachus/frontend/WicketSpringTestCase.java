@@ -11,6 +11,9 @@ import wicket.Request;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.util.tester.WicketTester;
+import dk.teachus.dao.BookingDAO;
+import dk.teachus.dao.PeriodDAO;
+import dk.teachus.dao.PersonDAO;
 import dk.teachus.database.DataImport;
 import dk.teachus.domain.Person;
 import dk.teachus.frontend.TeachUsApplication;
@@ -20,6 +23,18 @@ import dk.teachus.frontend.UserLevel;
 public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 
 	protected TeachUsWicketTester tester;
+	
+	public BookingDAO getBookingDAO() {
+		return tester.getTeachUsApplication().getBookingDAO();
+	}
+	
+	public PersonDAO getPersonDAO() {
+		return tester.getTeachUsApplication().getPersonDAO();
+	}
+	
+	public PeriodDAO getPeriodDAO() {
+		return tester.getTeachUsApplication().getPeriodDAO();
+	}
 	
 	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
@@ -110,4 +125,5 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 			return (TesterTeachUsSession) TeachUsSession.get();
 		}
 	}
+	
 }
