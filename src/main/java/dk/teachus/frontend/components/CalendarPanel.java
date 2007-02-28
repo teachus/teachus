@@ -86,7 +86,8 @@ public abstract class CalendarPanel extends Panel {
 				weekDate = weekDate.plusWeeks(1);
 				weekDates = periods.generateDatesForWeek(weekDate.toDate());
 			} while(dates.size()+weekDates.size() <= 7);
-			
+						
+			fireIntervalDetermined(dates);
 			
 			// Weeks
 			RepeatingView weeks = new RepeatingView("weeks"); //$NON-NLS-1$
@@ -151,7 +152,7 @@ public abstract class CalendarPanel extends Panel {
 			calendar.add(forwardLink);
 		}
 	}
-	
+
 	protected abstract Link createBackLink(String wicketId, DateMidnight previousWeekDate);
 	
 	protected abstract Link createForwardLink(String wicketId, DateMidnight nextWeekDate);
@@ -160,6 +161,37 @@ public abstract class CalendarPanel extends Panel {
 	
 	protected abstract void navigationDateSelected(DateMidnight date);
 	
+	protected void onIntervalDetermined(List<DatePeriod> dates, DateMidnight firstDate, DateMidnight lastDate) {
+	}
+	
+	private void fireIntervalDetermined(List<DatePeriod> dates) {
+		// Find the minimum and maximum date
+		DateMidnight firstDate = null;
+		DateMidnight lastDate = null;
+		
+		for (DatePeriod datePeriod : dates) {
+			DateMidnight date = new DateMidnight(datePeriod.getDate());
+			
+			if (firstDate == null) {
+				firstDate = date;
+			} else {
+				if (firstDate.isAfter(date)) {
+					firstDate = date;
+				}
+			}
+			
+			if (lastDate == null) {
+				lastDate = date;
+			} else {
+				if (lastDate.isBefore(date)) {
+					lastDate = date;
+				}
+			}
+		}
+		
+		onIntervalDetermined(dates, firstDate, lastDate);
+	}
+		
 	private static class NavigationModel implements Serializable {
 		private static final long serialVersionUID = 1L;
 

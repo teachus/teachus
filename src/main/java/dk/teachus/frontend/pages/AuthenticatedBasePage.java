@@ -107,8 +107,8 @@ public abstract class AuthenticatedBasePage extends BasePage {
 			menuItems.add(menuLink);
 			menuLink.add(new Image("menuIcon", menuItem.getIcon())); //$NON-NLS-1$
 			
-			menuLink.add(new SimpleAttributeModifier("onmouseover", "$('"+menuHelp.getMarkupId()+"').replace('<span id=\\'"+menuHelp.getMarkupId()+"\\'>"+menuItem.getHelpText()+"</span>')")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-			menuLink.add(new SimpleAttributeModifier("onmouseout", "$('"+menuHelp.getMarkupId()+"').hide()"));			 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			menuLink.add(new SimpleAttributeModifier("onmouseover", "$('"+menuHelp.getMarkupId()+"').innerHTML = '"+menuItem.getHelpText()+"'")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			menuLink.add(new SimpleAttributeModifier("onmouseout", "$('"+menuHelp.getMarkupId()+"').innerHTML = ''"));			 //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 	

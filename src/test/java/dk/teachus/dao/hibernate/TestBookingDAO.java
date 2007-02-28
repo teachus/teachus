@@ -2,16 +2,15 @@ package dk.teachus.dao.hibernate;
 
 import java.util.List;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.dao.BookingDAO;
-import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
+import dk.teachus.domain.Booking;
 import dk.teachus.domain.Bookings;
-import dk.teachus.domain.Period;
-import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
-import dk.teachus.domain.TeacherBooking;
+import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.WicketSpringTestCase;
 
 public class TestBookingDAO extends WicketSpringTestCase {
@@ -20,44 +19,26 @@ public class TestBookingDAO extends WicketSpringTestCase {
 	public void testBook() {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
-		PeriodDAO periodDAO = getPeriodDAO();
 		
-		Period period = periodDAO.get(1L);
+		Teacher teacher = (Teacher) personDAO.getPerson(2L);
 		endTransaction();
 		
-		Pupil pupil = (Pupil) personDAO.getPerson(6L);
-		endTransaction();		
+		Long periodId = 1L;
 
 		DateTime date = new DateTime(2007, 6, 11, 11, 0, 0, 0);
 		
 		// First create a list of new bookings
-		PupilBooking pupilBooking = bookingDAO.createPupilBookingObject();
-		pupilBooking.setPeriod(period);
-		pupilBooking.setPupil(pupil);
-		pupilBooking.setPaid(false);
-		pupilBooking.setNotificationSent(false);
-		pupilBooking.setCreateDate(new DateTime().minusHours(3).toDate());
-		pupilBooking.setDate(date.toDate());
+		createPupilBooking(periodId, 6, date);
 		
-		bookingDAO.book(pupilBooking);
-		endTransaction();
-		
-		Bookings bookings = bookingDAO.getBookingsForDate(period, date.toDate());
+		Bookings bookings = bookingDAO.getBookings(teacher, date.toDateMidnight(), date.toDateMidnight());
 		endTransaction();
 				
 		assertEquals(1, bookings.getBookingList().size());
 		
 		// Add a teacher booking on the date
-		TeacherBooking teacherBooking = bookingDAO.createTeacherBookingObject();
-		teacherBooking.setCreateDate(new DateTime().minusHours(3).toDate());
-		teacherBooking.setDate(date.plusHours(1).toDate());
-		teacherBooking.setPeriod(period);
-		teacherBooking.setTeacher(pupil.getTeacher());
+		createTeacherBooking(periodId, 2, date.plusHours(1));
 		
-		bookingDAO.book(teacherBooking);
-		endTransaction();
-		
-		bookings = bookingDAO.getBookingsForDate(period, date.toDate());
+		bookings = bookingDAO.getBookings(teacher, date.toDateMidnight(), date.toDateMidnight());
 		endTransaction();
 				
 		assertEquals(2, bookings.getBookingList().size());
@@ -66,27 +47,14 @@ public class TestBookingDAO extends WicketSpringTestCase {
 	public void testGetUnsentBookings() {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
-		PeriodDAO periodDAO = getPeriodDAO();
 		
-		Period period = periodDAO.get(1L);
-		endTransaction();
-		
-		Pupil pupil = (Pupil) personDAO.getPerson(6L);
+		Teacher teacher = (Teacher) personDAO.getPerson(2L);
 		endTransaction();
 		
 		// First create a list of new bookings
-		PupilBooking pupilBooking = bookingDAO.createPupilBookingObject();
-		pupilBooking.setPeriod(period);
-		pupilBooking.setPupil(pupil);
-		pupilBooking.setPaid(false);
-		pupilBooking.setNotificationSent(false);
-		pupilBooking.setCreateDate(new DateTime().minusHours(3).toDate());
-		pupilBooking.setDate(new DateTime(2007, 3, 12, 11, 0, 0, 0).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0));
 		
-		bookingDAO.book(pupilBooking);
-		endTransaction();
-		
-		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(pupil.getTeacher());
+		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(teacher);
 		endTransaction();
 		
 		assertEquals(1, unsentBookings.size());
@@ -95,27 +63,14 @@ public class TestBookingDAO extends WicketSpringTestCase {
 	public void testNewBookingsMailSent() {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
-		PeriodDAO periodDAO = getPeriodDAO();
 		
-		Period period = periodDAO.get(1L);
-		endTransaction();
-		
-		Pupil pupil = (Pupil) personDAO.getPerson(6L);
+		Teacher teacher = (Teacher) personDAO.getPerson(2L);
 		endTransaction();
 		
 		// First create a list of new bookings
-		PupilBooking pupilBooking = bookingDAO.createPupilBookingObject();
-		pupilBooking.setPeriod(period);
-		pupilBooking.setPupil(pupil);
-		pupilBooking.setPaid(false);
-		pupilBooking.setNotificationSent(false);
-		pupilBooking.setCreateDate(new DateTime().minusHours(3).toDate());
-		pupilBooking.setDate(new DateTime(2007, 3, 12, 11, 0, 0, 0).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0));
 		
-		bookingDAO.book(pupilBooking);
-		endTransaction();
-		
-		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(pupil.getTeacher());
+		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(teacher);
 		endTransaction();
 		
 		assertEquals(1, unsentBookings.size());
@@ -123,10 +78,44 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		bookingDAO.newBookingsMailSent(unsentBookings);
 		endTransaction();
 		
-		unsentBookings = bookingDAO.getUnsentBookings(pupil.getTeacher());
+		unsentBookings = bookingDAO.getUnsentBookings(teacher);
 		endTransaction();
 		
 		assertEquals(0, unsentBookings.size());
+	}
+	
+	public void testGetBookings() {
+		BookingDAO bookingDAO = getBookingDAO();
+		PersonDAO personDAO = getPersonDAO();
+		
+		Teacher teacher = (Teacher) personDAO.getPerson(2L);
+		endTransaction();
+		
+		// Create some bookings
+		createPupilBooking(1, 6, new DateTime(2007, 6, 11, 11, 0, 0, 0));
+		createPupilBooking(1, 6, new DateTime(2007, 6, 13, 11, 0, 0, 0));
+		createPupilBooking(1, 6, new DateTime(2007, 6, 15, 11, 0, 0, 0));
+		
+		createTeacherBooking(1, 2, new DateTime(2007, 6, 11, 12, 0, 0, 0));
+		createTeacherBooking(1, 2, new DateTime(2007, 6, 13, 12, 0, 0, 0));
+		createTeacherBooking(1, 2, new DateTime(2007, 6, 15, 12, 0, 0, 0));
+		
+		DateMidnight fromDate = new DateMidnight(2007, 6, 11);
+		DateMidnight toDate = new DateMidnight(2007, 6, 17);
+		Bookings bookings = bookingDAO.getBookings(teacher, fromDate, toDate);
+		endTransaction();
+		
+		assertNotNull(bookings);
+		
+		assertEquals(6, bookings.getBookingList().size());
+		
+		for (Booking booking : bookings.getBookingList()) {
+			DateTime date = new DateTime(booking.getDate());
+			assertTrue(fromDate.isBefore(date));
+			assertTrue(toDate.isAfter(date));
+			
+			assertEquals(new Long(1), booking.getPeriod().getId());
+		}
 	}
 	
 }

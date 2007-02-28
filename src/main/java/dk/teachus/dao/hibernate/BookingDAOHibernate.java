@@ -8,6 +8,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
@@ -44,9 +45,15 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 			if (pupilBooking.getPupil().isActive() == false) {
 				throw new IllegalArgumentException("Can only book for active pupils");
 			}
+			
+			// Ensure that the teacher property is set
+			if (pupilBooking.getTeacher() == null) {
+				pupilBooking.setTeacher(pupilBooking.getPupil().getTeacher());
+			}
 		}
 		
 		getHibernateTemplate().save(booking);
+		getHibernateTemplate().flush();
 	}
 
 	@Transactional(readOnly=true)
@@ -61,35 +68,6 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	
 	public void deleteBooking(Booking booking) {
 		getHibernateTemplate().delete(booking);
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
-	public Bookings getBookingsForDate(Period period, Date date) {
-		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
-		
-		DateTime start = new DateTime(date).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
-		DateTime end = new DateTime(date).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
-		
-		c.add(Restrictions.eq("period", period));
-		c.add(Restrictions.between("date", start.toDate(), end.toDate()));
-		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
-		
-		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
-		List<Booking> filteredBookings = new ArrayList<Booking>();
-		for (Booking booking : bookings) {
-			if (booking instanceof PupilBooking) {
-				PupilBooking pupilBooking = (PupilBooking) booking;
-				if (pupilBooking.getPupil().isActive()) {
-					filteredBookings.add(booking);
-				}
-			} else {
-				filteredBookings.add(booking);
-			}
-		}
-		
-		return new BookingsImpl(bookings);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -206,8 +184,6 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		return getHibernateTemplate().findByCriteria(c);
 	}
 	
-
-
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithPaidBookings(Teacher teacher) {
@@ -216,4 +192,37 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		return years;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate) {
+		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
+		
+		DateTime start = new DateTime(fromDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+		DateTime end = new DateTime(toDate).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
+		
+		c.add(Restrictions.eq("teacher", teacher));
+		c.add(Restrictions.between("date", start.toDate(), end.toDate()));
+		
+		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		
+		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
+		List<Booking> filteredBookings = filterBookings(bookings);
+		
+		return new BookingsImpl(filteredBookings);
+	}
+
+	private List<Booking> filterBookings(List<Booking> bookings) {
+		List<Booking> filteredBookings = new ArrayList<Booking>();
+		for (Booking booking : bookings) {
+			if (booking instanceof PupilBooking) {
+				PupilBooking pupilBooking = (PupilBooking) booking;
+				if (pupilBooking.getPupil().isActive()) {
+					filteredBookings.add(booking);
+				}
+			} else {
+				filteredBookings.add(booking);
+			}
+		}
+		return filteredBookings;
+	}
 }

@@ -14,4 +14,7 @@ public interface Booking extends Serializable {
 	
 	Date getCreateDate();
 	void setCreateDate(Date createDate);
+	
+	Teacher getTeacher();
+	void setTeacher(Teacher teacher);
 }

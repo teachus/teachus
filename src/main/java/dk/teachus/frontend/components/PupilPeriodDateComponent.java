@@ -4,12 +4,10 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import wicket.Component;
-import dk.teachus.dao.BookingDAO;
 import dk.teachus.domain.Booking;
 import dk.teachus.domain.Bookings;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Pupil;
-import dk.teachus.frontend.TeachUsApplication;
 
 public class PupilPeriodDateComponent extends PeriodDateComponent {
 	private static final long serialVersionUID = 1L;
@@ -17,13 +15,11 @@ public class PupilPeriodDateComponent extends PeriodDateComponent {
 	private Pupil pupil;
 	private Bookings bookings;
 
-	public PupilPeriodDateComponent(String id, Pupil pupil, Period period, DateMidnight date) {
+	public PupilPeriodDateComponent(String id, Pupil pupil, Period period, DateMidnight date, Bookings bookings) {
 		super(id, period, date);
 		
-		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		
 		this.pupil = pupil;
-		this.bookings = bookingDAO.getBookingsForDate(period, date.toDate());
+		this.bookings = bookings;
 	}
 
 	@Override

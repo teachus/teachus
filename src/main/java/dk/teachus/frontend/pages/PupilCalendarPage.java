@@ -1,13 +1,17 @@
 package dk.teachus.frontend.pages;
 
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.format.DateTimeFormatter;
 
 import wicket.ResourceReference;
 import wicket.markup.html.link.Link;
+import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
+import dk.teachus.domain.Bookings;
+import dk.teachus.domain.DatePeriod;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Periods;
 import dk.teachus.domain.Pupil;
@@ -55,6 +59,7 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 		
 		add(new CalendarPanel("calendar", pageDate, periods) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
+			private Bookings bookings;
 
 			@Override
 			protected Link createBackLink(String wicketId, final DateMidnight previousWeekDate) {
@@ -79,10 +84,17 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 					}			
 				};
 			}
+			
+			@Override
+			protected void onIntervalDetermined(List<DatePeriod> dates, DateMidnight firstDate, DateMidnight lastDate) {
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				bookings = bookingDAO.getBookings(pupil.getTeacher(), firstDate, lastDate);
+			}
 
 			@Override
 			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date) {
-				return new PupilPeriodDateComponent("period", pupil, period, new DateMidnight(date)); //$NON-NLS-1$
+				DateMidnight dateMidnight = new DateMidnight(date);
+				return new PupilPeriodDateComponent("period", pupil, period, dateMidnight, bookings); //$NON-NLS-1$
 			}
 			
 			@Override

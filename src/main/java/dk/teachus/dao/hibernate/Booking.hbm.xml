@@ -19,6 +19,8 @@
 		<property name="date" column="date" type="timestamp" />
 		
 		<property name="createDate" column="create_date" type="timestamp" />
+	
+		<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
 		
 		<subclass name="PupilBookingImpl" discriminator-value="PUPIL">
 			<many-to-one name="pupil" column="pupil_id" class="PupilImpl" cascade="none" fetch="join" />
@@ -28,9 +30,7 @@
 			<property name="paid" column="paid" type="dk.teachus.dao.hibernate.BooleanType" />
 		</subclass>
 		
-		<subclass name="TeacherBookingImpl" discriminator-value="TEACHER">
-			<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
-		</subclass>
+		<subclass name="TeacherBookingImpl" discriminator-value="TEACHER" />
     </class>
 
 </hibernate-mapping>
