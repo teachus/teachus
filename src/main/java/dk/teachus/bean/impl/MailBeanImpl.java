@@ -110,7 +110,7 @@ public class MailBeanImpl implements MailBean {
 					MimeMessageHelper message = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 	
 					// Sender and recipient
-					String fromEmail = "teachus@billen.dk";
+					String fromEmail = "notification@teachus.dk";
 					String fromName = "TeachUs Booking System";
 					
 					message.setFrom(new InternetAddress(fromEmail, fromName));
