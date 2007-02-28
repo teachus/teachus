@@ -85,7 +85,7 @@ public class MailBeanImpl implements MailBean {
 						model.put("name", HtmlUtils.htmlEscape(pupil.getName()));
 						model.put("username", HtmlUtils.htmlEscape(pupil.getUsername()));
 						model.put("password", HtmlUtils.htmlEscape(pupil.getPassword()));
-						String template = velocityBean.mergeTemplate("dk/frankbille/teachus/bean/impl/WelcomeMail.vm", model);
+						String template = velocityBean.mergeTemplate("dk/teachus/bean/impl/WelcomeMail.vm", model);
 						
 						// Subject
 						// First line in parsed template is the subject
@@ -141,7 +141,7 @@ public class MailBeanImpl implements MailBean {
 					model.put("dateHeader", bundle.getString("dateHeader"));
 					model.put("from", HtmlUtils.htmlEscape(fromName));
 					model.put("pupilBookingList", pupilBookingList);
-					String template = velocityBean.mergeTemplate("dk/frankbille/teachus/bean/impl/NewBookingsMail.vm", model);
+					String template = velocityBean.mergeTemplate("dk/teachus/bean/impl/NewBookingsMail.vm", model);
 					
 					// Subject
 					// First line in parsed template is the subject
