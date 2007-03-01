@@ -1,4 +1,4 @@
-package dk.teachus.frontend.pages;
+package dk.teachus.frontend.pages.calendar;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +21,7 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.CalendarPanel;
 import dk.teachus.frontend.components.PeriodDateComponent;
 import dk.teachus.frontend.components.PupilPeriodDateComponent;
+import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.Formatters;
 import dk.teachus.frontend.utils.Resources;
 

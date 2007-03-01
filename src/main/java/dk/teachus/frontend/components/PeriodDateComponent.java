@@ -59,7 +59,7 @@ public abstract class PeriodDateComponent extends Panel {
 									
 					row.add(getTimeContent("content", period, time)); //$NON-NLS-1$
 					
-					time = time.plusHours(1);
+					time = time.plusMinutes(period.getLessonDuration());
 				}
 			}
 			

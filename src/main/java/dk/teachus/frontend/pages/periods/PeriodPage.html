@@ -23,8 +23,18 @@
 		<td><select wicket:id="endTime" /></td>
 	</tr>
 	<tr>
-		<td wicket:id="priceLabel"></td>
-		<td><input type="text" wicket:id="price" /></td>
+		<td>
+			<span wicket:id="priceLabel"></span>
+			(<span wicket:id="currencyLabel"></span>)
+		</td>
+		<td><input type="text" wicket:id="price" size="6" /></td>
+	</tr>
+	<tr>
+		<td>
+			<span wicket:id="lessonDurationLabel"></span>
+			(<span wicket:id="minutesLabel"></span>)
+		</td>
+		<td><input type="text" wicket:id="lessonDuration" size="4" /></td>
 	</tr>
 	<tr>
 		<td wicket:id="weekDaysLabel" valign="top"></td>

@@ -18,6 +18,8 @@ import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
+import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
 import dk.teachus.frontend.pages.periods.PeriodsPage;
 import dk.teachus.frontend.pages.persons.AdminPage;
 import dk.teachus.frontend.pages.persons.AdminsPage;

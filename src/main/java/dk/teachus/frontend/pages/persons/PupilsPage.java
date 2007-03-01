@@ -13,7 +13,7 @@ import dk.teachus.domain.impl.PupilImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.pages.PupilCalendarPage;
+import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.utils.Resources;
 
 public class PupilsPage extends PersonsPage<Pupil> {

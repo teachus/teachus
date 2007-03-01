@@ -6,6 +6,7 @@ import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 

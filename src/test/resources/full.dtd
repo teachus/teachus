@@ -31,6 +31,7 @@
     week_days CDATA #IMPLIED
     teacher_id CDATA #IMPLIED
     price CDATA #IMPLIED
+    lesson_duration CDATA #IMPLIED
 >
 
 <!ELEMENT booking EMPTY>

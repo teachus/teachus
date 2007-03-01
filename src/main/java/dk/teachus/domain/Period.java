@@ -25,6 +25,11 @@ public interface Period {
 	
 	double getPrice();
 	
+	/**
+	 * @return The duration of a lesson in minutes
+	 */
+	int getLessonDuration();
+	
 	void setName(String name);
 
 	void setEndDate(Date endDate);
@@ -38,7 +43,12 @@ public interface Period {
 	void setTeacher(Teacher teacher);
 	
 	void setPrice(double price);
+	
+	void setLessonDuration(int minutes);
 
+	/*
+	 * Utility methods
+	 */
 	void addWeekDay(WeekDay weekDay);
 
 	boolean hasWeekDay(Date date);
