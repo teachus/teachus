@@ -4,7 +4,7 @@
 	<groupId>dk.teachus</groupId>
 	<artifactId>teachus</artifactId>
 	<packaging>war</packaging>
-	<version>1.12-SNAPSHOT</version>
+	<version>1.12</version>
 	<name>TeachUs</name>
 	<description>Scheduling system for private teachers.</description>
 
@@ -220,8 +220,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://svn.billen.dk/dk.teachus/trunk</connection>
-		<developerConnection>scm:svn:http://svn.billen.dk/dk.teachus/trunk</developerConnection>
+		<connection>scm:svn:http://svn.billen.dk/dk.teachus/releases/teachus-1.12</connection>
+		<developerConnection>scm:svn:http://svn.billen.dk/dk.teachus/releases/teachus-1.12</developerConnection>
 	</scm>
 	
 	<developers>
