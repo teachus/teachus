@@ -1,13 +1,13 @@
 package dk.teachus.frontend;
 
-import dk.teachus.frontend.pages.AuthenticatedBasePage;
-import dk.teachus.frontend.pages.SignInPage;
 import wicket.authorization.strategies.page.SimplePageAuthorizationStrategy;
+import dk.teachus.frontend.pages.AuthenticatedBasePage;
+import dk.teachus.frontend.pages.HomePage;
 
 public class TeachUsAuthentication extends SimplePageAuthorizationStrategy {
 
 	public TeachUsAuthentication() {
-		super(AuthenticatedBasePage.class, SignInPage.class);
+		super(AuthenticatedBasePage.class, HomePage.class);
 	}
 
 	@Override

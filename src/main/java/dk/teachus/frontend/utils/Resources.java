@@ -7,6 +7,9 @@ import dk.teachus.frontend.TeachUsApplication;
 
 public abstract class Resources {
 
+	/*
+	 * ICONS
+	 */
 	public static final ResourceReference AVAILABLE = new ResourceReference(TeachUsApplication.class, "resources/img/available_static.png"); //$NON-NLS-1$
 	public static final ResourceReference BOOKED = new ResourceReference(TeachUsApplication.class, "resources/img/booked.png"); //$NON-NLS-1$
 	public static final ResourceReference OCCUPIED = new ResourceReference(TeachUsApplication.class, "resources/img/occupied.png");
@@ -15,8 +18,33 @@ public abstract class Resources {
 	public static final ResourceReference UNPAID = new ResourceReference(TeachUsApplication.class, "resources/img/unpaid.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAID = new ResourceReference(TeachUsApplication.class, "resources/img/paid.png"); //$NON-NLS-1$;
 	
+	/*
+	 * CSS and JS
+	 */
 	public static final ResourceReference CSS_ANDREAS09 = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09.css"); //$NON-NLS-1$
 	public static final ResourceReference CSS_SCREEN = new CompressedResourceReference(TeachUsApplication.class, "resources/screen.css"); //$NON-NLS-1$
 	public static final ResourceReference JS_PROTOTYPE = new JavascriptResourceReference(TeachUsApplication.class, "resources/prototype.js"); //$NON-NLS-1$
+	
+	/*
+	 * SCREENSHOTS
+	 */
+	public static final ResourceReference SCREENSHOT_1 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot1.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_1_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot1_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_2 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot2.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_2_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot2_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_3 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot3.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_3_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot3_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_4 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot4.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_4_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot4_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_5 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot5.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_5_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot5_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_6 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot6.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_6_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot6_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_7 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot7.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_7_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot7_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_8 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot8.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_8_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot8_thumb.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_9 = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot9.png"); //$NON-NLS-1$;
+	public static final ResourceReference SCREENSHOT_9_THUMB = new ResourceReference(TeachUsApplication.class, "resources/screenshots/screenshot9_thumb.jpg"); //$NON-NLS-1$;
 	
 }

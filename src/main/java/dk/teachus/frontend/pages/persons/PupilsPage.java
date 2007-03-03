@@ -107,7 +107,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.PUPILS;
+		return AuthenticatedPageCategory.PUPILS;
 	}
 	
 }

@@ -32,7 +32,7 @@ public class TeacherPage extends PersonPage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.TEACHERS;
+		return AuthenticatedPageCategory.TEACHERS;
 	}
 
 	protected String getPageLabel() {

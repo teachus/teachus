@@ -48,7 +48,7 @@ public class PupilPage extends PersonPage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.PUPILS;
+		return AuthenticatedPageCategory.PUPILS;
 	}
 
 	protected String getPageLabel() {

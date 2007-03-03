@@ -117,7 +117,7 @@ padding:0;
 #leftside,#rightside {
 margin:0;
 padding:0 10px 10px;
-width:165px;
+width:200px;
 }
 
 #leftside {
@@ -195,7 +195,7 @@ color:#2a2a2a;
 padding:15px 20px 20px;
 }
 
-#content {margin:0 0;}
+#content {margin:0 235px 0 20px;}
 #contentalt {margin:0 20px 0 20px;}
 
 #content h1,#content h2,#contentalt h1,#contentalt h2 {

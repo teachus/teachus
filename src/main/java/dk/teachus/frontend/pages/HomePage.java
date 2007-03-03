@@ -1,5 +1,6 @@
 package dk.teachus.frontend.pages;
 
+import wicket.Page;
 import wicket.RestartResponseAtInterceptPageException;
 import dk.teachus.domain.Admin;
 import dk.teachus.domain.Person;
@@ -10,7 +11,7 @@ import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 
-public class HomePage extends UnAuthenticatedBasePage {
+public class HomePage extends Page {
 	private static final long serialVersionUID = 1L;
 
 	public HomePage() {
@@ -27,18 +28,10 @@ public class HomePage extends UnAuthenticatedBasePage {
 				page = PupilCalendarPage.class;
 			}
 		} else {
-			page = SignInPage.class;
+			page = InfoPage.class;
 		}
 		
 		throw new RestartResponseAtInterceptPageException(page);
-	}
-
-	protected PageCategory getPageCategory() {
-		return null;
-	}
-
-	protected String getPageLabel() {
-		return null;
 	}
 
 }

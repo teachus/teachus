@@ -101,7 +101,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.CALENDAR;
+		return AuthenticatedPageCategory.CALENDAR;
 	}
 
 }

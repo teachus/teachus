@@ -77,7 +77,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.PAYMENT;
+		return AuthenticatedPageCategory.PAYMENT;
 	}
 
 }

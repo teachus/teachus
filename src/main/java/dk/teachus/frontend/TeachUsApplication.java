@@ -23,8 +23,8 @@ import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
+import dk.teachus.frontend.pages.InfoPage;
 import dk.teachus.frontend.pages.PaymentPage;
-import dk.teachus.frontend.pages.SignInPage;
 import dk.teachus.frontend.pages.SignOutPage;
 import dk.teachus.frontend.pages.SignedOutPage;
 import dk.teachus.frontend.pages.TeacherSettingsPage;
@@ -48,10 +48,7 @@ public class TeachUsApplication extends WebApplication {
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
 		
-		getResourceSettings().setStripJavascriptCommentsAndWhitespace(false);
-		
 		// Bookmarkable pages
-		mountBookmarkablePage("/signin", SignInPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signout", SignOutPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signedout", SignedOutPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/calendar", PupilCalendarPage.class); //$NON-NLS-1$
@@ -66,6 +63,7 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/stats", StatsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperperiod", IncomePerPeriodPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {
@@ -109,7 +107,7 @@ public class TeachUsApplication extends WebApplication {
 	public List<Locale> getAvailableLocales() {
 		return Arrays.asList(new Locale[] {
 				new Locale("en", "US"), //$NON-NLS-1$ //$NON-NLS-2$
-				new Locale("da", "DK"), //$NON-NLS-1$ //$NON-NLS-2$
+				new Locale("da"), //$NON-NLS-1$
 				new Locale("da", "DK", "singers") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		});
 	}

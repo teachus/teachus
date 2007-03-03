@@ -79,7 +79,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.PERIODS;
+		return AuthenticatedPageCategory.PERIODS;
 	}
 
 }

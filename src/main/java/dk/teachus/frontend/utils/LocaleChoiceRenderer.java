@@ -3,10 +3,8 @@ package dk.teachus.frontend.utils;
 import java.util.Locale;
 import java.util.Properties;
 
-import dk.teachus.frontend.TeachUsSession;
-
-import wicket.Session;
 import wicket.markup.html.form.ChoiceRenderer;
+import dk.teachus.frontend.TeachUsSession;
 
 public class LocaleChoiceRenderer extends ChoiceRenderer {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +17,7 @@ public class LocaleChoiceRenderer extends ChoiceRenderer {
 			if (object instanceof Locale) {
 				Locale locale = (Locale) object;
 				
-				display.append(locale.getDisplayLanguage(Session.get().getLocale()));
+				display.append(locale.getDisplayLanguage(locale));
 				
 				if ("singers".equals(locale.getVariant())) {
 					display.append(" (");

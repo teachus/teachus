@@ -49,7 +49,7 @@ public class AdminsPage extends PersonsPage<Admin> {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.ADMINS;
+		return AuthenticatedPageCategory.ADMINS;
 	}
 
 }

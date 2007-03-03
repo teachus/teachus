@@ -111,9 +111,9 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	@Override
 	protected PageCategory getPageCategory() {
 		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
-			return PageCategory.PUPILS;
+			return AuthenticatedPageCategory.PUPILS;
 		} else {
-			return PageCategory.CALENDAR;
+			return AuthenticatedPageCategory.CALENDAR;
 		}
 	}
 	

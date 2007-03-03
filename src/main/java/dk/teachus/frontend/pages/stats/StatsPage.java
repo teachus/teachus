@@ -17,7 +17,7 @@ public class StatsPage extends AbstractStatisticsPage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.STATISTICS;
+		return AuthenticatedPageCategory.STATISTICS;
 	}
 
 }

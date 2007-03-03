@@ -77,7 +77,7 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 
 	@Override
 	protected PageCategory getPageCategory() {
-		return PageCategory.SETTINGS;
+		return AuthenticatedPageCategory.SETTINGS;
 	}
 
 }

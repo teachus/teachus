@@ -4,8 +4,29 @@ a img {
 	border: 0;
 }
 
-#contentalt.nomenu {
-	margin-top: 70px;
+.contentaltBottom {
+	background-color:white;
+	border:1px solid #909090;
+	color:#2a2a2a;
+	padding:15px 20px 20px;
+	margin: 20px;
+	margin-bottom: 0;
+}
+
+ul p {
+	margin: 0;
+}
+
+.screenshots img {
+	vertical-align: top;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+/* SIGNIN */
+
+.signin td {
+	padding-bottom: 10px;
 }
 
 /* FORM */
@@ -144,7 +165,6 @@ table.border {
 	border-bottom: 0;
 	width: 100%;
 	margin-top: 10px;
-	margin-bottom: 20px;
 }
 
 .list tbody tr:hover td {
