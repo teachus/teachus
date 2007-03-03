@@ -9,6 +9,7 @@ import wicket.behavior.HeaderContributor;
 import wicket.markup.html.IHeaderContributor;
 import wicket.markup.html.IHeaderResponse;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.form.Button;
 import wicket.markup.html.form.CheckBox;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.FormComponentLabel;
@@ -18,6 +19,7 @@ import wicket.markup.html.form.persistence.CookieValuePersister;
 import wicket.markup.html.form.persistence.IValuePersister;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
+import wicket.model.Model;
 import wicket.protocol.http.WebApplication;
 import dk.teachus.frontend.TeachUsSession;
 
@@ -68,6 +70,7 @@ public class SignInPage extends BasePage {
 		signInForm.add(remember);
 		signInForm.add(new FormComponentLabel("rememberLabel", remember).add(new Label("rememberLabel", TeachUsSession.get().getString("General.remember")).setRenderBodyOnly(true)));
 		
+		signInForm.add(new Button("signIn", new Model("Log ind")));
 //		signInForm.add(new ("signIn", Resources.SIGN_IN)); //$NON-NLS-1$
 		
 		add(new HeaderContributor(new IHeaderContributor() {
