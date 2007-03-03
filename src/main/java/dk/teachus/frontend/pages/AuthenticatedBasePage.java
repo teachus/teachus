@@ -3,15 +3,7 @@ package dk.teachus.frontend.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DateMidnight;
-
 import wicket.RestartResponseAtInterceptPageException;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.link.Link;
-import wicket.markup.repeater.RepeatingView;
 import wicket.protocol.http.WebApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -24,20 +16,6 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
 
 public abstract class AuthenticatedBasePage extends BasePage {
-	public static enum PageCategory {
-		ADMINS,
-		TEACHERS,
-		PUPILS,
-		AGENDA,
-		SETTINGS,
-		PERIODS,
-		STATISTICS,
-		PAYMENT,
-		CALENDAR,
-		SIGNOUT
-	}
-	
-	private boolean attached = false;
 	
 	public AuthenticatedBasePage(UserLevel userLevel) {
 		this(userLevel, false);
@@ -57,32 +35,11 @@ public abstract class AuthenticatedBasePage extends BasePage {
 				throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
 			}
 		}
-		
-		List<MenuItem> menuItemsList = createMenuItems();		
-		
-		RepeatingView menuItems = new RepeatingView("menuItems"); //$NON-NLS-1$
-		add(menuItems);
-		
-		for (MenuItem menuItem : menuItemsList) {
-			WebMarkupContainer menuItemContainer = new WebMarkupContainer(menuItems.newChildId());
-			menuItems.add(menuItemContainer);
-			
-			Link menuLink = new BookmarkablePageLink("menuLink", menuItem.getBookmarkablePage());
-			menuItemContainer.add(menuLink);
-			
-			if (menuItem.getPageCategory() == getPageCategory()) {
-				menuLink.add(new SimpleAttributeModifier("class", "current"));
-			}
-			
-			menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
-		}
-		
-		
-		
-		add(new Label("copyright", "2006-"+new DateMidnight().getYear()+" TeachUs Booking Systems"));
+
 	}
 
-	private List<MenuItem> createMenuItems() {
+	@Override
+	protected List<MenuItem> createMenuItems() {
 		TeachUsSession teachUsSession = TeachUsSession.get();
 		
 		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
@@ -111,24 +68,8 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
 			menuItemsList.add(new MenuItem(SignOutPage.class, teachUsSession.getString("AuthenticatedBasePage.signOut"), PageCategory.SIGNOUT)); //$NON-NLS-1$
 		}
+		
 		return menuItemsList;
 	}
-	
-	@Override
-	protected final void onAttach() {
-		if (attached == false) {
-			add(new Label("pageLabel", getPageLabel())); //$NON-NLS-1$
-			attached = true;
-		}
-		
-		onAttach2();
-	}
-	
-	protected void onAttach2() {
-	}
-	
-	protected abstract String getPageLabel();
-	
-	protected abstract PageCategory getPageCategory();
 	
 }

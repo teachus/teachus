@@ -23,7 +23,7 @@ import wicket.model.Model;
 import wicket.protocol.http.WebApplication;
 import dk.teachus.frontend.TeachUsSession;
 
-public class SignInPage extends BasePage {
+public class SignInPage extends UnAuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
 	private User user;
@@ -39,8 +39,6 @@ public class SignInPage extends BasePage {
 			}
 		};
 		add(signInForm);
-
-//		signInForm.add(new Image("signInIcon", Resources.LOCK)); //$NON-NLS-1$
 		
 		signInForm.add(new Label("signInLabel", TeachUsSession.get().getString("SignInPage.signIn"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
@@ -100,6 +98,14 @@ public class SignInPage extends BasePage {
 		if (teachUsSession.isAuthenticated()) {
 			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
 		}
+	}
+
+	protected PageCategory getPageCategory() {
+		return null;
+	}
+
+	protected String getPageLabel() {
+		return null;
 	}
 
 	public static class User implements Serializable {

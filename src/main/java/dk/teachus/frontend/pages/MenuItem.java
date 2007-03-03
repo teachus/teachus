@@ -3,7 +3,7 @@ package dk.teachus.frontend.pages;
 import java.io.Serializable;
 
 import wicket.markup.html.WebPage;
-import dk.teachus.frontend.pages.AuthenticatedBasePage.PageCategory;
+import dk.teachus.frontend.pages.BasePage.PageCategory;
 
 public class MenuItem implements Serializable {
 	private static final long serialVersionUID = 1L;

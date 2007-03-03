@@ -51,4 +51,8 @@ public class PupilPage extends PersonPage {
 		return PageCategory.PUPILS;
 	}
 
+	protected String getPageLabel() {
+		return null;
+	}
+
 }

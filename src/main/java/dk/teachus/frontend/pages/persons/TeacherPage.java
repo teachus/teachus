@@ -35,4 +35,8 @@ public class TeacherPage extends PersonPage {
 		return PageCategory.TEACHERS;
 	}
 
+	protected String getPageLabel() {
+		return null;
+	}
+
 }

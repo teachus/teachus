@@ -4,6 +4,10 @@ a img {
 	border: 0;
 }
 
+#contentalt.nomenu {
+	margin-top: 70px;
+}
+
 /* FORM */
 
 .form {

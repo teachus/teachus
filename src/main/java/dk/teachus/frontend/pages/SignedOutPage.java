@@ -6,7 +6,7 @@ import wicket.markup.html.WebComponent;
 import wicket.markup.html.basic.Label;
 import wicket.request.target.component.BookmarkablePageRequestTarget;
 
-public class SignedOutPage extends BasePage {
+public class SignedOutPage extends UnAuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public SignedOutPage() {
@@ -18,6 +18,14 @@ public class SignedOutPage extends BasePage {
 		add(refresh);
 		
 		add(new Label("signedOutText", "Du er nu logget ud af systemet."));
+	}
+
+	protected PageCategory getPageCategory() {
+		return null;
+	}
+
+	protected String getPageLabel() {
+		return null;
 	}
 	
 }

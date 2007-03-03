@@ -25,5 +25,9 @@ public class AdminPage extends PersonPage {
 	protected PageCategory getPageCategory() {
 		return PageCategory.ADMINS;
 	}
+
+	protected String getPageLabel() {
+		return null;
+	}
 	
 }

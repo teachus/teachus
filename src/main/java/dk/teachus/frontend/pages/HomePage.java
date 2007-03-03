@@ -10,7 +10,7 @@ import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 
-public class HomePage extends BasePage {
+public class HomePage extends UnAuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public HomePage() {
@@ -31,6 +31,14 @@ public class HomePage extends BasePage {
 		}
 		
 		throw new RestartResponseAtInterceptPageException(page);
+	}
+
+	protected PageCategory getPageCategory() {
+		return null;
+	}
+
+	protected String getPageLabel() {
+		return null;
 	}
 
 }
