@@ -98,17 +98,27 @@ public abstract class CalendarPanel extends Panel {
 			DateTimeFormatter formatWeekOfYear = Formatters.getFormatWeekOfYear();
 			Label weekHeader = null;
 			int daysInWeek = 0;
+			int localWeekNumber = 0;
+			
+			// Calculate the number of weeks
+			int numberOfWeeks = calculateNumberOfWeeks(dates);
+
 			for (DatePeriod datePeriod : dates) {
 				Date date = datePeriod.getDate();
 				DateMidnight dm = new DateMidnight(date);
 				
 				if (dm.getWeekOfWeekyear() != w) {
+					localWeekNumber++;
+					
 					if (weekHeader != null) {
 						weekHeader.add(new SimpleAttributeModifier("colspan", ""+daysInWeek)); //$NON-NLS-1$ //$NON-NLS-2$
 					}
 					daysInWeek = 0;
 					
 					WebMarkupContainer week = new WebMarkupContainer(weeks.newChildId());
+					if (localWeekNumber < numberOfWeeks) {
+						week.add(new SimpleAttributeModifier("class", "week"));
+					}
 					weeks.add(week);
 					
 					weekHeader = new Label("weekHeader", formatWeekOfYear.print(dm)); //$NON-NLS-1$
@@ -151,6 +161,21 @@ public abstract class CalendarPanel extends Panel {
 			forwardLink.add(new Image("forwardIcon", Resources.RIGHT)); //$NON-NLS-1$ //$NON-NLS-2$
 			calendar.add(forwardLink);
 		}
+	}
+
+	private int calculateNumberOfWeeks(List<DatePeriod> dates) {
+		int w = -1;
+		int numberOfWeeks = 0;
+		
+		for (DatePeriod datePeriod : dates) {
+			Date date = datePeriod.getDate();
+			DateMidnight dm = new DateMidnight(date);
+			if (dm.getWeekOfWeekyear() != w) {
+				w = dm.getWeekOfWeekyear();
+				numberOfWeeks++;
+			}
+		}
+		return numberOfWeeks;
 	}
 
 	protected abstract Link createBackLink(String wicketId, DateMidnight previousWeekDate);

@@ -35,6 +35,10 @@ table.border {
 	width: 1%;
 }
 
+.week {
+	padding-right: 10px;
+}
+
 .day {
 	border: 1px solid gray;
 	width: 1%;

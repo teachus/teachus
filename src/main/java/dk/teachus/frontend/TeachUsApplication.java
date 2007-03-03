@@ -15,6 +15,8 @@ import wicket.RequestCycle;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequestCycle;
+import wicket.util.io.IObjectStreamFactory;
+import wicket.util.lang.Objects;
 import dk.teachus.bean.MailBean;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
@@ -41,7 +43,7 @@ public class TeachUsApplication extends WebApplication {
 	
 	@Override
 	protected void init() {
-//		Objects.setObjectStreamFactory(new IObjectStreamFactory.DefaultObjectStreamFactory());
+		Objects.setObjectStreamFactory(new IObjectStreamFactory.DefaultObjectStreamFactory());
 		
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
