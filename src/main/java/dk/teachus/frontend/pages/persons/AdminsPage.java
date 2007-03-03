@@ -2,25 +2,18 @@ package dk.teachus.frontend.pages.persons;
 
 import java.util.List;
 
-import wicket.ResourceReference;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Admin;
 import dk.teachus.domain.impl.AdminImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.utils.Resources;
 
 public class AdminsPage extends PersonsPage<Admin> {
 	private static final long serialVersionUID = 1L;
 	
 	public AdminsPage() {
 		super(UserLevel.ADMIN);
-	}
-	
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.ADMIN;
 	}
 
 	@Override

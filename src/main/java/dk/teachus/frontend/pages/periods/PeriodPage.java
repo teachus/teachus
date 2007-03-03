@@ -8,7 +8,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 import wicket.Component;
-import wicket.ResourceReference;
 import wicket.ajax.AjaxEventBehavior;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.markup.html.form.AjaxSubmitButton;
@@ -34,7 +33,6 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
-import dk.teachus.frontend.utils.Resources;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
@@ -189,11 +187,6 @@ public class PeriodPage extends AuthenticatedBasePage {
 	private void createNameField(Form form) {
 		form.add(new Label("nameLabel", TeachUsSession.get().getString("General.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		form.add(new TextField("name").setRequired(true)); //$NON-NLS-1$
-	}
-	
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.PERIOD;
 	}
 
 	@Override

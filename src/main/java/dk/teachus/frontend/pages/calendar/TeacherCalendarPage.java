@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.joda.time.DateMidnight;
 
+import wicket.RestartResponseAtInterceptPageException;
+import wicket.markup.html.link.Link;
+import wicket.protocol.http.WebApplication;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.domain.Bookings;
@@ -19,11 +22,6 @@ import dk.teachus.frontend.components.CalendarPanel;
 import dk.teachus.frontend.components.PeriodDateComponent;
 import dk.teachus.frontend.components.TeacherPeriodDateComponent;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
-import dk.teachus.frontend.utils.Resources;
-import wicket.ResourceReference;
-import wicket.RestartResponseAtInterceptPageException;
-import wicket.markup.html.link.Link;
-import wicket.protocol.http.WebApplication;
 
 public class TeacherCalendarPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -94,11 +92,6 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 			}
 			
 		});
-	}
-
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.CALENDAR;
 	}
 
 	@Override

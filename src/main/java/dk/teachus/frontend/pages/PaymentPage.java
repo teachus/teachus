@@ -2,7 +2,6 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
-import wicket.ResourceReference;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -23,7 +22,6 @@ import dk.teachus.frontend.components.PaidPanel;
 import dk.teachus.frontend.components.RendererPropertyColumn;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
-import dk.teachus.frontend.utils.Resources;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.teachus.frontend.utils.YesNoRenderer;
 
@@ -70,11 +68,6 @@ public class PaymentPage extends AuthenticatedBasePage {
 		};
 
 		add(new ListPanel("list", columns, pupilBookings));
-	}
-	
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.PAYMENT2;
 	}
 
 	@Override

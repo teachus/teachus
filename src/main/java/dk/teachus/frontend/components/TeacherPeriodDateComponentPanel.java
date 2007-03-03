@@ -57,11 +57,13 @@ public class TeacherPeriodDateComponentPanel extends Panel {
 						bookingDAO.book(booking);
 
 						this.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//						replace(new Image("icon", Resources.BOOKED));
 					} else {
 						bookingDAO.deleteBooking(booking);
 						booking = null;
 						
 						this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
+//						replace(new Image("icon", Resources.AVAILABLE));
 					}
 												
 					target.addComponent(this);
@@ -69,6 +71,9 @@ public class TeacherPeriodDateComponentPanel extends Panel {
 			};
 			if (booking != null) {
 				link.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+//				link.add(new Image("icon", Resources.BOOKED));
+			} else {
+//				link.add(new Image("icon", Resources.AVAILABLE));
 			}
 			link.setOutputMarkupId(true);
 			add(link);

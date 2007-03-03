@@ -3,7 +3,6 @@ package dk.teachus.frontend.pages.persons;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.ResourceReference;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Admin;
 import dk.teachus.domain.Person;
@@ -14,18 +13,12 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
-import dk.teachus.frontend.utils.Resources;
 
 public class PupilsPage extends PersonsPage<Pupil> {
 	private static final long serialVersionUID = 1L;
 	
 	public PupilsPage() {
 		super(UserLevel.TEACHER);
-	}
-
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.PUPIL;
 	}
 
 	@Override

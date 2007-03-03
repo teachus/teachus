@@ -40,8 +40,8 @@ public abstract class Resources {
 	public static final ResourceReference STATS = new ResourceReference(TeachUsApplication.class, "resources/stats.png"); //$NON-NLS-1$;
 	public static final ResourceReference SETTINGS = new ResourceReference(TeachUsApplication.class, "resources/settings.png"); //$NON-NLS-1$;
 	
-	public static final ResourceReference CSS_MAIN = new CompressedResourceReference(TeachUsApplication.class, "resources/main.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_ANDREAS09 = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_SCREEN = new CompressedResourceReference(TeachUsApplication.class, "resources/screen.css"); //$NON-NLS-1$
 	public static final ResourceReference JS_PROTOTYPE = new JavascriptResourceReference(TeachUsApplication.class, "resources/prototype.js"); //$NON-NLS-1$
-	
 	
 }

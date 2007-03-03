@@ -6,7 +6,6 @@ import java.util.List;
 import org.joda.time.DateMidnight;
 import org.joda.time.format.DateTimeFormatter;
 
-import wicket.ResourceReference;
 import wicket.markup.html.link.Link;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
@@ -23,7 +22,6 @@ import dk.teachus.frontend.components.PeriodDateComponent;
 import dk.teachus.frontend.components.PupilPeriodDateComponent;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.Formatters;
-import dk.teachus.frontend.utils.Resources;
 
 
 public class PupilCalendarPage extends AuthenticatedBasePage {
@@ -104,12 +102,7 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 			}
 		});
 	}
-
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.CALENDAR;
-	}
-
+	
 	@Override
 	protected String getPageLabel() {
 		return TeachUsSession.get().getString("General.calendarFor")+" "+pupil.getName(); //$NON-NLS-1$ //$NON-NLS-2$

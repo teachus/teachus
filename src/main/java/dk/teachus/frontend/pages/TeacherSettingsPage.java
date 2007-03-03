@@ -2,7 +2,6 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
-import wicket.ResourceReference;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
@@ -15,7 +14,6 @@ import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.utils.Resources;
 
 public class TeacherSettingsPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -70,11 +68,6 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 		}
 		
 		return attribute;
-	}
-	
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.SETTINGS;
 	}
 
 	@Override

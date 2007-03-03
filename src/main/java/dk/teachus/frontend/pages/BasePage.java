@@ -9,7 +9,8 @@ import wicket.markup.html.basic.Label;
 
 public abstract class BasePage extends WebPage {
 	public BasePage() {
-		add(HeaderContributor.forCss(Resources.CSS_MAIN));
+		add(HeaderContributor.forCss(Resources.CSS_ANDREAS09));
+		add(HeaderContributor.forCss(Resources.CSS_SCREEN));
 		add(HeaderContributor.forJavaScript(Resources.JS_PROTOTYPE));
 
 		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle")); //$NON-NLS-1$

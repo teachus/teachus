@@ -3,7 +3,6 @@ package dk.teachus.frontend.pages.periods;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.ResourceReference;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.model.Model;
@@ -22,7 +21,6 @@ import dk.teachus.frontend.components.Toolbar;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
-import dk.teachus.frontend.utils.Resources;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
@@ -73,11 +71,6 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		};
 		
 		add(new ListPanel("list", columns, periods.getPeriods()));
-	}
-
-	@Override
-	protected ResourceReference getPageIcon() {
-		return Resources.PERIOD;
 	}
 
 	@Override
