@@ -32,10 +32,12 @@ a img {
 
 table.border {
 	border: 1px solid gray;
+	width: 1%;
 }
 
 .day {
 	border: 1px solid gray;
+	width: 1%;
 }
 
 .day thead th {
@@ -51,17 +53,18 @@ table.border {
 
 .day tbody td {
 	border-top: 1px solid gray;
-}
-
-.day tbody td.hour {
-	text-align: right;
-	border-right: 1px solid gray;
 	width: 1%;
 }
 
+.day tbody td.hour {
+	padding: 2px;
+	padding-left: 7px;
+	padding-right: 7px;
+	text-align: right;
+	border-right: 1px solid gray;
+}
+
 .day tbody td.content {
-	padding: 0;
-	width: 99%;
 }
 
 .day tbody td.content .label {
