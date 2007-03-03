@@ -20,4 +20,9 @@ public class SignOutPage extends AuthenticatedBasePage {
 		return null;
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.SIGNOUT;
+	}
+
 }

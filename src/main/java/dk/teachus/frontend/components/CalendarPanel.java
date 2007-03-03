@@ -61,12 +61,12 @@ public abstract class CalendarPanel extends Panel {
 		
 		if (showCalendar) {
 			// Navigation form
-			Form navigationForm = new Form("navigationForm");
+			Form navigationForm = new Form("navigationForm"); //$NON-NLS-1$
 			calendar.add(navigationForm);
 			
 			final NavigationModel navigationModel = new NavigationModel(pageDate.toDate());
-			navigationForm.add(new DateField("date", new PropertyModel(navigationModel, "date")));
-			navigationForm.add(new Button("goto", new Model("Gå til")) {
+			navigationForm.add(new DateField("date", new PropertyModel(navigationModel, "date"))); //$NON-NLS-1$ //$NON-NLS-2$
+			navigationForm.add(new Button("goto", new Model(TeachUsSession.get().getString("CalendarPanel.goTo"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				private static final long serialVersionUID = 1L;
 
 				@Override

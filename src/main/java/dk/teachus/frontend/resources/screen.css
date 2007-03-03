@@ -1,3 +1,33 @@
+/* GENERAL */
+
+a img {
+	border: 0;
+}
+
+/* FORM */
+
+.form {
+	margin: 10px;
+	width: 600px;
+}
+
+.form td {
+	padding: 2px;
+	padding-left: 7px;
+	padding-right: 7px;	
+}
+
+.form td.label {
+	width: 1%;
+	white-space: nowrap;
+}
+
+.form textarea {
+	width: 100%;
+	border: 1px solid gray;
+	height: 300px;
+}
+
 /* CALENDAR */
 
 table.border {
@@ -47,19 +77,19 @@ table.border {
 	padding-right: 7px;
 	display: block;
 	height: 16px;
-	background: white url(available_static.png) no-repeat 50% 50%;
+	background: white url(img/available_static.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a.selected {
-	background: white url(booked.png) no-repeat 50% 50%;
+	background: white url(img/booked.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a:hover {
-	background: #eeeeee url(available_static_hover.png) no-repeat 50% 50%;
+	background: #eeeeee url(img/available_static_hover.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a.selected:hover {
-	background: #eeeeee url(booked_hover.png) no-repeat 50% 50%;
+	background: #eeeeee url(img/booked_hover.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a img {
@@ -74,21 +104,26 @@ table.border {
 }
 
 .toolbar td {
-	background: white url(toolbar_back.png) center center repeat-x;
+	background: white url(img/toolbar_back.png) center center repeat-x;
 }
 
 .toolbar .items {
-	background-image: url(toolbar_item_back.png);
 	white-space: nowrap;
 }
 
 .toolbar a {
+	background: url(img/toolbar_item_back.png) repeat-x center center;
 	display: block;
 	padding: 2px;
 	padding-left: 7px;
 	padding-right: 7px;		
 	border-right: 1px solid gray;
 	font-weight: bold;
+}
+
+.toolbar a:hover {
+	background: url(img/toolbar_item_hover_back.png) repeat-x center center;
+	text-decoration: none;
 }
 
 /* LIST */

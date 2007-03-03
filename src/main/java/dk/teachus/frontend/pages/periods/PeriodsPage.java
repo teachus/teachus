@@ -3,7 +3,6 @@ package dk.teachus.frontend.pages.periods;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.ajax.AjaxRequestTarget;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.model.Model;
 import dk.teachus.dao.PeriodDAO;
@@ -40,7 +39,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onEvent(AjaxRequestTarget target) {
+			public void onEvent() {
 				Period period = new PeriodImpl();
 				period.setTeacher(teacher);
 				getRequestCycle().setResponsePage(new PeriodPage(period));
@@ -76,6 +75,11 @@ public class PeriodsPage extends AuthenticatedBasePage {
 	@Override
 	protected String getPageLabel() {
 		return TeachUsSession.get().getString("General.periods"); //$NON-NLS-1$
+	}
+
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.PERIODS;
 	}
 
 }

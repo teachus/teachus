@@ -30,4 +30,9 @@ public class TeacherPage extends PersonPage {
 		return allow;
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.TEACHERS;
+	}
+
 }

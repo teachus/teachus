@@ -75,4 +75,9 @@ public class PaymentPage extends AuthenticatedBasePage {
 		return TeachUsSession.get().getString("General.payment"); //$NON-NLS-1$
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.PAYMENT;
+	}
+
 }

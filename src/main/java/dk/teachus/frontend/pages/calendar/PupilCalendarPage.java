@@ -107,5 +107,10 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	protected String getPageLabel() {
 		return TeachUsSession.get().getString("General.calendarFor")+" "+pupil.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
+
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.CALENDAR;
+	}
 	
 }

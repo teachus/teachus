@@ -99,4 +99,9 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 		return TeachUsSession.get().getString("General.calendarFor")+" "+teacher.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.CALENDAR;
+	}
+
 }

@@ -47,4 +47,9 @@ public class AdminsPage extends PersonsPage<Admin> {
 		return new AdminPage(person);
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.ADMINS;
+	}
+
 }

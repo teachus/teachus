@@ -223,5 +223,10 @@ public class PeriodPage extends AuthenticatedBasePage {
 		}
 		
 	}
+
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.PERIODS;
+	}
 	
 }

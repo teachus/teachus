@@ -214,5 +214,10 @@ public class IncomePerPupilPage extends AbstractStatisticsPage {
 			return compare;
 		}
 	}
+
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.STATISTICS;
+	}
 	
 }

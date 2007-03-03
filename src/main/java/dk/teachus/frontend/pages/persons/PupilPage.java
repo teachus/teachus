@@ -46,4 +46,9 @@ public class PupilPage extends PersonPage {
 		return false;
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.PUPILS;
+	}
+
 }

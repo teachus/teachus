@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.ajax.AjaxRequestTarget;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
 import wicket.model.Model;
 import dk.teachus.domain.Person;
@@ -28,7 +27,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onEvent(AjaxRequestTarget target) {
+			public void onEvent() {
 				getRequestCycle().setResponsePage(getPersonPage(getNewPerson()));
 			}			
 		});

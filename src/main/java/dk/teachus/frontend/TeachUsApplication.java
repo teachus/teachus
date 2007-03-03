@@ -41,6 +41,8 @@ public class TeachUsApplication extends WebApplication {
 	
 	@Override
 	protected void init() {
+//		Objects.setObjectStreamFactory(new IObjectStreamFactory.DefaultObjectStreamFactory());
+		
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
 		

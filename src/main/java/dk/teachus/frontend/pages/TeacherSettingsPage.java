@@ -75,4 +75,9 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 		return TeachUsSession.get().getString("General.settings");
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.SETTINGS;
+	}
+
 }

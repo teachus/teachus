@@ -53,4 +53,9 @@ public class AgendaPage extends AuthenticatedBasePage {
 		return TeachUsSession.get().getString("General.agenda"); //$NON-NLS-1$
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.AGENDA;
+	}
+
 }

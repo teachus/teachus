@@ -93,4 +93,9 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		return TeachUsSession.get().getString("General.incomePerPeriod");
 	}
 
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.STATISTICS;
+	}
+
 }

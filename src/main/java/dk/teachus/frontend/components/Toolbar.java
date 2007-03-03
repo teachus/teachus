@@ -3,9 +3,9 @@ package dk.teachus.frontend.components;
 import java.io.Serializable;
 import java.util.List;
 
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.AjaxLink;
+import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.link.Link;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.RepeatingView;
 
@@ -15,19 +15,22 @@ public class Toolbar extends Panel {
 	public Toolbar(String id, List<ToolbarItem> items) {
 		super(id);
 		
-		RepeatingView links = new RepeatingView("links"); //$NON-NLS-1$
-		add(links);
+		RepeatingView itemsContainer = new RepeatingView("items"); //$NON-NLS-1$
+		add(itemsContainer);
 		
 		for (final ToolbarItem item : items) {
-			AjaxLink link = new AjaxLink(links.newChildId()) {
+			WebMarkupContainer itemContainer = new WebMarkupContainer(itemsContainer.newChildId());
+			itemsContainer.add(itemContainer);
+			
+			Link link = new Link("link") {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void onClick(AjaxRequestTarget target) {
-					item.onEvent(target);
+				public void onClick() {
+					item.onEvent();
 				}				
 			};
-			links.add(link);
+			itemContainer.add(link);
 			link.add(new Label("label", item.getLabel()).setRenderBodyOnly(true)); //$NON-NLS-1$
 		}
 	}
@@ -47,7 +50,7 @@ public class Toolbar extends Panel {
 			this.label = label;
 		}
 
-		public abstract void onEvent(AjaxRequestTarget target);
+		public abstract void onEvent();
 	}
 
 }

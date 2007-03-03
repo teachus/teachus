@@ -104,5 +104,10 @@ public class PupilsPage extends PersonsPage<Pupil> {
 
 		return functions;
 	}
+
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.PUPILS;
+	}
 	
 }

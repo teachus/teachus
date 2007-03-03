@@ -20,5 +20,10 @@ public class AdminPage extends PersonPage {
 	protected boolean allowUserEditing(Person loggedInPerson, Person editPerson) {
 		return true;
 	}
+
+	@Override
+	protected PageCategory getPageCategory() {
+		return PageCategory.ADMINS;
+	}
 	
 }
