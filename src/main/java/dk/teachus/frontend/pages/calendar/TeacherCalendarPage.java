@@ -18,9 +18,9 @@ import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.CalendarPanel;
-import dk.teachus.frontend.components.PeriodDateComponent;
-import dk.teachus.frontend.components.TeacherPeriodDateComponent;
+import dk.teachus.frontend.components.calendar.CalendarPanel;
+import dk.teachus.frontend.components.calendar.PeriodDateComponent;
+import dk.teachus.frontend.components.calendar.TeacherPeriodDateComponent;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public class TeacherCalendarPage extends AuthenticatedBasePage {

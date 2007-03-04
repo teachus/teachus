@@ -1,4 +1,4 @@
-package dk.teachus.frontend.components;
+package dk.teachus.frontend.components.calendar;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -7,26 +7,26 @@ import wicket.Component;
 import dk.teachus.domain.Booking;
 import dk.teachus.domain.Bookings;
 import dk.teachus.domain.Period;
-import dk.teachus.domain.Teacher;
+import dk.teachus.domain.Pupil;
 
-public class TeacherPeriodDateComponent extends PeriodDateComponent {
+public class PupilPeriodDateComponent extends PeriodDateComponent {
 	private static final long serialVersionUID = 1L;
-
+	
+	private Pupil pupil;
 	private Bookings bookings;
-	private Teacher teacher;
 
-	public TeacherPeriodDateComponent(String id, Teacher teacher, Period period, DateMidnight date, Bookings bookings) {
+	public PupilPeriodDateComponent(String id, Pupil pupil, Period period, DateMidnight date, Bookings bookings) {
 		super(id, period, date);
 		
+		this.pupil = pupil;
 		this.bookings = bookings;
-		this.teacher = teacher;
 	}
 
 	@Override
 	protected Component getTimeContent(String wicketId, Period period, DateTime time) {
 		Booking booking = bookings.getBooking(time.toDate());
 		
-		return new TeacherPeriodDateComponentPanel(wicketId, teacher, booking, period, time);
+		return new PupilPeriodDateComponentPanel(wicketId, booking, pupil, period, time);
 	}
 
 }

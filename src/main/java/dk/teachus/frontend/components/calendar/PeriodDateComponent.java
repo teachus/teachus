@@ -1,4 +1,4 @@
-package dk.teachus.frontend.components;
+package dk.teachus.frontend.components.calendar;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -11,6 +11,7 @@ import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.Model;
 import dk.teachus.domain.Period;
+import dk.teachus.frontend.components.RenderingLabel;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.Formatters;
 

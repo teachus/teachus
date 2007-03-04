@@ -1,4 +1,4 @@
-package dk.teachus.frontend.components;
+package dk.teachus.frontend.components.calendar;
 
 import java.io.Serializable;
 import java.util.ArrayList;

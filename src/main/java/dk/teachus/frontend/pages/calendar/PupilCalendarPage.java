@@ -17,9 +17,9 @@ import dk.teachus.domain.Pupil;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.CalendarPanel;
-import dk.teachus.frontend.components.PeriodDateComponent;
-import dk.teachus.frontend.components.PupilPeriodDateComponent;
+import dk.teachus.frontend.components.calendar.CalendarPanel;
+import dk.teachus.frontend.components.calendar.PeriodDateComponent;
+import dk.teachus.frontend.components.calendar.PupilPeriodDateComponent;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.Formatters;
 
