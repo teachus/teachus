@@ -14,6 +14,7 @@ import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.person.TeacherPanel;
 
 public class TeacherSettingsPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +24,13 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 	public TeacherSettingsPage() {
 		super(UserLevel.TEACHER, true);
 		
+		add(new Label("teacherInformation", TeachUsSession.get().getString("General.info")));
+		add(new TeacherPanel("teacherPanel", (Teacher) TeachUsSession.get().getPerson()));
+		
+		createIntroductionMailForm();
+	}
+
+	private void createIntroductionMailForm() {
 		// Introduction mail text
 		final WelcomeIntroductionTeacherAttribute attribute = getAttribute(WelcomeIntroductionTeacherAttribute.class);
 		add(new Label("introductionMailText", TeachUsSession.get().getString("TeacherSettingsPage.introductionMailText")));

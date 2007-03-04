@@ -1,11 +1,11 @@
 package dk.teachus.frontend.pages.persons;
 
-import dk.teachus.domain.Admin;
-import dk.teachus.domain.Person;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.person.PersonPanel;
+import dk.teachus.frontend.components.person.TeacherPanel;
 
-public class TeacherPage extends PersonPage {
+public class TeacherPage extends PersonPage<Teacher> {
 	private static final long serialVersionUID = 1L;
 
 	public TeacherPage(Teacher teacher) {
@@ -13,30 +13,13 @@ public class TeacherPage extends PersonPage {
 	}
 
 	@Override
-	protected Class<? extends PersonsPage> getPersonsPageClass() {
-		return TeachersPage.class;
-	}
-
-	@Override
-	protected boolean allowUserEditing(Person loggedInPerson, Person editPerson) {
-		boolean allow = false;
-		
-		if (loggedInPerson instanceof Admin) {
-			allow = true;
-		} else if (loggedInPerson instanceof Teacher) {
-			allow = loggedInPerson.getId().equals(editPerson.getId());
-		}
-		
-		return allow;
-	}
-
-	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.TEACHERS;
 	}
 
-	protected String getPageLabel() {
-		return null;
+	@Override
+	protected PersonPanel createPersonPanel(String wicketId, Teacher teacher) {
+		return new TeacherPanel(wicketId, teacher);
 	}
 
 }
