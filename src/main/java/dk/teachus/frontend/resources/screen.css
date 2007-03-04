@@ -142,10 +142,10 @@ table.border {
 .toolbar {
 	border: 1px solid gray;
 	width: 100%;
+	background: white url(/images/toolbar.png) center center repeat-x;
 }
 
 .toolbar td {
-	background: white url(/images/toolbar.png) center center repeat-x;
 }
 
 .toolbar .items {
@@ -153,18 +153,22 @@ table.border {
 }
 
 .toolbar a {
-	background: url(/images/toolbar_item.png) repeat-x center center;
+	background: white;
 	display: block;
 	padding: 2px;
 	padding-left: 7px;
 	padding-right: 7px;		
 	border-right: 1px solid gray;
 	font-weight: bold;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	color: black;
 }
 
 .toolbar a:hover {
-	background: url(/images/toolbar_item_hover.png) repeat-x center center;
 	text-decoration: none;
+	opacity: 0.8;
+	filter: alpha(opacity=80);
 }
 
 /* LIST */
@@ -187,9 +191,11 @@ table.border {
 	white-space: nowrap;
 }
 
-.list th {
+.list thead th {
 	text-align: left;
 	border-bottom: 1px solid gray;
+	color: white;
+	background: #0f8fba url(/images/list_header_back.png) repeat-x 50% 50%;
 }
 
 .list td {

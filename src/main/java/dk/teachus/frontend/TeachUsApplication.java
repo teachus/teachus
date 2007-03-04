@@ -102,8 +102,7 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/paid.png", Resources.PAID.getSharedResourceKey());
 		mountSharedResource("/images/unpaid.png", Resources.UNPAID.getSharedResourceKey());
 		mountSharedResource("/images/toolbar.png", Resources.TOOLBAR.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_item.png", Resources.TOOLBAR_ITEM.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_item_hover.png", Resources.TOOLBAR_ITEM_HOVER.getSharedResourceKey());
+		mountSharedResource("/images/list_header_back.png", Resources.LIST_HEADER.getSharedResourceKey());
 	}
 
 	public PersonDAO getPersonDAO() {

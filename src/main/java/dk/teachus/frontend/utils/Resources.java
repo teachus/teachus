@@ -20,8 +20,7 @@ public abstract class Resources {
 	public static final ResourceReference UNPAID = new ResourceReference(TeachUsApplication.class, "resources/img/unpaid.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAID = new ResourceReference(TeachUsApplication.class, "resources/img/paid.png"); //$NON-NLS-1$;
 	public static final ResourceReference TOOLBAR = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back.png"); //$NON-NLS-1$;
-	public static final ResourceReference TOOLBAR_ITEM = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_item_back.png"); //$NON-NLS-1$;
-	public static final ResourceReference TOOLBAR_ITEM_HOVER = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_item_hover_back.png"); //$NON-NLS-1$;
+	public static final ResourceReference LIST_HEADER = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back.png"); //$NON-NLS-1$;
 	
 	/*
 	 * CSS and JS
