@@ -3,30 +3,62 @@ package dk.teachus.frontend.components.calendar;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
-import wicket.Component;
+import dk.teachus.dao.BookingDAO;
 import dk.teachus.domain.Booking;
 import dk.teachus.domain.Bookings;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Pupil;
+import dk.teachus.domain.PupilBooking;
+import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.UserLevel;
 
-public class PupilPeriodDateComponent extends PeriodDateComponent {
+public class PupilPeriodDateComponent extends BookingPeriodDateComponent {
 	private static final long serialVersionUID = 1L;
 	
 	private Pupil pupil;
-	private Bookings bookings;
 
 	public PupilPeriodDateComponent(String id, Pupil pupil, Period period, DateMidnight date, Bookings bookings) {
-		super(id, period, date);
+		super(id, period, date, bookings);
 		
 		this.pupil = pupil;
-		this.bookings = bookings;
 	}
 
 	@Override
-	protected Component getTimeContent(String wicketId, Period period, DateTime time) {
-		Booking booking = bookings.getBooking(time.toDate());
-		
-		return new PupilPeriodDateComponentPanel(wicketId, booking, pupil, period, time);
+	protected Booking createNewBookingObject(BookingDAO bookingDAO) {
+		PupilBooking pupilBooking = bookingDAO.createPupilBookingObject();
+		pupilBooking.setPupil(pupil);
+		return pupilBooking;
+	}
+
+	@Override
+	protected boolean isChangeable(Booking booking) {
+		boolean changeable = false;
+		if (booking != null) {
+			if (booking instanceof PupilBooking) {
+				PupilBooking pupilBooking = (PupilBooking) booking;
+				changeable = pupilBooking.getPupil().getId().equals(pupil.getId());
+			}
+		}
+		return changeable;
+	}
+
+	@Override
+	protected boolean shouldDisplayStringInsteadOfOccupiedIcon() {
+		return false;
+	}
+
+	@Override
+	protected boolean mayChangeBooking(DateTime dateTime) {
+        boolean mayChangeBooking = false;
+        
+        if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
+                mayChangeBooking = true;
+        } else {
+                DateTime today = new DateTime().withTime(23, 59, 59, 999);
+                mayChangeBooking = dateTime.isAfter(today);
+        }
+        
+        return mayChangeBooking;
 	}
 
 }

@@ -1,0 +1,193 @@
+package dk.teachus.frontend.components.calendar;
+
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+
+import wicket.Component;
+import wicket.MarkupContainer;
+import wicket.ajax.AjaxRequestTarget;
+import wicket.ajax.markup.html.AjaxLink;
+import wicket.behavior.AttributeAppender;
+import wicket.behavior.SimpleAttributeModifier;
+import wicket.markup.html.WebComponent;
+import wicket.markup.html.basic.Label;
+import wicket.markup.html.image.Image;
+import wicket.model.Model;
+import dk.teachus.dao.BookingDAO;
+import dk.teachus.domain.Booking;
+import dk.teachus.domain.Bookings;
+import dk.teachus.domain.Period;
+import dk.teachus.domain.PupilBooking;
+import dk.teachus.frontend.TeachUsApplication;
+import dk.teachus.frontend.utils.Resources;
+
+public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
+	private static final String LINK_ID = "link";
+	private static final String DISPLAYLINK_ID = "displayLink";
+	private static final String LABEL_ID = "label";
+	private static final String ICON_ID = "icon";
+	
+	private Bookings bookings;
+	
+	public BookingPeriodDateComponent(String id, Period period, DateMidnight date, Bookings bookings) {
+		super(id, period, date);
+		
+		this.bookings = bookings;
+	}
+
+	@Override
+	protected final Component getTimeContent(String wicketId, final Period period, final DateTime time) {
+		final Booking booking = bookings.getBooking(time.toDate());
+		
+		BookingPeriodDateComponentPanel bookingPanel = new BookingPeriodDateComponentPanel(wicketId);
+		
+		// Configuration from the implementation
+		boolean changeable = isChangeable(booking);
+		boolean displayString = shouldDisplayStringInsteadOfOccupiedIcon();
+		
+		// Components which must be instantiated
+		Component displayLink = null;
+		Component link = null;
+		Component icon = null;
+		Component label = null;
+		
+		if (booking != null && changeable == false) {			
+			if (displayString) {
+				MarkupContainer bookingDisplayStringLink = getBookingDisplayStringLink(DISPLAYLINK_ID, booking);
+				if (bookingDisplayStringLink == null) {
+					link = createInvisibleLink(); 
+					icon = createInvisibleIcon(); 
+					label = getLabelWithDisplayString(booking);
+					displayLink = createInvisibleDisplayLink();
+				} else {
+					link = createInvisibleLink(); 
+					icon = createInvisibleIcon(); 
+					label = createInvisibleLabel();
+					bookingDisplayStringLink.add(getLabelWithDisplayString(booking));
+					displayLink = bookingDisplayStringLink;
+				}
+			} else {
+				link = createInvisibleLink(); 
+				displayLink = createInvisibleDisplayLink();
+				if (mayChangeBooking(time)) {
+					icon = new Image(ICON_ID, Resources.OCCUPIED);
+					label = createInvisibleLabel(); 
+				} else {
+					icon = createInvisibleIcon();
+					label = createEmptyLabel();
+				}
+			}
+		} else {
+			displayLink = createInvisibleDisplayLink();
+			if (mayChangeBooking(time)) {
+				link = createLink(period, time, booking);
+				icon = createInvisibleIcon(); 
+				label = createInvisibleLabel(); 
+			} else {
+				link = createInvisibleLink();
+				if (booking != null) {
+					icon = new Image(ICON_ID, Resources.BOOKED);			
+					label = createInvisibleLabel();
+				} else {
+					icon = createInvisibleIcon();
+					label = createEmptyLabel();
+				}
+			}
+		}
+		
+		// Add the components to the bookingPanel
+		bookingPanel.add(link);
+		bookingPanel.add(icon);
+		bookingPanel.add(label);
+		bookingPanel.add(displayLink);
+		
+		return bookingPanel;
+	}
+
+	private Label getLabelWithDisplayString(final Booking booking) {
+		return new Label(LABEL_ID, getBookingDisplayString(booking));
+	}
+
+	private Component createInvisibleDisplayLink() {
+		return new WebComponent(DISPLAYLINK_ID).setVisible(false);
+	}
+
+	private Component createInvisibleLink() {
+		return new WebComponent(LINK_ID).setVisible(false);
+	}
+
+	private Component createInvisibleLabel() {
+		return new WebComponent(LABEL_ID).setVisible(false);
+	}
+
+	private Component createInvisibleIcon() {
+		return new WebComponent(ICON_ID).setVisible(false);
+	}
+
+	private Component createEmptyLabel() {
+		return new Label(LABEL_ID, "&nbsp;").setEscapeModelStrings(false).setRenderBodyOnly(true);
+	}
+
+	private Component createLink(final Period period, final DateTime time, final Booking booking) {
+		Component link;
+		link = new AjaxLink(LINK_ID) { 
+			private static final long serialVersionUID = 1L;
+			
+			private Booking localBooking = booking;
+			
+			@Override
+			public void onClick(AjaxRequestTarget target) {
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				
+				if (localBooking == null) {
+					localBooking = createNewBookingObject(bookingDAO);
+					
+					localBooking.setDate(time.toDate());
+					localBooking.setPeriod(period);
+
+					bookingDAO.book(localBooking);
+
+					this.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				} else {
+					bookingDAO.deleteBooking(localBooking);
+					localBooking = null;
+					
+					this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
+				}
+											
+				target.addComponent(this);
+			}					
+		};
+		if (booking != null) {
+			link.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+		link.setOutputMarkupId(true);
+		return link;
+	}
+
+	protected abstract boolean isChangeable(Booking booking);
+	
+	protected abstract boolean mayChangeBooking(DateTime dateTime);
+	
+	protected abstract boolean shouldDisplayStringInsteadOfOccupiedIcon();
+	
+	protected abstract Booking createNewBookingObject(BookingDAO bookingDAO);
+	
+	protected MarkupContainer getBookingDisplayStringLink(String linkId, Booking booking) {
+		return null;
+	}
+	
+	protected String getBookingDisplayString(Booking booking) {
+		String display = "";
+		
+		if (booking instanceof PupilBooking) {
+			PupilBooking pupilBooking = (PupilBooking) booking;
+			display = pupilBooking.getPupil().getName();
+		} else {
+			display = booking.getTeacher().getName();
+		}
+		
+		return display;
+	}
+	
+}
