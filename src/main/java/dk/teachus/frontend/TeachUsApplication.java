@@ -147,6 +147,7 @@ public class TeachUsApplication extends WebApplication {
 	public List<Locale> getAvailableLocales() {
 		return Arrays.asList(new Locale[] {
 				new Locale("en", "US"), //$NON-NLS-1$ //$NON-NLS-2$
+				new Locale("en", "US", "singers"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				new Locale("da"), //$NON-NLS-1$
 				new Locale("da", "DK", "singers") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		});
