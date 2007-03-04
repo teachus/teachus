@@ -94,7 +94,7 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 	}
 
 	@Override
-	protected PageCategory getPageCategory() {
+	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.STATISTICS;
 	}
 

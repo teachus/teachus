@@ -54,7 +54,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected PageCategory getPageCategory() {
+	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.AGENDA;
 	}
 

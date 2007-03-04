@@ -3,7 +3,6 @@ package dk.teachus.frontend.pages;
 import java.util.List;
 
 import dk.teachus.frontend.TeachUsSession;
-
 import wicket.Application;
 import wicket.behavior.SimpleAttributeModifier;
 import wicket.markup.html.WebComponent;

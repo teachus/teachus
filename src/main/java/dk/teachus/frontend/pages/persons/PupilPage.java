@@ -10,6 +10,10 @@ import dk.teachus.frontend.UserLevel;
 public class PupilPage extends PersonPage {
 	private static final long serialVersionUID = 1L;
 
+	public PupilPage() {
+		this((Pupil) TeachUsSession.get().getPerson());
+	}
+	
 	public PupilPage(Pupil pupil) {
 		super(UserLevel.PUPIL, pupil);
 	}
@@ -47,8 +51,12 @@ public class PupilPage extends PersonPage {
 	}
 
 	@Override
-	protected PageCategory getPageCategory() {
-		return AuthenticatedPageCategory.PUPILS;
+	protected AuthenticatedPageCategory getPageCategory() {
+		if (TeachUsSession.get().getUserLevel() == UserLevel.PUPIL) {
+			return AuthenticatedPageCategory.SETTINGS;
+		} else {
+			return AuthenticatedPageCategory.PUPILS;
+		}
 	}
 
 	protected String getPageLabel() {

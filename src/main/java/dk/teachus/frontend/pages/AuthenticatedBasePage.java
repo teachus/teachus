@@ -11,6 +11,7 @@ import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
 import dk.teachus.frontend.pages.periods.PeriodsPage;
 import dk.teachus.frontend.pages.persons.AdminsPage;
+import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
@@ -69,13 +70,14 @@ public abstract class AuthenticatedBasePage extends BasePage {
 				menuItemsList.add(new MenuItem(AgendaPage.class, teachUsSession.getString("General.agenda"), AuthenticatedPageCategory.AGENDA)); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(StatsPage.class, "Statistik", AuthenticatedPageCategory.STATISTICS)); //$NON-NLS-1$
 			}
-			if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
-				menuItemsList.add(new MenuItem(PaymentPage.class, teachUsSession.getString("General.payment"), AuthenticatedPageCategory.PAYMENT)); //$NON-NLS-1$
-			}
 			if (UserLevel.PUPIL == teachUsSession.getUserLevel()) {
 				menuItemsList.add(new MenuItem(PupilCalendarPage.class, teachUsSession.getString("General.calendar"), AuthenticatedPageCategory.CALENDAR)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(PupilPage.class, teachUsSession.getString("General.settings"), AuthenticatedPageCategory.SETTINGS)); //$NON-NLS-1$
 			} else if (UserLevel.TEACHER == teachUsSession.getUserLevel()) {
 				menuItemsList.add(new MenuItem(TeacherCalendarPage.class, teachUsSession.getString("General.calendar"), AuthenticatedPageCategory.CALENDAR)); //$NON-NLS-1$
+			}
+			if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
+				menuItemsList.add(new MenuItem(PaymentPage.class, teachUsSession.getString("General.payment"), AuthenticatedPageCategory.PAYMENT)); //$NON-NLS-1$
 			}
 		}
 		if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
@@ -84,5 +86,8 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		
 		return menuItemsList;
 	}
+	
+	@Override
+	protected abstract AuthenticatedPageCategory getPageCategory();
 	
 }

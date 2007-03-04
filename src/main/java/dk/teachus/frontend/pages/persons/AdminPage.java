@@ -22,7 +22,7 @@ public class AdminPage extends PersonPage {
 	}
 
 	@Override
-	protected PageCategory getPageCategory() {
+	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.ADMINS;
 	}
 
