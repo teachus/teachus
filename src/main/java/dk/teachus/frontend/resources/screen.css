@@ -109,19 +109,19 @@ table.border {
 	padding-right: 7px;
 	display: block;
 	height: 16px;
-	background: white url(img/available_static.png) no-repeat 50% 50%;
+	background: white url(/images/available.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a.selected {
-	background: white url(img/booked.png) no-repeat 50% 50%;
+	background: white url(/images/booked.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a:hover {
-	background: #eeeeee url(img/available_static_hover.png) no-repeat 50% 50%;
+	background: #eeeeee url(/images/available_hover.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a.selected:hover {
-	background: #eeeeee url(img/booked_hover.png) no-repeat 50% 50%;
+	background: #eeeeee url(/images/booked_hover.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a img {
@@ -136,7 +136,7 @@ table.border {
 }
 
 .toolbar td {
-	background: white url(img/toolbar_back.png) center center repeat-x;
+	background: white url(/images/toolbar.png) center center repeat-x;
 }
 
 .toolbar .items {
@@ -144,7 +144,7 @@ table.border {
 }
 
 .toolbar a {
-	background: url(img/toolbar_item_back.png) repeat-x center center;
+	background: url(/images/toolbar_item.png) repeat-x center center;
 	display: block;
 	padding: 2px;
 	padding-left: 7px;
@@ -154,7 +154,7 @@ table.border {
 }
 
 .toolbar a:hover {
-	background: url(img/toolbar_item_hover_back.png) repeat-x center center;
+	background: url(/images/toolbar_item_hover.png) repeat-x center center;
 	text-decoration: none;
 }
 

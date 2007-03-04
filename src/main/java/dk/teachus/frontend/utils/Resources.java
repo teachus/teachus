@@ -11,12 +11,17 @@ public abstract class Resources {
 	 * ICONS
 	 */
 	public static final ResourceReference AVAILABLE = new ResourceReference(TeachUsApplication.class, "resources/img/available_static.png"); //$NON-NLS-1$
+	public static final ResourceReference AVAILABLE_HOVER = new ResourceReference(TeachUsApplication.class, "resources/img/available_static_hover.png"); //$NON-NLS-1$
 	public static final ResourceReference BOOKED = new ResourceReference(TeachUsApplication.class, "resources/img/booked.png"); //$NON-NLS-1$
+	public static final ResourceReference BOOKED_HOVER = new ResourceReference(TeachUsApplication.class, "resources/img/booked_hover.png"); //$NON-NLS-1$
 	public static final ResourceReference OCCUPIED = new ResourceReference(TeachUsApplication.class, "resources/img/occupied.png");
 	public static final ResourceReference LEFT = new ResourceReference(TeachUsApplication.class, "resources/img/left.png"); //$NON-NLS-1$;
 	public static final ResourceReference RIGHT = new ResourceReference(TeachUsApplication.class, "resources/img/right.png"); //$NON-NLS-1$;
 	public static final ResourceReference UNPAID = new ResourceReference(TeachUsApplication.class, "resources/img/unpaid.png"); //$NON-NLS-1$;
 	public static final ResourceReference PAID = new ResourceReference(TeachUsApplication.class, "resources/img/paid.png"); //$NON-NLS-1$;
+	public static final ResourceReference TOOLBAR = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back.png"); //$NON-NLS-1$;
+	public static final ResourceReference TOOLBAR_ITEM = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_item_back.png"); //$NON-NLS-1$;
+	public static final ResourceReference TOOLBAR_ITEM_HOVER = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_item_hover_back.png"); //$NON-NLS-1$;
 	
 	/*
 	 * CSS and JS

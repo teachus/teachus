@@ -37,6 +37,7 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.stats.IncomePerPeriodPage;
 import dk.teachus.frontend.pages.stats.IncomePerPupilPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
+import dk.teachus.frontend.utils.Resources;
 import dk.teachus.utils.ApplicationUtils;
 
 public class TeachUsApplication extends WebApplication {
@@ -48,7 +49,12 @@ public class TeachUsApplication extends WebApplication {
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
 		
-		// Bookmarkable pages
+		mountPages();
+		
+		mountResources();
+	}
+
+	private void mountPages() {
 		mountBookmarkablePage("/signout", SignOutPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signedout", SignedOutPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/calendar", PupilCalendarPage.class); //$NON-NLS-1$
@@ -64,6 +70,40 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperperiod", IncomePerPeriodPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$
+	}
+
+	private void mountResources() {
+		mountSharedResource("/images/screenshots/1.png", Resources.SCREENSHOT_1.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/1_thumb.jpg", Resources.SCREENSHOT_1_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/2.png", Resources.SCREENSHOT_2.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/2_thumb.jpg", Resources.SCREENSHOT_2_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/3.png", Resources.SCREENSHOT_3.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/3_thumb.jpg", Resources.SCREENSHOT_3_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/4.png", Resources.SCREENSHOT_4.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/4_thumb.jpg", Resources.SCREENSHOT_4_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/5.png", Resources.SCREENSHOT_5.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/5_thumb.jpg", Resources.SCREENSHOT_5_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/6.png", Resources.SCREENSHOT_6.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/6_thumb.jpg", Resources.SCREENSHOT_6_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/7.png", Resources.SCREENSHOT_7.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/7_thumb.jpg", Resources.SCREENSHOT_7_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/8.png", Resources.SCREENSHOT_8.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/8_thumb.jpg", Resources.SCREENSHOT_8_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/9.png", Resources.SCREENSHOT_9.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/9_thumb.jpg", Resources.SCREENSHOT_9_THUMB.getSharedResourceKey());
+		
+		mountSharedResource("/images/available.png", Resources.AVAILABLE.getSharedResourceKey());
+		mountSharedResource("/images/available_hover.png", Resources.AVAILABLE_HOVER.getSharedResourceKey());
+		mountSharedResource("/images/booked.png", Resources.BOOKED.getSharedResourceKey());
+		mountSharedResource("/images/booked_hover.png", Resources.BOOKED_HOVER.getSharedResourceKey());
+		mountSharedResource("/images/left.png", Resources.LEFT.getSharedResourceKey());
+		mountSharedResource("/images/right.png", Resources.RIGHT.getSharedResourceKey());
+		mountSharedResource("/images/occupied.png", Resources.OCCUPIED.getSharedResourceKey());
+		mountSharedResource("/images/paid.png", Resources.PAID.getSharedResourceKey());
+		mountSharedResource("/images/unpaid.png", Resources.UNPAID.getSharedResourceKey());
+		mountSharedResource("/images/toolbar.png", Resources.TOOLBAR.getSharedResourceKey());
+		mountSharedResource("/images/toolbar_item.png", Resources.TOOLBAR_ITEM.getSharedResourceKey());
+		mountSharedResource("/images/toolbar_item_hover.png", Resources.TOOLBAR_ITEM_HOVER.getSharedResourceKey());
 	}
 
 	public PersonDAO getPersonDAO() {
