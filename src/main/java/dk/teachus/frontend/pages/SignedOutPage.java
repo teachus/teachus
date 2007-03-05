@@ -1,8 +1,5 @@
 package dk.teachus.frontend.pages;
 
-import java.util.List;
-
-import dk.teachus.frontend.TeachUsSession;
 import wicket.Application;
 import wicket.behavior.SimpleAttributeModifier;
 import wicket.markup.html.WebComponent;
@@ -10,8 +7,9 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.link.Link;
 import wicket.request.target.component.BookmarkablePageRequestTarget;
+import dk.teachus.frontend.TeachUsSession;
 
-public class SignedOutPage extends UnAuthenticatedBasePage {
+public class SignedOutPage extends SystemBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public SignedOutPage() {
@@ -27,19 +25,6 @@ public class SignedOutPage extends UnAuthenticatedBasePage {
 		Link homePageLink= new BookmarkablePageLink("homePageLink", Application.get().getHomePage()); //$NON-NLS-1$
 		add(homePageLink);
 		homePageLink.add(new Label("homePageLabel", TeachUsSession.get().getString("SignedOutPage.clickToGoToFrontPage"))); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	@Override
-	protected List<MenuItem> createMenuItems() {
-		return null;
-	}
-	
-	protected UnAuthenticatedPageCategory getPageCategory() {
-		return null;
-	}
-
-	protected String getPageLabel() {
-		return null;
 	}
 	
 }

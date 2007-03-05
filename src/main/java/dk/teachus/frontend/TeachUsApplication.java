@@ -15,6 +15,7 @@ import wicket.RequestCycle;
 import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequestCycle;
+import wicket.settings.IExceptionSettings;
 import wicket.util.io.IObjectStreamFactory;
 import wicket.util.lang.Objects;
 import dk.teachus.bean.MailBean;
@@ -24,6 +25,8 @@ import dk.teachus.dao.PersonDAO;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
 import dk.teachus.frontend.pages.InfoPage;
+import dk.teachus.frontend.pages.InternalErrorPage;
+import dk.teachus.frontend.pages.PageExpiredPage;
 import dk.teachus.frontend.pages.PaymentPage;
 import dk.teachus.frontend.pages.SignOutPage;
 import dk.teachus.frontend.pages.SignedOutPage;
@@ -48,6 +51,9 @@ public class TeachUsApplication extends WebApplication {
 		
 		// Settings
 		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
+		getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
+		getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
+		getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
 		
 		mountPages();
 		

@@ -4,13 +4,8 @@ a img {
 	border: 0;
 }
 
-.contentaltBottom {
-	background-color:white;
-	border:1px solid #909090;
-	color:#2a2a2a;
-	padding:15px 20px 20px;
-	margin: 20px;
-	margin-bottom: 0;
+div.nomenu {
+	margin-top: 70px;
 }
 
 ul p {
