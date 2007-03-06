@@ -62,6 +62,7 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		features.add(TeachUsSession.get().getString("InfoPage.feature4"));
 		features.add(TeachUsSession.get().getString("InfoPage.feature5"));
 		features.add(TeachUsSession.get().getString("InfoPage.feature6"));
+		features.add(TeachUsSession.get().getString("InfoPage.feature7"));
 		
 		RepeatingView featuresContainer = new RepeatingView("features");
 		add(featuresContainer);
