@@ -107,12 +107,12 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 	}
 
 	protected void assertTimeNotSelected(String componentPath) {
-		TagTester tagTester = getTagTesterForComponent(componentPath+":content:link");
+		TagTester tagTester = getTagTesterForComponent(componentPath+":contentContainer:content:link");
 		assertNull("The time was booked", tagTester.getAttribute("class"));
 	}
 
 	protected void assertTimeSelected(String componentPath) {
-		TagTester tagTester = getTagTesterForComponent(componentPath+":content:link");
+		TagTester tagTester = getTagTesterForComponent(componentPath+":contentContainer:content:link");
 		assertEquals("The time wasn't booked", "selected", tagTester.getAttribute("class"));
 	}
 
@@ -123,7 +123,7 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 	}
 
 	protected void assertTimeOccupied(String componentPath) {
-		tester.assertComponent(componentPath+":content:icon", Image.class);
+		tester.assertComponent(componentPath+":contentContainer:content:icon", Image.class);
 	}
 
 	public static class TeachUsWicketTester extends WicketTester implements Serializable {

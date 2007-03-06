@@ -28,7 +28,7 @@ margin:0 0 15px;
 /*** Main container ***/
 
 #container {
-background:#f0f0f0 url(img/bodybg.jpg) repeat-x;
+background:#f0f0f0 url(/images/bodybg.jpg) repeat-x;
 color:#303030;
 margin:0;
 min-width:770px;
@@ -93,13 +93,13 @@ text-transform:uppercase;
 }
 
 #mainmenu a:hover {
-background:#f0f0f0 url(img/menuhover.jpg) top left repeat-x;
+background:#f0f0f0 url(/images/menuhover.jpg) top left repeat-x;
 color:#505050;
 text-decoration:none;
 }
 
 #mainmenu a.current {
-background:#f0f0f0 url(img/menuhover.jpg) top left repeat-x;
+background:#f0f0f0 url(/images/menuhover.jpg) top left repeat-x;
 color:#505050;
 text-decoration:none;
 }
@@ -216,7 +216,7 @@ margin-bottom:10px;
 /*** Footer ***/
 
 #footer {
-background:#8b8b8b url(img/footerbg.jpg) top left repeat-x;
+background:#8b8b8b url(/images/footerbg.jpg) top left repeat-x;
 clear:both;
 color:#d0d0d0;
 font-size:0.9em;

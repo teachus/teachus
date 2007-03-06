@@ -27,6 +27,8 @@
         <property name="price" />
         
         <property name="lessonDuration" column="lesson_duration" not-null="true" />
+        
+        <property name="intervalBetweenLessonStart" column="interval_between_lesson_start" not-null="true" />
     </class>
 
 </hibernate-mapping>

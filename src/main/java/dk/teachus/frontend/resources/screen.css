@@ -89,6 +89,7 @@ table.border {
 }
 
 .day tbody td.content {
+	height: 20px;
 }
 
 .day tbody td.content .label {
@@ -104,11 +105,11 @@ table.border {
 	padding-right: 7px;
 	display: block;
 	height: 16px;
-	background: white url(/images/available.png) no-repeat 50% 50%;
+	background: url(/images/available.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a.selected {
-	background: white url(/images/booked.png) no-repeat 50% 50%;
+	background: url(/images/booked.png) no-repeat 50% 50%;
 }
 
 .day tbody td.content a:hover {

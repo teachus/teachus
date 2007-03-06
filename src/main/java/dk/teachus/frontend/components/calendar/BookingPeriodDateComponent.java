@@ -29,15 +29,17 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	
 	private Bookings bookings;
 	
-	public BookingPeriodDateComponent(String id, Period period, DateMidnight date, Bookings bookings) {
+	public BookingPeriodDateComponent(String id, final Period period, DateMidnight date, Bookings bookings) {
 		super(id, period, date);
+		
+		setOutputMarkupId(true);
 		
 		this.bookings = bookings;
 	}
 
 	@Override
-	protected final Component getTimeContent(String wicketId, final Period period, final DateTime time) {
-		final Booking booking = bookings.getBooking(time.toDate());
+	protected final Component getTimeContent(String wicketId, final Period period, final DateTime time, final MarkupContainer contentContainer) {
+		final Booking booking = bookings.getBooking(time);
 		
 		BookingPeriodDateComponentPanel bookingPanel = new BookingPeriodDateComponentPanel(wicketId);
 		
@@ -103,6 +105,39 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 		
 		return bookingPanel;
 	}
+	
+	@Override
+	protected boolean shouldDisplayTimeContent(Period period, DateTime time) {
+		boolean shouldDisplayTimeContent = false;
+		
+		if (period.mayBook(time)) {
+			if (bookings.getBooking(time) == null) {
+				if (bookings.mayBook(period, time)) {
+					shouldDisplayTimeContent = true;
+				}
+			} else {
+				shouldDisplayTimeContent = true;
+			}
+		}
+		
+		return shouldDisplayTimeContent;
+	}
+	
+	@Override
+	protected int getRowSpanForTimeContent(Period period, DateTime time) {
+		int rowSpan = 1;
+		
+		if (bookings.getBooking(time) != null) {
+			rowSpan = period.getLessonDuration() / period.getIntervalBetweenLessonStart();
+		}
+		
+		return rowSpan;
+	}
+	
+	@Override
+	protected boolean shouldHideEmptyContent(Period period, DateTime time) {
+		return bookings.isBeforeBooking(period, time) == false;
+	}
 
 	private Label getLabelWithDisplayString(final Booking booking) {
 		return new Label(LABEL_ID, getBookingDisplayString(booking));
@@ -125,7 +160,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	}
 
 	private Component createEmptyLabel() {
-		return new Label(LABEL_ID, "&nbsp;").setEscapeModelStrings(false).setRenderBodyOnly(true);
+		return new Label(LABEL_ID, "Hejsa").setEscapeModelStrings(false).setRenderBodyOnly(true);
 	}
 
 	private Component createLink(final Period period, final DateTime time, final Booking booking) {
@@ -146,21 +181,31 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 					localBooking.setPeriod(period);
 
 					bookingDAO.book(localBooking);
+					
+					bookings.getBookingList().add(localBooking);
 
 					this.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				} else {
 					bookingDAO.deleteBooking(localBooking);
+					bookings.getBookingList().remove(localBooking);
 					localBooking = null;
 					
 					this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 											
-				target.addComponent(this);
+				String id2 = BookingPeriodDateComponent.this.getId();
+				Period period2 = BookingPeriodDateComponent.this.period;
+				DateMidnight date2 = BookingPeriodDateComponent.this.date;
+				Bookings bookings2 = BookingPeriodDateComponent.this.bookings;
+				BookingPeriodDateComponent newInstance = createNewInstance(id2, period2, date2, bookings2);
+				BookingPeriodDateComponent.this.getParent().replace(newInstance);
+				target.addComponent(newInstance);
 			}					
 		};
 		if (booking != null) {
 			link.add(new AttributeAppender("class", new Model("selected"), " ")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
+		
 		link.setOutputMarkupId(true);
 		return link;
 	}
@@ -172,6 +217,8 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	protected abstract boolean shouldDisplayStringInsteadOfOccupiedIcon();
 	
 	protected abstract Booking createNewBookingObject(BookingDAO bookingDAO);
+	
+	protected abstract BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings);
 	
 	protected MarkupContainer getBookingDisplayStringLink(String linkId, Booking booking) {
 		return null;

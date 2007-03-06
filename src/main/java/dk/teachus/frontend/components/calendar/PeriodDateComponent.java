@@ -5,8 +5,12 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 import wicket.Component;
+import wicket.MarkupContainer;
+import wicket.behavior.SimpleAttributeModifier;
+import wicket.markup.html.WebComponent;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.basic.Label;
+import wicket.markup.html.image.Image;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.Model;
@@ -14,11 +18,12 @@ import dk.teachus.domain.Period;
 import dk.teachus.frontend.components.RenderingLabel;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.Formatters;
+import dk.teachus.frontend.utils.Resources;
 
 public abstract class PeriodDateComponent extends Panel {
 	private boolean attached = false;
-	private Period period;
-	private DateMidnight date;
+	protected Period period;
+	protected DateMidnight date;
 	
 	public PeriodDateComponent(String id, final Period period, DateMidnight date) {
 		super(id);
@@ -51,16 +56,42 @@ public abstract class PeriodDateComponent extends Panel {
 				DateTime end = new DateTime(period.getEndTime()).withDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
 	
 				DateTimeFormatter timeFormat = Formatters.getFormatTime();
+				DateTimeFormatter onlyMinutesFormat = Formatters.getFormatOnlyMinutes();
 				
 				while(time.isBefore(end)) {
 					final WebMarkupContainer row = new WebMarkupContainer(rows.newChildId());
 					rows.add(row);
 					
-					row.add(new Label("hour", timeFormat.print(time))); //$NON-NLS-1$
+					if (time.getMinuteOfHour() == 0) {
+						row.add(new Label("hour", timeFormat.print(time))); //$NON-NLS-1$
+					} else {
+						row.add(new Label("hour", onlyMinutesFormat.print(time))); //$NON-NLS-1$
+					}
 									
-					row.add(getTimeContent("content", period, time)); //$NON-NLS-1$
+					WebMarkupContainer contentContainer = new WebMarkupContainer("contentContainer");
+					contentContainer.setOutputMarkupId(true);
+					row.add(contentContainer);
 					
-					time = time.plusMinutes(period.getLessonDuration());
+					// A timeentry may or may not display something in this rendering
+					// depending on the implementation
+					if (shouldDisplayTimeContent(period, time)) {
+						contentContainer.add(getTimeContent("content", period, time, contentContainer)); //$NON-NLS-1$
+						contentContainer.add(new WebComponent("emptyIcon").setVisible(false));
+						
+						int rowSpanForTimeContent = getRowSpanForTimeContent(period, time);
+						if (rowSpanForTimeContent > 1) {
+							contentContainer.add(new SimpleAttributeModifier("rowspan", ""+rowSpanForTimeContent));
+						}
+					} else {
+						contentContainer.add(new WebComponent("content").setVisible(false));
+						Image emptyIcon = new Image("emptyIcon", Resources.EMPTY);
+						emptyIcon.add(new SimpleAttributeModifier("height", "17"));
+						emptyIcon.add(new SimpleAttributeModifier("width", "1"));
+						contentContainer.add(emptyIcon);
+						contentContainer.setVisible(shouldHideEmptyContent(period, time) == false);
+					}
+					
+					time = time.plusMinutes(period.getIntervalBetweenLessonStart());
 				}
 			}
 			
@@ -69,6 +100,12 @@ public abstract class PeriodDateComponent extends Panel {
 		}
 	}
 	
-	protected abstract Component getTimeContent(String wicketId, Period period, DateTime time);
+	protected abstract Component getTimeContent(String wicketId, Period period, DateTime time, MarkupContainer contentContainer);
+	
+	protected abstract boolean shouldDisplayTimeContent(Period period, DateTime time);
+	
+	protected abstract int getRowSpanForTimeContent(Period period, DateTime time);
+	
+	protected abstract boolean shouldHideEmptyContent(Period period, DateTime time);
 
 }

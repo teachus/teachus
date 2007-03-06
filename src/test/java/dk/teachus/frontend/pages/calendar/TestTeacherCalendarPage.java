@@ -42,7 +42,7 @@ public class TestTeacherCalendarPage extends WicketSpringTestCase {
 		assertTimeNotSelected(timePath);
 
 		// Book time
-		tester.clickLink(timePath+":content:link");
+		tester.clickLink(timePath+":contentContainer:content:link");
 		
 		// Show the page again to check that it is displaying
 		tester.startPage(new ITestPageSource() {

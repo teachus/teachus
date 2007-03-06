@@ -88,5 +88,11 @@ public abstract class Formatters {
 	public static NumberFormat getFormatCurrency() {
 		return NumberFormat.getCurrencyInstance(Session.get().getLocale());
 	}
+
+	public static DateTimeFormatter getFormatOnlyMinutes() {
+		return DateTimeFormat
+				.forPattern(":mm")
+				.withLocale(Session.get().getLocale());
+	}
 	
 }

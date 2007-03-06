@@ -72,4 +72,9 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 		
 		return displayLink;
 	}
+	
+	@Override
+	protected BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings) {
+		return new TeacherPeriodDateComponent(id, teacher, period, date, bookings);
+	}
 }

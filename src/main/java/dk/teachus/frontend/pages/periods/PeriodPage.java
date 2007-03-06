@@ -73,6 +73,8 @@ public class PeriodPage extends AuthenticatedBasePage {
 		createPriceField(form);
 
 		createLessonDurationField(form);
+
+		createIntervalBetweenLessonStart(form);
 		
 		createWeekDaysField(form);
 		
@@ -130,9 +132,15 @@ public class PeriodPage extends AuthenticatedBasePage {
 		form.add(weekDays);
 	}
 
+	private void createIntervalBetweenLessonStart(Form form) {
+		form.add(new Label("intervalBetweenLessonStartLabel", TeachUsSession.get().getString("General.intervalBetweenLessonStart")).setRenderBodyOnly(true)); //$NON-NLS-1$ //$NON-NLS-2$
+		form.add(new Label("minutes2Label", TeachUsSession.get().getString("General.minutes")).setRenderBodyOnly(true)); //$NON-NLS-1$ //$NON-NLS-2$
+		form.add(new TextField("intervalBetweenLessonStart").setType(Integer.class).setRequired(true)); //$NON-NLS-1$
+	}
+
 	private void createLessonDurationField(Form form) {
 		form.add(new Label("lessonDurationLabel", TeachUsSession.get().getString("General.lessonDuration")).setRenderBodyOnly(true)); //$NON-NLS-1$ //$NON-NLS-2$
-		form.add(new Label("minutesLabel", TeachUsSession.get().getString("General.minutes")).setRenderBodyOnly(true)); //$NON-NLS-1$ //$NON-NLS-2$
+		form.add(new Label("minutes1Label", TeachUsSession.get().getString("General.minutes")).setRenderBodyOnly(true)); //$NON-NLS-1$ //$NON-NLS-2$
 		form.add(new TextField("lessonDuration").setType(Integer.class).setRequired(true)); //$NON-NLS-1$
 	}
 

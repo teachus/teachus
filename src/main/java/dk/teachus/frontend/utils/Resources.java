@@ -8,7 +8,7 @@ import dk.teachus.frontend.TeachUsApplication;
 public abstract class Resources {
 
 	/*
-	 * ICONS
+	 * IMAGES
 	 */
 	public static final ResourceReference AVAILABLE = new ResourceReference(TeachUsApplication.class, "resources/img/available_static.png"); //$NON-NLS-1$
 	public static final ResourceReference AVAILABLE_HOVER = new ResourceReference(TeachUsApplication.class, "resources/img/available_static_hover.png"); //$NON-NLS-1$
@@ -21,6 +21,11 @@ public abstract class Resources {
 	public static final ResourceReference PAID = new ResourceReference(TeachUsApplication.class, "resources/img/paid.png"); //$NON-NLS-1$;
 	public static final ResourceReference TOOLBAR = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back.png"); //$NON-NLS-1$;
 	public static final ResourceReference LIST_HEADER = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back.png"); //$NON-NLS-1$;
+	public static final ResourceReference EMPTY = new ResourceReference(TeachUsApplication.class, "resources/img/empty.gif"); //$NON-NLS-1$;
+	
+	public static final ResourceReference ANDREAS09_BODYBG = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_MENUHOVER = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_FOOTERBG = new ResourceReference(TeachUsApplication.class, "resources/img/footerbg.jpg"); //$NON-NLS-1$;
 	
 	/*
 	 * CSS and JS

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
 
@@ -65,7 +66,9 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	private double price;
 
-	private int lessonDuration;
+	private int lessonDuration = 60;
+	
+	private int intervalBetweenLessonStart = 60;
 
 	public void addWeekDay(WeekDay weekDay) {
 		if (weekDays == null) {
@@ -134,6 +137,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return endTime;
 	}
 
+	public int getIntervalBetweenLessonStart() {
+		return intervalBetweenLessonStart;
+	}
+
 	public int getLessonDuration() {
 		return lessonDuration;
 	}
@@ -186,6 +193,90 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 		return hasWeekDay;
 	}
+	
+	public boolean isTimeValid(DateTime time) {
+		boolean timeValid = false;
+
+		time = resetDateTime(time, time);
+		DateTime st = resetDateTime(new DateTime(startTime), time);
+		DateTime et = resetDateTime(new DateTime(endTime), time);
+		Interval periodTimeInterval = new Interval(st, et);
+		
+		if (periodTimeInterval.contains(time)) {
+			int timeMinutes = time.getMinuteOfHour();
+			timeMinutes -= st.getMinuteOfHour();
+			
+			if (timeMinutes%intervalBetweenLessonStart == 0) {
+				timeValid = true;
+			}
+		}
+		
+		return timeValid;
+	}
+	
+	public boolean mayBook(DateTime time) {
+		boolean mayBook = false;
+
+		time = resetDateTime(time, time);
+		DateTime et = resetDateTime(new DateTime(endTime), time);
+
+		if (isTimeValid(time)) {
+			time = time.plusMinutes(lessonDuration);
+			if (time.equals(et) || time.isBefore(et)) {
+				mayBook = true;
+			}
+		}
+
+		return mayBook;
+	}
+	
+	public boolean conflicts(DateTime bookedTime, DateTime time) {
+		boolean conflicts = false;
+		
+		// On the same date
+		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
+			bookedTime = resetDateTime(bookedTime, time);
+			time = resetDateTime(time, time);
+			
+			DateTime st = bookedTime.minusMinutes(lessonDuration);
+			DateTime et = bookedTime.plusMinutes(lessonDuration);
+			
+			Interval bookedInterval = new Interval(st, et);
+			
+			if (bookedInterval.contains(time) && st.equals(time) == false) {
+				conflicts = true;
+			}
+		}
+		
+		return conflicts;
+	}
+	
+	public boolean inLesson(DateTime bookedTime, DateTime time) {
+		boolean inLesson = false;
+		
+		// On the same date
+		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
+			bookedTime = resetDateTime(bookedTime, time);
+			time = resetDateTime(time, time);
+			
+				DateTime et = bookedTime.plusMinutes(lessonDuration);
+			
+			Interval bookedInterval = new Interval(bookedTime, et);
+			
+			if (bookedInterval.contains(time) && bookedTime.equals(time) == false) {
+				inLesson = true;
+			}
+		}
+		
+		return inLesson;
+	}
+	
+	private DateTime resetDateTime(DateTime time, DateTime resetTo) {
+		return time
+			.withDate(resetTo.getYear(), resetTo.getMonthOfYear(), resetTo.getDayOfMonth())
+			.withSecondOfMinute(0)
+			.withMillisOfSecond(0);
+	}
 
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
@@ -197,6 +288,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public void setIntervalBetweenLessonStart(int intervalBetweenLessonStart) {
+		this.intervalBetweenLessonStart = intervalBetweenLessonStart;
 	}
 
 	public void setLessonDuration(int lessonDuration) {

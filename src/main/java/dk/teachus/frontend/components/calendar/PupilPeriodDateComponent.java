@@ -60,5 +60,10 @@ public class PupilPeriodDateComponent extends BookingPeriodDateComponent {
         
         return mayChangeBooking;
 	}
+	
+	@Override
+	protected BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings) {
+		return new PupilPeriodDateComponent(id, pupil, period, date, bookings);
+	}
 
 }

@@ -66,6 +66,8 @@ public class TestPupilCalendarPage extends WicketSpringTestCase {
 		
 		tester.assertRenderedPage(PupilCalendarPage.class);
 		
+		tester.debugComponentTrees();
+		
 		assertTimeSelected("calendar:calendar:weeks:1:days:1:periods:1:period:rows:2");
 		
 		assertTimeOccupied("calendar:calendar:weeks:1:days:1:periods:1:period:rows:4");

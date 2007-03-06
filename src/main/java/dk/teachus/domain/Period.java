@@ -3,6 +3,8 @@ package dk.teachus.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import dk.teachus.domain.impl.PeriodImpl.WeekDay;
 
 public interface Period {
@@ -30,6 +32,12 @@ public interface Period {
 	 */
 	int getLessonDuration();
 	
+	/**
+	 * @return How often a lesson can start. F.ex. 15 on this property
+	 * gives: 10.10, 10.15, 10.30 and 10.45
+	 */
+	int getIntervalBetweenLessonStart();
+	
 	void setName(String name);
 
 	void setEndDate(Date endDate);
@@ -45,6 +53,8 @@ public interface Period {
 	void setPrice(double price);
 	
 	void setLessonDuration(int minutes);
+	
+	void setIntervalBetweenLessonStart(int minutes);
 
 	/*
 	 * Utility methods
@@ -58,5 +68,13 @@ public interface Period {
 	boolean hasDate(Date date);
 
 	Date generateDate(Date startDate);
+	
+	boolean isTimeValid(DateTime time);
 
+	boolean mayBook(DateTime time);
+
+	boolean conflicts(DateTime bookedTime, DateTime time);
+
+	boolean inLesson(DateTime bookedTime, DateTime time);
+	
 }

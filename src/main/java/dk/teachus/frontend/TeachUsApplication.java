@@ -13,6 +13,8 @@ import wicket.ISessionFactory;
 import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Session;
+import wicket.ajax.AbstractDefaultAjaxBehavior;
+import wicket.markup.html.resources.JavascriptResourceReference;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequestCycle;
 import wicket.settings.IExceptionSettings;
@@ -54,6 +56,8 @@ public class TeachUsApplication extends WebApplication {
 		getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
 		getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
 		getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
+		
+		getResourceSettings().setStripJavascriptCommentsAndWhitespace(false);
 		
 		mountPages();
 		
@@ -109,6 +113,16 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/unpaid.png", Resources.UNPAID.getSharedResourceKey());
 		mountSharedResource("/images/toolbar.png", Resources.TOOLBAR.getSharedResourceKey());
 		mountSharedResource("/images/list_header_back.png", Resources.LIST_HEADER.getSharedResourceKey());
+		mountSharedResource("/images/empty.gif", Resources.EMPTY.getSharedResourceKey());
+		
+		mountSharedResource("/images/bodybg.jpg", Resources.ANDREAS09_BODYBG.getSharedResourceKey());
+		mountSharedResource("/images/footerbg.jpg", Resources.ANDREAS09_FOOTERBG.getSharedResourceKey());
+		mountSharedResource("/images/menuhover.jpg", Resources.ANDREAS09_MENUHOVER.getSharedResourceKey());
+		
+		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
+		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
+		mountSharedResource("/js/prototype.js", Resources.JS_PROTOTYPE.getSharedResourceKey());
+		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey());
 	}
 
 	public PersonDAO getPersonDAO() {
