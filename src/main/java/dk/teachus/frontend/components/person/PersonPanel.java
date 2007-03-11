@@ -5,20 +5,11 @@ import java.util.Locale;
 
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.form.AjaxSubmitButton;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.DropDownChoice;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.PasswordTextField;
-import wicket.markup.html.form.TextField;
 import wicket.markup.html.form.validation.EmailAddressPatternValidator;
 import wicket.markup.html.form.validation.EqualInputValidator;
+import wicket.markup.html.form.validation.IFormValidator;
 import wicket.markup.html.form.validation.StringValidator;
-import wicket.markup.html.panel.FeedbackPanel;
 import wicket.markup.html.panel.Panel;
-import wicket.model.CompoundPropertyModel;
 import wicket.model.PropertyModel;
 import wicket.protocol.http.WebApplication;
 import wicket.util.string.Strings;
@@ -27,13 +18,20 @@ import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.form.ButtonPanelElement;
+import dk.teachus.frontend.components.form.DropDownElement;
+import dk.teachus.frontend.components.form.FormPanel;
+import dk.teachus.frontend.components.form.IntegerFieldElement;
+import dk.teachus.frontend.components.form.PasswordFieldElement;
+import dk.teachus.frontend.components.form.ReadOnlyElement;
+import dk.teachus.frontend.components.form.TextFieldElement;
+import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 
 public abstract class PersonPanel extends Panel {
 	protected String password1;
 	protected String password2;
-	private FeedbackPanel feedbackPanel;
 
 	public PersonPanel(String id, final Person person) {
 		super(id);
@@ -42,89 +40,71 @@ public abstract class PersonPanel extends Panel {
 			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
 		}
 		
-		Form form = new Form("form", new CompoundPropertyModel(person)); //$NON-NLS-1$
-		form.setOutputMarkupId(true);
-		add(form);
+		FormPanel formPanel = new FormPanel("form");
+		add(formPanel);
 		
-		feedbackPanel = new FeedbackPanel("feedback"); //$NON-NLS-1$
-		feedbackPanel.setOutputMarkupId(true);
-		form.add(feedbackPanel);
-		
-		form.add(new Label("nameLabel", TeachUsSession.get().getString("General.name"))); //$NON-NLS-1$ //$NON-NLS-2$
-		TextField nameField = new TextField("name"); //$NON-NLS-1$
-		nameField.setRequired(true);
+		// Name
+		TextFieldElement nameField = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(person, "name"), true, 32);
 		nameField.add(StringValidator.lengthBetween(2, 100));
-		form.add(nameField);
+		formPanel.addElement(nameField);
 		
-		form.add(new Label("emailLabel", TeachUsSession.get().getString("General.email"))); //$NON-NLS-1$ //$NON-NLS-2$
-		TextField emailField = new TextField("email"); //$NON-NLS-1$
-		emailField.setRequired(true);
+		// Email
+		TextFieldElement emailField = new TextFieldElement(TeachUsSession.get().getString("General.email"), new PropertyModel(person, "email"), true, 50);
 		emailField.add(EmailAddressPatternValidator.getInstance());
-		form.add(emailField);
+		formPanel.addElement(emailField);
 		
-		form.add(new Label("phoneNumberLabel", TeachUsSession.get().getString("General.phoneNumber"))); //$NON-NLS-1$ //$NON-NLS-2$
-		form.add(new TextField("phoneNumber")); //$NON-NLS-1$
+		// Phone number
+		formPanel.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.phoneNumber"), new PropertyModel(person, "phoneNumber"), 10));
 		
-		form.add(new Label("usernameLabel", TeachUsSession.get().getString("General.username"))); //$NON-NLS-1$ //$NON-NLS-2$
-		TextField usernameField = new TextField("username") { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L; //$NON-NLS-1$
-
-			@Override
-			public boolean isEnabled() {
-				return isUsernameEnabled();
-			}
-		};
-		usernameField.setRequired(true);
-		usernameField.add(StringValidator.lengthBetween(3, 50));
-		form.add(usernameField);
-		
-		form.add(new Label("password1Label", TeachUsSession.get().getString("General.password"))); //$NON-NLS-1$ //$NON-NLS-2$
-		PasswordTextField passwordTextField1 = new PasswordTextField("password", new PropertyModel(this, "password1")); //$NON-NLS-1$ //$NON-NLS-2$
-		if (person.getId() != null) {
-			passwordTextField1.setRequired(false);
+		// Username
+		if (isUsernameEnabled()) {
+			TextFieldElement usernameField = new TextFieldElement(TeachUsSession.get().getString("General.username"), new PropertyModel(person, "username"), true);
+			usernameField.add(StringValidator.lengthBetween(3, 50));
+			formPanel.addElement(usernameField);
+		} else {
+			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.username"), new PropertyModel(person, "username")));
 		}
-		passwordTextField1.add(StringValidator.lengthBetween(4, 32));
-		form.add(passwordTextField1);
+	
+		// Password 1
+		final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), person.getId() == null);
+		password1Field.add(StringValidator.lengthBetween(4, 32));
+		formPanel.addElement(password1Field);
 		
-		form.add(new Label("password2Label", TeachUsSession.get().getString("PersonPanel.repeatPassword"))); //$NON-NLS-1$ //$NON-NLS-2$
-		final PasswordTextField passwordTextField2 = new PasswordTextField("password2", new PropertyModel(this, "password2")); //$NON-NLS-1$ //$NON-NLS-2$
-		passwordTextField2.setRequired(false);
-		form.add(passwordTextField2);
+		// Password 2
+		final PasswordFieldElement password2Field = new PasswordFieldElement(TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel(this, "password2"));
+		formPanel.addElement(password2Field);
 		
-		form.add(new EqualInputValidator(passwordTextField1, passwordTextField2));
+		// Password validator
+		formPanel.addValidator(new FormValidator() {
+			private static final long serialVersionUID = 1L;
+
+			public IFormValidator getFormValidator() {
+				return new EqualInputValidator(password1Field.getFormComponent(), password2Field.getFormComponent());
+			}			
+		});
 		
-		// Locale row
-		WebMarkupContainer localeRow = new WebMarkupContainer("localeRow") { //$NON-NLS-1$
+		// Locale
+		if (isLocaleVisible()) {
+			List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
+			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(person, "locale"), availableLocales, new LocaleChoiceRenderer()));
+		}
+		
+		// Teacher
+		if (isTeacherVisible()) {
+			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(person, "teacher.name")));
+		}
+		
+		// Buttons
+		formPanel.addElement(new ButtonPanelElement() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isVisible() {
-				return isLocaleVisible();
+			protected void onCancel(AjaxRequestTarget target) {
+				getRequestCycle().setResponsePage(getPersonsPageClass());
 			}
-		};
-		form.add(localeRow);
-		localeRow.add(new Label("localeLabel", TeachUsSession.get().getString("General.locale"))); //$NON-NLS-1$ //$NON-NLS-2$
-		List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
-		localeRow.add(new DropDownChoice("locale", availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$
-		
-		// Teacher row
-		WebMarkupContainer teacherRow = new WebMarkupContainer("teacherRow") { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
 
 			@Override
-			public boolean isVisible() {
-				return person instanceof Pupil;
-			}
-		};
-		form.add(teacherRow);
-		teacherRow.add(new Label("teacherNameLabel", TeachUsSession.get().getString("General.teacher"))); //$NON-NLS-1$ //$NON-NLS-2$
-		teacherRow.add(new Label("teacher.name")); //$NON-NLS-1$
-		
-		AjaxSubmitButton saveButton = new AjaxSubmitButton("saveButton", form) { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form form) {
+			protected void onSave(AjaxRequestTarget target) {
 				boolean newPerson = person.getId() == null;
 				
 				if (Strings.isEmpty(password1) == false) {
@@ -141,15 +121,8 @@ public abstract class PersonPanel extends Panel {
 				}
 				
 				getRequestCycle().setResponsePage(getPersonsPageClass());
-			}		
-			
-			@Override
-			protected void onError(AjaxRequestTarget target, Form form) {
-				target.addComponent(feedbackPanel);
-			}
-		};
-		saveButton.add(new SimpleAttributeModifier("value", TeachUsSession.get().getString("General.save"))); //$NON-NLS-1$ //$NON-NLS-2$
-		form.add(saveButton);
+			}			
+		});
 	}
 	
 	protected abstract boolean allowUserEditing(Person loggedInPerson, Person editPerson);
@@ -164,4 +137,8 @@ public abstract class PersonPanel extends Panel {
 		return true;
 	}
 
+	protected boolean isTeacherVisible() {
+		return false;
+	}
+	
 }

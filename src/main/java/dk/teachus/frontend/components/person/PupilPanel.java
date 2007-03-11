@@ -47,5 +47,10 @@ public class PupilPanel extends PersonPanel {
 	protected boolean isLocaleVisible() {
 		return false;
 	}
+	
+	@Override
+	protected boolean isTeacherVisible() {
+		return true;
+	}
 
 }

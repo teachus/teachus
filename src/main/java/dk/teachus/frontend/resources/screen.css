@@ -48,6 +48,24 @@ ul p {
 	height: 300px;
 }
 
+.form input.error {
+	background: url(/images/unpaid.png) no-repeat 100% 50%;
+	padding-right: 20px;
+}
+
+.form input.valid {
+	background: url(/images/paid.png) no-repeat 100% 50%;
+	padding-right: 20px;
+}
+
+.form .feedback {
+	white-space: nowrap;
+}
+
+.form .feedback ul {
+	margin: 0;
+}
+
 /* CALENDAR */
 
 table.border {
