@@ -10,14 +10,12 @@ import wicket.ajax.markup.html.form.AjaxSubmitButton;
 import wicket.behavior.SimpleAttributeModifier;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.panel.FeedbackPanel;
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class ButtonPanelElement extends FormElement {
 	private static final long serialVersionUID = 1L;
 	
-	private Map<FormComponent, Boolean> errorStates = new HashMap<FormComponent, Boolean>();
+	private Map<ValidationProducer, Boolean> errorStates = new HashMap<ValidationProducer, Boolean>();
 	
 	private Form associatedForm;
 
@@ -44,22 +42,28 @@ public abstract class ButtonPanelElement extends FormElement {
 			
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form) {
-				associatedForm.visitChildren(FormComponent.class, new wicket.Component.IVisitor() {
+				associatedForm.visitChildren(ValidationProducer.class, new wicket.Component.IVisitor() {
 					public Object component(Component component) {
-						FormComponent formComponent = (FormComponent) component;
+						ValidationProducer validationProducer = (ValidationProducer) component;
 						
-						if (formComponent.hasErrorMessage() != errorStates.get(formComponent)) {
-							errorStates.put(formComponent, formComponent.hasErrorMessage());
-							target.addComponent(formComponent);
+						boolean hasErrorMessage = validationProducer.hasError();
+						if (hasErrorMessage != errorStates.get(validationProducer)) {
+							errorStates.put(validationProducer, hasErrorMessage);
+							
+							Component[] components = null;
+							
+							if (hasErrorMessage) {
+								components = validationProducer.inputInvalid();
+							} else {
+								components = validationProducer.inputValid();
+							}
+							
+							if (components != null) {
+								for (Component component2 : components) {
+									target.addComponent(component2);
+								}
+							}
 						}
-						
-						return CONTINUE_TRAVERSAL;
-					}
-				});
-				
-				associatedForm.visitChildren(FeedbackPanel.class, new wicket.Component.IVisitor() {
-					public Object component(Component component) {
-						target.addComponent(component);
 						
 						return CONTINUE_TRAVERSAL;
 					}
@@ -74,12 +78,11 @@ public abstract class ButtonPanelElement extends FormElement {
 	protected void onAttach() {
 		associatedForm = (Form) findParent(Form.class);
 		
-		associatedForm.visitChildren(FormComponent.class, new IVisitor() {
+		associatedForm.visitChildren(ValidationProducer.class, new IVisitor() {
 			public Object component(Component component) {
-				FormComponent formComponent = (FormComponent) component;
+				ValidationProducer validationProducer = (ValidationProducer) component;
 				
-				errorStates.put(formComponent, formComponent.hasErrorMessage());
-				formComponent.setOutputMarkupId(true);
+				errorStates.put(validationProducer, validationProducer.hasError());
 				
 				return CONTINUE_TRAVERSAL;
 			}

@@ -10,9 +10,8 @@ import wicket.markup.html.form.validation.IValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
 import wicket.model.Model;
-import dk.teachus.frontend.components.TextFieldErrorModifier;
 
-public class PasswordFieldElement extends AbstractInputElement {
+public class PasswordFieldElement extends AbstractValidationInputElement {
 	private static final long serialVersionUID = 1L;
 
 	private IModel inputModel;
@@ -49,9 +48,10 @@ public class PasswordFieldElement extends AbstractInputElement {
 		inputPanel.setRenderBodyOnly(true);
 		
 		passwordTextField = new PasswordTextField("inputField", inputModel);
-		passwordTextField.add(new TextFieldErrorModifier(feedbackPanel, "onchange"));
+//		passwordTextField.add(new TextFieldErrorModifier(feedbackPanel, "onchange"));
 		passwordTextField.setRequired(required);
 		passwordTextField.setResetPassword(false);
+		passwordTextField.setOutputMarkupId(true);
 		passwordTextField.setLabel(new Model(label));
 		if (size > -1) {
 			passwordTextField.add(new SimpleAttributeModifier("size", ""+size));
@@ -66,9 +66,27 @@ public class PasswordFieldElement extends AbstractInputElement {
 		passwordTextField.add(validator);
 	}
 	
-	@Override
 	public FormComponent getFormComponent() {
 		return passwordTextField;
+	}
+	
+	@Override
+	public Component[] onInputValid(FeedbackPanel feedbackPanel) {
+		passwordTextField.add(new SimpleAttributeModifier("class", "valid"));
+		
+		return new Component[] {passwordTextField, feedbackPanel};
+	}
+	
+	@Override
+	public Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
+		passwordTextField.add(new SimpleAttributeModifier("class", "error"));
+		
+		return new Component[] {passwordTextField, feedbackPanel};
+	}
+	
+	@Override
+	protected String getValidationEvent() {
+		return "onchange";
 	}
 
 }

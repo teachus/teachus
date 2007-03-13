@@ -40,6 +40,8 @@ ul p {
 .form td.label {
 	width: 1%;
 	white-space: nowrap;
+	vertical-align: top;
+	padding-top: 6px;
 }
 
 .form textarea {
@@ -60,6 +62,8 @@ ul p {
 
 .form .feedback {
 	white-space: nowrap;
+	vertical-align: top;
+	padding-top: 6px;
 }
 
 .form .feedback ul {

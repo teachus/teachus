@@ -18,6 +18,8 @@ public abstract class AbstractInputElement extends FormElement {
 	protected String label;
 	private List<IValidator> validators = new ArrayList<IValidator>();
 
+	protected FeedbackPanel feedbackPanel;
+
 	public AbstractInputElement(String label) {
 		this(label, false);
 	}
@@ -37,7 +39,7 @@ public abstract class AbstractInputElement extends FormElement {
 			Component label = newLabelComponent("label");
 			add(label);
 			
-			FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+			feedbackPanel = new FeedbackPanel("feedback");
 			feedbackPanel.setOutputMarkupId(true);
 			add(feedbackPanel);
 			
@@ -50,8 +52,13 @@ public abstract class AbstractInputElement extends FormElement {
 				addValidator(validator);
 			}
 			
+			onEndAttach();
+			
 			attached = true;
 		}
+	}
+	
+	protected void onEndAttach() {
 	}
 	
 	protected Component newLabelComponent(String wicketId) {
@@ -64,6 +71,6 @@ public abstract class AbstractInputElement extends FormElement {
 	
 	protected abstract void addValidator(IValidator validator);
 	
-	public abstract FormComponent getFormComponent();
+	protected abstract FormComponent getFormComponent();
 
 }

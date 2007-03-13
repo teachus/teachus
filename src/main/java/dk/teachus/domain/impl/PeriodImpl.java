@@ -56,7 +56,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	private Date endDate;
 
-	private List<WeekDay> weekDays;
+	private List<WeekDay> weekDays = new ArrayList<WeekDay>();
 
 	private Date startTime;
 
@@ -71,10 +71,6 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	private int intervalBetweenLessonStart = 60;
 
 	public void addWeekDay(WeekDay weekDay) {
-		if (weekDays == null) {
-			weekDays = new ArrayList<WeekDay>();
-		}
-
 		weekDays.add(weekDay);
 	}
 

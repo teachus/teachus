@@ -11,17 +11,27 @@ import wicket.markup.html.form.IChoiceRenderer;
 import wicket.markup.html.form.validation.IValidator;
 import wicket.markup.html.image.Image;
 import wicket.markup.html.panel.FeedbackPanel;
+import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
 import wicket.model.Model;
-import dk.teachus.frontend.components.DropdownErrorModifier;
+import dk.teachus.frontend.utils.Resources;
 
-public class DropDownElement extends AbstractInputElement {
+public class DropDownElement extends AbstractChoiceElement {
 	private static final long serialVersionUID = 1L;
 
+	private class StateModel extends AbstractReadOnlyModel {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Object getObject(Component component) {
+			return DropDownElement.this.valid ? Resources.PAID : Resources.UNPAID;
+		}		
+	}
+	
 	private DropDownChoice dropDownChoice;
-	private IModel inputModel;
-	private List choices;
-	private IChoiceRenderer choiceRenderer;
+
+	private boolean valid;
+	private Image state;
 	
 	public DropDownElement(String label, IModel inputModel, List choices) {
 		this(label, inputModel, choices, null, false);
@@ -36,11 +46,7 @@ public class DropDownElement extends AbstractInputElement {
 	}
 	
 	public DropDownElement(String label, IModel inputModel, List choices, IChoiceRenderer choiceRenderer, boolean required) {
-		super(label, required);
-		
-		this.inputModel = inputModel;
-		this.choices = choices;
-		this.choiceRenderer = choiceRenderer;
+		super(label, inputModel, choices, choiceRenderer, required);
 	}
 	
 	@Override
@@ -57,10 +63,11 @@ public class DropDownElement extends AbstractInputElement {
 		dropDownChoice.setLabel(new Model(label));
 		elementPanel.add(dropDownChoice);
 		dropDownChoice.setRequired(required);
+		dropDownChoice.setNullValid(required == false);
 		
-		Image state = new Image("state");
+		state = new Image("state", new StateModel());
+		state.setOutputMarkupId(true);
 		elementPanel.add(state);
-		dropDownChoice.add(new DropdownErrorModifier(feedbackPanel, "onchange", state));
 		
 		return elementPanel;
 	}
@@ -70,9 +77,25 @@ public class DropDownElement extends AbstractInputElement {
 		dropDownChoice.add(validator);
 	}
 	
-	@Override
 	public FormComponent getFormComponent() {
 		return dropDownChoice;
 	}
 
+	@Override
+	public Component[] onInputValid(FeedbackPanel feedbackPanel) {
+		valid = true;
+		return new Component[] {state, feedbackPanel};
+	}
+	
+	@Override
+	public Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
+		valid = false;
+		return new Component[] {state, feedbackPanel};
+	}
+	
+	@Override
+	protected String getValidationEvent() {
+		return "onchange";
+	}
+	
 }

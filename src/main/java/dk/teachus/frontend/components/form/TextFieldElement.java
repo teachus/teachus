@@ -10,9 +10,8 @@ import wicket.markup.html.form.validation.IValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
 import wicket.model.Model;
-import dk.teachus.frontend.components.TextFieldErrorModifier;
 
-public class TextFieldElement extends AbstractInputElement {
+public class TextFieldElement extends AbstractValidationInputElement {
 	private static final long serialVersionUID = 1L;
 
 	private IModel inputModel;
@@ -44,8 +43,9 @@ public class TextFieldElement extends AbstractInputElement {
 		
 		textField = getNewInputComponent("inputField", feedbackPanel);
 		textField.setLabel(new Model(label));
-		inputPanel.add(textField);
 		textField.setRequired(required);
+		textField.setOutputMarkupId(true);
+		inputPanel.add(textField);
 		
 		return inputPanel;
 	}
@@ -57,7 +57,7 @@ public class TextFieldElement extends AbstractInputElement {
 
 	protected TextField getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
 		TextField textField = new TextField(wicketId, inputModel);
-		textField.add(new TextFieldErrorModifier(feedbackPanel, "onchange"));
+//		textField.add(new TextFieldErrorModifier(feedbackPanel, "onchange"));
 		if (size > -1) {
 			textField.add(new SimpleAttributeModifier("size", ""+size));
 		}
@@ -69,9 +69,27 @@ public class TextFieldElement extends AbstractInputElement {
 		textField.add(validator);
 	}
 	
-	@Override
 	public FormComponent getFormComponent() {
 		return textField;
+	}
+	
+	@Override
+	public Component[] onInputValid(FeedbackPanel feedbackPanel) {
+		textField.add(new SimpleAttributeModifier("class", "valid"));
+		
+		return new Component[] {textField, feedbackPanel};
+	}
+	
+	@Override
+	public Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
+		textField.add(new SimpleAttributeModifier("class", "error"));
+		
+		return new Component[] {textField, feedbackPanel};
+	}
+	
+	@Override
+	protected String getValidationEvent() {
+		return "onchange";
 	}
 	
 }

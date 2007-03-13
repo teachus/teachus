@@ -14,6 +14,7 @@ import wicket.Request;
 import wicket.RequestCycle;
 import wicket.Session;
 import wicket.ajax.AbstractDefaultAjaxBehavior;
+import wicket.markup.html.AjaxServerAndClientTimeFilter;
 import wicket.markup.html.resources.JavascriptResourceReference;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequestCycle;
@@ -58,6 +59,8 @@ public class TeachUsApplication extends WebApplication {
 		getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
 		
 		getResourceSettings().setStripJavascriptCommentsAndWhitespace(false);
+		
+		getRequestCycleSettings().addResponseFilter(new AjaxServerAndClientTimeFilter());
 		
 		mountPages();
 		
