@@ -3,7 +3,6 @@ package dk.teachus.domain.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateMidnight;
@@ -18,9 +17,6 @@ public class PeriodsImpl implements Periods {
 
 	private List<Period> periods = new ArrayList<Period>();
 
-	/* (non-Javadoc)
-	 * @see dk.teachus.domain.impl.Periods#getPeriods()
-	 */
 	public List<Period> getPeriods() {
 		return periods;
 	}
@@ -29,17 +25,11 @@ public class PeriodsImpl implements Periods {
 		this.periods = periods;
 	}
 
-	/* (non-Javadoc)
-	 * @see dk.teachus.domain.impl.Periods#addPeriod(dk.teachus.domain.Period)
-	 */
 	public void addPeriod(Period period) {		
 		periods.add(period);
 	}
 	
-	/* (non-Javadoc)
-	 * @see dk.teachus.domain.impl.Periods#hasDate(java.util.Date)
-	 */
-	public boolean hasDate(Date date) {
+	public boolean hasDate(DateMidnight date) {
 		boolean hasDate = false;
 		
 		for (Period period : periods) {
@@ -52,10 +42,39 @@ public class PeriodsImpl implements Periods {
 		return hasDate;
 	}
 	
-	/* (non-Javadoc)
-	 * @see dk.teachus.domain.impl.Periods#generateDatesForWeek(java.util.Date)
-	 */
-	public List<DatePeriod> generateDatesForWeek(Date startDate) {
+	public boolean containsDate(DateMidnight date) {
+		boolean contains = false;
+		
+		for (Period period : periods) {
+			if (period.dateIntervalContains(date)) {
+				contains = true;
+				break;
+			}
+		}
+		
+		return contains;
+	}
+	
+	public boolean hasPeriodBefore(DateMidnight date) {
+		boolean hasPeriodBefore = false;
+		
+		for (Period period : periods) {
+			if (period.getBeginDate() == null) {
+				hasPeriodBefore = true;
+				break;
+			} else {
+				DateMidnight beginDate = new DateMidnight(period.getBeginDate());
+				if (beginDate.isBefore(date) || beginDate.isEqual(date)) {
+					hasPeriodBefore = true;
+					break;
+				}
+			}
+		}
+		
+		return hasPeriodBefore;
+	}
+	
+	public List<DatePeriod> generateDatesForWeek(DateMidnight startDate) {
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		DateMidnight sd = new DateMidnight(startDate).withDayOfWeek(DateTimeConstants.MONDAY);
 		int week = sd.getWeekOfWeekyear();
@@ -67,13 +86,13 @@ public class PeriodsImpl implements Periods {
 			DatePeriod datePeriod = null;
 			for (Period period : periods) {
 				// Check if this period can handle the date at all
-				if (period.dateIntervalContains(sd.toDate())) {
+				if (period.dateIntervalContains(sd)) {
 					dateInPeriods = true;
 				
-					Date date = period.generateDate(sd.toDate());
+					DateMidnight date = period.generateDate(sd);
 					if (date != null) {
 						if (datePeriod == null) {
-							datePeriod = new DatePeriodImpl(date);
+							datePeriod = new DatePeriodImpl(date.toDate());
 							dates.add(datePeriod);
 						}
 						
@@ -93,25 +112,30 @@ public class PeriodsImpl implements Periods {
 		
 		return dates;
 	}
+
+	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfWeeks) {
+		List<DatePeriod> dates = new ArrayList<DatePeriod>();
+		List<DatePeriod> weekDates = generateDatesForWeek(weekDate);
+		do {
+			dates.addAll(weekDates);
+			weekDate = weekDate.plusWeeks(1);
+			weekDates = generateDatesForWeek(weekDate);
+		} while(dates.size()+weekDates.size() <= numberOfWeeks);
+		
+		return dates;
+	}
 	
-	
-	
-	/* (non-Javadoc)
-	 * @see dk.teachus.domain.impl.Periods#calculateNumberOfWeeks(java.util.Date, int)
-	 */
-	public int calculateNumberOfWeeks(Date lastDate, int numberOfDays) {
+	public int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays) {
 		int numberOfWeeks = 0;
-		DateMidnight ld = new DateMidnight(lastDate);
 		
 		int dates = 0;
-		int weekDates = generateDatesForWeek(ld.toDate()).size();
-		if (weekDates > 0) {
-			do {
+		while(hasPeriodBefore(lastDate) && dates < numberOfDays) {
+			lastDate = lastDate.minusWeeks(1);
+			dates += generateDatesForWeek(lastDate).size();
+			
+			if (dates <= numberOfDays) {
 				numberOfWeeks++;
-				dates += weekDates;
-				ld = ld.minusWeeks(1);
-				weekDates = generateDatesForWeek(ld.toDate()).size();
-			} while(dates+weekDates <= numberOfDays && weekDates > 0);
+			}
 		}
 		
 		return numberOfWeeks;

@@ -36,7 +36,7 @@ public abstract class PeriodDateComponent extends Panel {
 	protected void onAttach() {
 		if (attached == false) {
 			// Checks
-			if (period.hasDate(date.toDate()) == false) {
+			if (period.hasDate(date) == false) {
 				throw new IllegalArgumentException("Date: "+date+" is not in the period: "+period); //$NON-NLS-1$ //$NON-NLS-2$
 			}	
 					
@@ -44,7 +44,7 @@ public abstract class PeriodDateComponent extends Panel {
 			{
 				add(new Label("weekday", Formatters.getFormatWeekDay().print(date))); //$NON-NLS-1$
 				add(new RenderingLabel("price", new Model(period.getPrice()), new CurrencyChoiceRenderer())); //$NON-NLS-1$
-				add(new Label("date", Formatters.getFormatPrettyDate().print(date))); //$NON-NLS-1$
+				add(new Label("date", Formatters.getFormatShortPrettyDate().print(date))); //$NON-NLS-1$
 			}
 			
 			// Body

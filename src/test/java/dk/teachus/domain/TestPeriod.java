@@ -1,9 +1,10 @@
 package dk.teachus.domain;
 
+import junit.framework.TestCase;
+
 import org.joda.time.DateTime;
 
 import dk.teachus.domain.impl.PeriodImpl;
-import junit.framework.TestCase;
 
 public class TestPeriod extends TestCase {
 
@@ -110,7 +111,6 @@ public class TestPeriod extends TestCase {
 		assertFalse(period.mayBook(new DateTime(2007, 1, 1, 9, 0, 0, 0)));
 		assertFalse(period.mayBook(new DateTime(2007, 1, 1, 12, 30, 0, 0)));
 		assertFalse(period.mayBook(new DateTime(2007, 1, 1, 16, 0, 0, 0)));
-		assertFalse(period.mayBook(new DateTime(2007, 1, 1, 11, 1, 0, 0)));		
-	}
-	
+		assertFalse(period.mayBook(new DateTime(2007, 1, 1, 11, 1, 0, 0)));
+	}	
 }

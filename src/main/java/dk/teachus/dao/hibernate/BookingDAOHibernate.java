@@ -36,7 +36,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		Period period = booking.getPeriod();
 		Date date = booking.getDate();
 		
-		if (period.hasDate(date) == false) {
+		if (period.hasDate(new DateMidnight(date)) == false) {
 			throw new IllegalArgumentException("The period can not be booked on this date");
 		}
 		

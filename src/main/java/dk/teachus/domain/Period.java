@@ -3,6 +3,7 @@ package dk.teachus.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.domain.impl.PeriodImpl.WeekDay;
@@ -38,6 +39,8 @@ public interface Period {
 	 */
 	int getIntervalBetweenLessonStart();
 	
+	int getRepeatEveryWeek();
+	
 	void setName(String name);
 
 	void setEndDate(Date endDate);
@@ -55,19 +58,21 @@ public interface Period {
 	void setLessonDuration(int minutes);
 	
 	void setIntervalBetweenLessonStart(int minutes);
+	
+	void setRepeatEveryWeek(int repeatEveryWeek);
 
 	/*
 	 * Utility methods
 	 */
 	void addWeekDay(WeekDay weekDay);
 
-	boolean hasWeekDay(Date date);
+	boolean hasWeekDay(DateMidnight date);
 
-	boolean dateIntervalContains(Date date);
+	boolean dateIntervalContains(DateMidnight date);
 
-	boolean hasDate(Date date);
+	boolean hasDate(DateMidnight date);
 
-	Date generateDate(Date startDate);
+	DateMidnight generateDate(DateMidnight startDate);
 	
 	boolean isTimeValid(DateTime time);
 

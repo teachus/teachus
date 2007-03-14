@@ -12,12 +12,7 @@ import wicket.markup.html.image.Image;
 import wicket.markup.html.link.ExternalLink;
 import wicket.markup.html.link.PopupSettings;
 import wicket.markup.repeater.RepeatingView;
-import wicket.model.Model;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.form.DropDownElement;
-import dk.teachus.frontend.components.form.FormPanel;
-import dk.teachus.frontend.components.form.IntegerFieldElement;
-import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.utils.Resources;
 
 public class InfoPage extends UnAuthenticatedBasePage {
@@ -29,18 +24,6 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		createFeatures();
 		
 		add(new Label("screenshotsHeader", TeachUsSession.get().getString("InfoPage.screenshots")));
-		
-		FormPanel form = new FormPanel("form");
-		add(form);
-		
-		TextFieldElement textFieldElement = new TextFieldElement("Navn", new Model(""), true);
-		form.addElement(textFieldElement);
-		form.addElement(new IntegerFieldElement("Pris", new Model(100)));
-		List<Integer> choices = new ArrayList<Integer>();
-		choices.add(1);
-		choices.add(2);
-		choices.add(3);
-		form.addElement(new DropDownElement("Choice", new Model(), choices, true));
 
 		Map<ResourceReference, ResourceReference> screenshots = new HashMap<ResourceReference, ResourceReference>();
 		
@@ -80,6 +63,7 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		features.add(TeachUsSession.get().getString("InfoPage.feature5"));
 		features.add(TeachUsSession.get().getString("InfoPage.feature6"));
 		features.add(TeachUsSession.get().getString("InfoPage.feature7"));
+		features.add(TeachUsSession.get().getString("InfoPage.feature8"));
 		
 		RepeatingView featuresContainer = new RepeatingView("features");
 		add(featuresContainer);

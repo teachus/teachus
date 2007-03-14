@@ -1,7 +1,6 @@
 package dk.teachus.frontend.components.calendar;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -79,13 +78,15 @@ public abstract class CalendarPanel extends Panel {
 			// Calendar
 			DateMidnight weekDate = pageDate.withDayOfWeek(DateTimeConstants.MONDAY);
 			final DateMidnight firstWeekDate = weekDate;
-			List<DatePeriod> dates = new ArrayList<DatePeriod>();
-			List<DatePeriod> weekDates = periods.generateDatesForWeek(weekDate.toDate());
-			do {
-				dates.addAll(weekDates);
-				weekDate = weekDate.plusWeeks(1);
-				weekDates = periods.generateDatesForWeek(weekDate.toDate());
-			} while(dates.size()+weekDates.size() <= 7);
+			List<DatePeriod> dates = periods.generateDates(weekDate, 7);
+			
+			// Get the biggest date of the generates dates
+			for (DatePeriod period : dates) {
+				DateMidnight periodDate = new DateMidnight(period.getDate());
+				if (weekDate.isBefore(periodDate)) {
+					weekDate = periodDate;
+				}
+			}
 						
 			fireIntervalDetermined(dates);
 			
@@ -153,7 +154,8 @@ public abstract class CalendarPanel extends Panel {
 			
 					
 			// Navigation
-			Link backLink = createBackLink("backLink", firstWeekDate.minusWeeks(periods.calculateNumberOfWeeks(firstWeekDate.minusDays(1).toDate(), 7))); //$NON-NLS-1$
+			int backNumberOfWeeks = periods.numberOfWeeksBack(firstWeekDate.minusDays(1), 7);
+			Link backLink = createBackLink("backLink", firstWeekDate.minusWeeks(backNumberOfWeeks), backNumberOfWeeks); //$NON-NLS-1$
 			backLink.add(new Image("backIcon", Resources.LEFT)); //$NON-NLS-1$ //$NON-NLS-2$
 			calendar.add(backLink);
 			
@@ -178,7 +180,7 @@ public abstract class CalendarPanel extends Panel {
 		return numberOfWeeks;
 	}
 
-	protected abstract Link createBackLink(String wicketId, DateMidnight previousWeekDate);
+	protected abstract Link createBackLink(String wicketId, DateMidnight previousWeekDate, int numberOfWeeks);
 	
 	protected abstract Link createForwardLink(String wicketId, DateMidnight nextWeekDate);
 	

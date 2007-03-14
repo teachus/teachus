@@ -1,8 +1,6 @@
 package dk.teachus.frontend.components.form;
 
 import wicket.Component;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.datetime.markup.html.form.DateTextField;
 import wicket.extensions.yui.calendar.DateField;
 import wicket.feedback.ComponentFeedbackMessageFilter;
 import wicket.feedback.IFeedbackMessageFilter;
@@ -71,14 +69,6 @@ public class DateElement extends AbstractValidationInputElement {
 		dateField.setLabel(new Model(label));
 		dateField.setRequired(required);
 		elementPanel.add(dateField);
-		
-		dateField.visitChildren(DateTextField.class, new IVisitor() {
-			public Object component(Component component) {
-				DateTextField dateTextField = (DateTextField) component;
-				dateTextField.add(new SimpleAttributeModifier("readonly", "readonly"));	//$NON-NLS-1$ //$NON-NLS-2$
-				return CONTINUE_TRAVERSAL;
-			}
-		});
 		
 		state = new Image("state", new StateModel());
 		state.setOutputMarkupId(true);

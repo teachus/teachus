@@ -108,6 +108,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 		// Week days
 		form.addElement(new CheckGroupElement(TeachUsSession.get().getString("General.weekDays"), new PropertyModel(period, "weekDays"), Arrays.asList(WeekDay.values()), new WeekDayChoiceRenderer(Format.LONG), true));
 		
+		// Repeat every week
+		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), new PropertyModel(period, "repeatEveryWeek")));
+		
 		// Buttons
 		form.addElement(new ButtonPanelElement() {
 			private static final long serialVersionUID = 1L;

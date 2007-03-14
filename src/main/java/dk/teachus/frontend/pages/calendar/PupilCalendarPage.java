@@ -61,14 +61,19 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 			private Bookings bookings;
 
 			@Override
-			protected Link createBackLink(String wicketId, final DateMidnight previousWeekDate) {
+			protected Link createBackLink(String wicketId, final DateMidnight previousWeekDate, final int numberOfWeeks) {
 				return new Link(wicketId) {
 					private static final long serialVersionUID = 1L;
 		
 					@Override
 					public void onClick() {
 						getRequestCycle().setResponsePage(new PupilCalendarPage(previousWeekDate.toDate(), pupil));
-					}			
+					}
+					
+					@Override
+					public boolean isEnabled() {
+						return numberOfWeeks > 0;
+					}
 				};
 			}
 

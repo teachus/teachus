@@ -102,8 +102,8 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/screenshots/7_thumb.jpg", Resources.SCREENSHOT_7_THUMB.getSharedResourceKey());
 		mountSharedResource("/images/screenshots/8.png", Resources.SCREENSHOT_8.getSharedResourceKey());
 		mountSharedResource("/images/screenshots/8_thumb.jpg", Resources.SCREENSHOT_8_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/9.png", Resources.SCREENSHOT_9.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/9_thumb.jpg", Resources.SCREENSHOT_9_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/9_1.png", Resources.SCREENSHOT_9.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/9_1_thumb.jpg", Resources.SCREENSHOT_9_THUMB.getSharedResourceKey());
 		
 		mountSharedResource("/images/available.png", Resources.AVAILABLE.getSharedResourceKey());
 		mountSharedResource("/images/available_hover.png", Resources.AVAILABLE_HOVER.getSharedResourceKey());

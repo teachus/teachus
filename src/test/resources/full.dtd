@@ -33,6 +33,7 @@
     price CDATA #IMPLIED
     lesson_duration CDATA #REQUIRED
     interval_between_lesson_start CDATA #REQUIRED
+    repeat_every_week CDATA #REQUIRED
 >
 
 <!ELEMENT booking EMPTY>

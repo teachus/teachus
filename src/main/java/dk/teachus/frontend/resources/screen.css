@@ -77,6 +77,12 @@ table.border {
 	width: 1%;
 }
 
+table.border th {
+	padding: 10px;
+	padding-bottom: 0;
+	white-space: nowrap;
+}
+
 .week {
 	padding-right: 10px;
 }
@@ -84,12 +90,13 @@ table.border {
 .day {
 	border: 1px solid gray;
 	width: 1%;
+	margin: 5px;
 }
 
 .day thead th {
 	padding: 2px;
 	padding-left: 7px;
-	padding-right: 7px;
+	padding-right: 25px;
 }
 
 .day thead th .date {

@@ -29,6 +29,17 @@ public abstract class Formatters {
 				.withLocale(Session.get().getLocale());
 	}
 
+	public static DateTimeFormatter getFormatShortPrettyDate() {
+		return new DateTimeFormatterBuilder()
+				.appendDayOfMonth(1)
+				.appendLiteral(". ") //$NON-NLS-1$
+				.appendMonthOfYearShortText()
+				.appendLiteral(' ')
+				.appendYear(4, 4)
+				.toFormatter()
+				.withLocale(Session.get().getLocale());
+	}
+
 	public static DateTimeFormatter getFormatWeekDay() {
 		return new DateTimeFormatterBuilder()
 				.appendDayOfWeekText()

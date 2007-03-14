@@ -9,6 +9,7 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
+import org.joda.time.Weeks;
 
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Teacher;
@@ -69,13 +70,35 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	private int lessonDuration = 60;
 	
 	private int intervalBetweenLessonStart = 60;
+	
+	private int repeatEveryWeek = 1;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);
 	}
 
-	public boolean dateIntervalContains(Date date) {
-		DateMidnight d = new DateMidnight(date);
+	public boolean conflicts(DateTime bookedTime, DateTime time) {
+		boolean conflicts = false;
+		
+		// On the same date
+		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
+			bookedTime = resetDateTime(bookedTime, time);
+			time = resetDateTime(time, time);
+			
+			DateTime st = bookedTime.minusMinutes(lessonDuration);
+			DateTime et = bookedTime.plusMinutes(lessonDuration);
+			
+			Interval bookedInterval = new Interval(st, et);
+			
+			if (bookedInterval.contains(time) && st.equals(time) == false) {
+				conflicts = true;
+			}
+		}
+		
+		return conflicts;
+	}
+
+	public boolean dateIntervalContains(DateMidnight date) {
 		DateMidnight start = null;
 		if (beginDate != null) {
 			start = new DateMidnight(beginDate);
@@ -88,11 +111,11 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 		if (start != null && end != null) {
 			Interval interval = new Interval(start, end);
-			contains = interval.contains(d);
+			contains = interval.contains(date);
 		} else if (start != null) {
-			contains = d.isAfter(start) || d.equals(start);
+			contains = date.isAfter(start) || date.equals(start);
 		} else if (end != null) {
-			contains = d.isBefore(end) || d.equals(end);
+			contains = date.isBefore(end) || date.equals(end);
 		} else {
 			contains = true;
 		}
@@ -100,25 +123,23 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return contains;
 	}
 
-	public Date generateDate(Date startDate) {
-		DateMidnight sd = new DateMidnight(startDate);
-
+	public DateMidnight generateDate(DateMidnight startDate) {
 		if (hasDate(startDate) == false) {
 			return null;
 		}
 
 		if (beginDate != null) {
 			DateMidnight bd = new DateMidnight(beginDate);
-			if (sd.isBefore(bd)) {
-				sd = bd;
+			if (startDate.isBefore(bd)) {
+				startDate = bd;
 			}
 		}
 
-		while (hasWeekDay(sd.toDate()) == false) {
-			sd = sd.plusDays(1);
+		while (hasWeekDay(startDate) == false) {
+			startDate = startDate.plusDays(1);
 		}
 
-		return sd.toDate();
+		return startDate;
 	}
 
 	public Date getBeginDate() {
@@ -149,6 +170,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return price;
 	}
 
+	public int getRepeatEveryWeek() {
+		return repeatEveryWeek;
+	}
+
 	public Date getStartTime() {
 		return startTime;
 	}
@@ -161,22 +186,31 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return weekDays;
 	}
 
-	public boolean hasDate(Date date) {
+	public boolean hasDate(DateMidnight date) {
 		boolean hasDate = false;
 
 		// Check weekday
 		if (hasWeekDay(date)) {
 			// Check start/end date
 			if (dateIntervalContains(date)) {
-				hasDate = true;
+				// If the period has a start date also consider the repeatEveryWeek
+				// factor
+				if (beginDate != null && repeatEveryWeek > 1) {
+//					org.joda.time.Period period = new org.joda.time.Period(new DateMidnight(beginDate), new DateMidnight(date));
+					int weeks = Weeks.weeksBetween(new DateMidnight(beginDate), new DateMidnight(date)).getWeeks();
+					if (weeks%repeatEveryWeek == 0) {
+						hasDate = true;
+					}
+				} else {
+					hasDate = true;
+				}
 			}
 		}
 
 		return hasDate;
 	}
 
-	public boolean hasWeekDay(Date date) {
-		DateMidnight weekDayDate = new DateMidnight(date);
+	public boolean hasWeekDay(DateMidnight weekDayDate) {
 		weekDayDate.getDayOfWeek();
 
 		boolean hasWeekDay = false;
@@ -188,6 +222,26 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		}
 
 		return hasWeekDay;
+	}
+	
+	public boolean inLesson(DateTime bookedTime, DateTime time) {
+		boolean inLesson = false;
+		
+		// On the same date
+		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
+			bookedTime = resetDateTime(bookedTime, time);
+			time = resetDateTime(time, time);
+			
+				DateTime et = bookedTime.plusMinutes(lessonDuration);
+			
+			Interval bookedInterval = new Interval(bookedTime, et);
+			
+			if (bookedInterval.contains(time) && bookedTime.equals(time) == false) {
+				inLesson = true;
+			}
+		}
+		
+		return inLesson;
 	}
 	
 	public boolean isTimeValid(DateTime time) {
@@ -226,54 +280,13 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return mayBook;
 	}
 	
-	public boolean conflicts(DateTime bookedTime, DateTime time) {
-		boolean conflicts = false;
-		
-		// On the same date
-		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
-			bookedTime = resetDateTime(bookedTime, time);
-			time = resetDateTime(time, time);
-			
-			DateTime st = bookedTime.minusMinutes(lessonDuration);
-			DateTime et = bookedTime.plusMinutes(lessonDuration);
-			
-			Interval bookedInterval = new Interval(st, et);
-			
-			if (bookedInterval.contains(time) && st.equals(time) == false) {
-				conflicts = true;
-			}
-		}
-		
-		return conflicts;
-	}
-	
-	public boolean inLesson(DateTime bookedTime, DateTime time) {
-		boolean inLesson = false;
-		
-		// On the same date
-		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
-			bookedTime = resetDateTime(bookedTime, time);
-			time = resetDateTime(time, time);
-			
-				DateTime et = bookedTime.plusMinutes(lessonDuration);
-			
-			Interval bookedInterval = new Interval(bookedTime, et);
-			
-			if (bookedInterval.contains(time) && bookedTime.equals(time) == false) {
-				inLesson = true;
-			}
-		}
-		
-		return inLesson;
-	}
-	
 	private DateTime resetDateTime(DateTime time, DateTime resetTo) {
 		return time
 			.withDate(resetTo.getYear(), resetTo.getMonthOfYear(), resetTo.getDayOfMonth())
 			.withSecondOfMinute(0)
 			.withMillisOfSecond(0);
 	}
-
+	
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
@@ -300,6 +313,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public void setRepeatEveryWeek(int repeatEveryWeek) {
+		this.repeatEveryWeek = repeatEveryWeek;
 	}
 
 	public void setStartTime(Date startTime) {

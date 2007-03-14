@@ -2,8 +2,6 @@ package dk.teachus.frontend.components.form;
 
 import java.util.List;
 
-import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
-
 import wicket.Component;
 import wicket.feedback.ComponentFeedbackMessageFilter;
 import wicket.feedback.IFeedbackMessageFilter;
@@ -13,6 +11,8 @@ import wicket.markup.html.form.IChoiceRenderer;
 import wicket.markup.html.form.validation.IValidator;
 import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.IModel;
+import wicket.model.Model;
+import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
 public class CheckGroupElement extends AbstractChoiceElement {
 	private static final long serialVersionUID = 1L;
@@ -43,6 +43,7 @@ public class CheckGroupElement extends AbstractChoiceElement {
 	protected Component newInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
 		checkGroup = new CheckBoxMultipleChoice(wicketId, inputModel, choices, choiceRenderer);
 		checkGroup.setRequired(required);
+		checkGroup.setLabel(new Model(label));
 		return checkGroup;
 	}
 
