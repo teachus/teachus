@@ -12,6 +12,7 @@ import dk.teachus.domain.impl.PupilImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 
 public class PupilsPage extends PersonsPage<Pupil> {
@@ -76,7 +77,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	protected List<FunctionItem> getFunctions() {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 
-		functions.add(new FunctionItem(TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
+		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -85,7 +86,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			}
 		});
 		
-		functions.add(new FunctionItem("Slet") {
+		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -98,7 +99,9 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			
 			@Override
 			public String getClickConfirmText(Pupil person) {
-				return "Er du sikker på du vil slette "+person.getName();
+				String deleteText = TeachUsSession.get().getString("PupilPage.deleteConfirm"); //$NON-NLS-1$
+				deleteText = deleteText.replace("{personname}", person.getName()); //$NON-NLS-1$
+				return deleteText;
 			}
 		});
 

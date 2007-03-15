@@ -25,9 +25,21 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		getHibernateTemplate().flush();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public Period get(Long id) {
-		return (Period) getHibernateTemplate().load(PeriodImpl.class, id);
+		DetachedCriteria c = DetachedCriteria.forClass(PeriodImpl.class);
+		
+		c.add(Restrictions.eq("id", id));
+		c.add(Restrictions.eq("active", true));
+		
+		Period period = null;
+		List<Period> result = getHibernateTemplate().findByCriteria(c);
+		if (result.size() == 1) {
+			period = result.get(0);
+		}
+		
+		return period;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -36,6 +48,7 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		DetachedCriteria c = DetachedCriteria.forClass(PeriodImpl.class);
 		
 		c.add(Restrictions.eq("teacher", teacher));
+		c.add(Restrictions.eq("active", true));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 		
@@ -44,6 +57,12 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		Periods periods = new PeriodsImpl();
 		periods.setPeriods(result);
 		return periods;
+	}
+	
+	public void delete(Period period) {
+		period.setActive(false);
+		getHibernateTemplate().update(period);
+		getHibernateTemplate().flush();
 	}
 
 }

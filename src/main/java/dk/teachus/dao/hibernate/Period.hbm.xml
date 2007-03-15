@@ -31,6 +31,10 @@
         <property name="intervalBetweenLessonStart" column="interval_between_lesson_start" not-null="true" />
         
         <property name="repeatEveryWeek" column="repeat_every_week" not-null="true" />
+        
+        <property name="active" not-null="true" type="dk.teachus.dao.hibernate.BooleanType">
+        	<column name="active" default="true" />
+        </property>
     </class>
 
 </hibernate-mapping>

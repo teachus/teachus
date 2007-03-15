@@ -1,5 +1,6 @@
 package dk.teachus.frontend.components;
 
+import java.io.Serializable;
 import java.util.List;
 
 import wicket.behavior.SimpleAttributeModifier;
@@ -11,22 +12,38 @@ import wicket.markup.repeater.RepeatingView;
 import wicket.model.IModel;
 import wicket.util.string.JavascriptUtils;
 import wicket.util.string.Strings;
-import dk.teachus.domain.Person;
-import dk.teachus.frontend.pages.persons.PersonsPage;
 
-public class FunctionsColumn<P extends Person> extends AbstractColumn {
+public class FunctionsColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;
 
-	private List<PersonsPage<P>.FunctionItem> functions;
+	public static abstract class FunctionItem implements Serializable {
+		private String label;
+		
+		public FunctionItem(String label) {
+			this.label = label;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public abstract void onEvent(Object object);
+		
+		public String getClickConfirmText(Object object) {
+			return null;
+		}
+	}
 	
-	public FunctionsColumn(IModel displayModel, List<PersonsPage<P>.FunctionItem> functions) {
+	private List<FunctionItem> functions;
+	
+	public FunctionsColumn(IModel displayModel, List<FunctionItem> functions) {
 		super(displayModel);
 		this.functions = functions;
 	}
 
 	@SuppressWarnings("unchecked")
 	public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-		final P person = (P) rowModel.getObject(cellItem);
+		final Object object = rowModel.getObject(cellItem);
 		
 		cellItem.add(new SimpleAttributeModifier("class", "functions"));
 		
@@ -37,17 +54,17 @@ public class FunctionsColumn<P extends Person> extends AbstractColumn {
 		RepeatingView links = new RepeatingView("link");
 		linkPropertyColumnPanel.add(links);
 		
-		for (final PersonsPage<P>.FunctionItem function : functions) {
+		for (final FunctionItem function : functions) {
 			Link link = new Link(links.newChildId()) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick() {
-					function.onEvent(person);
+					function.onEvent(object);
 				}
 			};
 			
-			String clickConfirmText = function.getClickConfirmText(person);
+			String clickConfirmText = function.getClickConfirmText(object);
 			if (Strings.isEmpty(clickConfirmText) == false) {
 				StringBuilder confirmJavascript = new StringBuilder();
 				confirmJavascript.append("return confirm('");

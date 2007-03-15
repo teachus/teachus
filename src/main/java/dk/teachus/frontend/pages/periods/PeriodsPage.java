@@ -13,10 +13,12 @@ import dk.teachus.domain.impl.PeriodImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.FunctionsColumn;
 import dk.teachus.frontend.components.LinkPropertyColumn;
 import dk.teachus.frontend.components.ListPanel;
 import dk.teachus.frontend.components.RendererPropertyColumn;
 import dk.teachus.frontend.components.Toolbar;
+import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
@@ -52,8 +54,28 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		final TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
 		final WeekDayChoiceRenderer weekDayChoiceRenderer = new WeekDayChoiceRenderer(Format.SHORT);
 		
+		List<FunctionItem> functions = new ArrayList<FunctionItem>();
+		functions.add(new FunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onEvent(Object object) {
+				PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
+				periodDAO.delete((Period) object);
+				getRequestCycle().setResponsePage(PeriodsPage.class);
+			}
+			
+			@Override
+			public String getClickConfirmText(Object object) {
+				Period period = (Period) object;
+				String deleteText = TeachUsSession.get().getString("PeriodPage.deleteConfirm"); //$NON-NLS-1$
+				deleteText = deleteText.replace("{periodname}", period.getName()); //$NON-NLS-1$
+				return deleteText;
+			}
+		});
+		
 		IColumn[] columns = new IColumn[] {
-				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") {
+				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") { //$NON-NLS-1$ //$NON-NLS-2$
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -62,14 +84,15 @@ public class PeriodsPage extends AuthenticatedBasePage {
 						getRequestCycle().setResponsePage(new PeriodPage(period));
 					}					
 				},
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startDate")), "beginDate", dateChoiceRenderer),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endDate")), "endDate", dateChoiceRenderer),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startTime")), "startTime", timeChoiceRenderer),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endTime")), "endTime", timeChoiceRenderer),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.weekDays")), "weekDays", weekDayChoiceRenderer)
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startDate")), "beginDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endDate")), "endDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startTime")), "startTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endTime")), "endTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.weekDays")), "weekDays", weekDayChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions) //$NON-NLS-1$
 		};
 		
-		add(new ListPanel("list", columns, periods.getPeriods()));
+		add(new ListPanel("list", columns, periods.getPeriods())); //$NON-NLS-1$
 	}
 
 	@Override

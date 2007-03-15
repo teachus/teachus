@@ -72,6 +72,8 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	private int intervalBetweenLessonStart = 60;
 	
 	private int repeatEveryWeek = 1;
+	
+	private boolean active;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);
@@ -193,10 +195,9 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		if (hasWeekDay(date)) {
 			// Check start/end date
 			if (dateIntervalContains(date)) {
-				// If the period has a start date also consider the repeatEveryWeek
-				// factor
+				// If the period has a start date also consider the 
+				// repeatEveryWeek factor
 				if (beginDate != null && repeatEveryWeek > 1) {
-//					org.joda.time.Period period = new org.joda.time.Period(new DateMidnight(beginDate), new DateMidnight(date));
 					int weeks = Weeks.weeksBetween(new DateMidnight(beginDate), new DateMidnight(date)).getWeeks();
 					if (weeks%repeatEveryWeek == 0) {
 						hasDate = true;
@@ -223,7 +224,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 		return hasWeekDay;
 	}
-	
+
 	public boolean inLesson(DateTime bookedTime, DateTime time) {
 		boolean inLesson = false;
 		
@@ -242,6 +243,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		}
 		
 		return inLesson;
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 	
 	public boolean isTimeValid(DateTime time) {
@@ -285,6 +290,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 			.withDate(resetTo.getYear(), resetTo.getMonthOfYear(), resetTo.getDayOfMonth())
 			.withSecondOfMinute(0)
 			.withMillisOfSecond(0);
+	}
+	
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public void setBeginDate(Date beginDate) {

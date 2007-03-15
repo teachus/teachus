@@ -60,7 +60,9 @@ public class TeachUsApplication extends WebApplication {
 		
 		getResourceSettings().setStripJavascriptCommentsAndWhitespace(false);
 		
-		getRequestCycleSettings().addResponseFilter(new AjaxServerAndClientTimeFilter());
+		if (DEVELOPMENT.equals(getConfigurationType())) {
+			getRequestCycleSettings().addResponseFilter(new AjaxServerAndClientTimeFilter());
+		}
 		
 		mountPages();
 		

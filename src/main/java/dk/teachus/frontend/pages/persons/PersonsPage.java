@@ -1,6 +1,5 @@
 package dk.teachus.frontend.pages.persons;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import dk.teachus.frontend.components.LinkPropertyColumn;
 import dk.teachus.frontend.components.ListPanel;
 import dk.teachus.frontend.components.RendererPropertyColumn;
 import dk.teachus.frontend.components.Toolbar;
+import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
@@ -59,7 +59,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email"));
 		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber"));
 		if (functions != null) {
-			columns.add(new FunctionsColumn<P>(new Model(TeachUsSession.get().getString("General.functions")), functions));
+			columns.add(new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions));
 		}
 		
 		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), persons));
@@ -79,17 +79,23 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		return null;
 	}
 	
-	public abstract class FunctionItem implements Serializable {
-		private String label;
+	public abstract class PersonFunctionItem extends FunctionItem {
+		public PersonFunctionItem(String label) {
+			super(label);
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public final void onEvent(Object object) {
+			onEvent((P) object);
+		}
 		
-		public FunctionItem(String label) {
-			this.label = label;
+		@SuppressWarnings("unchecked")
+		@Override
+		public final String getClickConfirmText(Object object) {
+			return getClickConfirmText((P) object);
 		}
-
-		public String getLabel() {
-			return label;
-		}
-
+		
 		public abstract void onEvent(P person);
 		
 		public String getClickConfirmText(P person) {

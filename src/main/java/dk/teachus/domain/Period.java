@@ -28,6 +28,8 @@ public interface Period {
 	
 	double getPrice();
 	
+	boolean isActive();
+	
 	/**
 	 * @return The duration of a lesson in minutes
 	 */
@@ -60,6 +62,8 @@ public interface Period {
 	void setIntervalBetweenLessonStart(int minutes);
 	
 	void setRepeatEveryWeek(int repeatEveryWeek);
+	
+	void setActive(boolean active);
 
 	/*
 	 * Utility methods
