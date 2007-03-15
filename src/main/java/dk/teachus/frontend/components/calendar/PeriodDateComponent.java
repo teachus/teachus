@@ -56,17 +56,12 @@ public abstract class PeriodDateComponent extends Panel {
 				DateTime end = new DateTime(period.getEndTime()).withDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
 	
 				DateTimeFormatter timeFormat = Formatters.getFormatTime();
-				DateTimeFormatter onlyMinutesFormat = Formatters.getFormatOnlyMinutes();
 				
 				while(time.isBefore(end)) {
 					final WebMarkupContainer row = new WebMarkupContainer(rows.newChildId());
 					rows.add(row);
 					
-					if (time.getMinuteOfHour() == 0) {
-						row.add(new Label("hour", timeFormat.print(time))); //$NON-NLS-1$
-					} else {
-						row.add(new Label("hour", onlyMinutesFormat.print(time))); //$NON-NLS-1$
-					}
+					row.add(new Label("hour", timeFormat.print(time))); //$NON-NLS-1$
 									
 					WebMarkupContainer contentContainer = new WebMarkupContainer("contentContainer");
 					contentContainer.setOutputMarkupId(true);

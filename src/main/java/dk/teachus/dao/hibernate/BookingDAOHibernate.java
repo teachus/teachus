@@ -196,6 +196,31 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<PupilBooking> getUnPaidBookings(Teacher teacher, Date startDate, Date endDate) {
+		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
+		
+		c.createCriteria("period")
+				.add(Restrictions.eq("active", true));
+		c.createCriteria("pupil")
+				.add(Restrictions.eq("teacher", teacher))
+				.add(Restrictions.eq("active", true));
+		c.add(Restrictions.eq("paid", false));
+		
+		if (startDate != null && endDate != null) {
+			c.add(Restrictions.between("date", startDate, endDate));
+		} else if (startDate != null) {
+			c.add(Restrictions.gt("date", startDate));
+		} else if (endDate != null) {
+			c.add(Restrictions.lt("date", endDate));
+		}
+		
+		c.addOrder(Order.asc("date"));
+		
+		return getHibernateTemplate().findByCriteria(c);
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)

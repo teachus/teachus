@@ -31,17 +31,17 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 	}
 	
 	public IncomePerPeriodPage(int year) {
-		add(new Label("perMonth", TeachUsSession.get().getString("IncomePerPeriodPage.perMonth")));
+		add(new Label("perMonth", TeachUsSession.get().getString("IncomePerPeriodPage.perMonth"))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 		
 		List<Integer> yearsWithPaidBookings = bookingDAO.getYearsWithPaidBookings(getTeacher());
 		
-		Form form = new Form("form");
+		Form form = new Form("form"); //$NON-NLS-1$
 		add(form);
 		final IModel yearModel = new Model(year);
-		final DropDownChoice years = new DropDownChoice("years", yearModel, yearsWithPaidBookings);
-		years.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+		final DropDownChoice years = new DropDownChoice("years", yearModel, yearsWithPaidBookings); //$NON-NLS-1$
+		years.add(new AjaxFormComponentUpdatingBehavior("onchange") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -57,7 +57,30 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		Date fromDate = new DateMidnight().withYear(year).withMonthOfYear(1).withDayOfMonth(1).toDate();
 		Date toDate = new DateMidnight().withYear(year).withMonthOfYear(12).withDayOfMonth(31).toDate();
 		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(getTeacher(), fromDate, toDate);
+		DefaultCategoryDataset paidCategoryDataset = createCategoryDataset(year, paidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings")); //$NON-NLS-1$
 		
+		// Get the unpaid bookings
+		List<PupilBooking> unPaidBookings = bookingDAO.getUnPaidBookings(getTeacher(), fromDate, toDate);
+		DefaultCategoryDataset unPaidCategoryDataset = createCategoryDataset(year-1, unPaidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.unPaidBookings")); //$NON-NLS-1$
+		
+		for (int i = 0; i < unPaidCategoryDataset.getColumnCount(); i++) {
+			Comparable columnKey = unPaidCategoryDataset.getColumnKey(i);
+			Comparable rowKey = unPaidCategoryDataset.getRowKey(0);
+			paidCategoryDataset.addValue(unPaidCategoryDataset.getValue(rowKey, columnKey), rowKey, columnKey);
+		}
+		
+		
+		add(new JFreeChartImage("perMonthChart", new BarChartResource(600, 300, paidCategoryDataset, ""+year, null) { //$NON-NLS-1$ //$NON-NLS-2$
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected boolean getCreateLegend() {
+				return true;
+			}
+		}));
+	}
+
+	private DefaultCategoryDataset createCategoryDataset(int year, List<PupilBooking> paidBookings, Comparable dataSetLabel) {
 		Map<Integer, Double> months = new HashMap<Integer, Double>();
 		for (PupilBooking booking : paidBookings) {
 			int month = new DateMidnight(booking.getDate()).getMonthOfYear();
@@ -81,16 +104,15 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 				}
 							
 				String formattedMonth = Formatters.getFormatOnlyMonth().print(month);
-				categoryDataset.addValue(value, new Integer(year), formattedMonth);
+				categoryDataset.addValue(value, dataSetLabel, formattedMonth);
 			}
 		}
-		
-		add(new JFreeChartImage("perMonthChart", new BarChartResource(600, 300, categoryDataset, ""+year, "Kr")));
+		return categoryDataset;
 	}
 	
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.incomePerPeriod");
+		return TeachUsSession.get().getString("General.incomePerPeriod"); //$NON-NLS-1$
 	}
 
 	@Override

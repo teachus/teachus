@@ -5,7 +5,7 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis3D;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.Plot;
-import org.jfree.chart.renderer.category.BarRenderer3D;
+import org.jfree.chart.renderer.category.StackedBarRenderer3D;
 import org.jfree.data.category.CategoryDataset;
 
 import dk.teachus.frontend.utils.Formatters;
@@ -36,7 +36,7 @@ public class BarChartResource extends JFreeChartResource {
 		CategoryAxis3D categoryAxis = new CategoryAxis3D(xLabel);
 		categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 		
-		BarRenderer3D barRenderer3D = new BarRenderer3D(8, 8);
+		StackedBarRenderer3D barRenderer3D = new StackedBarRenderer3D(8, 8);
 		
 		NumberAxis3D yAxis = new NumberAxis3D(yLabel);
 		yAxis.setNumberFormatOverride(Formatters.getFormatCurrency());

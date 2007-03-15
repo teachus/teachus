@@ -85,7 +85,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 		int day = dt.getDayOfMonth();
 		while (day == dt.getDayOfMonth()) {
 			hours.add(dt.getMinuteOfDay());
-			dt = dt.plusHours(1);
+			dt = dt.plusMinutes(30);
 		}
 		
 		TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();

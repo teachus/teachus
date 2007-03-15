@@ -36,6 +36,8 @@ public interface BookingDAO extends Serializable {
 	void changePaidStatus(PupilBooking pupilBooking);
 
 	List<PupilBooking> getPaidBookings(Teacher teacher, Date startDate, Date endDate);
+
+	List<PupilBooking> getUnPaidBookings(Teacher teacher, Date fromDate, Date toDate);
 	
 	List<Integer> getYearsWithPaidBookings(Teacher teacher);
 
