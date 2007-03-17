@@ -87,9 +87,7 @@ public abstract class CalendarPanel extends Panel {
 					weekDate = periodDate;
 				}
 			}
-			if (weekDate.getWeekOfWeekyear() == pageDate.getWeekOfWeekyear()) {
-				weekDate = weekDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
-			}
+			weekDate = weekDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
 						
 			fireIntervalDetermined(dates);
 			
