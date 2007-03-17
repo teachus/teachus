@@ -45,6 +45,10 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		return tester.getTeachUsApplication().getPeriodDAO();
 	}
 	
+	public SessionFactory getSessionFactory() {
+		return (SessionFactory) applicationContext.getBean("sessionFactory");
+	}
+	
 	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
 		tester = new TeachUsWicketTester(applicationContext);

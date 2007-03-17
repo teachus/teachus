@@ -18,7 +18,7 @@
         
         <property name="username" length="50" not-null="true" unique="true" />
         
-        <property name="password" length="32" />
+        <property name="password" length="40" type="dk.teachus.dao.hibernate.PasswordUserType" />
         
         <property name="email" length="250" />
         

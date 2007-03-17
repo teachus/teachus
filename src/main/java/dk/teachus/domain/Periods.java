@@ -17,10 +17,12 @@ public interface Periods extends Serializable {
 	boolean containsDate(DateMidnight date);
 	
 	boolean hasPeriodBefore(DateMidnight date);
+	
+	boolean hasPeriodAfter(DateMidnight date);
 
 	List<DatePeriod> generateDatesForWeek(DateMidnight startDate);
 	
-	List<DatePeriod> generateDates(DateMidnight startDate, int numberOfWeeks);
+	List<DatePeriod> generateDates(DateMidnight startDate, int numberOfDays);
 
 	int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays);
 

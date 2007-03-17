@@ -28,6 +28,9 @@ CREATE TABLE
 	teacher_id BIGINT, 
 	price DOUBLE PRECISION, 
 	lesson_duration INTEGER NOT NULL, 
+	interval_between_lesson_start INTEGER NOT NULL,
+	repeat_every_week INTEGER NOT NULL,
+	active TINYINT DEFAULT TRUE
 	primary key (id)
 ) type=InnoDB;
 
@@ -39,7 +42,7 @@ CREATE TABLE
 	version INTEGER NOT NULL, 
 	name VARCHAR(100), 
 	username VARCHAR(50) NOT NULL UNIQUE, 
-	password VARCHAR(32), 
+	password VARCHAR(40), 
 	email VARCHAR(250), 
 	phone_number VARCHAR(20), 
 	locale VARCHAR(20), 

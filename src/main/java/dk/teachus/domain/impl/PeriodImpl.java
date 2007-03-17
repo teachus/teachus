@@ -113,7 +113,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 		if (start != null && end != null) {
 			Interval interval = new Interval(start, end);
-			contains = interval.contains(date);
+			contains = interval.contains(date) || date.equals(end);
 		} else if (start != null) {
 			contains = date.isAfter(start) || date.equals(start);
 		} else if (end != null) {

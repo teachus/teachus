@@ -74,21 +74,35 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodBefore;
 	}
 	
+	public boolean hasPeriodAfter(DateMidnight date) {
+		boolean hasPeriodAfter = false;
+		
+		for (Period period : periods) {
+			if (period.getEndDate() == null) {
+				hasPeriodAfter = true;
+				break;
+			} else {
+				DateMidnight endDate = new DateMidnight(period.getEndDate());
+				if (endDate.isAfter(date) || endDate.isEqual(date)) {
+					hasPeriodAfter = true;
+					break;
+				}
+			}
+		}
+		
+		return hasPeriodAfter;
+	}
+	
 	public List<DatePeriod> generateDatesForWeek(DateMidnight startDate) {
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		DateMidnight sd = new DateMidnight(startDate).withDayOfWeek(DateTimeConstants.MONDAY);
 		int week = sd.getWeekOfWeekyear();
 		
-		boolean dateInPeriods = true;
-		while(week == sd.getWeekOfWeekyear() && dateInPeriods == true) {
-			dateInPeriods = false;
-			
+		while(week == sd.getWeekOfWeekyear()) {			
 			DatePeriod datePeriod = null;
 			for (Period period : periods) {
 				// Check if this period can handle the date at all
-				if (period.dateIntervalContains(sd)) {
-					dateInPeriods = true;
-				
+				if (period.dateIntervalContains(sd)) {				
 					DateMidnight date = period.generateDate(sd);
 					if (date != null) {
 						if (datePeriod == null) {
@@ -113,14 +127,17 @@ public class PeriodsImpl implements Periods {
 		return dates;
 	}
 
-	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfWeeks) {
+	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays) {
+		weekDate = weekDate.withDayOfWeek(DateTimeConstants.MONDAY);
+		
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		List<DatePeriod> weekDates = generateDatesForWeek(weekDate);
 		do {
 			dates.addAll(weekDates);
 			weekDate = weekDate.plusWeeks(1);
 			weekDates = generateDatesForWeek(weekDate);
-		} while(dates.size()+weekDates.size() <= numberOfWeeks);
+		} while(dates.size()+weekDates.size() <= numberOfDays
+				&& hasPeriodAfter(weekDate));
 		
 		return dates;
 	}

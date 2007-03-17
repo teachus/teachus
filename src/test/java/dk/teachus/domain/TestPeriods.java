@@ -111,6 +111,40 @@ public class TestPeriods extends TestCase {
 		assertEquals(10, checkDate.getDayOfMonth());
 	}
 	
+	public void testGenerateDatesForWeek_oneDayPeriod() {
+		Periods periods = new PeriodsImpl();
+		List<Period> periodList = new ArrayList<Period>();
+		periods.setPeriods(periodList);
+		
+		Period period = new PeriodImpl();
+		period.setBeginDate(new DateMidnight(2007, 3, 24).toDate());
+		period.setEndDate(new DateMidnight(2007, 3, 24).toDate());
+		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
+		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
+		period.addWeekDay(WeekDay.SATURDAY);
+		periodList.add(period);
+		
+		List<DatePeriod> dates = periods.generateDatesForWeek(new DateMidnight(2007, 3, 20));
+		assertEquals(1, dates.size());
+	}
+	
+	public void testGenerateDates_oneDayPeriod() {
+		Periods periods = new PeriodsImpl();
+		List<Period> periodList = new ArrayList<Period>();
+		periods.setPeriods(periodList);
+		
+		Period period = new PeriodImpl();
+		period.setBeginDate(new DateMidnight(2007, 3, 24).toDate());
+		period.setEndDate(new DateMidnight(2007, 3, 24).toDate());
+		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
+		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
+		period.addWeekDay(WeekDay.SATURDAY);
+		periodList.add(period);
+		
+		List<DatePeriod> dates = periods.generateDates(new DateMidnight(2007, 3, 20), 7);
+		assertEquals(1, dates.size());
+	}
+	
 	public void testNumberOfWeeksBack() {
 		DateMidnight date = new DateMidnight(2007, 2, 26);
 

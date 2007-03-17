@@ -23,6 +23,28 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		
 		createFeatures();
 		
+		createScreenShots();
+		
+		createOpenSourceDescription();
+	}
+
+	private void createOpenSourceDescription() {
+		add(new Label("openSourceHeader", TeachUsSession.get().getString("InfoPage.openSourceHeader")));
+		
+		List<String> openSource = new ArrayList<String>();
+		
+		openSource.add(TeachUsSession.get().getString("InfoPage.openSource1"));
+		openSource.add(TeachUsSession.get().getString("InfoPage.openSource2"));
+		
+		RepeatingView openSourceContainer = new RepeatingView("openSource");
+		add(openSourceContainer);
+		
+		for (String feature : openSource) {
+			openSourceContainer.add(new MultiLineLabel(openSourceContainer.newChildId(), feature));
+		}
+	}
+
+	private void createScreenShots() {
 		add(new Label("screenshotsHeader", TeachUsSession.get().getString("InfoPage.screenshots")));
 
 		Map<ResourceReference, ResourceReference> screenshots = new HashMap<ResourceReference, ResourceReference>();
