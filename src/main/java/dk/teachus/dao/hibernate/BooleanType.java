@@ -29,7 +29,7 @@ public class BooleanType extends PrimitiveType implements DiscriminatorType {
 	}
 
 	@Override
-	public Object get(ResultSet rs, String name) throws HibernateException,
+	public Boolean get(ResultSet rs, String name) throws HibernateException,
 			SQLException {
 		return rs.getInt(name) == 1 ? Boolean.TRUE : Boolean.FALSE;
 	}

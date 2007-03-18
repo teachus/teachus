@@ -67,8 +67,12 @@ public class EnumUserType<E extends Enum<E>> implements UserType {
         return x.hashCode();
     }
     public boolean equals( Object x, Object y ) throws HibernateException {
-        if ( x == y ) return true;
-        if ( null == x || null == y ) return false;
+        if ( x == y ) {
+			return true;
+		}
+        if ( null == x || null == y ) {
+			return false;
+		}
         return x.equals( y );
     }
 

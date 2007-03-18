@@ -30,7 +30,7 @@ CREATE TABLE
 	lesson_duration INTEGER NOT NULL, 
 	interval_between_lesson_start INTEGER NOT NULL,
 	repeat_every_week INTEGER NOT NULL,
-	active TINYINT DEFAULT TRUE
+	active TINYINT DEFAULT TRUE,
 	primary key (id)
 ) type=InnoDB;
 
