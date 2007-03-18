@@ -1,12 +1,15 @@
 package dk.teachus.frontend.pages.stats;
 
+import java.awt.Color;
+import java.awt.Paint;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -21,6 +24,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.BarChartResource;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
+import dk.teachus.frontend.components.jfreechart.PaintedDefaultCategoryDataset;
 import dk.teachus.frontend.utils.Formatters;
 
 public class IncomePerPeriodPage extends AbstractStatisticsPage {
@@ -52,22 +56,39 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		});
 		form.add(years);
 		
-		
-		
+			
 		Date fromDate = new DateMidnight().withYear(year).withMonthOfYear(1).withDayOfMonth(1).toDate();
 		Date toDate = new DateMidnight().withYear(year).withMonthOfYear(12).withDayOfMonth(31).toDate();
+		
 		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(getTeacher(), fromDate, toDate);
-		DefaultCategoryDataset paidCategoryDataset = createCategoryDataset(year, paidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings")); //$NON-NLS-1$
 		
 		// Get the unpaid bookings
-		List<PupilBooking> unPaidBookings = bookingDAO.getUnPaidBookings(getTeacher(), fromDate, toDate);
-		DefaultCategoryDataset unPaidCategoryDataset = createCategoryDataset(year-1, unPaidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.unPaidBookings")); //$NON-NLS-1$
+		List<PupilBooking> allUnPaidBookings = bookingDAO.getUnPaidBookings(getTeacher(), fromDate, toDate);
 		
-		for (int i = 0; i < unPaidCategoryDataset.getColumnCount(); i++) {
-			Comparable columnKey = unPaidCategoryDataset.getColumnKey(i);
-			Comparable rowKey = unPaidCategoryDataset.getRowKey(0);
-			paidCategoryDataset.addValue(unPaidCategoryDataset.getValue(rowKey, columnKey), rowKey, columnKey);
+		// Extract the unpaid bookings which is before now
+		List<PupilBooking> unPaidBookings = new ArrayList<PupilBooking>();
+		List<PupilBooking> futureBookings = new ArrayList<PupilBooking>();
+		DateTime now = new DateTime();
+		for (PupilBooking booking : allUnPaidBookings) {
+			if (now.isAfter(new DateTime(booking.getDate()))) {
+				unPaidBookings.add(booking);
+			} else {
+				futureBookings.add(booking);
+			}
 		}
+
+		// Paid bookings
+		PaintedDefaultCategoryDataset paidCategoryDataset = createCategoryDataset(paidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings"), Color.GREEN); //$NON-NLS-1$
+		
+		// Unpaid bookings
+		PaintedDefaultCategoryDataset unPaidCategoryDataset = createCategoryDataset(unPaidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.unPaidBookings"), Color.RED); //$NON-NLS-1$
+		appendDataset(paidCategoryDataset, unPaidCategoryDataset);
+		
+		// Future bookings
+		PaintedDefaultCategoryDataset futureCategoryDataset = createCategoryDataset(futureBookings, TeachUsSession.get().getString("IncomePerPeriodPage.futureLessons"), Color.BLUE); //$NON-NLS-1$
+		appendDataset(paidCategoryDataset, futureCategoryDataset);
+		
+		
 		
 		
 		add(new JFreeChartImage("perMonthChart", new BarChartResource(600, 300, paidCategoryDataset, ""+year, null) { //$NON-NLS-1$ //$NON-NLS-2$
@@ -80,9 +101,18 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		}));
 	}
 
-	private DefaultCategoryDataset createCategoryDataset(int year, List<PupilBooking> paidBookings, Comparable dataSetLabel) {
+	private void appendDataset(PaintedDefaultCategoryDataset toDataset, PaintedDefaultCategoryDataset fromDataset) {
+		for (int i = 0; i < fromDataset.getColumnCount(); i++) {
+			Comparable columnKey = fromDataset.getColumnKey(i);
+			Comparable rowKey = fromDataset.getRowKey(0);
+			Paint paint = fromDataset.getPaint(rowKey);
+			toDataset.addValue(fromDataset.getValue(rowKey, columnKey), rowKey, columnKey, paint);
+		}
+	}
+
+	private PaintedDefaultCategoryDataset createCategoryDataset(List<PupilBooking> bookings, Comparable dataSetLabel, Paint paint) {
 		Map<Integer, Double> months = new HashMap<Integer, Double>();
-		for (PupilBooking booking : paidBookings) {
+		for (PupilBooking booking : bookings) {
 			int month = new DateMidnight(booking.getDate()).getMonthOfYear();
 			double price = booking.getPeriod().getPrice();
 			if (months.containsKey(month)) {
@@ -93,7 +123,7 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		}
 		
 		
-		DefaultCategoryDataset categoryDataset = new DefaultCategoryDataset();
+		PaintedDefaultCategoryDataset categoryDataset = new PaintedDefaultCategoryDataset();
 		if (months.isEmpty() == false) {
 			for (int i = 1; i <= 12; i++) {
 				DateMidnight month = new DateMidnight().withMonthOfYear(i);
@@ -104,7 +134,7 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 				}
 							
 				String formattedMonth = Formatters.getFormatOnlyMonth().print(month);
-				categoryDataset.addValue(value, dataSetLabel, formattedMonth);
+				categoryDataset.addValue(value, dataSetLabel, formattedMonth, paint);
 			}
 		}
 		return categoryDataset;

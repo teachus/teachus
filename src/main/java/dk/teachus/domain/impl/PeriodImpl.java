@@ -73,7 +73,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	
 	private int repeatEveryWeek = 1;
 	
-	private boolean active;
+	private boolean active = true;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);

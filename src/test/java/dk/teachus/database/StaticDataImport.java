@@ -14,13 +14,13 @@ import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
 
-public class DataImport {
+public class StaticDataImport {
 	
-	public DataImport() throws Exception {
+	public StaticDataImport() throws Exception {
 		this("com.mysql.jdbc.Driver", "jdbc:mysql://localhost/teachus", "root", "");
 	}
 	
-	public DataImport(String driverClass, String url, String username, String password) throws Exception {
+	public StaticDataImport(String driverClass, String url, String username, String password) throws Exception {
 		// database connection
 		Class.forName(driverClass);
 		Connection jdbcConnection = DriverManager.getConnection(url, username, password);
@@ -28,7 +28,7 @@ public class DataImport {
 		doImport(jdbcConnection);
 	}
 	
-	public DataImport(Connection jdbcConnection) throws Exception {
+	public StaticDataImport(Connection jdbcConnection) throws Exception {
 		doImport(jdbcConnection);
 	}
 	
@@ -54,6 +54,6 @@ public class DataImport {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		new DataImport();
+		new StaticDataImport();
 	}
 }

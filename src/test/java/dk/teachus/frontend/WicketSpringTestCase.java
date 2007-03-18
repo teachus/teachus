@@ -18,7 +18,7 @@ import wicket.util.tester.WicketTester;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
-import dk.teachus.database.DataImport;
+import dk.teachus.database.StaticDataImport;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
@@ -54,7 +54,7 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		tester = new TeachUsWicketTester(applicationContext);
 		
 		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		new DataImport(sessionFactory.openSession().connection());
+		new StaticDataImport(sessionFactory.openSession().connection());
 	}
 	
 	@Override
