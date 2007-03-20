@@ -41,8 +41,8 @@ public class PasswordUserType implements UserType {
 	
 	public static String hex(byte[] array) {
 		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < array.length; ++i) {
-			sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).toUpperCase().substring(1, 3));
+		for (byte element : array) {
+			sb.append(Integer.toHexString((element & 0xFF) | 0x100).toUpperCase().substring(1, 3));
 		}
 		return sb.toString();
 	}
