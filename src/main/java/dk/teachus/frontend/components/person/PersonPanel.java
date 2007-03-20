@@ -13,9 +13,7 @@ import wicket.markup.html.panel.Panel;
 import wicket.model.PropertyModel;
 import wicket.protocol.http.WebApplication;
 import wicket.util.string.Strings;
-import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Person;
-import dk.teachus.domain.Pupil;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
@@ -26,6 +24,7 @@ import dk.teachus.frontend.components.form.PasswordFieldElement;
 import dk.teachus.frontend.components.form.ReadOnlyElement;
 import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.components.form.FormPanel.FormValidator;
+import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 
@@ -33,10 +32,10 @@ public abstract class PersonPanel extends Panel {
 	protected String password1;
 	protected String password2;
 
-	public PersonPanel(String id, final Person person) {
-		super(id);
+	public PersonPanel(String id, final PersonModel personModel) {
+		super(id, personModel);
 		
-		if (allowUserEditing(TeachUsSession.get().getPerson(), person) == false) {
+		if (allowUserEditing(TeachUsSession.get().getPerson(), personModel.getObject(this)) == false) {
 			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
 		}
 		
@@ -44,29 +43,29 @@ public abstract class PersonPanel extends Panel {
 		add(formPanel);
 		
 		// Name
-		TextFieldElement nameField = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(person, "name"), true, 32);
+		TextFieldElement nameField = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(personModel, "name"), true, 32);
 		nameField.add(StringValidator.lengthBetween(2, 100));
 		formPanel.addElement(nameField);
 		
 		// Email
-		TextFieldElement emailField = new TextFieldElement(TeachUsSession.get().getString("General.email"), new PropertyModel(person, "email"), true, 50);
+		TextFieldElement emailField = new TextFieldElement(TeachUsSession.get().getString("General.email"), new PropertyModel(personModel, "email"), true, 50);
 		emailField.add(EmailAddressPatternValidator.getInstance());
 		formPanel.addElement(emailField);
 		
 		// Phone number
-		formPanel.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.phoneNumber"), new PropertyModel(person, "phoneNumber"), 10));
+		formPanel.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.phoneNumber"), new PropertyModel(personModel, "phoneNumber"), 10));
 		
 		// Username
 		if (isUsernameEnabled()) {
-			TextFieldElement usernameField = new TextFieldElement(TeachUsSession.get().getString("General.username"), new PropertyModel(person, "username"), true);
+			TextFieldElement usernameField = new TextFieldElement(TeachUsSession.get().getString("General.username"), new PropertyModel(personModel, "username"), true);
 			usernameField.add(StringValidator.lengthBetween(3, 50));
 			formPanel.addElement(usernameField);
 		} else {
-			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.username"), new PropertyModel(person, "username")));
+			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.username"), new PropertyModel(personModel, "username")));
 		}
 	
 		// Password 1
-		final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), person.getId() == null);
+		final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), personModel.getPersonId() == null);
 		password1Field.add(StringValidator.lengthBetween(4, 32));
 		formPanel.addElement(password1Field);
 		
@@ -86,12 +85,12 @@ public abstract class PersonPanel extends Panel {
 		// Locale
 		if (isLocaleVisible()) {
 			List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
-			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(person, "locale"), availableLocales, new LocaleChoiceRenderer()));
+			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(personModel, "locale"), availableLocales, new LocaleChoiceRenderer()));
 		}
 		
 		// Teacher
 		if (isTeacherVisible()) {
-			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(person, "teacher.name")));
+			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(personModel, "teacher.name")));
 		}
 		
 		// Buttons
@@ -105,20 +104,11 @@ public abstract class PersonPanel extends Panel {
 
 			@Override
 			protected void onSave(AjaxRequestTarget target) {
-				boolean newPerson = person.getId() == null;
-				
 				if (Strings.isEmpty(password1) == false) {
-					person.setPassword(password1);
+					personModel.setPassword(PersonPanel.this, password1);
 				}
 				
-				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-				
-				personDAO.save(person);
-				
-				// Send welcome mail if the person is new AND a pupil
-				if (newPerson && person instanceof Pupil) {
-					TeachUsApplication.get().getMailBean().sendWelcomeMail((Pupil) person, TeachUsApplication.get().getServerName());
-				}
+				personModel.save(PersonPanel.this);			
 				
 				getRequestCycle().setResponsePage(getPersonsPageClass());
 			}			

@@ -229,6 +229,14 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		
 		return years;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<Integer> getYearsWithBookings(Teacher teacher) {
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe WHERE p.teacher = ? AND p.active = 1 AND pe.active = 1 GROUP BY year(b.date)", teacher);
+		
+		return years;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)

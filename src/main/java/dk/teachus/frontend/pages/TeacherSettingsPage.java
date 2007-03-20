@@ -15,6 +15,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.person.TeacherPanel;
+import dk.teachus.frontend.models.TeacherModel;
 
 public class TeacherSettingsPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -25,7 +26,7 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 		super(UserLevel.TEACHER, true);
 		
 		add(new Label("teacherInformation", TeachUsSession.get().getString("General.info")));
-		add(new TeacherPanel("teacherPanel", (Teacher) TeachUsSession.get().getPerson()));
+		add(new TeacherPanel("teacherPanel", new TeacherModel(TeachUsSession.get().getPerson().getId())));
 		
 		createIntroductionMailForm();
 	}

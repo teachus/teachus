@@ -39,7 +39,7 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 		
-		List<Integer> yearsWithPaidBookings = bookingDAO.getYearsWithPaidBookings(getTeacher());
+		List<Integer> yearsWithPaidBookings = bookingDAO.getYearsWithBookings(getTeacher());
 		
 		Form form = new Form("form"); //$NON-NLS-1$
 		add(form);
@@ -78,14 +78,14 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		}
 
 		// Paid bookings
-		PaintedDefaultCategoryDataset paidCategoryDataset = createCategoryDataset(paidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings"), Color.GREEN); //$NON-NLS-1$
+		PaintedDefaultCategoryDataset paidCategoryDataset = createCategoryDataset(paidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings"), new Color(25, 204, 25)); //$NON-NLS-1$
 		
 		// Unpaid bookings
 		PaintedDefaultCategoryDataset unPaidCategoryDataset = createCategoryDataset(unPaidBookings, TeachUsSession.get().getString("IncomePerPeriodPage.unPaidBookings"), Color.RED); //$NON-NLS-1$
 		appendDataset(paidCategoryDataset, unPaidCategoryDataset);
 		
 		// Future bookings
-		PaintedDefaultCategoryDataset futureCategoryDataset = createCategoryDataset(futureBookings, TeachUsSession.get().getString("IncomePerPeriodPage.futureLessons"), Color.BLUE); //$NON-NLS-1$
+		PaintedDefaultCategoryDataset futureCategoryDataset = createCategoryDataset(futureBookings, TeachUsSession.get().getString("IncomePerPeriodPage.futureLessons"), new Color(25, 25, 204)); //$NON-NLS-1$
 		appendDataset(paidCategoryDataset, futureCategoryDataset);
 		
 		

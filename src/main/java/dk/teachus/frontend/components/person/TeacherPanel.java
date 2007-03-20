@@ -3,14 +3,15 @@ package dk.teachus.frontend.components.person;
 import dk.teachus.domain.Admin;
 import dk.teachus.domain.Person;
 import dk.teachus.domain.Teacher;
+import dk.teachus.frontend.models.TeacherModel;
 import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 
 public class TeacherPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
 
-	public TeacherPanel(String id, Teacher teacher) {
-		super(id, teacher);
+	public TeacherPanel(String id, TeacherModel teacherModel) {
+		super(id, teacherModel);
 	}
 	
 	@Override

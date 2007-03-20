@@ -1,0 +1,19 @@
+#container {
+	background: #f0f0f0 url(/images/bodybg-red.jpg) repeat-x;
+}
+
+#mainmenu a:hover {
+	background: #f0f0f0 url(/images/menuhover-red.jpg) top left repeat-x;
+}
+
+#mainmenu a.current {
+	background: #f0f0f0 url(/images/menuhover-red.jpg) top left repeat-x;
+}
+
+.toolbar {
+	background: white url(/images/toolbar_red.png) center center repeat-x;
+}
+
+.list thead th {
+	background: #0f8fba url(/images/list_header_back_red.png) repeat-x 50% 50%;
+}

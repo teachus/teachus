@@ -5,6 +5,7 @@ import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.person.PersonPanel;
 import dk.teachus.frontend.components.person.PupilPanel;
+import dk.teachus.frontend.models.PupilModel;
 
 public class PupilPage extends PersonPage<Pupil> {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +29,7 @@ public class PupilPage extends PersonPage<Pupil> {
 
 	@Override
 	protected PersonPanel createPersonPanel(String wicketId, Pupil pupil) {
-		return new PupilPanel(wicketId, pupil);
+		return new PupilPanel(wicketId, new PupilModel(pupil.getId()));
 	}
 
 }

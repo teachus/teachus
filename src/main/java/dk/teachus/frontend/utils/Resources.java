@@ -23,14 +23,42 @@ public abstract class Resources {
 	public static final ResourceReference LIST_HEADER = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back.png"); //$NON-NLS-1$;
 	public static final ResourceReference EMPTY = new ResourceReference(TeachUsApplication.class, "resources/img/empty.gif"); //$NON-NLS-1$;
 	
+	public static final ResourceReference TOOLBAR_RED = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back_red.png"); //$NON-NLS-1$;
+	public static final ResourceReference LIST_HEADER_RED = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back_red.png"); //$NON-NLS-1$;
+	public static final ResourceReference TOOLBAR_ORANGE = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back_orange.png"); //$NON-NLS-1$;
+	public static final ResourceReference LIST_HEADER_ORANGE = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back_orange.png"); //$NON-NLS-1$;
+	public static final ResourceReference TOOLBAR_BLACK = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back_black.png"); //$NON-NLS-1$;
+	public static final ResourceReference LIST_HEADER_BLACK = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back_black.png"); //$NON-NLS-1$;
+	public static final ResourceReference TOOLBAR_GREEN = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back_green.png"); //$NON-NLS-1$;
+	public static final ResourceReference LIST_HEADER_GREEN = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back_green.png"); //$NON-NLS-1$
+	public static final ResourceReference TOOLBAR_PURPLE = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back_purple.png"); //$NON-NLS-1$;
+	public static final ResourceReference LIST_HEADER_PURPLE = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back_purple.png"); //$NON-NLS-1$
+	
 	public static final ResourceReference ANDREAS09_BODYBG = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg.jpg"); //$NON-NLS-1$;
 	public static final ResourceReference ANDREAS09_MENUHOVER = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover.jpg"); //$NON-NLS-1$;
 	public static final ResourceReference ANDREAS09_FOOTERBG = new ResourceReference(TeachUsApplication.class, "resources/img/footerbg.jpg"); //$NON-NLS-1$;
+	
+	public static final ResourceReference ANDREAS09_BODYBG_RED = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg-red.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_MENUHOVER_RED = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover-red.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_BODYBG_BLACK = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg-black.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_MENUHOVER_BLACK = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover-black.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_BODYBG_GREEN = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg-green.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_MENUHOVER_GREEN = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover-green.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_BODYBG_ORANGE = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg-orange.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_MENUHOVER_ORANGE = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover-orange.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_BODYBG_PURPLE = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg-purple.jpg"); //$NON-NLS-1$;
+	public static final ResourceReference ANDREAS09_MENUHOVER_PURPLE = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover-purple.jpg"); //$NON-NLS-1$;
 	
 	/*
 	 * CSS and JS
 	 */
 	public static final ResourceReference CSS_ANDREAS09 = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_ANDREAS09_RED = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09_red.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_ANDREAS09_BLACK = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09_black.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_ANDREAS09_ORANGE = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09_orange.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_ANDREAS09_PURPLE = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09_purple.css"); //$NON-NLS-1$
+	public static final ResourceReference CSS_ANDREAS09_GREEN = new CompressedResourceReference(TeachUsApplication.class, "resources/andreas09_green.css"); //$NON-NLS-1$
+	
 	public static final ResourceReference CSS_SCREEN = new CompressedResourceReference(TeachUsApplication.class, "resources/screen.css"); //$NON-NLS-1$
 	public static final ResourceReference JS_PROTOTYPE = new JavascriptResourceReference(TeachUsApplication.class, "resources/prototype.js"); //$NON-NLS-1$
 	

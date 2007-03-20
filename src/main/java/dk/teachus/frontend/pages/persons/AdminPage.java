@@ -4,6 +4,7 @@ import dk.teachus.domain.Admin;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.person.AdminPanel;
 import dk.teachus.frontend.components.person.PersonPanel;
+import dk.teachus.frontend.models.AdminModel;
 
 public class AdminPage extends PersonPage<Admin> {
 	private static final long serialVersionUID = 1L;
@@ -19,7 +20,7 @@ public class AdminPage extends PersonPage<Admin> {
 
 	@Override
 	protected PersonPanel createPersonPanel(String wicketId, Admin admin) {
-		return new AdminPanel(wicketId, admin);
+		return new AdminPanel(wicketId, new AdminModel(admin.getId()));
 	}
 	
 }

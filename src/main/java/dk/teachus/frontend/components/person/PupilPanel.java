@@ -6,14 +6,15 @@ import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 
 public class PupilPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
 
-	public PupilPanel(String id, Pupil pupil) {
-		super(id, pupil);
+	public PupilPanel(String id, PupilModel pupilModel) {
+		super(id, pupilModel);
 	}
 
 	@Override
