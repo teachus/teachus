@@ -69,6 +69,7 @@ public class TextFieldElement extends AbstractValidationInputElement {
 		textField.add(validator);
 	}
 	
+	@Override
 	public FormComponent getFormComponent() {
 		return textField;
 	}

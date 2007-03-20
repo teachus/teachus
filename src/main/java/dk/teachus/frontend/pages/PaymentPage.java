@@ -2,6 +2,7 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
+import wicket.Application;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -9,7 +10,6 @@ import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import wicket.markup.repeater.Item;
 import wicket.model.IModel;
 import wicket.model.Model;
-import wicket.protocol.http.WebApplication;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
@@ -38,7 +38,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 		} else if (TeachUsSession.get().getPerson() instanceof Teacher) {
 			pupilBookings = bookingDAO.getUnpaidBookings((Teacher) TeachUsSession.get().getPerson());
 		} else {
-			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 		
 		init(pupilBookings);
@@ -56,7 +56,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 				}
 			};
 		} else {
-			paidColumn = new RendererPropertyColumn(paidHeader, "paid", new YesNoRenderer()); //$NON-NLS-1$ //$NON-NLS-2$
+			paidColumn = new RendererPropertyColumn(paidHeader, "paid", new YesNoRenderer()); //$NON-NLS-1$ 
 		}
 		
 		IColumn[] columns = new IColumn[] {

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.joda.time.DateMidnight;
 
+import wicket.Application;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.markup.html.link.Link;
-import wicket.protocol.http.WebApplication;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.domain.Bookings;
@@ -36,7 +36,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 		super(UserLevel.TEACHER, true);
 		
 		if (TeachUsSession.get().getUserLevel() != UserLevel.TEACHER) {
-			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 		
 		PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();

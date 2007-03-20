@@ -2,9 +2,8 @@ package dk.teachus.frontend.utils;
 
 import java.text.NumberFormat;
 
-import dk.teachus.frontend.TeachUsSession;
-
 import wicket.markup.html.form.ChoiceRenderer;
+import dk.teachus.frontend.TeachUsSession;
 
 public class PercentChoiceRenderer extends ChoiceRenderer {
 	private static final long serialVersionUID = 1L;

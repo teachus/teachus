@@ -5,7 +5,6 @@ import wicket.util.tester.ITestPageSource;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.WicketSpringTestCase;
 import dk.teachus.frontend.components.calendar.CalendarPanel;
-import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
 
 public class TestTeacherCalendarPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;

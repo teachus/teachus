@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import wicket.Application;
 import wicket.ISessionFactory;
 import wicket.Request;
 import wicket.RequestCycle;
@@ -187,7 +188,7 @@ public class TeachUsApplication extends WebApplication {
 	}
 
 	public static TeachUsApplication get() {
-		return (TeachUsApplication) WebApplication.get();
+		return (TeachUsApplication) Application.get();
 	}
 
 	public List<Locale> getAvailableLocales() {

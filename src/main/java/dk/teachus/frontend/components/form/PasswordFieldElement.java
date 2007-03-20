@@ -66,6 +66,7 @@ public class PasswordFieldElement extends AbstractValidationInputElement {
 		passwordTextField.add(validator);
 	}
 	
+	@Override
 	public FormComponent getFormComponent() {
 		return passwordTextField;
 	}

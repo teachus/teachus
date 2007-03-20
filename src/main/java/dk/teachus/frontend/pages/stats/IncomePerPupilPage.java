@@ -171,6 +171,7 @@ public class IncomePerPupilPage extends AbstractStatisticsPage {
 			percent = total / overAllTotal;
 		}
 
+		@Override
 		public boolean equals(Object o) {
 			boolean equals = false;
 

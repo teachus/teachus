@@ -5,8 +5,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
-import dk.teachus.domain.impl.PeriodImpl.WeekDay;
 import wicket.markup.html.form.ChoiceRenderer;
+import dk.teachus.domain.impl.PeriodImpl.WeekDay;
 
 public class WeekDayChoiceRenderer extends ChoiceRenderer {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +22,7 @@ public class WeekDayChoiceRenderer extends ChoiceRenderer {
 		this.format = format;
 	}
 
-	@SuppressWarnings("unchecked") //$NON-NLS-1$
+	@SuppressWarnings("unchecked") 
 	@Override
 	public Object getDisplayValue(Object object) {
 		StringBuilder display = new StringBuilder();

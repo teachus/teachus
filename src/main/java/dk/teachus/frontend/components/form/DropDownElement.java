@@ -24,7 +24,7 @@ public class DropDownElement extends AbstractChoiceElement {
 
 		@Override
 		public Object getObject(Component component) {
-			return DropDownElement.this.valid ? Resources.PAID : Resources.UNPAID;
+			return valid ? Resources.PAID : Resources.UNPAID;
 		}		
 	}
 	
@@ -77,6 +77,7 @@ public class DropDownElement extends AbstractChoiceElement {
 		dropDownChoice.add(validator);
 	}
 	
+	@Override
 	public FormComponent getFormComponent() {
 		return dropDownChoice;
 	}

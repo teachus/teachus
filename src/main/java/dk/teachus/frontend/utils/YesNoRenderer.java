@@ -1,7 +1,7 @@
 package dk.teachus.frontend.utils;
 
-import dk.teachus.frontend.TeachUsSession;
 import wicket.markup.html.form.ChoiceRenderer;
+import dk.teachus.frontend.TeachUsSession;
 
 public class YesNoRenderer extends ChoiceRenderer {
 	private static final long serialVersionUID = 1L;

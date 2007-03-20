@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import wicket.Application;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -22,7 +23,6 @@ import wicket.markup.html.panel.FeedbackPanel;
 import wicket.model.CompoundPropertyModel;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
-import wicket.protocol.http.WebApplication;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
@@ -135,7 +135,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		teachUsSession.signIn(user.getUsername(), user.getPassword());
 		
 		if (teachUsSession.isAuthenticated()) {
-			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 	}
 
@@ -171,6 +171,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		});
 	}
 
+	@Override
 	public Locale getLocale() {
 		return locale;
 	}

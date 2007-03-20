@@ -7,7 +7,6 @@ import org.joda.time.DateTime;
 
 import wicket.MarkupContainer;
 import wicket.markup.html.link.Link;
-
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.domain.Booking;
 import dk.teachus.domain.Bookings;

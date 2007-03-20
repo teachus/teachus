@@ -25,9 +25,6 @@ import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.TeacherBooking;
-import dk.teachus.frontend.TeachUsApplication;
-import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.UserLevel;
 
 public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 

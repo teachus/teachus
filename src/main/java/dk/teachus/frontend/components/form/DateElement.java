@@ -21,7 +21,7 @@ public class DateElement extends AbstractValidationInputElement {
 
 		@Override
 		public Object getObject(Component component) {
-			return DateElement.this.valid ? Resources.PAID : Resources.UNPAID;
+			return valid ? Resources.PAID : Resources.UNPAID;
 		}		
 	}
 
@@ -51,6 +51,7 @@ public class DateElement extends AbstractValidationInputElement {
 		return new ComponentFeedbackMessageFilter(dateField);
 	}
 
+	@Override
 	public FormComponent getFormComponent() {
 		return dateField;
 	}

@@ -7,9 +7,8 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 
-import dk.teachus.frontend.TeachUsSession;
-
 import wicket.markup.html.image.resource.RenderedDynamicImageResource;
+import dk.teachus.frontend.TeachUsSession;
 
 public abstract class JFreeChartResource extends RenderedDynamicImageResource {
 	private static final long serialVersionUID = 1L;

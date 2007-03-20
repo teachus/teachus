@@ -14,7 +14,7 @@ public enum UserLevel {
 	public boolean authorized(UserLevel actual) {
 		boolean authorized = false;
 		
-		if (actual.level <= this.level) {
+		if (actual.level <= level) {
 			authorized = true;
 		}
 		

@@ -3,13 +3,14 @@ package dk.teachus.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.TestCase;
+
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.domain.impl.PeriodImpl;
 import dk.teachus.domain.impl.PeriodsImpl;
 import dk.teachus.domain.impl.PeriodImpl.WeekDay;
-import junit.framework.TestCase;
 
 public class TestPeriods extends TestCase {
 	

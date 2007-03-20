@@ -3,8 +3,8 @@ package dk.teachus.frontend.pages;
 import java.util.ArrayList;
 import java.util.List;
 
+import wicket.Application;
 import wicket.RestartResponseAtInterceptPageException;
-import wicket.protocol.http.WebApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
@@ -39,14 +39,14 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		TeachUsSession teachUsSession = TeachUsSession.get();
 		
 		if (userLevel.authorized(teachUsSession.getUserLevel()) == false) {
-			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 		
 		// If the userlevel is explicit, then only allow users of the same userlevel
 		// on this page.
 		if (explicitUserLevel) {
 			if (teachUsSession.getUserLevel() != userLevel) {
-				throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+				throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 			}
 		}
 

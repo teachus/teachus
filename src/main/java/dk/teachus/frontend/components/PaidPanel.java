@@ -1,9 +1,5 @@
 package dk.teachus.frontend.components;
 
-import dk.teachus.dao.BookingDAO;
-import dk.teachus.domain.PupilBooking;
-import dk.teachus.frontend.TeachUsApplication;
-import dk.teachus.frontend.utils.Resources;
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.RequestCycle;
@@ -14,6 +10,10 @@ import wicket.markup.html.WebComponent;
 import wicket.markup.html.panel.Panel;
 import wicket.model.AbstractReadOnlyModel;
 import wicket.model.IModel;
+import dk.teachus.dao.BookingDAO;
+import dk.teachus.domain.PupilBooking;
+import dk.teachus.frontend.TeachUsApplication;
+import dk.teachus.frontend.utils.Resources;
 
 public class PaidPanel extends Panel {
 	private static final long serialVersionUID = 1L;

@@ -6,9 +6,6 @@ import dk.teachus.domain.Admin;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.WicketSpringTestCase;
-import dk.teachus.frontend.pages.persons.AdminPage;
-import dk.teachus.frontend.pages.persons.PupilPage;
-import dk.teachus.frontend.pages.persons.TeacherPage;
 
 public class TestPersonPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;

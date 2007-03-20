@@ -2,6 +2,7 @@ package dk.teachus.frontend.pages.stats;
 
 import java.awt.Color;
 import java.awt.Paint;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import org.joda.time.DateTime;
 
 import wicket.ajax.AjaxRequestTarget;
 import wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import wicket.extensions.markup.html.repeater.data.table.IColumn;
+import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.DropDownChoice;
 import wicket.markup.html.form.Form;
@@ -22,14 +25,99 @@ import dk.teachus.dao.BookingDAO;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.ListPanel;
+import dk.teachus.frontend.components.RendererPropertyColumn;
 import dk.teachus.frontend.components.jfreechart.BarChartResource;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jfreechart.PaintedDefaultCategoryDataset;
+import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.Formatters;
+import dk.teachus.frontend.utils.MonthChoiceRenderer;
 
 public class IncomePerPeriodPage extends AbstractStatisticsPage {
-	private static final long serialVersionUID = 1L;
+	private static class MonthIncome implements Serializable {
+		private static final long serialVersionUID = 1L;
 
+		private int month;
+
+		private double paid;
+
+		private double unpaid;
+
+		private double future;
+		
+		private int paidLessonCount;
+		
+		private int unpaidLessonCount;
+		
+		private int futureLessonCount;
+		
+		public void addFuture(double future) {
+			this.future += future;
+		}
+		
+		public void addFutureLesson() {
+			futureLessonCount++;
+		}
+		
+		public void addPaid(double paid) {
+			this.paid += paid;
+		}
+		
+		public void addPaidLesson() {
+			paidLessonCount++;
+		}
+
+		public void addUnpaid(double unpaid) {
+			this.unpaid += unpaid;
+		}
+		
+		public void addUnpaidLesson() {
+			unpaidLessonCount++;
+		}
+		
+		public double getFuture() {
+			return future;
+		}
+
+		public int getFutureLessonCount() {
+			return futureLessonCount;
+		}
+		public int getLessonCount() {
+			return paidLessonCount;
+		}
+
+		public int getMonth() {
+			return month;
+		}
+
+		public double getPaid() {
+			return paid;
+		}
+
+		public double getTotal() {
+			return paid + unpaid + future;
+		}
+
+		public double getTotalLessonCount() {
+			return paidLessonCount + unpaidLessonCount + futureLessonCount;
+		}
+
+		public double getUnpaid() {
+			return unpaid;
+		}
+
+		public int getUnpaidLessonCount() {
+			return unpaidLessonCount;
+		}
+
+		public void setMonth(int month) {
+			this.month = month;
+		}
+	}
+
+	private static final long serialVersionUID = 1L;
+	
 	public IncomePerPeriodPage() {
 		this(new DateMidnight().getYear());
 	}
@@ -99,6 +187,46 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 				return true;
 			}
 		}));
+		
+		
+		
+		// Add list of data in static form
+		IColumn[] columns = new IColumn[] {
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.month")), "month", new MonthChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.paid")), "paid", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings")), "paidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.unpaid")), "unpaid", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.unPaidBookings")), "unpaidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.future")), "future", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.futureLessons")), "futureLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.totalLessons")), "totalLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+		};
+		
+		List<MonthIncome> data = new ArrayList<MonthIncome>();
+		
+		for (PupilBooking booking : paidBookings) {
+			MonthIncome monthIncome = getMonthIncome(data, booking);
+			
+			monthIncome.addPaid(booking.getPeriod().getPrice());
+			monthIncome.addPaidLesson();
+		}
+		
+		for (PupilBooking booking : unPaidBookings) {
+			MonthIncome monthIncome = getMonthIncome(data, booking);
+			
+			monthIncome.addUnpaid(booking.getPeriod().getPrice());
+			monthIncome.addUnpaidLesson();
+		}
+		
+		for (PupilBooking booking : futureBookings) {
+			MonthIncome monthIncome = getMonthIncome(data, booking);
+			
+			monthIncome.addFuture(booking.getPeriod().getPrice());
+			monthIncome.addFutureLesson();
+		}
+		
+		add(new ListPanel("list", columns, data)); //$NON-NLS-1$
 	}
 
 	private void appendDataset(PaintedDefaultCategoryDataset toDataset, PaintedDefaultCategoryDataset fromDataset) {
@@ -139,15 +267,32 @@ public class IncomePerPeriodPage extends AbstractStatisticsPage {
 		}
 		return categoryDataset;
 	}
-	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.incomePerPeriod"); //$NON-NLS-1$
-	}
 
+	private MonthIncome getMonthIncome(List<MonthIncome> data, PupilBooking booking) {
+		MonthIncome monthIncome = null;
+		for (MonthIncome income : data) {
+			if (income.getMonth() == new DateMidnight(booking.getDate()).getMonthOfYear()) {
+				monthIncome = income;
+				break;
+			}
+		}
+		
+		if (monthIncome == null) {
+			monthIncome = new MonthIncome();
+			monthIncome.setMonth(new DateMidnight(booking.getDate()).getMonthOfYear());
+			data.add(monthIncome);
+		}
+		return monthIncome;
+	}
+	
 	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.STATISTICS;
+	}
+
+	@Override
+	protected String getPageLabel() {
+		return TeachUsSession.get().getString("General.incomePerPeriod"); //$NON-NLS-1$
 	}
 
 }

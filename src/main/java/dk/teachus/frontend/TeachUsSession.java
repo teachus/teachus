@@ -4,13 +4,13 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.Cookie;
 
 import wicket.Request;
 import wicket.RequestCycle;
+import wicket.Session;
 import wicket.protocol.http.WebApplication;
 import wicket.protocol.http.WebRequest;
 import wicket.protocol.http.WebResponse;
@@ -63,7 +63,7 @@ public class TeachUsSession extends WebSession {
 	public Properties createResourceBundle(Locale locale) {
 		Properties properties = new Properties();
 		
-		ResourceBundle bundle = PropertyResourceBundle.getBundle(BUNDLE_NAME, locale);
+		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
 		Enumeration<String> keys = bundle.getKeys();
 		while(keys.hasMoreElements()) {
 			String key = keys.nextElement();
@@ -121,7 +121,7 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public static TeachUsSession get() {
-		return (TeachUsSession) WebSession.get();
+		return (TeachUsSession) Session.get();
 	}
 	
 }

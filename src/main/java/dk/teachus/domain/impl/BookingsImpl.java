@@ -14,7 +14,7 @@ public class BookingsImpl implements Bookings {
 	private List<Booking> bookings;
 	
 	public BookingsImpl(List<Booking> pupilBookings) {
-		this.bookings = pupilBookings;
+		bookings = pupilBookings;
 	}
 
 	public Booking getBooking(DateTime time) {

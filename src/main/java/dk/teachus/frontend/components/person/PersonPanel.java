@@ -3,6 +3,7 @@ package dk.teachus.frontend.components.person;
 import java.util.List;
 import java.util.Locale;
 
+import wicket.Application;
 import wicket.RestartResponseAtInterceptPageException;
 import wicket.ajax.AjaxRequestTarget;
 import wicket.markup.html.form.validation.EmailAddressPatternValidator;
@@ -11,7 +12,6 @@ import wicket.markup.html.form.validation.IFormValidator;
 import wicket.markup.html.form.validation.StringValidator;
 import wicket.markup.html.panel.Panel;
 import wicket.model.PropertyModel;
-import wicket.protocol.http.WebApplication;
 import wicket.util.string.Strings;
 import dk.teachus.domain.Person;
 import dk.teachus.frontend.TeachUsApplication;
@@ -36,7 +36,7 @@ public abstract class PersonPanel extends Panel {
 		super(id, personModel);
 		
 		if (allowUserEditing(TeachUsSession.get().getPerson(), personModel.getObject(this)) == false) {
-			throw new RestartResponseAtInterceptPageException(WebApplication.get().getHomePage());
+			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 		
 		FormPanel formPanel = new FormPanel("form");

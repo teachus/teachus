@@ -2,8 +2,6 @@ package dk.teachus.frontend.components;
 
 import java.util.List;
 
-import dk.teachus.frontend.TeachUsSession;
-
 import wicket.Component;
 import wicket.extensions.markup.html.repeater.data.table.DataTable;
 import wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
@@ -14,6 +12,7 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.data.ListDataProvider;
 import wicket.model.AbstractReadOnlyModel;
+import dk.teachus.frontend.TeachUsSession;
 
 public class ListPanel extends Panel {
 	private static final long serialVersionUID = 1L;
