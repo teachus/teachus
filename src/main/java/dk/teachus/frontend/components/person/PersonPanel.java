@@ -1,5 +1,6 @@
 package dk.teachus.frontend.components.person;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,6 +15,7 @@ import wicket.markup.html.panel.Panel;
 import wicket.model.PropertyModel;
 import wicket.util.string.Strings;
 import dk.teachus.domain.Person;
+import dk.teachus.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
@@ -27,6 +29,7 @@ import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
+import dk.teachus.frontend.utils.ThemeChoiceRenderer;
 
 public abstract class PersonPanel extends Panel {
 	protected String password1;
@@ -88,6 +91,9 @@ public abstract class PersonPanel extends Panel {
 			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(personModel, "locale"), availableLocales, new LocaleChoiceRenderer()));
 		}
 		
+		List<Theme> themes = Arrays.asList(Theme.values());
+		formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.theme"), new PropertyModel(personModel, "theme"), themes, new ThemeChoiceRenderer()));
+		
 		// Teacher
 		if (isTeacherVisible()) {
 			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(personModel, "teacher.name")));
@@ -110,6 +116,8 @@ public abstract class PersonPanel extends Panel {
 				
 				personModel.save(PersonPanel.this);			
 				
+				PersonPanel.this.onSave(personModel.getObject(PersonPanel.this));
+				
 				getRequestCycle().setResponsePage(getPersonsPageClass());
 			}			
 		});
@@ -129,6 +137,9 @@ public abstract class PersonPanel extends Panel {
 
 	protected boolean isTeacherVisible() {
 		return false;
+	}
+	
+	protected void onSave(Person person) {
 	}
 	
 }

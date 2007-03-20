@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
@@ -15,28 +17,38 @@ import org.springframework.util.ObjectUtils;
 
 public class PasswordUserType implements UserType {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Pattern SHA1_PATTERN = Pattern.compile("^[0-9a-fA-F]{40}$");
 
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-		String password = rs.getString(names[0]);
-		return password;
+		return rs.getString(names[0]);
 	}
 
 	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
-		if (value instanceof String == false) {
-			throw new HibernateException("Value must be instance of string");
+		if (value != null) {
+			if (value instanceof String == false) {
+				throw new HibernateException("Value must be instance of string");
+			}
+			
+			String stringValue = (String) value;
+			
+			// Encrypt the value with sha1
+			try {
+				// Bad way of figuring out if we should encrypt or not.
+				// Please think of something smarter, but for now I guess it's ok
+				Matcher matcher = SHA1_PATTERN.matcher(stringValue);
+				if (matcher.matches()) {
+					st.setString(index, stringValue);
+				} else {
+					String sha1Value = sha1(stringValue);
+					st.setString(index, sha1Value);
+				}
+			} catch (NoSuchAlgorithmException e) {
+				throw new HibernateException(e);
+			} catch (UnsupportedEncodingException e) {
+				throw new HibernateException(e);
+			}
 		}
-		
-		String stringValue = (String) value;
-		
-		// Encrypt the value with md5
-		try {
-			String md5Value = sha1(stringValue);
-			st.setString(index, md5Value);
-		} catch (NoSuchAlgorithmException e) {
-			throw new HibernateException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new HibernateException(e);
-		}		
 	}
 	
 	public static String hex(byte[] array) {

@@ -26,6 +26,8 @@
         
         <property name="locale" length="20" />
         
+        <property name="theme" length="40" type="dk.teachus.dao.hibernate.ThemeUserType" />
+        
         <property name="active" not-null="true" type="dk.teachus.dao.hibernate.BooleanType">
         	<column name="active" default="true" />
         </property>

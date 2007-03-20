@@ -3,6 +3,7 @@ package dk.teachus.domain.impl;
 import java.util.Locale;
 
 import dk.teachus.domain.Person;
+import dk.teachus.domain.Theme;
 
 public abstract class PersonImpl extends AbstractHibernateObject implements Person {
 	private String name;
@@ -18,6 +19,8 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 	private String phoneNumber;
 
 	private Locale locale;
+	
+	private Theme theme;
 	
 	private boolean active = true;
 
@@ -83,5 +86,13 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	public void setCryptedPassword(String cryptedPassword) {
 		this.cryptedPassword = cryptedPassword;
+	}
+
+	public Theme getTheme() {
+		return theme;
+	}
+
+	public void setTheme(Theme theme) {
+		this.theme = theme;
 	}
 }

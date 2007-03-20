@@ -8,6 +8,7 @@ import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
+import dk.teachus.domain.Person;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.TeacherAttribute;
 import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
@@ -26,7 +27,14 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 		super(UserLevel.TEACHER, true);
 		
 		add(new Label("teacherInformation", TeachUsSession.get().getString("General.info")));
-		add(new TeacherPanel("teacherPanel", new TeacherModel(TeachUsSession.get().getPerson().getId())));
+		add(new TeacherPanel("teacherPanel", new TeacherModel(TeachUsSession.get().getPerson().getId())) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onSave(Person person) {
+				TeachUsSession.get().signIn(person.getUsername(), person.getPassword());
+			}
+		});
 		
 		createIntroductionMailForm();
 	}

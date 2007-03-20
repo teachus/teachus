@@ -46,6 +46,7 @@ CREATE TABLE
 	email VARCHAR(250), 
 	phone_number VARCHAR(20), 
 	locale VARCHAR(20), 
+	theme VARCHAR(40), 
 	active TINYINT, 
 	teacher_id BIGINT, 
 	primary key (id)
