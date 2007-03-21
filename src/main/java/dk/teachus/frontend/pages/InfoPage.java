@@ -1,24 +1,20 @@
 package dk.teachus.frontend.pages;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import wicket.ResourceReference;
 import wicket.markup.html.basic.Label;
 import wicket.markup.html.basic.MultiLineLabel;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.link.ExternalLink;
-import wicket.markup.html.link.PopupSettings;
 import wicket.markup.repeater.RepeatingView;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.imagebox.ImageBox;
+import dk.teachus.frontend.components.imagebox.ImageBox.ImageResource;
 import dk.teachus.frontend.utils.Resources;
 
 public class InfoPage extends UnAuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
-	public InfoPage() {
+	public InfoPage() {		
 		add(new MultiLineLabel("intro1", TeachUsSession.get().getString("InfoPage.intro1")));
 		
 		createFeatures();
@@ -47,30 +43,19 @@ public class InfoPage extends UnAuthenticatedBasePage {
 	private void createScreenShots() {
 		add(new Label("screenshotsHeader", TeachUsSession.get().getString("InfoPage.screenshots")));
 
-		Map<ResourceReference, ResourceReference> screenshots = new HashMap<ResourceReference, ResourceReference>();
+		List<ImageResource> images = new ArrayList<ImageResource>();
 		
-		screenshots.put(Resources.SCREENSHOT_1_THUMB, Resources.SCREENSHOT_1);
-		screenshots.put(Resources.SCREENSHOT_2_THUMB, Resources.SCREENSHOT_2);
-		screenshots.put(Resources.SCREENSHOT_3_THUMB, Resources.SCREENSHOT_3);
-		screenshots.put(Resources.SCREENSHOT_4_THUMB, Resources.SCREENSHOT_4);
-		screenshots.put(Resources.SCREENSHOT_5_THUMB, Resources.SCREENSHOT_5);
-		screenshots.put(Resources.SCREENSHOT_6_THUMB, Resources.SCREENSHOT_6);
-		screenshots.put(Resources.SCREENSHOT_7_THUMB, Resources.SCREENSHOT_7);
-		screenshots.put(Resources.SCREENSHOT_8_THUMB, Resources.SCREENSHOT_8);
-		screenshots.put(Resources.SCREENSHOT_9_THUMB, Resources.SCREENSHOT_9);
+		images.add(new ImageResource(Resources.SCREENSHOT_1, Resources.SCREENSHOT_1_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_2, Resources.SCREENSHOT_2_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_3, Resources.SCREENSHOT_3_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_4, Resources.SCREENSHOT_4_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_5, Resources.SCREENSHOT_5_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_6, Resources.SCREENSHOT_6_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_7, Resources.SCREENSHOT_7_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_8, Resources.SCREENSHOT_8_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_9, Resources.SCREENSHOT_9_THUMB));
 		
-		RepeatingView screenshotsContainer = new RepeatingView("screenshots");
-		add(screenshotsContainer);
-		
-		for (ResourceReference reference : screenshots.keySet()) {
-			CharSequence url = getRequestCycle().urlFor(screenshots.get(reference));
-			
-			ExternalLink link = new ExternalLink(screenshotsContainer.newChildId(), url.toString());
-			link.setPopupSettings(new PopupSettings());
-			screenshotsContainer.add(link);
-			
-			link.add(new Image("screenshot", reference));
-		}
+		add(new ImageBox("screenshots", images));
 	}
 
 	private void createFeatures() {

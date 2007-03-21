@@ -7,7 +7,7 @@ public class JettyStarter {
 
 	public static void main(String[] args) throws Exception {
 		
-//		System.setProperty("wicket.configuration", "development");
+		System.setProperty("wicket.configuration", "development");
 		
 		Server server = new Server(8080);
 		

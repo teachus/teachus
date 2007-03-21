@@ -26,8 +26,6 @@ public abstract class BasePage extends WebPage {
 	public BasePage() {
 		add(HeaderContributor.forCss(Resources.CSS_ANDREAS09));
 		add(HeaderContributor.forCss(Resources.CSS_SCREEN));
-		
-		add(HeaderContributor.forJavaScript(Resources.JS_PROTOTYPE));
 
 		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle")); //$NON-NLS-1$
 		sb.append(" "); //$NON-NLS-1$
