@@ -149,7 +149,6 @@ public class TeachUsApplication extends WebApplication {
 		
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
-		mountSharedResource("/js/prototype.js", Resources.JS_PROTOTYPE.getSharedResourceKey());
 		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey());
 	}
 
