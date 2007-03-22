@@ -27,7 +27,7 @@ margin:0 0 15px;
 
 /*** Main container ***/
 
-#container {
+#outercontainer {
 background:#f0f0f0 url(/images/bodybg.jpg) repeat-x;
 color:#303030;
 margin:0;
