@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import dk.teachus.frontend.TeachUsSession;
+
 import wicket.AttributeModifier;
 import wicket.Component;
 import wicket.RequestCycle;
@@ -33,10 +35,10 @@ public class ImageBox extends Panel {
 	public static final ResourceReference SPACER = new ResourceReference(ImageBox.class, "resources/spacer.gif"); //$NON-NLS-1$;
 	public static final ResourceReference PREV = new ResourceReference(ImageBox.class, "resources/prev_image.jpg"); //$NON-NLS-1$;
 	public static final ResourceReference NEXT = new ResourceReference(ImageBox.class, "resources/next_image.jpg"); //$NON-NLS-1$;
-	public static final TextTemplateHeaderContributor CSS_IMAGEBOX = TextTemplateHeaderContributor.forCss(ImageBox.class, "resources/imagebox-1.2.css", new StyleSheetModel());
+	public static final TextTemplateHeaderContributor CSS_IMAGEBOX = TextTemplateHeaderContributor.forCss(ImageBox.class, "resources/imagebox-1.2.css", new StyleSheetModel()); //$NON-NLS-1$
 	
-	private static final String NEWLINE = "\n";
-	private static final String TAB = "\t";
+	private static final String NEWLINE = "\n"; //$NON-NLS-1$
+	private static final String TAB = "\t"; //$NON-NLS-1$
 
 	public static class ImageResource implements Serializable {
 		private static final long serialVersionUID = 1L;
@@ -91,34 +93,34 @@ public class ImageBox extends Panel {
 			RequestCycle requestCycle = RequestCycle.get();
 			
 			Map<String, Object> properties = new HashMap<String, Object>();
-			properties.put("loaderSRC", requestCycle.urlFor(ImageBox.LOADING));
-			properties.put("closeHTML", "Close");
-			properties.put("textImage", "Showing image");
-			properties.put("textImageFrom", "from");
+			properties.put("loaderSRC", requestCycle.urlFor(ImageBox.LOADING)); //$NON-NLS-1$
+			properties.put("closeHTML", TeachUsSession.get().getString("ImageBox.close")); //$NON-NLS-1$ //$NON-NLS-2$
+			properties.put("textImage", TeachUsSession.get().getString("ImageBox.showingImage")); //$NON-NLS-1$ //$NON-NLS-2$
+			properties.put("textImageFrom", TeachUsSession.get().getString("ImageBox.from")); //$NON-NLS-1$ //$NON-NLS-2$
 			
 			StringBuilder sb = new StringBuilder();
 			
-			sb.append("$.ImageBox.init(").append(NEWLINE);
-			sb.append("{").append(NEWLINE);
+			sb.append("$.ImageBox.init(").append(NEWLINE); //$NON-NLS-1$
+			sb.append("{").append(NEWLINE); //$NON-NLS-1$
 			int i = 0;
 			for (String key : properties.keySet()) {
 				i++;
 				Object value = properties.get(key);
-				sb.append(TAB).append(key).append(": ");
+				sb.append(TAB).append(key).append(": "); //$NON-NLS-1$
 				
 				if (value instanceof CharSequence) {
-					sb.append("'").append(value).append("'");
+					sb.append("'").append(value).append("'"); //$NON-NLS-1$ //$NON-NLS-2$
 				} else {
 					sb.append(value);
 				}
 				
 				if (i < properties.size()) {
-					sb.append(",");
+					sb.append(","); //$NON-NLS-1$
 				}
 				sb.append(NEWLINE);
 			}
-			sb.append("}").append(NEWLINE);
-			sb.append(")");
+			sb.append("}").append(NEWLINE); //$NON-NLS-1$
+			sb.append(")"); //$NON-NLS-1$
 			
 			response.renderOnLoadJavascript(sb.toString());
 		}
@@ -132,9 +134,9 @@ public class ImageBox extends Panel {
 			Map<String, CharSequence> variables = new HashMap<String, CharSequence>();
 			RequestCycle requestCycle = RequestCycle.get();
 			
-			variables.put("spacerUrl", requestCycle.urlFor(SPACER));
-			variables.put("nextImageUrl", requestCycle.urlFor(NEXT));
-			variables.put("prevImageUrl", requestCycle.urlFor(PREV));
+			variables.put("spacerUrl", requestCycle.urlFor(SPACER)); //$NON-NLS-1$
+			variables.put("nextImageUrl", requestCycle.urlFor(NEXT)); //$NON-NLS-1$
+			variables.put("prevImageUrl", requestCycle.urlFor(PREV)); //$NON-NLS-1$
 			
 			return variables;
 		}
@@ -160,7 +162,7 @@ public class ImageBox extends Panel {
 	@Override
 	protected void onAttach() {
 		if (attached == false) {			
-			RepeatingView imagesContainer = new RepeatingView("images");
+			RepeatingView imagesContainer = new RepeatingView("images"); //$NON-NLS-1$
 			add(imagesContainer);
 			
 			for (ImageResource imageResource : images) {
@@ -169,8 +171,8 @@ public class ImageBox extends Panel {
 				final String title = imageResource.getTitle();
 				
 				ExternalLink imageLink = new ExternalLink(imagesContainer.newChildId(), getRequestCycle().urlFor(image).toString());
-				imageLink.add(new SimpleAttributeModifier("rel", "imagebox-"+getMarkupId()));
-				imageLink.add(new AttributeModifier("title", true, new Model(title)) {
+				imageLink.add(new SimpleAttributeModifier("rel", "imagebox-"+getMarkupId())); //$NON-NLS-1$ //$NON-NLS-2$
+				imageLink.add(new AttributeModifier("title", true, new Model(title)) { //$NON-NLS-1$
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -180,7 +182,7 @@ public class ImageBox extends Panel {
 				});
 				imagesContainer.add(imageLink);
 				
-				imageLink.add(new Image("image", imageThumb));
+				imageLink.add(new Image("image", imageThumb)); //$NON-NLS-1$
 			}
 			
 			attached = true;
