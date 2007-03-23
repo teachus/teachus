@@ -7,15 +7,15 @@ import dk.teachus.frontend.components.person.PersonPanel;
 import dk.teachus.frontend.components.person.PupilPanel;
 import dk.teachus.frontend.models.PupilModel;
 
-public class PupilPage extends PersonPage<Pupil> {
+public class PupilPage extends PersonPage<PupilModel> {
 	private static final long serialVersionUID = 1L;
 
 	public PupilPage() {
-		this((Pupil) TeachUsSession.get().getPerson());
+		this(new PupilModel(((Pupil) TeachUsSession.get().getPerson()).getId()));
 	}
 	
-	public PupilPage(Pupil pupil) {
-		super(UserLevel.PUPIL, pupil);
+	public PupilPage(PupilModel pupilModel) {
+		super(UserLevel.PUPIL, pupilModel);
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class PupilPage extends PersonPage<Pupil> {
 	}
 
 	@Override
-	protected PersonPanel createPersonPanel(String wicketId, Pupil pupil) {
-		return new PupilPanel(wicketId, new PupilModel(pupil.getId()));
+	protected PersonPanel createPersonPanel(String wicketId, PupilModel pupilModel) {
+		return new PupilPanel(wicketId, pupilModel);
 	}
 
 }

@@ -6,10 +6,26 @@ import dk.teachus.domain.Admin;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.WicketSpringTestCase;
+import dk.teachus.frontend.models.AdminModel;
+import dk.teachus.frontend.models.PupilModel;
+import dk.teachus.frontend.models.TeacherModel;
 
 public class TestPersonPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;
 
+	public void testNewPupilPage() {		
+		tester.startPage(new ITestPageSource() {
+			private static final long serialVersionUID = 1L;
+
+			public Page getTestPage() {
+				return new PupilPage(new PupilModel(null));
+			}
+			
+		});
+		
+		tester.assertRenderedPage(PupilPage.class);
+	}
+	
 	public void testPupilPage() {
 		final Pupil pupil = (Pupil) tester.getPerson(11l);
 		
@@ -17,7 +33,7 @@ public class TestPersonPage extends WicketSpringTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new PupilPage(pupil);
+				return new PupilPage(new PupilModel(11l));
 			}
 			
 		});
@@ -25,6 +41,22 @@ public class TestPersonPage extends WicketSpringTestCase {
 		tester.assertRenderedPage(PupilPage.class);
 		
 		tester.assertContains(pupil.getName());
+	}
+	
+	public void testNewTeacherPage() {
+		// Log in as admin
+		TesterTeachUsSession.get().setPerson(1l);
+		
+		tester.startPage(new ITestPageSource() {
+			private static final long serialVersionUID = 1L;
+
+			public Page getTestPage() {
+				return new TeacherPage(new TeacherModel(null));
+			}
+			
+		});
+		
+		tester.assertRenderedPage(TeacherPage.class);
 	}
 	
 	public void testTeacherPage() {
@@ -37,7 +69,7 @@ public class TestPersonPage extends WicketSpringTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherPage(teacher);
+				return new TeacherPage(new TeacherModel(2l));
 			}
 			
 		});
@@ -45,6 +77,22 @@ public class TestPersonPage extends WicketSpringTestCase {
 		tester.assertRenderedPage(TeacherPage.class);
 		
 		tester.assertContains(teacher.getName());
+	}
+	
+	public void testNewAdminPage() {
+		// Log in as admin
+		TesterTeachUsSession.get().setPerson(1l);
+		
+		tester.startPage(new ITestPageSource() {
+			private static final long serialVersionUID = 1L;
+
+			public Page getTestPage() {
+				return new AdminPage(new AdminModel(null));
+			}
+			
+		});
+		
+		tester.assertRenderedPage(AdminPage.class);
 	}
 	
 	public void testAdminPage() {
@@ -57,7 +105,7 @@ public class TestPersonPage extends WicketSpringTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new AdminPage(admin);
+				return new AdminPage(new AdminModel(1l));
 			}
 			
 		});

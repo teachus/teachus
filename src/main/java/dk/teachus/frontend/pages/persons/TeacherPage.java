@@ -1,16 +1,15 @@
 package dk.teachus.frontend.pages.persons;
 
-import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.person.PersonPanel;
 import dk.teachus.frontend.components.person.TeacherPanel;
 import dk.teachus.frontend.models.TeacherModel;
 
-public class TeacherPage extends PersonPage<Teacher> {
+public class TeacherPage extends PersonPage<TeacherModel> {
 	private static final long serialVersionUID = 1L;
 
-	public TeacherPage(Teacher teacher) {
-		super(UserLevel.TEACHER, teacher);
+	public TeacherPage(TeacherModel teacherModel) {
+		super(UserLevel.TEACHER, teacherModel);
 	}
 
 	@Override
@@ -19,8 +18,8 @@ public class TeacherPage extends PersonPage<Teacher> {
 	}
 
 	@Override
-	protected PersonPanel createPersonPanel(String wicketId, Teacher teacher) {
-		return new TeacherPanel(wicketId, new TeacherModel(teacher.getId()));
+	protected PersonPanel createPersonPanel(String wicketId, TeacherModel teacherModel) {
+		return new TeacherPanel(wicketId, teacherModel);
 	}
 
 }

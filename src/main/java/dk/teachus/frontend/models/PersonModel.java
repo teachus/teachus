@@ -45,9 +45,13 @@ public abstract class PersonModel<P extends Person> extends LoadableDetachableMo
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object load() {
-		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-		P person = (P) personDAO.getPerson(personId);
+		P person = null;
 		
+		if (personId != null) {
+			PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+			person = (P) personDAO.getPerson(personId);
+		}
+
 		if (person == null) {
 			person = createNewPerson();
 		}

@@ -13,6 +13,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
+import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 
 public class PupilsPage extends PersonsPage<Pupil> {
@@ -70,7 +71,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	
 	@Override
 	protected PersonPage getPersonPage(Pupil person) {
-		return new PupilPage(person);
+		return new PupilPage(new PupilModel(person.getId()));
 	}
 
 	@Override

@@ -1,16 +1,15 @@
 package dk.teachus.frontend.pages.persons;
 
-import dk.teachus.domain.Admin;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.person.AdminPanel;
 import dk.teachus.frontend.components.person.PersonPanel;
 import dk.teachus.frontend.models.AdminModel;
 
-public class AdminPage extends PersonPage<Admin> {
+public class AdminPage extends PersonPage<AdminModel> {
 	private static final long serialVersionUID = 1L;
 	
-	public AdminPage(Admin admin) {
-		super(UserLevel.ADMIN, admin);
+	public AdminPage(AdminModel adminModel) {
+		super(UserLevel.ADMIN, adminModel);
 	}
 
 	@Override
@@ -19,8 +18,8 @@ public class AdminPage extends PersonPage<Admin> {
 	}
 
 	@Override
-	protected PersonPanel createPersonPanel(String wicketId, Admin admin) {
-		return new AdminPanel(wicketId, new AdminModel(admin.getId()));
+	protected PersonPanel createPersonPanel(String wicketId, AdminModel adminModel) {
+		return new AdminPanel(wicketId, adminModel);
 	}
 	
 }

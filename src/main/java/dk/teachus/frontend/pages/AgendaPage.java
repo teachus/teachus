@@ -13,6 +13,7 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.LinkPropertyColumn;
 import dk.teachus.frontend.components.ListPanel;
 import dk.teachus.frontend.components.RendererPropertyColumn;
+import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
@@ -36,7 +37,7 @@ public class AgendaPage extends AuthenticatedBasePage {
 					@Override
 					protected void onClick(Object rowModelObject) {
 						PupilBooking booking = (PupilBooking) rowModelObject;
-						getRequestCycle().setResponsePage(new PupilPage(booking.getPupil()));
+						getRequestCycle().setResponsePage(new PupilPage(new PupilModel(booking.getPupil().getId())));
 					}
 				},
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", new DateChoiceRenderer()),

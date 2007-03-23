@@ -8,6 +8,7 @@ import dk.teachus.domain.impl.TeacherImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.models.TeacherModel;
 
 public class TeachersPage extends PersonsPage<Teacher> {
 	private static final long serialVersionUID = 1L;
@@ -44,7 +45,7 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	
 	@Override
 	protected PersonPage getPersonPage(Teacher person) {
-		return new TeacherPage(person);
+		return new TeacherPage(new TeacherModel(person.getId()));
 	}
 
 	@Override
