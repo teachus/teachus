@@ -22,6 +22,7 @@ import dk.teachus.domain.Period;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
+import dk.teachus.domain.Theme;
 import dk.teachus.domain.impl.AdminImpl;
 import dk.teachus.domain.impl.PeriodImpl;
 import dk.teachus.domain.impl.PupilBookingImpl;
@@ -260,6 +261,7 @@ public class DynamicDataImport {
 		teacher.setPassword("leif");
 		teacher.setEmail("leif@teachus.dk");
 		teacher.setLocale(new Locale("da", "DK", "singers"));
+		teacher.setTheme(Theme.GREEN);
 		session.save(teacher);
 		
 		// Create pupils

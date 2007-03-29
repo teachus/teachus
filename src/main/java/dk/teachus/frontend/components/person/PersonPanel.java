@@ -74,7 +74,9 @@ public abstract class PersonPanel extends Panel {
 					PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 					String username = component.getValue();
 					
-					if (personDAO.usernameExists(username)) {
+					Person existingPerson = personDAO.usernameExists(username);
+					
+					if (existingPerson != null && existingPerson.getId().equals(personModel.getPersonId()) == false) {
 						String localeString = TeachUsSession.get().getString("PersonPanel.userAlreadyExists"); //$NON-NLS-1$
 						localeString = localeString.replace("${username}", username); //$NON-NLS-1$
 						component.error(localeString);

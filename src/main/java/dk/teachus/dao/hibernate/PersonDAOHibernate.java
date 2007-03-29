@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
@@ -142,20 +141,18 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		return attribute; 
 	}
 
-	public boolean usernameExists(String username) {
-		boolean exists = false;
+	public Person usernameExists(String username) {
+		Person existingPerson = null;
 		
 		DetachedCriteria c = DetachedCriteria.forClass(PersonImpl.class);
 		c.add(Restrictions.eq("username", username));
-		c.setProjection(Projections.rowCount());
 		
 		List result = getHibernateTemplate().findByCriteria(c);
-		Integer count = (Integer) result.get(0);
 		
-		if (count > 0) {
-			exists = true;
+		if (result.size() > 0) {
+			existingPerson = (Person) result.get(0);
 		}
 		
-		return exists;
+		return existingPerson;
 	}
 }
