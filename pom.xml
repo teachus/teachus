@@ -102,6 +102,11 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.3</version>
 		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xerces</artifactId>
+			<version>2.4.0</version>
+		</dependency>	
 		
 		<!-- Test dependencies -->
 		<dependency>
@@ -187,6 +192,7 @@
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>Set version number</id>
 						<phase>process-classes</phase>
 						<configuration>
 							<tasks>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Demo data" default="demodata" basedir=".">
+
+	<import file="build.xml" />
+
+	<target name="demodata">		
+		<!-- Import demo data -->
+		<java classname="dk.teachus.database.DynamicDataImport">
+			<classpath>
+				<path refid="build.classpath" />
+				<pathelement location="${maven.build.output}" />
+				<pathelement location="${maven.test.output}" />
+			</classpath>
+		</java>
+	</target>
+
+</project>
