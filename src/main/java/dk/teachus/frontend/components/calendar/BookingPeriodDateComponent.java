@@ -160,7 +160,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	}
 
 	private Component createEmptyLabel() {
-		return new Label(LABEL_ID, "Hejsa").setEscapeModelStrings(false).setRenderBodyOnly(true);
+		return new Label(LABEL_ID, "&nbsp;").setEscapeModelStrings(false).setRenderBodyOnly(true);
 	}
 
 	private Component createLink(final Period period, final DateTime time, final Booking booking) {
