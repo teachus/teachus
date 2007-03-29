@@ -28,4 +28,6 @@ public interface PersonDAO extends Serializable {
 
 	<A extends TeacherAttribute> A getAttribute(Class<A> attributeClass, Teacher teacher);
 
+	boolean usernameExists(String username);
+
 }

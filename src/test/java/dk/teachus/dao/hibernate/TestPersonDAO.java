@@ -12,4 +12,12 @@ public class TestPersonDAO extends WicketSpringTestCase {
 		assertNotNull(person);
 	}
 	
+	public void testUsernameExists() {
+		assertTrue(getPersonDAO().usernameExists("admin"));
+		
+		assertFalse(getPersonDAO().usernameExists("admin2"));
+		
+		assertFalse(getPersonDAO().usernameExists("admi"));
+	}
+	
 }
