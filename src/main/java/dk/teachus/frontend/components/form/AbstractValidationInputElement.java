@@ -37,10 +37,14 @@ public abstract class AbstractValidationInputElement extends AbstractInputElemen
 	}
 	
 	protected abstract String getValidationEvent();
-	
-	protected abstract Component[] onInputValid(FeedbackPanel feedbackPanel);
-	
-	protected abstract Component[] onInputInvalid(FeedbackPanel feedbackPanel);
+
+	public Component[] onInputValid(FeedbackPanel feedbackPanel) {
+		return new Component[] {feedbackPanel};
+	}
+
+	public Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
+		return new Component[] {feedbackPanel};
+	}
 
 
 }

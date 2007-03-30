@@ -12,6 +12,7 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.link.BookmarkablePageLink;
 import wicket.markup.html.link.Link;
 import wicket.markup.repeater.RepeatingView;
+import dk.teachus.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.utils.Resources;
@@ -26,7 +27,15 @@ public abstract class BasePage extends WebPage {
 	public BasePage() {
 		add(HeaderContributor.forCss(Resources.CSS_ANDREAS09));
 		add(HeaderContributor.forCss(Resources.CSS_SCREEN));
-
+		
+		Theme theme = getTheme();
+		
+		if (theme == null) {
+			theme = Theme.BLUE;
+		}
+		
+		setTheme(theme);
+		
 		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle")); //$NON-NLS-1$
 		sb.append(" "); //$NON-NLS-1$
 		sb.append(TeachUsApplication.get().getVersion());
@@ -35,6 +44,28 @@ public abstract class BasePage extends WebPage {
 		createMenu();		
 		
 		add(new Label("copyright", "2006-"+new DateMidnight().getYear()+" TeachUs Booking Systems"));
+	}
+	
+	private void setTheme(Theme theme) {
+		switch (theme) {
+			case BLUE:
+				break;
+			case RED:
+				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_RED));
+				break;
+			case ORANGE:
+				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_ORANGE));
+				break;
+			case BLACK:
+				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_BLACK));
+				break;
+			case GREEN:
+				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_GREEN));
+				break;
+			case PURPLE:
+				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_PURPLE));
+				break;
+		}
 	}
 
 	private void createMenu() {
@@ -50,7 +81,7 @@ public abstract class BasePage extends WebPage {
 				Link menuLink = new BookmarkablePageLink("menuLink", menuItem.getBookmarkablePage());
 				menuItemContainer.add(menuLink);
 				
-				if (menuItem.getPageCategory() == getPageCategory()) {
+				if (menuItem.getPageCategory().equals(getPageCategory())) {
 					menuLink.add(new SimpleAttributeModifier("class", "current"));
 				}
 				
@@ -70,6 +101,10 @@ public abstract class BasePage extends WebPage {
 	}
 
 	protected void onAttach2() {
+	}
+	
+	protected Theme getTheme() {
+		return TeachUsApplication.get().getDefaultTheme();
 	}
 
 	protected abstract String getPageLabel();

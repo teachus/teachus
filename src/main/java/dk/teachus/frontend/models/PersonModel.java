@@ -36,6 +36,7 @@ public abstract class PersonModel<P extends Person> extends LoadableDetachableMo
 		
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		personDAO.save(person);
+		personId = person.getId();
 		
 		if (newPerson) {
 			onSavedNewPerson(person);

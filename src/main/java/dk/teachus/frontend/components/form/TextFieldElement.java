@@ -57,7 +57,6 @@ public class TextFieldElement extends AbstractValidationInputElement {
 
 	protected TextField getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
 		TextField textField = new TextField(wicketId, inputModel);
-//		textField.add(new TextFieldErrorModifier(feedbackPanel, "onchange"));
 		if (size > -1) {
 			textField.add(new SimpleAttributeModifier("size", ""+size));
 		}
@@ -72,20 +71,6 @@ public class TextFieldElement extends AbstractValidationInputElement {
 	@Override
 	public FormComponent getFormComponent() {
 		return textField;
-	}
-	
-	@Override
-	public Component[] onInputValid(FeedbackPanel feedbackPanel) {
-		textField.add(new SimpleAttributeModifier("class", "valid"));
-		
-		return new Component[] {textField, feedbackPanel};
-	}
-	
-	@Override
-	public Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
-		textField.add(new SimpleAttributeModifier("class", "error"));
-		
-		return new Component[] {textField, feedbackPanel};
 	}
 	
 	@Override

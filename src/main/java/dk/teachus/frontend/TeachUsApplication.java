@@ -26,6 +26,7 @@ import dk.teachus.bean.MailBean;
 import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
+import dk.teachus.domain.Theme;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
 import dk.teachus.frontend.pages.InfoPage;
@@ -219,5 +220,9 @@ public class TeachUsApplication extends WebApplication {
 		sb.append(httpServletRequest.getContextPath());
 		
 		return sb.toString();
+	}
+
+	public Theme getDefaultTheme() {
+		return Theme.BLUE;
 	}
 }

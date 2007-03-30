@@ -44,20 +44,17 @@ ul p {
 	padding-top: 6px;
 }
 
+.form .required {
+	color: red;
+	font-weight: bold;
+	vertical-align: top;
+	padding-top: 6px;
+}
+
 .form textarea {
 	width: 100%;
 	border: 1px solid gray;
 	height: 300px;
-}
-
-.form input.error {
-	background: url(/images/unpaid.png) no-repeat 100% 50%;
-	padding-right: 20px;
-}
-
-.form input.valid {
-	background: url(/images/paid.png) no-repeat 100% 50%;
-	padding-right: 20px;
 }
 
 .form .feedback {

@@ -5,7 +5,6 @@ import java.util.List;
 
 import wicket.Application;
 import wicket.RestartResponseAtInterceptPageException;
-import wicket.behavior.HeaderContributor;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Theme;
 import dk.teachus.frontend.TeachUsSession;
@@ -18,7 +17,6 @@ import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
-import dk.teachus.frontend.utils.Resources;
 
 public abstract class AuthenticatedBasePage extends BasePage {
 	
@@ -52,43 +50,6 @@ public abstract class AuthenticatedBasePage extends BasePage {
 			if (teachUsSession.getUserLevel() != userLevel) {
 				throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 			}
-		}
-
-		Theme theme = teachUsSession.getPerson().getTheme();
-		
-		if (theme == null) {
-			if (teachUsSession.getPerson() instanceof Pupil) {
-				Pupil pupil = (Pupil) teachUsSession.getPerson();
-				theme = pupil.getTeacher().getTheme();
-			}
-		}
-		
-		if (theme == null) {
-			theme = Theme.BLUE;
-		}
-		
-		setTheme(theme);
-	}
-	
-	private void setTheme(Theme theme) {
-		switch (theme) {
-			case BLUE:
-				break;
-			case RED:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_RED));
-				break;
-			case ORANGE:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_ORANGE));
-				break;
-			case BLACK:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_BLACK));
-				break;
-			case GREEN:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_GREEN));
-				break;
-			case PURPLE:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_PURPLE));
-				break;
 		}
 	}
 
@@ -129,5 +90,25 @@ public abstract class AuthenticatedBasePage extends BasePage {
 	
 	@Override
 	protected abstract AuthenticatedPageCategory getPageCategory();
+	
+	@Override
+	protected Theme getTheme() {
+		TeachUsSession teachUsSession = TeachUsSession.get();
+		Theme theme = teachUsSession.getPerson().getTheme();
+		
+		if (theme == null) {
+			if (teachUsSession.getPerson() instanceof Pupil) {
+				Pupil pupil = (Pupil) teachUsSession.getPerson();
+				theme = pupil.getTeacher().getTheme();
+			}
+		}
+		
+		if (theme == null) {
+			theme = super.getTheme();
+		}
+		
+		return theme;
+	}
+	
 	
 }

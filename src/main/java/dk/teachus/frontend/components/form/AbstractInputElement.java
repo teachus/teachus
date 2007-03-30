@@ -9,6 +9,8 @@ import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.FormComponent;
 import wicket.markup.html.form.validation.IValidator;
 import wicket.markup.html.panel.FeedbackPanel;
+import wicket.model.AbstractReadOnlyModel;
+import wicket.model.IModel;
 
 public abstract class AbstractInputElement extends FormElement {
 	private static final long serialVersionUID = 1L;
@@ -38,6 +40,16 @@ public abstract class AbstractInputElement extends FormElement {
 		if (attached == false) {
 			Component label = newLabelComponent("label");
 			add(label);
+			
+			IModel requiredModel = new AbstractReadOnlyModel() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Object getObject(Component component) {
+					return required ? "*" : "&nbsp;";
+				}
+			};
+			add(new Label("required", requiredModel).setEscapeModelStrings(false));
 			
 			feedbackPanel = new FeedbackPanel("feedback");
 			feedbackPanel.setOutputMarkupId(true);

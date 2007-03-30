@@ -3,7 +3,6 @@ package dk.teachus.frontend.models;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.impl.PupilImpl;
-import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 
 public class PupilModel extends PersonModel<Pupil> {
@@ -22,11 +21,6 @@ public class PupilModel extends PersonModel<Pupil> {
 		}
 		
 		return pupil;
-	}
-	
-	@Override
-	protected void onSavedNewPerson(Pupil person) {
-		TeachUsApplication.get().getMailBean().sendWelcomeMail(person, TeachUsApplication.get().getServerName());
 	}
 
 }

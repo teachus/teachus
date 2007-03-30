@@ -72,20 +72,6 @@ public class PasswordFieldElement extends AbstractValidationInputElement {
 	}
 	
 	@Override
-	public Component[] onInputValid(FeedbackPanel feedbackPanel) {
-		passwordTextField.add(new SimpleAttributeModifier("class", "valid"));
-		
-		return new Component[] {passwordTextField, feedbackPanel};
-	}
-	
-	@Override
-	public Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
-		passwordTextField.add(new SimpleAttributeModifier("class", "error"));
-		
-		return new Component[] {passwordTextField, feedbackPanel};
-	}
-	
-	@Override
 	protected String getValidationEvent() {
 		return "onchange";
 	}

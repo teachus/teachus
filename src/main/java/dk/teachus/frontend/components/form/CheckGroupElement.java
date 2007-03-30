@@ -53,16 +53,6 @@ public class CheckGroupElement extends AbstractChoiceElement {
 	}
 
 	@Override
-	protected Component[] onInputInvalid(FeedbackPanel feedbackPanel) {
-		return new Component[]{feedbackPanel};
-	}
-
-	@Override
-	protected Component[] onInputValid(FeedbackPanel feedbackPanel) {
-		return new Component[]{feedbackPanel};
-	}
-
-	@Override
 	protected void addValidator(IValidator validator) {
 		checkGroup.add(validator);
 	}

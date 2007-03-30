@@ -112,8 +112,11 @@ public abstract class PersonPanel extends Panel {
 			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(personModel, "locale"), availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
-		List<Theme> themes = Arrays.asList(Theme.values());
-		formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.theme"), new PropertyModel(personModel, "theme"), themes, new ThemeChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		// Theme
+		if (isThemeVisible()) {
+			List<Theme> themes = Arrays.asList(Theme.values());
+			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.theme"), new PropertyModel(personModel, "theme"), themes, new ThemeChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		}
 		
 		// Teacher
 		if (isTeacherVisible()) {
@@ -157,6 +160,10 @@ public abstract class PersonPanel extends Panel {
 	}
 
 	protected boolean isTeacherVisible() {
+		return false;
+	}
+
+	protected boolean isThemeVisible() {
 		return false;
 	}
 	
