@@ -3,7 +3,6 @@ package dk.teachus.frontend.pages.persons;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.teachus.bean.MailBean;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Admin;
 import dk.teachus.domain.Person;
@@ -93,18 +92,11 @@ public class PupilsPage extends PersonsPage<Pupil> {
 
 			@Override
 			public void onEvent(Pupil person) {
-				MailBean mailBean = TeachUsApplication.get().getMailBean();
-				String serverName = TeachUsApplication.get().getServerName();
-				mailBean.sendWelcomeMail(person, serverName);
+//				MailBean mailBean = TeachUsApplication.get().getMailBean();
+//				String serverName = TeachUsApplication.get().getServerName();
+//				mailBean.sendWelcomeMail(person, serverName);
 				
-				getRequestCycle().setResponsePage(PupilsPage.class);
-			}
-			
-			@Override
-			public String getClickConfirmText(Pupil person) {
-				String sendConfirm = TeachUsSession.get().getString("PupilsPage.sendWelcomeConfirm"); //$NON-NLS-1$
-				sendConfirm = sendConfirm.replace("{personname}", person.getName()); //$NON-NLS-1$
-				return sendConfirm;
+				getRequestCycle().setResponsePage(new WelcomeMailPage(person.getId()));
 			}
 		});
 		
