@@ -47,7 +47,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		
 		String title = TeachUsSession.get().getString("SendNewPasswordPage.title"); //$NON-NLS-1$
 		title = title.replace("{pupilname}", pupilModel.getObject(this).getName()); //$NON-NLS-1$
-		add(new Label("title", title)); //$NON-NLS-1$
+		add(new Label("newPasswordTitle", title)); //$NON-NLS-1$
 		
 		FormPanel formPanel = new FormPanel("passwordForm"); //$NON-NLS-1$
 		add(formPanel);
