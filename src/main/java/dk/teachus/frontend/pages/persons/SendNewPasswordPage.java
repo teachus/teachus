@@ -1,6 +1,7 @@
 package dk.teachus.frontend.pages.persons;
 
 import wicket.ajax.AjaxRequestTarget;
+import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.validation.EqualInputValidator;
 import wicket.markup.html.form.validation.IFormValidator;
 import wicket.markup.html.form.validation.StringValidator;
@@ -44,6 +45,10 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 			setIntroMessage(welcomeIntroduction.getValue());
 		}
 		
+		String title = TeachUsSession.get().getString("SendNewPasswordPage.title"); //$NON-NLS-1$
+		title = title.replace("{pupilname}", pupilModel.getObject(this).getName()); //$NON-NLS-1$
+		add(new Label("title", title)); //$NON-NLS-1$
+		
 		FormPanel formPanel = new FormPanel("passwordForm"); //$NON-NLS-1$
 		add(formPanel);
 		
@@ -82,7 +87,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		});
 		
 		// Text
-		formPanel.addElement(new TextAreaElement(TeachUsSession.get().getString("WelcomeMailPage.introMessage"), new PropertyModel(this, "introMessage"))); //$NON-NLS-1$ //$NON-NLS-2$
+		formPanel.addElement(new TextAreaElement(TeachUsSession.get().getString("SendNewPasswordPage.introMessage"), new PropertyModel(this, "introMessage"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Buttons
 		formPanel.addElement(new ButtonPanelElement(TeachUsSession.get().getString("General.send")) { //$NON-NLS-1$
@@ -117,7 +122,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("WelcomeMailPage.sendNewPassword"); //$NON-NLS-1$
+		return TeachUsSession.get().getString("SendNewPasswordPage.sendNewPassword"); //$NON-NLS-1$
 	}
 
 	public String getPassword1() {
