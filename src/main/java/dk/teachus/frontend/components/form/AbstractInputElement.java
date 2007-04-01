@@ -35,6 +35,10 @@ public abstract class AbstractInputElement extends FormElement {
 		validators.add(validator);
 	}
 	
+	public FeedbackPanel getFeedbackPanel() {
+		return feedbackPanel;
+	}
+	
 	@Override
 	protected void onAttach() {
 		if (attached == false) {

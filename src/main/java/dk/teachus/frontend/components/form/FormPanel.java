@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import wicket.MarkupContainer;
 import wicket.markup.html.WebMarkupContainer;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.validation.IFormValidator;
@@ -32,11 +33,13 @@ public class FormPanel extends Panel {
 		form.add(elements);		
 	}
 	
-	public void addElement(FormElement element) {
+	public MarkupContainer addElement(FormElement element) {
 		WebMarkupContainer elementContainer = new WebMarkupContainer(elements.newChildId());
 		elements.add(elementContainer);
 		
 		elementContainer.add(element);
+		
+		return elementContainer;
 	}
 
 	public void addValidator(FormValidator formValidator) {

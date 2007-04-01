@@ -18,27 +18,23 @@ import org.springframework.web.util.HtmlUtils;
 
 import dk.teachus.bean.MailBean;
 import dk.teachus.bean.VelocityBean;
-import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
-import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.utils.ApplicationUtils;
 
 public class MailBeanImpl implements MailBean {
 	private static final long serialVersionUID = 1L;
 	
-	private PersonDAO personDAO;
 	private JavaMailSender mailSender;
 	private VelocityBean velocityBean;
 
-	public MailBeanImpl(PersonDAO personDAO, JavaMailSender mailSender, VelocityBean velocityBean) {
-		this.personDAO = personDAO;
+	public MailBeanImpl(JavaMailSender mailSender, VelocityBean velocityBean) {
 		this.mailSender = mailSender;
 		this.velocityBean = velocityBean;
 	}
 
-	public void sendWelcomeMail(final Pupil pupil, final String serverName) {
+	public void sendWelcomeMail(final Pupil pupil, final String introMessage, final String serverName) {
 		new Thread(new Runnable() {
 			public void run() {
 				mailSender.send(new MimeMessagePreparator() {
@@ -54,13 +50,11 @@ public class MailBeanImpl implements MailBean {
 						message.setFrom(new InternetAddress(email, fromName));
 						message.setTo(new InternetAddress(pupil.getEmail(), pupil.getName()));
 						
-						// Load extra attributes for the teacher
-						WelcomeIntroductionTeacherAttribute attribute = personDAO.getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
 						
 						// Welcome introduction
 						String teacherIntroduction = "";
-						if (attribute != null) {
-							teacherIntroduction = HtmlUtils.htmlEscape(attribute.getValue());
+						if (introMessage != null && introMessage.length() > 0) {
+							teacherIntroduction = HtmlUtils.htmlEscape(introMessage);
 							teacherIntroduction = teacherIntroduction.replace("\r\n", "\n").replace("\r", "\n");
 							teacherIntroduction = teacherIntroduction.replace("\n", "<br />");
 						}

@@ -94,7 +94,6 @@
 	</bean>   
 	
 	<bean id="mailBean" class="dk.teachus.bean.impl.MailBeanImpl">
-		<constructor-arg ref="personDao" />
 		<constructor-arg ref="mailSender" />
 		<constructor-arg ref="velocityBean" />	
 	</bean>

@@ -20,6 +20,10 @@ public abstract class ButtonPanelElement extends FormElement {
 	private Form associatedForm;
 
 	public ButtonPanelElement() {
+		this(TeachUsSession.get().getString("General.save"));
+	}
+	
+	public ButtonPanelElement(String submitLabel) {
 		Button cancelButton = new Button("cancelButton");
 		cancelButton.add(new SimpleAttributeModifier("value", TeachUsSession.get().getString("PeriodPanel.regretInput")));
 		cancelButton.add(new AjaxEventBehavior("onclick") {
@@ -70,7 +74,7 @@ public abstract class ButtonPanelElement extends FormElement {
 				});
 			}
 		};
-		saveButton.add(new SimpleAttributeModifier("value", TeachUsSession.get().getString("General.save")));
+		saveButton.add(new SimpleAttributeModifier("value", submitLabel));
 		add(saveButton);
 	}
 	

@@ -91,12 +91,8 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onEvent(Pupil person) {
-//				MailBean mailBean = TeachUsApplication.get().getMailBean();
-//				String serverName = TeachUsApplication.get().getServerName();
-//				mailBean.sendWelcomeMail(person, serverName);
-				
-				getRequestCycle().setResponsePage(new WelcomeMailPage(person.getId()));
+			public void onEvent(Pupil person) {				
+				getRequestCycle().setResponsePage(new SendNewPasswordPage(person.getId()));
 			}
 		});
 		

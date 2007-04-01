@@ -6,7 +6,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import dk.teachus.bean.MailBean;
 import dk.teachus.bean.VelocityBean;
-import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
@@ -17,13 +16,13 @@ import dk.teachus.domain.Teacher;
 public class DummyMailBean implements MailBean {
 	private static final long serialVersionUID = 1L;
 	
-	public DummyMailBean(PersonDAO personDAO, JavaMailSender mailSender, VelocityBean velocityBean) {
+	public DummyMailBean(JavaMailSender mailSender, VelocityBean velocityBean) {
 	}
 
 	public void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings) {
 	}
 
-	public void sendWelcomeMail(Pupil pupil, String serverName) {
+	public void sendWelcomeMail(Pupil pupil, String introMessage, String serverName) {
 	}
 
 }
