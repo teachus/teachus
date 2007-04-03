@@ -89,22 +89,24 @@ public abstract class PersonPanel extends Panel {
 		}
 	
 		// Password 1
-		final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), personModel.getPersonId() == null); //$NON-NLS-1$ //$NON-NLS-2$
-		password1Field.add(StringValidator.lengthBetween(4, 32));
-		formPanel.addElement(password1Field);
-		
-		// Password 2
-		final PasswordFieldElement password2Field = new PasswordFieldElement(TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel(this, "password2")); //$NON-NLS-1$ //$NON-NLS-2$
-		formPanel.addElement(password2Field);
-		
-		// Password validator
-		formPanel.addValidator(new FormValidator() {
-			private static final long serialVersionUID = 1L;
-
-			public IFormValidator getFormValidator() {
-				return new EqualInputValidator(password1Field.getFormComponent(), password2Field.getFormComponent());
-			}			
-		});
+		if (isPasswordVisible()) {
+			final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), personModel.getPersonId() == null); //$NON-NLS-1$ //$NON-NLS-2$
+			password1Field.add(StringValidator.lengthBetween(4, 32));
+			formPanel.addElement(password1Field);
+			
+			// Password 2
+			final PasswordFieldElement password2Field = new PasswordFieldElement(TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel(this, "password2")); //$NON-NLS-1$ //$NON-NLS-2$
+			formPanel.addElement(password2Field);
+			
+			// Password validator
+			formPanel.addValidator(new FormValidator() {
+				private static final long serialVersionUID = 1L;
+	
+				public IFormValidator getFormValidator() {
+					return new EqualInputValidator(password1Field.getFormComponent(), password2Field.getFormComponent());
+				}			
+			});
+		}
 		
 		// Locale
 		if (isLocaleVisible()) {
@@ -165,6 +167,10 @@ public abstract class PersonPanel extends Panel {
 
 	protected boolean isThemeVisible() {
 		return false;
+	}
+	
+	protected boolean isPasswordVisible() {
+		return true;
 	}
 	
 	protected void onSave(Person person) {

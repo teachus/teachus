@@ -48,6 +48,8 @@ public class PasswordUserType implements UserType {
 			} catch (UnsupportedEncodingException e) {
 				throw new HibernateException(e);
 			}
+		} else {
+			st.setNull(index, Types.VARCHAR);
 		}
 	}
 	

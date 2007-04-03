@@ -53,5 +53,10 @@ public class PupilPanel extends PersonPanel {
 	protected boolean isTeacherVisible() {
 		return true;
 	}
+	
+	@Override
+	protected boolean isPasswordVisible() {
+		return UserLevel.PUPIL == TeachUsSession.get().getUserLevel();
+	}
 
 }
