@@ -14,6 +14,7 @@ import wicket.markup.html.image.Image;
 import wicket.markup.html.panel.Panel;
 import wicket.markup.repeater.RepeatingView;
 import wicket.model.Model;
+import wicket.util.string.Strings;
 import dk.teachus.domain.Period;
 import dk.teachus.frontend.components.RenderingLabel;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
@@ -44,6 +45,14 @@ public abstract class PeriodDateComponent extends Panel {
 			{
 				add(new Label("weekday", Formatters.getFormatWeekDay().print(date))); //$NON-NLS-1$
 				add(new RenderingLabel("price", new Model(period.getPrice()), new CurrencyChoiceRenderer())); //$NON-NLS-1$
+				add(new Label("location", period.getLocation()) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					public boolean isVisible() {
+						return Strings.isEmpty(period.getLocation()) == false;
+					}
+				});
 				add(new Label("date", Formatters.getFormatShortPrettyDate().print(date))); //$NON-NLS-1$
 			}
 			

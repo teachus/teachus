@@ -26,6 +26,7 @@ CREATE TABLE
 	end_time TIME, 
 	week_days VARCHAR(255), 
 	teacher_id BIGINT, 
+	location VARCHAR(100), 
 	price DOUBLE PRECISION, 
 	lesson_duration INTEGER NOT NULL, 
 	interval_between_lesson_start INTEGER NOT NULL,

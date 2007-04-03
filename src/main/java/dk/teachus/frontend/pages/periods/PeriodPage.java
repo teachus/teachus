@@ -96,6 +96,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 		// End time
 		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, "endTime")), hours, timeChoiceRenderer, true));
 		
+		// Location
+		form.addElement(new TextFieldElement("Location", new PropertyModel(period, "location")));
+		
 		// Price
 		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), true, 6));
 		

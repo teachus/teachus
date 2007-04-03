@@ -74,6 +74,8 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	private int repeatEveryWeek = 1;
 	
 	private boolean active = true;
+	
+	private String location;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);
@@ -164,6 +166,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return lessonDuration;
 	}
 
+	public String getLocation() {
+		return location;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -248,7 +254,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public boolean isActive() {
 		return active;
 	}
-	
+
 	public boolean isTimeValid(DateTime time) {
 		boolean timeValid = false;
 
@@ -299,7 +305,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
-
+	
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
@@ -314,6 +320,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	public void setLessonDuration(int lessonDuration) {
 		this.lessonDuration = lessonDuration;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public void setName(String name) {
