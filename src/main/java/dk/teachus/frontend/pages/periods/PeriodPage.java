@@ -67,17 +67,17 @@ public class PeriodPage extends AuthenticatedBasePage {
 	public PeriodPage(final Period period) {
 		super(UserLevel.TEACHER, true);
 		
-		FormPanel form = new FormPanel("form");
+		FormPanel form = new FormPanel("form"); //$NON-NLS-1$
 		add(form);
 		
 		// Name
-		form.addElement(new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(period, "name"), true));
+		form.addElement(new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(period, "name"), true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Begin date
-		form.addElement(new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate")));
+		form.addElement(new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// End date
-		form.addElement(new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate")));
+		form.addElement(new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Time elements
 		List<Integer> hours = new ArrayList<Integer>();
@@ -91,28 +91,28 @@ public class PeriodPage extends AuthenticatedBasePage {
 		TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
 		
 		// Start time
-		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel(period, "startTime")), hours, timeChoiceRenderer, true));
+		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel(period, "startTime")), hours, timeChoiceRenderer, true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// End time
-		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, "endTime")), hours, timeChoiceRenderer, true));
+		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, "endTime")), hours, timeChoiceRenderer, true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Location
-		form.addElement(new TextFieldElement("Location", new PropertyModel(period, "location")));
+		form.addElement(new TextFieldElement(TeachUsSession.get().getString("General.location"), new PropertyModel(period, "location"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Price
-		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), true, 6));
+		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), true, 6)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Lesson duration
-		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel(period, "lessonDuration"), true, 4));
+		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel(period, "lessonDuration"), true, 4)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Interval Between Lesson Start
-		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.intervalBetweenLessonStart"), new PropertyModel(period, "intervalBetweenLessonStart"), true, 4));
+		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.intervalBetweenLessonStart"), new PropertyModel(period, "intervalBetweenLessonStart"), true, 4)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Week days
-		form.addElement(new CheckGroupElement(TeachUsSession.get().getString("General.weekDays"), new PropertyModel(period, "weekDays"), Arrays.asList(WeekDay.values()), new WeekDayChoiceRenderer(Format.LONG), true));
+		form.addElement(new CheckGroupElement(TeachUsSession.get().getString("General.weekDays"), new PropertyModel(period, "weekDays"), Arrays.asList(WeekDay.values()), new WeekDayChoiceRenderer(Format.LONG), true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Repeat every week
-		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), new PropertyModel(period, "repeatEveryWeek")));
+		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), new PropertyModel(period, "repeatEveryWeek"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Buttons
 		form.addElement(new ButtonPanelElement() {
