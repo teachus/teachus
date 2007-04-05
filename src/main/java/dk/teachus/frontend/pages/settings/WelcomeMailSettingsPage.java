@@ -1,48 +1,30 @@
-package dk.teachus.frontend.pages;
+package dk.teachus.frontend.pages.settings;
 
 import java.util.List;
 
-import wicket.markup.html.basic.Label;
 import wicket.markup.html.form.Button;
 import wicket.markup.html.form.Form;
 import wicket.markup.html.form.TextArea;
 import wicket.model.Model;
 import wicket.model.PropertyModel;
-import dk.teachus.domain.Person;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.TeacherAttribute;
 import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.person.TeacherPanel;
-import dk.teachus.frontend.models.TeacherModel;
 
-public class TeacherSettingsPage extends AuthenticatedBasePage {
+public class WelcomeMailSettingsPage extends AbstractSettingsPage {
 	private static final long serialVersionUID = 1L;
 	
 	private List<TeacherAttribute> attributes;
 
-	public TeacherSettingsPage() {
-		super(UserLevel.TEACHER, true);
-		
-		add(new Label("teacherInformation", TeachUsSession.get().getString("General.info")));
-		add(new TeacherPanel("teacherPanel", new TeacherModel(TeachUsSession.get().getPerson().getId())) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onSave(Person person) {
-				TeachUsSession.get().signIn(person.getUsername(), person.getPassword());
-			}
-		});
-		
+	public WelcomeMailSettingsPage() {		
 		createIntroductionMailForm();
 	}
 
 	private void createIntroductionMailForm() {
 		// Introduction mail text
 		final WelcomeIntroductionTeacherAttribute attribute = getAttribute(WelcomeIntroductionTeacherAttribute.class);
-		add(new Label("introductionMailText", TeachUsSession.get().getString("TeacherSettingsPage.introductionMailText")));
 		
 		Form form = new Form("form");
 		add(form);
@@ -86,15 +68,10 @@ public class TeacherSettingsPage extends AuthenticatedBasePage {
 		
 		return attribute;
 	}
-
+	
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.settings");
-	}
-
-	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
-		return AuthenticatedPageCategory.SETTINGS;
+		return TeachUsSession.get().getString("TeacherSettingsPage.introductionMailText");
 	}
 
 }

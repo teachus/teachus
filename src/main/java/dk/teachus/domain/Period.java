@@ -26,7 +26,11 @@ public interface Period {
 	
 	Teacher getTeacher();
 	
+	String getLocation();
+	
 	double getPrice();
+	
+	Currency getCurrency();
 	
 	boolean isActive();
 	
@@ -43,8 +47,6 @@ public interface Period {
 	
 	int getRepeatEveryWeek();
 	
-	String getLocation();
-	
 	void setName(String name);
 
 	void setEndDate(Date endDate);
@@ -57,7 +59,11 @@ public interface Period {
 	
 	void setTeacher(Teacher teacher);
 	
+	void setLocation(String location);
+	
 	void setPrice(double price);
+	
+	void setCurrency(Currency currency);
 	
 	void setLessonDuration(int minutes);
 	
@@ -66,8 +72,6 @@ public interface Period {
 	void setRepeatEveryWeek(int repeatEveryWeek);
 	
 	void setActive(boolean active);
-	
-	void setLocation(String location);
 
 	/*
 	 * Utility methods

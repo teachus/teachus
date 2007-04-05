@@ -13,7 +13,7 @@ import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatDtdDataSet;
 import org.dbunit.dataset.xml.FlatXmlWriter;
 
-public class DataExport {
+public class StaticDataExport {
 	public static void main(String[] args) throws Exception {
 		// database connection
 		Class.forName("com.mysql.jdbc.Driver");

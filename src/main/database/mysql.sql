@@ -28,6 +28,7 @@ CREATE TABLE
 	teacher_id BIGINT, 
 	location VARCHAR(100), 
 	price DOUBLE PRECISION, 
+	currency VARCHAR(10), 
 	lesson_duration INTEGER NOT NULL, 
 	interval_between_lesson_start INTEGER NOT NULL,
 	repeat_every_week INTEGER NOT NULL,
@@ -50,6 +51,18 @@ CREATE TABLE
 	theme VARCHAR(40), 
 	active TINYINT, 
 	teacher_id BIGINT, 
+	primary key (id)
+) type=InnoDB;
+
+CREATE TABLE 
+	currency 
+(
+	id BIGINT NOT NULL auto_increment, 
+	version INTEGER NOT NULL, 
+	teacher_id BIGINT NOT NULL, 
+	label VARCHAR(10) NOT NULL,
+	base TINYINT DEFAULT FALSE, 
+	exchange_rate DOUBLE PRECISION NOT NULL, 
 	primary key (id)
 ) type=InnoDB;
 
@@ -93,3 +106,13 @@ ALTER TABLE
 	teacher_attribute 
 		ADD INDEX FKD49E7E7F1CC24034 (teacher_id), 
 		ADD CONSTRAINT FKD49E7E7F1CC24034 FOREIGN KEY (teacher_id) REFERENCES person (id);
+		
+ALTER TABLE
+	currency 
+		ADD INDEX FK224BF0111CC24034 (teacher_id), 
+		ADD CONSTRAINT FK224BF0111CC24034 FOREIGN KEY (teacher_id) REFERENCES person (id);
+		
+ALTER TABLE
+	period 
+		ADD INDEX FKC4E375C17D5D44A0 (currency_id),
+		ADD CONSTRAINT FKC4E375C17D5D44A0 FOREIGN KEY (currency_id) REFERENCES currency (id);

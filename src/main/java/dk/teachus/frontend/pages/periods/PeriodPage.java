@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 
 import wicket.Component;
 import wicket.ajax.AjaxRequestTarget;
+import wicket.markup.html.form.validation.StringValidator;
 import wicket.model.AbstractModel;
 import wicket.model.IModel;
 import wicket.model.PropertyModel;
@@ -71,7 +72,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 		add(form);
 		
 		// Name
-		form.addElement(new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(period, "name"), true)); //$NON-NLS-1$ //$NON-NLS-2$
+		TextFieldElement nameElement = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(period, "name"), true);
+		nameElement.add(StringValidator.maximumLength(100));
+		form.addElement(nameElement); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Begin date
 		form.addElement(new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate"))); //$NON-NLS-1$ //$NON-NLS-2$
@@ -97,10 +100,17 @@ public class PeriodPage extends AuthenticatedBasePage {
 		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, "endTime")), hours, timeChoiceRenderer, true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Location
-		form.addElement(new TextFieldElement(TeachUsSession.get().getString("General.location"), new PropertyModel(period, "location"))); //$NON-NLS-1$ //$NON-NLS-2$
+		TextFieldElement locationElement = new TextFieldElement(TeachUsSession.get().getString("General.location"), new PropertyModel(period, "location"));
+		locationElement.add(StringValidator.maximumLength(100));
+		form.addElement(locationElement); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Price
-		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), true, 6)); //$NON-NLS-1$ //$NON-NLS-2$
+		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), 6)); //$NON-NLS-1$ //$NON-NLS-2$
+
+		// Currency
+		TextFieldElement currencyElement = new TextFieldElement("Currency", new PropertyModel(period, "currency"), 4);
+		currencyElement.add(StringValidator.maximumLength(10));
+		form.addElement(currencyElement);
 		
 		// Lesson duration
 		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel(period, "lessonDuration"), true, 4)); //$NON-NLS-1$ //$NON-NLS-2$

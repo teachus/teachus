@@ -97,7 +97,7 @@ public abstract class Formatters {
 	}
 
 	public static NumberFormat getFormatCurrency() {
-		return NumberFormat.getCurrencyInstance(Session.get().getLocale());
+		return NumberFormat.getNumberInstance(Session.get().getLocale());
 	}
 
 	public static DateTimeFormatter getFormatOnlyMinutes() {

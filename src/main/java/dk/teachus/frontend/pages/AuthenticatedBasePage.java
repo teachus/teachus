@@ -16,6 +16,7 @@ import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
+import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
 
 public abstract class AuthenticatedBasePage extends BasePage {

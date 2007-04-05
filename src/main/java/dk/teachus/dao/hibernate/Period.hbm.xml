@@ -28,6 +28,8 @@
         
         <property name="price" />
         
+		<many-to-one name="currency" column="currency_id" class="CurrencyImpl" cascade="none" fetch="join" />
+        
         <property name="lessonDuration" column="lesson_duration" not-null="true" />
         
         <property name="intervalBetweenLessonStart" column="interval_between_lesson_start" not-null="true" />

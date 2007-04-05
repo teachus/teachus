@@ -11,6 +11,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.Interval;
 import org.joda.time.Weeks;
 
+import dk.teachus.domain.Currency;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Teacher;
 
@@ -64,8 +65,12 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	private Date endTime;
 
 	private Teacher teacher;
+	
+	private String location;
 
 	private double price;
+	
+	private Currency currency;
 
 	private int lessonDuration = 60;
 	
@@ -74,8 +79,6 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	private int repeatEveryWeek = 1;
 	
 	private boolean active = true;
-	
-	private String location;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);
@@ -148,6 +151,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	public Date getBeginDate() {
 		return beginDate;
+	}
+
+	public Currency getCurrency() {
+		return currency;
 	}
 
 	public Date getEndDate() {
@@ -254,7 +261,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public boolean isActive() {
 		return active;
 	}
-
+	
 	public boolean isTimeValid(DateTime time) {
 		boolean timeValid = false;
 
@@ -305,7 +312,11 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
-	
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}

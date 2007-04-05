@@ -24,6 +24,7 @@ import wicket.util.io.IObjectStreamFactory;
 import wicket.util.lang.Objects;
 import dk.teachus.bean.MailBean;
 import dk.teachus.dao.BookingDAO;
+import dk.teachus.dao.CurrencyDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Theme;
@@ -35,13 +36,13 @@ import dk.teachus.frontend.pages.PageExpiredPage;
 import dk.teachus.frontend.pages.PaymentPage;
 import dk.teachus.frontend.pages.SignOutPage;
 import dk.teachus.frontend.pages.SignedOutPage;
-import dk.teachus.frontend.pages.TeacherSettingsPage;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
 import dk.teachus.frontend.pages.periods.PeriodsPage;
 import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
+import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.stats.IncomePerPeriodPage;
 import dk.teachus.frontend.pages.stats.IncomePerPupilPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
@@ -151,6 +152,10 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
 		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey());
+	}
+	
+	public CurrencyDAO getCurrencyDAO() {
+		return (CurrencyDAO) getApplicationContext().getBean("currencyDao"); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {

@@ -17,6 +17,8 @@ public class SchemaExport {
 		org.hibernate.tool.hbm2ddl.SchemaExport export = new org.hibernate.tool.hbm2ddl.SchemaExport(sessionFactory.getConfiguration());
 		export.setOutputFile("target/schema.sql");
 		export.execute(false,false,false,true);
+		
+		System.exit(0);
 	}
 	
 }
