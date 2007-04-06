@@ -253,7 +253,7 @@ public class DynamicDataImport {
 		admin.setUsername("admin");
 		admin.setPassword("admin");
 		admin.setEmail("admin@teachus.dk");
-		admin.setLocale(new Locale("da"));
+		admin.setLocale(new Locale("en"));
 		session.save(admin);
 		
 		// Create teacher
@@ -262,8 +262,9 @@ public class DynamicDataImport {
 		teacher.setUsername("leif");
 		teacher.setPassword("leif");
 		teacher.setEmail("leif@teachus.dk");
-		teacher.setLocale(new Locale("da", "DK", "singers"));
+		teacher.setLocale(new Locale("en", "US", "singers"));
 		teacher.setTheme(Theme.GREEN);
+		teacher.setCurrency("kr");
 		session.save(teacher);
 		
 		// Create pupils
