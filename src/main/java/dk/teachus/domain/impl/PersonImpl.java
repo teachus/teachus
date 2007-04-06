@@ -12,8 +12,6 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	private String password;
 
-	private String cryptedPassword;
-
 	private String email;
 
 	private String phoneNumber;
@@ -78,14 +76,6 @@ public abstract class PersonImpl extends AbstractHibernateObject implements Pers
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getCryptedPassword() {
-		return cryptedPassword;
-	}
-
-	public void setCryptedPassword(String cryptedPassword) {
-		this.cryptedPassword = cryptedPassword;
 	}
 
 	public Theme getTheme() {

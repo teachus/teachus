@@ -15,9 +15,6 @@ public interface Person extends Serializable {
 	String getPassword();
 	void setPassword(String password);
 	
-	String getCryptedPassword();
-	void setCryptedPassword(String password);
-	
 	String getEmail();
 	void setEmail(String email);
 	

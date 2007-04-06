@@ -114,6 +114,12 @@ public abstract class PersonPanel extends Panel {
 			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(personModel, "locale"), availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
+		if (isCurrencyVisible()) {
+			TextFieldElement currencyField = new TextFieldElement(TeachUsSession.get().getString("General.currency"), new PropertyModel(personModel, "currency"), 4); //$NON-NLS-1$ //$NON-NLS-2$
+			currencyField.add(StringValidator.lengthBetween(0, 10));
+			formPanel.addElement(currencyField); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		
 		// Theme
 		if (isThemeVisible()) {
 			List<Theme> themes = Arrays.asList(Theme.values());
@@ -159,6 +165,10 @@ public abstract class PersonPanel extends Panel {
 	
 	protected boolean isLocaleVisible() {
 		return true;
+	}
+	
+	protected boolean isCurrencyVisible() {
+		return false;
 	}
 
 	protected boolean isTeacherVisible() {

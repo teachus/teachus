@@ -1,5 +1,7 @@
 package dk.teachus.frontend.utils;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 
 import org.joda.time.format.DateTimeFormat;
@@ -8,6 +10,9 @@ import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
 import wicket.Session;
+import dk.teachus.domain.Person;
+import dk.teachus.domain.Pupil;
+import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class Formatters {
@@ -97,7 +102,29 @@ public abstract class Formatters {
 	}
 
 	public static NumberFormat getFormatCurrency() {
-		return NumberFormat.getNumberInstance(Session.get().getLocale());
+		NumberFormat currencyFormat = null;
+		
+		Person person = TeachUsSession.get().getPerson();
+		if (person instanceof Teacher) {
+			Teacher teacher = (Teacher) person;
+			currencyFormat = createCurrencyFormat(teacher);
+		} else if (person instanceof Pupil) {
+			Pupil pupil = (Pupil) person;
+			Teacher teacher = pupil.getTeacher();
+			currencyFormat = createCurrencyFormat(teacher);
+		} else {
+			NumberFormat.getNumberInstance(Session.get().getLocale());
+		}		
+		
+		return currencyFormat;
+	}
+
+	private static NumberFormat createCurrencyFormat(Teacher teacher) {
+		NumberFormat currencyFormat;
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(Session.get().getLocale());
+		symbols.setCurrencySymbol(teacher.getCurrency() != null ? teacher.getCurrency() : "");
+		currencyFormat = new DecimalFormat("\u00A4 #,##0.00", symbols);
+		return currencyFormat;
 	}
 
 	public static DateTimeFormatter getFormatOnlyMinutes() {

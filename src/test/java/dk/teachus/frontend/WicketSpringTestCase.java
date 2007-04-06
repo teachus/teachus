@@ -16,7 +16,6 @@ import wicket.protocol.http.WebApplication;
 import wicket.util.tester.TagTester;
 import wicket.util.tester.WicketTester;
 import dk.teachus.dao.BookingDAO;
-import dk.teachus.dao.CurrencyDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.database.StaticDataImport;
@@ -174,10 +173,6 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 				"/dk/teachus/frontend/applicationContext.xml",
 				"/dk/teachus/frontend/applicationContext-test.xml"
 		};
-	}
-	
-	public CurrencyDAO getCurrencyDAO() {
-		return tester.getTeachUsApplication().getCurrencyDAO();
 	}
 
 	public PeriodDAO getPeriodDAO() {

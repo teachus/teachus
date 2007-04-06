@@ -49,9 +49,6 @@
 				<value>
 					dk/teachus/dao/hibernate/TeacherAttribute.hbm.xml
 				</value>
-				<value>
-					dk/teachus/dao/hibernate/Currency.hbm.xml
-				</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -104,17 +101,6 @@
 	<!-- ==================== -->
 	<!--         DAOS         -->
 	<!-- ==================== -->
-		
-	<bean id="currencyDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.dao.hibernate.CurrencyDAOHibernate">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
 		
 	<bean id="personDao" parent="txProxyTemplate">
 		<property name="target">

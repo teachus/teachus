@@ -4,6 +4,7 @@ import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.impl.PupilImpl;
+import dk.teachus.domain.impl.TeacherImpl;
 import dk.teachus.frontend.WicketSpringTestCase;
 
 public class TestPersonDAO extends WicketSpringTestCase {
@@ -23,11 +24,22 @@ public class TestPersonDAO extends WicketSpringTestCase {
 		pupil.setName("Test");
 		pupil.setUsername("test");
 		pupil.setActive(true);
-		pupil.setEmail("test@frankbille.dk");
+		pupil.setEmail("test@teachus.dk");
 		pupil.setTeacher(teacher);
 		
 		getPersonDAO().save(pupil);
 		endTransaction();
+	}
+	
+	public void testSaveTeacher() {
+		Teacher teacher = new TeacherImpl();
+		teacher.setName("Test");
+		teacher.setUsername("test");
+		teacher.setActive(true);
+		teacher.setEmail("test@teachus.dk");
+		teacher.setCurrency("kr");
+		
+		getPersonDAO().save(teacher);
 	}
 	
 	public void testUsernameExists() {

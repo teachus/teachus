@@ -1,6 +1,5 @@
 <!ELEMENT dataset (
     person*,
-    currency*,
     period*,
     booking*,
     teacher_attribute*)>
@@ -18,17 +17,8 @@
     locale CDATA #IMPLIED
     theme CDATA #IMPLIED
     active CDATA #IMPLIED
+    currency CDATA #IMPLIED
     teacher_id CDATA #IMPLIED
->
-
-<!ELEMENT currency EMPTY>
-<!ATTLIST currency
-    id CDATA #REQUIRED
-    version CDATA #REQUIRED
-    teacher_id CDATA #REQUIRED
-    label CDATA #REQUIRED
-    base CDATA #IMPLIED
-    exchange_rate CDATA #REQUIRED
 >
 
 <!ELEMENT period EMPTY>
@@ -44,7 +34,6 @@
     teacher_id CDATA #IMPLIED
     location CDATA #IMPLIED
     price CDATA #IMPLIED
-    currency_id CDATA #IMPLIED
     lesson_duration CDATA #REQUIRED
     interval_between_lesson_start CDATA #REQUIRED
     repeat_every_week CDATA #REQUIRED

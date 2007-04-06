@@ -35,7 +35,9 @@
         <!-- SUBCLASSES -->
         <subclass name="AdminImpl" discriminator-value="ADMIN" />
         
-        <subclass name="TeacherImpl" discriminator-value="TEACHER" />
+        <subclass name="TeacherImpl" discriminator-value="TEACHER">
+        	<property name="currency" length="10" />
+        </subclass>
         
         <subclass name="PupilImpl" discriminator-value="PUPIL">
         	<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />

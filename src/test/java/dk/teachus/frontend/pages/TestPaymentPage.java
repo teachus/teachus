@@ -11,4 +11,13 @@ public class TestPaymentPage extends WicketSpringTestCase {
 		tester.assertRenderedPage(PaymentPage.class);
 	}
 	
+	public void testRender_pupil() {
+		// Log in as pupil
+		TesterTeachUsSession.get().setPerson(11l);
+		
+		tester.startPage(PaymentPage.class);
+		
+		tester.assertRenderedPage(PaymentPage.class);
+	}
+	
 }

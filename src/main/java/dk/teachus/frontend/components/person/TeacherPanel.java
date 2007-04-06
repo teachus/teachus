@@ -36,5 +36,10 @@ public class TeacherPanel extends PersonPanel {
 	protected boolean isThemeVisible() {
 		return true;
 	}
+	
+	@Override
+	protected boolean isCurrencyVisible() {
+		return true;
+	}
 
 }

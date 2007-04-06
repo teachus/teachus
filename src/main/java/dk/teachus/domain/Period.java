@@ -30,8 +30,6 @@ public interface Period {
 	
 	double getPrice();
 	
-	Currency getCurrency();
-	
 	boolean isActive();
 	
 	/**
@@ -62,8 +60,6 @@ public interface Period {
 	void setLocation(String location);
 	
 	void setPrice(double price);
-	
-	void setCurrency(Currency currency);
 	
 	void setLessonDuration(int minutes);
 	

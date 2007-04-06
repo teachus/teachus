@@ -24,7 +24,6 @@ import wicket.util.io.IObjectStreamFactory;
 import wicket.util.lang.Objects;
 import dk.teachus.bean.MailBean;
 import dk.teachus.dao.BookingDAO;
-import dk.teachus.dao.CurrencyDAO;
 import dk.teachus.dao.PeriodDAO;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Theme;
@@ -43,6 +42,7 @@ import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
+import dk.teachus.frontend.pages.settings.WelcomeMailSettingsPage;
 import dk.teachus.frontend.pages.stats.IncomePerPeriodPage;
 import dk.teachus.frontend.pages.stats.IncomePerPupilPage;
 import dk.teachus.frontend.pages.stats.StatsPage;
@@ -79,7 +79,8 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/calendar/teacher", TeacherCalendarPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/pupils", PupilsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/teachers", TeachersPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/teachersettings", TeacherSettingsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/settings/profile", TeacherSettingsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/settings/welcomemail", WelcomeMailSettingsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/admins", AdminsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/periods", PeriodsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
@@ -152,10 +153,6 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
 		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey());
-	}
-	
-	public CurrencyDAO getCurrencyDAO() {
-		return (CurrencyDAO) getApplicationContext().getBean("currencyDao"); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {

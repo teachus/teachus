@@ -18,14 +18,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import dk.teachus.domain.Admin;
-import dk.teachus.domain.Currency;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.Theme;
 import dk.teachus.domain.impl.AdminImpl;
-import dk.teachus.domain.impl.CurrencyImpl;
 import dk.teachus.domain.impl.PeriodImpl;
 import dk.teachus.domain.impl.PupilBookingImpl;
 import dk.teachus.domain.impl.PupilImpl;
@@ -215,14 +213,6 @@ public class DynamicDataImport {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		// Create a danish kroner currency
-		Currency dkr = new CurrencyImpl();
-		dkr.setBase(true);
-		dkr.setExchangeRate(1);
-		dkr.setLabel("kr");
-		dkr.setTeacher(teacher);
-		session.save(dkr);
-		
 		// Periods starting 1. january 3 years ago
 		Period period = new PeriodImpl();
 		period.setName("Mon/Wed/Fri");
@@ -231,7 +221,6 @@ public class DynamicDataImport {
 		period.setEndTime(startDate.toDateTime().withTime(17, 0, 0, 0).toDate());
 		period.setLocation("Odense");
 		period.setPrice(450);
-		period.setCurrency(dkr);
 		period.addWeekDay(WeekDay.MONDAY);
 		period.addWeekDay(WeekDay.WEDNESDAY);
 		period.addWeekDay(WeekDay.FRIDAY);
@@ -245,7 +234,6 @@ public class DynamicDataImport {
 		period.setEndTime(startDate.toDateTime().withTime(17, 0, 0, 0).toDate());
 		period.setLocation("Copenhagen");
 		period.setPrice(450);
-		period.setCurrency(dkr);
 		period.addWeekDay(WeekDay.TUESDAY);
 		period.addWeekDay(WeekDay.THURSDAY);
 		period.setTeacher(teacher);
@@ -311,7 +299,6 @@ public class DynamicDataImport {
 		executeSql(sessionFactory, "TRUNCATE booking");
 		executeSql(sessionFactory, "TRUNCATE period");
 		executeSql(sessionFactory, "TRUNCATE teacher_attribute");
-		executeSql(sessionFactory, "TRUNCATE currency");
 		executeSql(sessionFactory, "TRUNCATE person");
 	}
 	

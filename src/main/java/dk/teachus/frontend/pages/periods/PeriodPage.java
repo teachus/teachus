@@ -106,11 +106,6 @@ public class PeriodPage extends AuthenticatedBasePage {
 		
 		// Price
 		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), 6)); //$NON-NLS-1$ //$NON-NLS-2$
-
-		// Currency
-		TextFieldElement currencyElement = new TextFieldElement("Currency", new PropertyModel(period, "currency"), 4);
-		currencyElement.add(StringValidator.maximumLength(10));
-		form.addElement(currencyElement);
 		
 		// Lesson duration
 		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel(period, "lessonDuration"), true, 4)); //$NON-NLS-1$ //$NON-NLS-2$
