@@ -9,6 +9,7 @@ import dk.teachus.dao.BookingDAO;
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Booking;
 import dk.teachus.domain.Bookings;
+import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
 import dk.teachus.frontend.WicketSpringTestCase;
@@ -116,6 +117,28 @@ public class TestBookingDAO extends WicketSpringTestCase {
 			
 			assertEquals(new Long(1), booking.getPeriod().getId());
 		}
+	}
+	
+	public void testDeleteBooking() {
+		Pupil pupil = (Pupil) getPersonDAO().getPerson(13L);
+		endTransaction();
+		
+		List<PupilBooking> unpaidBookings = getBookingDAO().getUnpaidBookings(pupil);
+		endTransaction();
+		
+		int bookingsBefore = unpaidBookings.size();
+		
+		assertTrue(bookingsBefore > 0);
+		
+		getBookingDAO().deleteBooking(unpaidBookings.get(0));
+		endTransaction();
+		
+		unpaidBookings = getBookingDAO().getUnpaidBookings(pupil);
+		endTransaction();
+		
+		int bookingsAfter = unpaidBookings.size();
+		
+		assertEquals(bookingsBefore-1, bookingsAfter);
 	}
 	
 }

@@ -4,6 +4,7 @@ CREATE TABLE
 	id BIGINT NOT NULL auto_increment, 
 	booking_type VARCHAR(255) NOT NULL, 
 	version INTEGER NOT NULL, 
+	active TINYINT,
 	period_id BIGINT, 
 	date DATETIME,
 	create_date DATETIME,

@@ -46,7 +46,7 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 	}
 
 	@Override
-	protected boolean mayChangeBooking(DateTime dateTime) {
+	protected boolean mayChangeBooking(Period period, DateTime bookingStartTime) {
 		return true;
 	}
 	

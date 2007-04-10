@@ -13,6 +13,8 @@
 		<discriminator column="booking_type" type="string" />
         
 		<version name="version" access="field" />
+		
+		<property name="active" column="active" type="dk.teachus.dao.hibernate.BooleanType" />
         
         <many-to-one name="period" column="period_id" class="PeriodImpl" cascade="none" fetch="join" />
         

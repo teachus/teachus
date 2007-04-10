@@ -48,17 +48,17 @@ public class PupilPeriodDateComponent extends BookingPeriodDateComponent {
 	}
 
 	@Override
-	protected boolean mayChangeBooking(DateTime dateTime) {
-        boolean mayChangeBooking = false;
-        
-        if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
-                mayChangeBooking = true;
-        } else {
-                DateTime today = new DateTime().withTime(23, 59, 59, 999);
-                mayChangeBooking = dateTime.isAfter(today);
-        }
-        
-        return mayChangeBooking;
+	protected boolean mayChangeBooking(Period period, DateTime bookingStartTime) {
+		boolean mayChangeBooking = false;
+
+		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
+			mayChangeBooking = true;
+		} else {
+			DateTime today = new DateTime().withTime(23, 59, 59, 999);
+			mayChangeBooking = bookingStartTime.isAfter(today);
+		}
+
+		return mayChangeBooking;
 	}
 	
 	@Override

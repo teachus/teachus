@@ -45,6 +45,7 @@
     id CDATA #REQUIRED
     booking_type CDATA #REQUIRED
     version CDATA #REQUIRED
+    active CDATA #IMPLIED
     period_id CDATA #IMPLIED
     date CDATA #IMPLIED
     create_date CDATA #IMPLIED

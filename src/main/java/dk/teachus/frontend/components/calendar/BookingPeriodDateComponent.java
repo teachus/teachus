@@ -71,7 +71,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 			} else {
 				link = createInvisibleLink(); 
 				displayLink = createInvisibleDisplayLink();
-				if (mayChangeBooking(time)) {
+				if (mayChangeBooking(period, time)) {
 					icon = new Image(ICON_ID, Resources.OCCUPIED);
 					label = createInvisibleLabel(); 
 				} else {
@@ -81,7 +81,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 			}
 		} else {
 			displayLink = createInvisibleDisplayLink();
-			if (mayChangeBooking(time)) {
+			if (mayChangeBooking(period, time)) {
 				link = createLink(period, time, booking);
 				icon = createInvisibleIcon(); 
 				label = createInvisibleLabel(); 
@@ -212,7 +212,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 
 	protected abstract boolean isChangeable(Booking booking);
 	
-	protected abstract boolean mayChangeBooking(DateTime dateTime);
+	protected abstract boolean mayChangeBooking(Period period, DateTime bookingStartTime);
 	
 	protected abstract boolean shouldDisplayStringInsteadOfOccupiedIcon();
 	

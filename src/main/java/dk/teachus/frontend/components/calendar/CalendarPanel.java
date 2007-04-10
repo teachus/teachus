@@ -63,6 +63,9 @@ public abstract class CalendarPanel extends Panel {
 			Form navigationForm = new Form("navigationForm"); //$NON-NLS-1$
 			calendar.add(navigationForm);
 			
+			// Disable navigation form for now
+			navigationForm.setVisible(false);
+			
 			final NavigationModel navigationModel = new NavigationModel(pageDate.toDate());
 			navigationForm.add(new DateField("date", new PropertyModel(navigationModel, "date"))); //$NON-NLS-1$ //$NON-NLS-2$
 			navigationForm.add(new Button("goto", new Model(TeachUsSession.get().getString("CalendarPanel.goTo"))) { //$NON-NLS-1$ //$NON-NLS-2$

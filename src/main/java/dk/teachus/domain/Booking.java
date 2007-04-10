@@ -6,6 +6,9 @@ import java.util.Date;
 public interface Booking extends Serializable {
 	Long getId();
 	
+	boolean isActive();
+	void setActive(boolean active);
+	
 	Period getPeriod();
 	void setPeriod(Period period);
 	
