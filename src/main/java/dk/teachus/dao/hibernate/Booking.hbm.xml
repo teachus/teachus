@@ -21,6 +21,8 @@
 		<property name="date" column="date" type="timestamp" />
 		
 		<property name="createDate" column="create_date" type="timestamp" />
+		
+		<property name="updateDate" column="update_date" type="timestamp" />
 	
 		<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
 		

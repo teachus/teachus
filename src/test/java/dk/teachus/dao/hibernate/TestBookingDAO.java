@@ -29,7 +29,7 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		DateTime date = new DateTime(2007, 6, 11, 11, 0, 0, 0);
 		
 		// First create a list of new bookings
-		createPupilBooking(periodId, 6, date);
+		createPupilBooking(periodId, 6, date, new DateTime().minusHours(3).toDate());
 		
 		Bookings bookings = bookingDAO.getBookings(teacher, date.toDateMidnight(), date.toDateMidnight());
 		endTransaction();
@@ -45,6 +45,15 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		assertEquals(2, bookings.getBookingList().size());
 	}
 	
+	public void testBook_createDate() {
+		Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), null);
+		
+		Booking booking = getBookingDAO().getBooking(bookingId);
+		endTransaction();
+		
+		assertNotNull(booking.getCreateDate());
+	}
+	
 	public void testGetUnsentBookings() {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
@@ -53,7 +62,7 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		endTransaction();
 		
 		// First create a list of new bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0));
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(teacher);
 		endTransaction();
@@ -69,7 +78,7 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		endTransaction();
 		
 		// First create a list of new bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0));
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(teacher);
 		endTransaction();
@@ -79,10 +88,16 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		bookingDAO.newBookingsMailSent(unsentBookings);
 		endTransaction();
 		
-		unsentBookings = bookingDAO.getUnsentBookings(teacher);
+		List<PupilBooking> unsentBookings2 = bookingDAO.getUnsentBookings(teacher);
 		endTransaction();
 		
-		assertEquals(0, unsentBookings.size());
+		assertEquals(0, unsentBookings2.size());
+		
+		// Get the bookings to test that the update date is set
+		for (PupilBooking booking : unsentBookings) {
+			Booking checkBooking = bookingDAO.getBooking(booking.getId());
+			assertNotNull(checkBooking.getUpdateDate());
+		}
 	}
 	
 	public void testGetBookings() {
@@ -93,9 +108,9 @@ public class TestBookingDAO extends WicketSpringTestCase {
 		endTransaction();
 		
 		// Create some bookings
-		createPupilBooking(1, 6, new DateTime(2007, 6, 11, 11, 0, 0, 0));
-		createPupilBooking(1, 6, new DateTime(2007, 6, 13, 11, 0, 0, 0));
-		createPupilBooking(1, 6, new DateTime(2007, 6, 15, 11, 0, 0, 0));
+		createPupilBooking(1, 6, new DateTime(2007, 6, 11, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1, 6, new DateTime(2007, 6, 13, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1, 6, new DateTime(2007, 6, 15, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		createTeacherBooking(1, 2, new DateTime(2007, 6, 11, 12, 0, 0, 0));
 		createTeacherBooking(1, 2, new DateTime(2007, 6, 13, 12, 0, 0, 0));

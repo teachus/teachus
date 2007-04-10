@@ -44,5 +44,7 @@ public interface BookingDAO extends Serializable {
 	List<Integer> getYearsWithBookings(Teacher teacher);
 
 	Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate);
+
+	Booking getBooking(Long id);
 	
 }

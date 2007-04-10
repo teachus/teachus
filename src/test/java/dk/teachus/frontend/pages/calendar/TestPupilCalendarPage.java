@@ -49,10 +49,10 @@ public class TestPupilCalendarPage extends WicketSpringTestCase {
 		final Pupil pupil = (Pupil) getPersonDAO().getPerson(6L);
 		
 		// First create a booking for the pupil
-		createPupilBooking(1, pupil.getId(), dateTime);
+		createPupilBooking(1, pupil.getId(), dateTime, new DateTime().minusHours(3).toDate());
 		
 		// Then a booking for a different pupil
-		createPupilBooking(1, 7, dateTime.plusHours(2));
+		createPupilBooking(1, 7, dateTime.plusHours(2), new DateTime().minusHours(3).toDate());
 		
 		// Start the calendar
 		tester.startPage(new ITestPageSource() {

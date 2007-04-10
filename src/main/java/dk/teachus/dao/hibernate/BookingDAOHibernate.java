@@ -56,6 +56,10 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 			}
 		}
 		
+		if (booking.getCreateDate() == null) {
+			booking.setCreateDate(new Date());
+		}
+		
 		getHibernateTemplate().save(booking);
 		getHibernateTemplate().flush();
 	}
@@ -72,8 +76,9 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	
 	public void deleteBooking(Booking booking) {
 		booking.setActive(false);
+		booking.setUpdateDate(new Date());
 		
-		getHibernateTemplate().saveOrUpdate(booking);
+		getHibernateTemplate().update(booking);
 		getHibernateTemplate().flush();
 	}
 
@@ -156,7 +161,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		if (pupilBookings.isEmpty() == false) {
 			StringBuilder hql = new StringBuilder();
 			
-			hql.append("UPDATE PupilBookingImpl SET notificationSent=1 WHERE active = 1 AND id IN(");
+			hql.append("UPDATE PupilBookingImpl SET notificationSent=1, updateDate=NOW() WHERE active = 1 AND id IN(");
 			
 			String sep = "";
 			for (PupilBooking pupilBooking : pupilBookings) {
@@ -178,6 +183,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		}
 		
 		pupilBooking.setPaid(pupilBooking.isPaid() == false);
+		pupilBooking.setUpdateDate(new Date());
 		
 		getHibernateTemplate().update(pupilBooking);
 		getHibernateTemplate().flush();
@@ -270,6 +276,10 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		List<Booking> filteredBookings = filterBookings(bookings);
 		
 		return new BookingsImpl(filteredBookings);
+	}
+	
+	public Booking getBooking(Long id) {
+		return (Booking) getHibernateTemplate().load(BookingImpl.class, id);
 	}
 
 	private List<Booking> filterBookings(List<Booking> bookings) {

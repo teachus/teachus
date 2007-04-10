@@ -49,6 +49,7 @@
     period_id CDATA #IMPLIED
     date CDATA #IMPLIED
     create_date CDATA #IMPLIED
+    update_date CDATA #IMPLIED
     teacher_id CDATA #IMPLIED
     pupil_id CDATA #IMPLIED
     notification_sent CDATA #IMPLIED

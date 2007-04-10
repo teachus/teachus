@@ -15,7 +15,9 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 
 	private Date date;
 
-	private Date createDate = new Date();
+	private Date createDate;
+	
+	private Date updateDate;
 
 	private Teacher teacher;
 
@@ -33,6 +35,10 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 
 	public Teacher getTeacher() {
 		return teacher;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
 	}
 
 	public boolean isActive() {
@@ -57,6 +63,10 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
 	}
 
 }

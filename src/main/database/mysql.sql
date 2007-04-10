@@ -8,6 +8,7 @@ CREATE TABLE
 	period_id BIGINT, 
 	date DATETIME,
 	create_date DATETIME,
+	update_date DATETIME,
 	teacher_id BIGINT, 
 	pupil_id BIGINT, 
 	notification_sent TINYINT, 

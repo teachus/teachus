@@ -1,6 +1,7 @@
 package dk.teachus.frontend;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
@@ -118,7 +119,7 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		assertEquals("The time wasn't booked", "selected", tagTester.getAttribute("class"));
 	}
 	
-	protected void createPupilBooking(long periodId, long pupilId, DateTime dateTime) {
+	protected Long createPupilBooking(long periodId, long pupilId, DateTime dateTime, Date createDate) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();
@@ -135,11 +136,13 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		pupilBooking.setTeacher(pupil.getTeacher());
 		pupilBooking.setPaid(false);
 		pupilBooking.setNotificationSent(false);
-		pupilBooking.setCreateDate(new DateTime().minusHours(3).toDate());
+		pupilBooking.setCreateDate(createDate);
 		pupilBooking.setDate(dateTime.toDate());
 		
 		bookingDAO.book(pupilBooking);
 		endTransaction();
+		
+		return pupilBooking.getId();
 	}
 	
 	protected void createTeacherBooking(long periodId, long teacherId, DateTime date) {
