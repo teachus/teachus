@@ -279,7 +279,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	}
 	
 	public Booking getBooking(Long id) {
-		return (Booking) getHibernateTemplate().load(BookingImpl.class, id);
+		return (Booking) getHibernateTemplate().get(BookingImpl.class, id);
 	}
 
 	private List<Booking> filterBookings(List<Booking> bookings) {

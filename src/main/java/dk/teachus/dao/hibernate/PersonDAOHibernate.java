@@ -89,7 +89,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 
 	@Transactional(readOnly=true)
 	public Person getPerson(Long personId) {
-		return (Person) getHibernateTemplate().load(PersonImpl.class, personId);
+		return (Person) getHibernateTemplate().get(PersonImpl.class, personId);
 	}
 	
 	public void setInactive(Long personId) {
@@ -155,4 +155,25 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		
 		return existingPerson;
 	}
+	
+	public void deleteTeacher(Teacher teacher) {
+		// Delete all teacher attributes
+		getHibernateTemplate().bulkUpdate("DELETE AbstractTeacherAttribute WHERE teacher = ?", teacher);
+		
+		// Delete all teacher bookings
+		getHibernateTemplate().bulkUpdate("DELETE TeacherBookingImpl WHERE teacher = ?", teacher);
+		
+		// Delete all pupil bookings
+		getHibernateTemplate().bulkUpdate("DELETE PupilBookingImpl WHERE teacher = ?", teacher);
+		
+		// Delete all periods
+		getHibernateTemplate().bulkUpdate("DELETE PeriodImpl WHERE teacher = ?", teacher);
+		
+		// Delete all pupils
+		getHibernateTemplate().bulkUpdate("DELETE PupilImpl WHERE teacher = ?", teacher);
+		
+		// Finally delete the teacher
+		getHibernateTemplate().delete(teacher);
+	}
+	
 }

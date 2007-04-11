@@ -26,6 +26,8 @@ import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
 import dk.teachus.domain.TeacherBooking;
+import dk.teachus.domain.impl.PupilImpl;
+import dk.teachus.domain.impl.TeacherImpl;
 
 public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 
@@ -105,6 +107,10 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 	
 	protected TeachUsWicketTester tester;
 	
+	public WicketSpringTestCase() {
+		setDefaultRollback(false);	
+	}
+	
 	protected void assertTimeNotSelected(String componentPath) {
 		TagTester tagTester = getTagTesterForComponent(componentPath+":contentContainer:content:link");
 		assertNull("The time was booked", tagTester.getAttribute("class"));
@@ -145,7 +151,7 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		return pupilBooking.getId();
 	}
 	
-	protected void createTeacherBooking(long periodId, long teacherId, DateTime date) {
+	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();
@@ -164,6 +170,8 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		
 		bookingDAO.book(teacherBooking);
 		endTransaction();
+		
+		return teacherBooking.getId();
 	}
 
 	public BookingDAO getBookingDAO() {
@@ -202,6 +210,43 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		
 		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
 		new StaticDataImport(sessionFactory.openSession().connection());
+	}
+
+	protected Pupil createPupil(Teacher teacher, int pupilNumber) {
+		Pupil pupil = new PupilImpl();
+		pupil.setName("Test pupil "+pupilNumber);
+		pupil.setActive(true);
+		pupil.setEmail("pupil"+pupilNumber+"@teachus.dk");
+		pupil.setUsername("pupil"+pupilNumber);
+		pupil.setTeacher(teacher);
+		getPersonDAO().save(pupil);
+		endTransaction();
+		return pupil;
+	}
+
+	protected Teacher createTeacher() {
+		Teacher teacher = new TeacherImpl();
+		teacher.setName("Test name");
+		teacher.setActive(true);
+		teacher.setEmail("test@teachus.dk");
+		teacher.setUsername("test");
+		getPersonDAO().save(teacher);
+		endTransaction();
+		return teacher;
+	}
+	
+	protected Object loadObject(Class objectClass, Serializable objectId) {
+		Object object = null;
+		
+		org.hibernate.Session session = getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		object = session.get(objectClass, objectId);
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return object;
 	}
 	
 }
