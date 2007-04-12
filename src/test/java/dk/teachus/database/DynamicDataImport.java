@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
@@ -22,15 +24,18 @@ import dk.teachus.domain.Period;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
+import dk.teachus.domain.TeacherAttribute;
 import dk.teachus.domain.Theme;
 import dk.teachus.domain.impl.AdminImpl;
 import dk.teachus.domain.impl.PeriodImpl;
 import dk.teachus.domain.impl.PupilBookingImpl;
 import dk.teachus.domain.impl.PupilImpl;
 import dk.teachus.domain.impl.TeacherImpl;
+import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.domain.impl.PeriodImpl.WeekDay;
 
-public class DynamicDataImport {
+public abstract class DynamicDataImport {
+	private static final Log log = LogFactory.getLog(DynamicDataImport.class);
 	
 	private static final List<String> firstNames = new ArrayList<String>();
 	private static final List<String> lastNames = new ArrayList<String>();
@@ -93,30 +98,53 @@ public class DynamicDataImport {
 
 		deleteExistingData(sessionFactory);
 		
-		Teacher teacher = createPeople(sessionFactory);
+		createAdmin(sessionFactory);
 		
-		createPeriods(sessionFactory, teacher, startDate);
+		int numberOfTeachers = 10;
 		
-		createBookings(sessionFactory, teacher, startDate, endDate);
-		
-		verify(sessionFactory);
+		for (int i = 1; i <= numberOfTeachers; i++) {
+			log.info("Creating teacher number " + i + " of " + numberOfTeachers);
+			
+			Teacher teacher = createTeacher(sessionFactory, i);
+			
+			createTeacherAttribute(sessionFactory, teacher);
+			
+			createPupils(sessionFactory, teacher, i);
+			
+			createPeriods(sessionFactory, teacher, startDate);
+			
+			createBookings(sessionFactory, teacher, startDate, endDate);
+			
+			verify(sessionFactory, teacher);
+		}
 		
 		System.exit(0);
 	}
+
+	private static void createTeacherAttribute(SessionFactory sessionFactory, Teacher teacher) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		TeacherAttribute attribute = new WelcomeIntroductionTeacherAttribute();
+		attribute.setTeacher(teacher);
+		attribute.setValue("A welcome introduction");
+		session.save(attribute);
+		
+		session.getTransaction().commit();
+		session.close();
+	}
 	
-	private static void verify(SessionFactory sessionFactory) {
+	private static void verify(SessionFactory sessionFactory, Teacher teacher) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
-		SQLQuery sqlQuery = session.createSQLQuery("SELECT date, COUNT(id) AS c FROM booking GROUP BY date HAVING c > 1");
+		SQLQuery sqlQuery = session.createSQLQuery("SELECT date, COUNT(id) AS c FROM booking WHERE teacher_id = "+teacher.getId()+" GROUP BY date HAVING c > 1");
 		List result = sqlQuery.list();
 		
 		for (Object object : result) {
 			Object[] objects = (Object[]) object;
-			System.out.println(objects[0] + ": " + objects[1]);
+			log.error(objects[0] + ": " + objects[1]);
 		}
-		
-		System.out.println(result.size());
 		
 		session.getTransaction().commit();
 		session.close();		
@@ -243,11 +271,10 @@ public class DynamicDataImport {
 		session.close();
 	}
 	
-	private static Teacher createPeople(SessionFactory sessionFactory) {
+	private static Admin createAdmin(SessionFactory sessionFactory) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		// Create admin
 		Admin admin = new AdminImpl();
 		admin.setName("Admin");
 		admin.setUsername("admin");
@@ -256,18 +283,23 @@ public class DynamicDataImport {
 		admin.setLocale(new Locale("en"));
 		session.save(admin);
 		
-		// Create teacher
-		Teacher teacher = new TeacherImpl();
-		teacher.setName("Leif Borilde");
-		teacher.setUsername("leif");
-		teacher.setPassword("leif");
-		teacher.setEmail("leif@teachus.dk");
-		teacher.setLocale(new Locale("en", "US", "singers"));
-		teacher.setTheme(Theme.GREEN);
-		teacher.setCurrency("kr");
-		session.save(teacher);
+		session.getTransaction().commit();
+		session.close();
 		
-		// Create pupils
+		return admin;
+	}
+
+	private static void createPupils(SessionFactory sessionFactory, Teacher teacher, int number) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		String postfixUnix = "";
+		String postfixName = "";
+		if (number > 1) {
+			postfixUnix = "_" + number;
+			postfixName = " " + number;
+		}
+		
 		for (String firstName : firstNames) {
 			int lastNameIndex = (int) (Math.random()*lastNames.size());
 			String lastName = lastNames.get(lastNameIndex);
@@ -278,15 +310,42 @@ public class DynamicDataImport {
 					.replace("ü", "u")
 					.replace("å", "aa")
 					.replace("ø", "o");
+			unixName += postfixUnix;
 			
 			Pupil pupil = new PupilImpl();
-			pupil.setName(name);
+			pupil.setName(name+postfixName);
 			pupil.setEmail(unixName + "@teachus.dk");
 			pupil.setUsername(unixName);
 			pupil.setPassword(unixName);
 			pupil.setTeacher(teacher);
 			session.save(pupil);
+			log.debug("Created pupil: "+unixName);
 		}
+		
+		session.getTransaction().commit();
+		session.close();
+	}
+
+	private static Teacher createTeacher(SessionFactory sessionFactory, int number) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		String postfixUnix = "";
+		String postfixName = "";
+		if (number > 1) {
+			postfixUnix = "_" + number;
+			postfixName = " " + number;
+		}
+		
+		Teacher teacher = new TeacherImpl();
+		teacher.setName("Leif Borilde"+postfixName);
+		teacher.setUsername("leif"+postfixUnix);
+		teacher.setPassword("leif"+postfixUnix);
+		teacher.setEmail("leif"+postfixUnix+"@teachus.dk");
+		teacher.setLocale(new Locale("en", "US", "singers"));
+		teacher.setTheme(Theme.GREEN);
+		teacher.setCurrency("kr");
+		session.save(teacher);
 		
 		session.getTransaction().commit();
 		session.close();
