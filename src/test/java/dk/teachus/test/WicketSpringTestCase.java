@@ -1,4 +1,4 @@
-package dk.teachus.frontend;
+package dk.teachus.test;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +28,9 @@ import dk.teachus.domain.Teacher;
 import dk.teachus.domain.TeacherBooking;
 import dk.teachus.domain.impl.PupilImpl;
 import dk.teachus.domain.impl.TeacherImpl;
+import dk.teachus.frontend.TeachUsApplication;
+import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.UserLevel;
 
 public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 
@@ -182,7 +185,7 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 	protected String[] getConfigLocations() {
 		return new String[] {
 				"/dk/teachus/frontend/applicationContext.xml",
-				"/dk/teachus/frontend/applicationContext-test.xml"
+				"/dk/teachus/test/applicationContext-test.xml"
 		};
 	}
 
@@ -247,6 +250,23 @@ public abstract class WicketSpringTestCase extends AbstractAnnotationAwareTransa
 		session.close();
 		
 		return object;
+	}
+
+	protected Teacher inactivateTeacher() {
+		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
+		endTransaction();
+		
+		teacher.setActive(false);
+		
+		getPersonDAO().save(teacher);
+		endTransaction();
+		return teacher;
+	}
+
+	protected Teacher getTeacher() {
+		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
+		endTransaction();
+		return teacher;
 	}
 	
 }

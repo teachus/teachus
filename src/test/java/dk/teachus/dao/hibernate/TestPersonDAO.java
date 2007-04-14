@@ -1,6 +1,7 @@
 package dk.teachus.dao.hibernate;
 
 import java.util.Date;
+import java.util.List;
 
 import org.joda.time.DateTime;
 
@@ -15,7 +16,7 @@ import dk.teachus.domain.impl.PupilImpl;
 import dk.teachus.domain.impl.TeacherImpl;
 import dk.teachus.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.domain.impl.PeriodImpl.WeekDay;
-import dk.teachus.frontend.WicketSpringTestCase;
+import dk.teachus.test.WicketSpringTestCase;
 
 public class TestPersonDAO extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;
@@ -27,8 +28,7 @@ public class TestPersonDAO extends WicketSpringTestCase {
 	}
 	
 	public void testSave() {
-		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
-		endTransaction();
+		Teacher teacher = getTeacher();
 		
 		Pupil pupil = new PupilImpl();
 		pupil.setName("Test");
@@ -40,7 +40,7 @@ public class TestPersonDAO extends WicketSpringTestCase {
 		getPersonDAO().save(pupil);
 		endTransaction();
 	}
-	
+
 	public void testSaveTeacher() {
 		Teacher teacher = new TeacherImpl();
 		teacher.setName("Test");
@@ -123,6 +123,71 @@ public class TestPersonDAO extends WicketSpringTestCase {
 		
 		assertEquals(teachersBefore, teachersAfter);
 		assertEquals(pupilsBefore, pupilsAfter);
+	}
+	
+	public void testAuthenticatePerson() {
+		Person person = getPersonDAO().authenticatePerson("sadolin", "sadolin");
+		endTransaction();
+		
+		assertNotNull(person);
+		
+		assertEquals(new Long(2L), person.getId());
+	}
+	
+	public void testAuthenticatePerson_inactive() {
+		inactivateTeacher();
+		
+		// Authenticate
+		Person person = getPersonDAO().authenticatePerson("sadolin", "sadolin");
+		endTransaction();
+		
+		assertNull(person);
+	}
+	
+	public void testGetPersons_onlyInactive() {
+		inactivateTeacher();
+		
+		// Get persons
+		List<Teacher> persons = getPersonDAO().getPersons(Teacher.class);
+		endTransaction();
+		
+		assertEquals(0, persons.size());
+	}
+	
+	public void testGetPupils_inactiveTeacher() {
+		Teacher teacher = inactivateTeacher();
+		
+		// Get pupils
+		List<Pupil> pupils = getPersonDAO().getPupils(teacher);
+		endTransaction();
+		
+		assertEquals(0, pupils.size());
+	}
+	
+	public void testGetAttributes_inactiveTeacher() {
+		Teacher teacher = inactivateTeacher();
+		
+		List<TeacherAttribute> attributes = getPersonDAO().getAttributes(teacher);
+		endTransaction();
+		
+		assertEquals(0, attributes.size());
+	}
+	
+	public void testGetAttribute_inactiveTeacher() {
+		Teacher teacher = getTeacher();
+		
+		// Get the attribute to see that we can get it
+		TeacherAttribute attribute = getPersonDAO().getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
+		endTransaction();
+		
+		assertNotNull(attribute);
+		
+		teacher = inactivateTeacher();
+		
+		attribute = getPersonDAO().getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
+		endTransaction();
+		
+		assertNull(attribute);
 	}
 	
 }

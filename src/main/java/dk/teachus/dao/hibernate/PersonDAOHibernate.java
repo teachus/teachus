@@ -66,6 +66,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		DetachedCriteria c = DetachedCriteria.forClass(clazz);
 
 		c.addOrder(Order.asc("name"));
+		c.add(Restrictions.eq("active", true));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 
@@ -78,6 +79,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		DetachedCriteria c = DetachedCriteria.forClass(PupilImpl.class);
 		
 		c.add(Restrictions.eq("active", true));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("teacher", teacher));
 
 		c.addOrder(Order.asc("name"));
@@ -117,6 +119,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		DetachedCriteria c = DetachedCriteria.forClass(AbstractTeacherAttribute.class);
 		
 		c.add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
@@ -127,6 +130,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		DetachedCriteria c = DetachedCriteria.forClass(attributeClass);
 		
 		c.add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		
 		List<A> attributes = getHibernateTemplate().findByCriteria(c);
 		

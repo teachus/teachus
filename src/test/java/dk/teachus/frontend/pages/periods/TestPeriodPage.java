@@ -3,7 +3,7 @@ package dk.teachus.frontend.pages.periods;
 import wicket.Page;
 import wicket.util.tester.ITestPageSource;
 import dk.teachus.domain.Period;
-import dk.teachus.frontend.WicketSpringTestCase;
+import dk.teachus.test.WicketSpringTestCase;
 
 public class TestPeriodPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;

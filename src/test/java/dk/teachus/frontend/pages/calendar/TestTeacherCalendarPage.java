@@ -3,8 +3,8 @@ package dk.teachus.frontend.pages.calendar;
 import wicket.Page;
 import wicket.util.tester.ITestPageSource;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.WicketSpringTestCase;
 import dk.teachus.frontend.components.calendar.CalendarPanel;
+import dk.teachus.test.WicketSpringTestCase;
 
 public class TestTeacherCalendarPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;

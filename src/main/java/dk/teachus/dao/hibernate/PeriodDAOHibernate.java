@@ -31,6 +31,7 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		DetachedCriteria c = DetachedCriteria.forClass(PeriodImpl.class);
 		
 		c.add(Restrictions.eq("id", id));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("active", true));
 		
 		Period period = null;
@@ -48,6 +49,7 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		DetachedCriteria c = DetachedCriteria.forClass(PeriodImpl.class);
 		
 		c.add(Restrictions.eq("teacher", teacher));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("active", true));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());

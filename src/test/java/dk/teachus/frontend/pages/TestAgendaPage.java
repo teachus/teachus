@@ -9,8 +9,8 @@ import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
-import dk.teachus.frontend.WicketSpringTestCase;
 import dk.teachus.frontend.pages.persons.PupilPage;
+import dk.teachus.test.WicketSpringTestCase;
 
 public class TestAgendaPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;

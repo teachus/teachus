@@ -12,7 +12,7 @@ import dk.teachus.domain.Bookings;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.PupilBooking;
 import dk.teachus.domain.Teacher;
-import dk.teachus.frontend.WicketSpringTestCase;
+import dk.teachus.test.WicketSpringTestCase;
 
 public class TestBookingDAO extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;

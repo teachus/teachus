@@ -5,10 +5,10 @@ import wicket.util.tester.ITestPageSource;
 import dk.teachus.domain.Admin;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
-import dk.teachus.frontend.WicketSpringTestCase;
 import dk.teachus.frontend.models.AdminModel;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.models.TeacherModel;
+import dk.teachus.test.WicketSpringTestCase;
 
 public class TestPersonPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;
