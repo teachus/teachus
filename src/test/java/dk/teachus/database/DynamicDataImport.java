@@ -1,6 +1,5 @@
 package dk.teachus.database;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -37,59 +36,11 @@ import dk.teachus.domain.impl.PeriodImpl.WeekDay;
 public abstract class DynamicDataImport {
 	private static final Log log = LogFactory.getLog(DynamicDataImport.class);
 	
-	private static final List<String> firstNames = new ArrayList<String>();
-	private static final List<String> lastNames = new ArrayList<String>();
-	
-	static {
-		firstNames.add("Anne");
-		firstNames.add("Bent");
-		firstNames.add("Christina");
-		firstNames.add("Dennis");
-		firstNames.add("Eva");
-		firstNames.add("Frederik");
-		firstNames.add("Grethe");
-		firstNames.add("Hans");
-		firstNames.add("Inge");
-		firstNames.add("Jørgen");
-		firstNames.add("Karen");
-		firstNames.add("Lars");
-		firstNames.add("Maria");
-		firstNames.add("Niels");
-		firstNames.add("Olga");
-		firstNames.add("Per");
-		firstNames.add("Rikke");
-		firstNames.add("Søren");
-		firstNames.add("Trine");
-		firstNames.add("Ulrik");
-		firstNames.add("Vera");
-		firstNames.add("Åge");
-		
-		lastNames.add("Pedersen");
-		lastNames.add("Jørgensen");
-		lastNames.add("Jensen");
-		lastNames.add("Nielsen");
-		lastNames.add("Funk");
-		lastNames.add("Pihl");
-		lastNames.add("Hansen");
-		lastNames.add("Sünk");
-		lastNames.add("Petersen");
-		lastNames.add("Frimand");
-		lastNames.add("From");
-		lastNames.add("Lund");
-		lastNames.add("Andersen");
-		lastNames.add("Mogensen");
-		lastNames.add("Larsen");
-		lastNames.add("Finnsen");
-		lastNames.add("Noller");
-		lastNames.add("Holm");
-		lastNames.add("Jürgensen");
-		
-	}
-
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
 				"/dk/teachus/frontend/applicationContext.xml",
-				"/dk/teachus/database/applicationContext-dynamicDataImport.xml", });
+				"/dk/teachus/database/applicationContext-dynamicDataImport.xml"
+		});
 
 		SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 
@@ -300,9 +251,9 @@ public abstract class DynamicDataImport {
 			postfixName = " " + number;
 		}
 		
-		for (String firstName : firstNames) {
-			int lastNameIndex = (int) (Math.random()*lastNames.size());
-			String lastName = lastNames.get(lastNameIndex);
+		for (String firstName : Names.firstNames) {
+			int lastNameIndex = (int) (Math.random()*Names.lastNames.size());
+			String lastName = Names.lastNames.get(lastNameIndex);
 			String name = firstName + " " + lastName;
 			String unixName = name
 					.toLowerCase()
