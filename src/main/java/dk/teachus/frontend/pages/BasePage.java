@@ -43,6 +43,7 @@ public abstract class BasePage extends WebPage {
 	public BasePage() {
 		add(HeaderContributor.forCss(Resources.CSS_ANDREAS09));
 		add(HeaderContributor.forCss(Resources.CSS_SCREEN));
+		add(HeaderContributor.forCss(Resources.CSS_PRINT, "print"));
 		
 		Theme theme = getTheme();
 		

@@ -19,6 +19,7 @@ package dk.teachus.frontend.components;
 import java.io.Serializable;
 import java.util.List;
 
+import wicket.Component;
 import wicket.behavior.SimpleAttributeModifier;
 import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import wicket.markup.html.basic.Label;
@@ -55,6 +56,13 @@ public class FunctionsColumn extends AbstractColumn {
 	public FunctionsColumn(IModel displayModel, List<FunctionItem> functions) {
 		super(displayModel);
 		this.functions = functions;
+	}
+	
+	@Override
+	public Component getHeader(String componentId) {
+		Component component = super.getHeader(componentId);
+		component.add(new SimpleAttributeModifier("class", "functions"));
+		return component;
 	}
 
 	@SuppressWarnings("unchecked")
