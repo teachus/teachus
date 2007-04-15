@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 
+import dk.teachus.domain.Admin;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
@@ -160,14 +161,50 @@ public class TestPersonDAO extends WicketSpringTestCase {
 		assertNull(person);
 	}
 	
-	public void testGetPersons_onlyInactive() {
+	public void testGetPersons_pupils_onlyActive() {
+		List<Pupil> persons = getPersonDAO().getPersons(Pupil.class);
+		endTransaction();
+		
+		int personsBefore = persons.size();
+		
+		getPersonDAO().changeActiveState(3L);
+		endTransaction();
+		getPersonDAO().changeActiveState(4L);
+		endTransaction();
+		
+		// Get persons
+		persons = getPersonDAO().getPersons(Pupil.class);
+		endTransaction();
+
+		int personsAfter = persons.size();
+		
+		assertEquals(personsBefore-2, personsAfter);
+	}
+	
+	/**
+	 * Show teachers even if inactive.
+	 */
+	public void testGetPersons_teacher() {
 		inactivateTeacher();
 		
 		// Get persons
 		List<Teacher> persons = getPersonDAO().getPersons(Teacher.class);
 		endTransaction();
 		
-		assertEquals(0, persons.size());
+		assertEquals(1, persons.size());
+	}
+	
+	/**
+	 * Show admins even if inactive.
+	 */
+	public void testGetPersons_admin() {
+		inactivateTeacher();
+		
+		// Get persons
+		List<Admin> persons = getPersonDAO().getPersons(Admin.class);
+		endTransaction();
+		
+		assertEquals(1, persons.size());
 	}
 	
 	public void testGetPupils_inactiveTeacher() {
@@ -204,6 +241,60 @@ public class TestPersonDAO extends WicketSpringTestCase {
 		endTransaction();
 		
 		assertNull(attribute);
+	}
+	
+	public void testChangeActiveState_admin() {
+		long personId = 1L;
+		
+		Person person = getPersonDAO().getPerson(personId);
+		endTransaction();
+		
+		assertTrue(person instanceof Admin);
+		assertTrue(person.isActive());
+		
+		getPersonDAO().changeActiveState(personId);
+		endTransaction();
+		
+		person = getPersonDAO().getPerson(personId);
+		endTransaction();
+		
+		assertFalse(person.isActive());
+	}
+	
+	public void testChangeActiveState_teacher() {
+		long personId = 2L;
+		
+		Person person = getPersonDAO().getPerson(personId);
+		endTransaction();
+		
+		assertTrue(person instanceof Teacher);
+		assertTrue(person.isActive());
+		
+		getPersonDAO().changeActiveState(personId);
+		endTransaction();
+		
+		person = getPersonDAO().getPerson(personId);
+		endTransaction();
+		
+		assertFalse(person.isActive());
+	}
+	
+	public void testChangeActiveState_pupil() {
+		long personId = 3L;
+		
+		Person person = getPersonDAO().getPerson(personId);
+		endTransaction();
+		
+		assertTrue(person instanceof Pupil);
+		assertTrue(person.isActive());
+		
+		getPersonDAO().changeActiveState(personId);
+		endTransaction();
+		
+		person = getPersonDAO().getPerson(personId);
+		endTransaction();
+		
+		assertFalse(person.isActive());
 	}
 	
 }

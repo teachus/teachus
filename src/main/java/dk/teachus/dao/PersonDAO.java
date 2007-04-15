@@ -55,4 +55,6 @@ public interface PersonDAO extends Serializable {
 	
 	Pupil createPupilObject();
 
+	void changeActiveState(Long personId);
+
 }

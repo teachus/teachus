@@ -36,11 +36,14 @@ public class FunctionsColumn extends AbstractColumn {
 	public static abstract class FunctionItem implements Serializable {
 		private String label;
 		
+		public FunctionItem() {
+		}
+		
 		public FunctionItem(String label) {
 			this.label = label;
 		}
 
-		public String getLabel() {
+		public String getLabel(Object object) {
 			return label;
 		}
 
@@ -98,7 +101,7 @@ public class FunctionsColumn extends AbstractColumn {
 				link.add(onClickModifier);
 			}
 			
-			link.add(new Label("label", function.getLabel()).setRenderBodyOnly(true));
+			link.add(new Label("label", function.getLabel(object)).setRenderBodyOnly(true));
 			
 			links.add(link);
 		}

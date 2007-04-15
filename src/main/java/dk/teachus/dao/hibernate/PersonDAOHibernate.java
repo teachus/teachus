@@ -82,7 +82,9 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		DetachedCriteria c = DetachedCriteria.forClass(clazz);
 
 		c.addOrder(Order.asc("name"));
-		c.add(Restrictions.eq("active", true));
+		if (Pupil.class.equals(personClass)) {
+			c.add(Restrictions.eq("active", true));
+		}
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 
@@ -210,6 +212,14 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 	@Transactional(readOnly=true)
 	public Pupil createPupilObject() {
 		return new PupilImpl();
+	}
+	
+	public void changeActiveState(Long personId) {
+		Person person = getPerson(personId);
+		
+		person.setActive(person.isActive() == false);
+		
+		save(person);
 	}
 	
 }

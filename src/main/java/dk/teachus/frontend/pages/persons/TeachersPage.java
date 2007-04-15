@@ -69,7 +69,36 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	protected List<FunctionItem> getFunctions() {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 		
-		functions.add(new FunctionItem("Delete") {
+		// Activate/Inactivate
+		functions.add(new FunctionItem() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getLabel(Object object) {
+				Teacher teacher = (Teacher) object;
+				String label = null;
+				
+				if (teacher.isActive()) {
+					label = TeachUsSession.get().getString("General.inactivate"); //$NON-NLS-1$
+				} else {
+					label = TeachUsSession.get().getString("General.activate"); //$NON-NLS-1$
+				}
+				
+				return label;
+			}
+			
+			@Override
+			public void onEvent(Object object) {
+				Teacher teacher = (Teacher) object;
+				
+				TeachUsApplication.get().getPersonDAO().changeActiveState(teacher.getId());
+				
+				getRequestCycle().setResponsePage(TeachersPage.class);
+			}
+		});
+		
+		// Delete
+		functions.add(new FunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
