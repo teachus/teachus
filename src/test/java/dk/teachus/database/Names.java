@@ -84,6 +84,7 @@ final class Names {
 		lastNames.add("Holm");
 		lastNames.add("Iversen");
 		lastNames.add("Jensen");
+		lastNames.add("Johansson");
 		lastNames.add("Jørgensen");
 		lastNames.add("Jürgensen");
 		lastNames.add("Klausen");
