@@ -9,7 +9,6 @@ import dk.teachus.dao.PeriodDAO;
 import dk.teachus.domain.Period;
 import dk.teachus.domain.Periods;
 import dk.teachus.domain.Teacher;
-import dk.teachus.domain.impl.PeriodImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -42,7 +41,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 
 			@Override
 			public void onEvent() {
-				Period period = new PeriodImpl();
+				Period period = TeachUsApplication.get().getPeriodDAO().createPeriodObject();
 				period.setTeacher(teacher);
 				getRequestCycle().setResponsePage(new PeriodPage(period));
 			}			

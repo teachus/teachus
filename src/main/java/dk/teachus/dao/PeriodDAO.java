@@ -15,5 +15,7 @@ public interface PeriodDAO extends Serializable {
 	Periods getPeriods(Teacher teacher);
 
 	void delete(Period period);
+	
+	Period createPeriodObject();
 
 }

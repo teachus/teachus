@@ -67,4 +67,9 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		getHibernateTemplate().flush();
 	}
 
+	@Transactional(readOnly=true)
+	public Period createPeriodObject() {
+		return new PeriodImpl();
+	}
+
 }
