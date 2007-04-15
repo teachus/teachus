@@ -112,6 +112,7 @@ table.border th {
 	padding-right: 7px;
 	text-align: right;
 	border-right: 1px solid gray;
+	white-space: nowrap;
 }
 
 .day tbody td.content {
