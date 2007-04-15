@@ -5,7 +5,6 @@ import java.util.List;
 
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Teacher;
-import dk.teachus.domain.impl.TeacherImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -31,11 +30,6 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	}
 
 	@Override
-	protected Teacher getNewPerson() {
-		return new TeacherImpl();
-	}
-
-	@Override
 	protected String getNewPersonLabel() {
 		return TeachUsSession.get().getString("TeachersPage.newTeacher"); //$NON-NLS-1$
 	}
@@ -46,8 +40,8 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	}
 	
 	@Override
-	protected PersonPage getPersonPage(Teacher person) {
-		return new TeacherPage(new TeacherModel(person.getId()));
+	protected PersonPage getPersonPage(Long personId) {
+		return new TeacherPage(new TeacherModel(personId));
 	}
 
 	@Override

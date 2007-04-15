@@ -1,7 +1,7 @@
 package dk.teachus.frontend.models;
 
 import dk.teachus.domain.Teacher;
-import dk.teachus.domain.impl.TeacherImpl;
+import dk.teachus.frontend.TeachUsApplication;
 
 public class TeacherModel extends PersonModel<Teacher> {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +12,7 @@ public class TeacherModel extends PersonModel<Teacher> {
 
 	@Override
 	protected Teacher createNewPerson() {
-		return new TeacherImpl();
+		return TeachUsApplication.get().getPersonDAO().createTeacherObject();
 	}
 
 }

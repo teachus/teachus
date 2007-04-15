@@ -28,7 +28,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 
 			@Override
 			public void onEvent() {
-				getRequestCycle().setResponsePage(getPersonPage(getNewPerson()));
+				getRequestCycle().setResponsePage(getPersonPage(null));
 			}			
 		});
 		add(new Toolbar("toolbar", items) { //$NON-NLS-1$
@@ -52,7 +52,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			@Override
 			protected void onClick(Object rowModelObject) {
 				P person = (P) rowModelObject;
-				getRequestCycle().setResponsePage(getPersonPage(person));
+				getRequestCycle().setResponsePage(getPersonPage(person.getId()));
 			}					
 		});
 		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username"));
@@ -67,13 +67,11 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 
 	protected abstract List<P> getPersons();
 	
-	protected abstract P getNewPerson();
-	
 	protected abstract String getNewPersonLabel();
 	
 	protected abstract boolean showNewPersonLink();
 	
-	protected abstract PersonPage getPersonPage(P person);
+	protected abstract PersonPage getPersonPage(Long personId);
 	
 	protected List<FunctionItem> getFunctions() {
 		return null;

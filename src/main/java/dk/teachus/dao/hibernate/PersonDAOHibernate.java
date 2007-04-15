@@ -145,6 +145,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		return attribute; 
 	}
 
+	@Transactional(readOnly=true)
 	public Person usernameExists(String username) {
 		Person existingPerson = null;
 		
@@ -178,6 +179,21 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		
 		// Finally delete the teacher
 		getHibernateTemplate().delete(teacher);
+	}
+
+	@Transactional(readOnly=true)
+	public Admin createAdminObject() {
+		return new AdminImpl();
+	}
+
+	@Transactional(readOnly=true)
+	public Teacher createTeacherObject() {
+		return new TeacherImpl();
+	}
+
+	@Transactional(readOnly=true)
+	public Pupil createPupilObject() {
+		return new PupilImpl();
 	}
 	
 }

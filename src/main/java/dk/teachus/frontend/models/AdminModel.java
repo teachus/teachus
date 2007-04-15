@@ -1,7 +1,7 @@
 package dk.teachus.frontend.models;
 
 import dk.teachus.domain.Admin;
-import dk.teachus.domain.impl.AdminImpl;
+import dk.teachus.frontend.TeachUsApplication;
 
 public class AdminModel extends PersonModel<Admin> {
 	private static final long serialVersionUID = 1L;
@@ -12,7 +12,7 @@ public class AdminModel extends PersonModel<Admin> {
 
 	@Override
 	protected Admin createNewPerson() {
-		return new AdminImpl();
+		return TeachUsApplication.get().getPersonDAO().createAdminObject();
 	}
 
 }

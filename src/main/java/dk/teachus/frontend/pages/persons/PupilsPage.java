@@ -8,7 +8,6 @@ import dk.teachus.domain.Admin;
 import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
-import dk.teachus.domain.impl.PupilImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -44,15 +43,6 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	}
 
 	@Override
-	protected Pupil getNewPerson() {
-		Person person = TeachUsSession.get().getPerson();
-		Teacher teacher = (Teacher) person;
-		Pupil pupil = new PupilImpl();
-		pupil.setTeacher(teacher);
-		return pupil;
-	}
-
-	@Override
 	protected String getNewPersonLabel() {
 		return TeachUsSession.get().getString("PupilsPage.newPupil"); //$NON-NLS-1$
 	}
@@ -70,8 +60,8 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	}
 	
 	@Override
-	protected PersonPage getPersonPage(Pupil person) {
-		return new PupilPage(new PupilModel(person.getId()));
+	protected PersonPage getPersonPage(Long personId) {
+		return new PupilPage(new PupilModel(personId));
 	}
 
 	@Override

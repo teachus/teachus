@@ -4,7 +4,6 @@ import java.util.List;
 
 import dk.teachus.dao.PersonDAO;
 import dk.teachus.domain.Admin;
-import dk.teachus.domain.impl.AdminImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -20,11 +19,6 @@ public class AdminsPage extends PersonsPage<Admin> {
 	@Override
 	protected String getPageLabel() {
 		return TeachUsSession.get().getString("General.administrators"); //$NON-NLS-1$
-	}
-
-	@Override
-	protected Admin getNewPerson() {
-		return new AdminImpl();
 	}
 
 	@Override
@@ -44,8 +38,8 @@ public class AdminsPage extends PersonsPage<Admin> {
 	}
 	
 	@Override
-	protected PersonPage getPersonPage(Admin person) {
-		return new AdminPage(new AdminModel(person.getId()));
+	protected PersonPage getPersonPage(Long personId) {
+		return new AdminPage(new AdminModel(personId));
 	}
 
 	@Override

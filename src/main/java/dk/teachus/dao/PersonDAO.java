@@ -3,6 +3,7 @@ package dk.teachus.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import dk.teachus.domain.Admin;
 import dk.teachus.domain.Person;
 import dk.teachus.domain.Pupil;
 import dk.teachus.domain.Teacher;
@@ -31,5 +32,11 @@ public interface PersonDAO extends Serializable {
 	Person usernameExists(String username);
 	
 	void deleteTeacher(Teacher teacher);
+	
+	Admin createAdminObject();
+	
+	Teacher createTeacherObject();
+	
+	Pupil createPupilObject();
 
 }
