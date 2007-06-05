@@ -1,0 +1,32 @@
+${subject}
+<html>
+	<body>
+		<h3>${welcome}${name}</h3>
+		
+		${teacherIntroduction}
+		
+		<p>
+			${introduction}
+		</p>
+		
+		<table cellspacing="0" cellpadding="10" border="0">
+			<tr>
+				<td><b>${serverLabel}</b></td>
+				<td><a href="${server}">${server}</a></td>
+			</tr>
+			<tr>
+				<td><b>${usernameLabel}</b></td>
+				<td>${username}</td>
+			</tr>
+			<tr>
+				<td><b>${passwordLabel}</b></td>
+				<td>${password}</td>
+			</tr>
+		</table>
+		
+		<p>
+			${regard}<br />
+			${from}
+		</p>
+	</body>
+</html>
