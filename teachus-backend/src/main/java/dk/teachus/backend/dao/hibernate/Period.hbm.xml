@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="dk.teachus.backend.domain.impl" default-lazy="false">
+
+    <class name="PeriodImpl" table="period">
+		<id name="id" column="id" access="field">
+            <generator class="native"/>
+        </id>
+        
+		<version name="version" access="field" />
+		
+		<property name="name" length="100" />
+        
+		<property name="beginDate" column="begin_date" type="date" />
+		<property name="endDate" column="end_date" type="date" />
+				
+		<property name="startTime" column="start_time" type="time" />		
+		<property name="endTime" column="end_time" type="time" />
+		
+		<property name="weekDays" column="week_days" type="dk.teachus.backend.dao.hibernate.WeekDaysUserType" />
+        
+        <many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" />
+        
+		<property name="location" length="100" />
+        
+        <property name="price" />
+        
+        <property name="lessonDuration" column="lesson_duration" not-null="true" />
+        
+        <property name="intervalBetweenLessonStart" column="interval_between_lesson_start" not-null="true" />
+        
+        <property name="repeatEveryWeek" column="repeat_every_week" not-null="true" />
+        
+        <property name="active" not-null="true" type="dk.teachus.backend.dao.hibernate.BooleanType">
+        	<column name="active" default="true" />
+        </property>
+    </class>
+
+</hibernate-mapping>
