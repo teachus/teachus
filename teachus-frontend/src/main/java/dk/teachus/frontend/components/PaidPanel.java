@@ -37,7 +37,7 @@ public class PaidPanel extends Panel {
 	public PaidPanel(String id, final IModel model) {
 		super(id, model);
 		
-		AjaxLink link = new AjaxLink("link") { //$NON-NLS-1$
+		AjaxLink link = new BlockingAjaxLink("link") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override

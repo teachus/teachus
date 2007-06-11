@@ -22,7 +22,6 @@ import org.joda.time.DateTime;
 import wicket.Component;
 import wicket.MarkupContainer;
 import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.AjaxLink;
 import wicket.behavior.AttributeAppender;
 import wicket.behavior.SimpleAttributeModifier;
 import wicket.markup.html.WebComponent;
@@ -35,6 +34,7 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
+import dk.teachus.frontend.components.BlockingAjaxLink;
 import dk.teachus.frontend.utils.Resources;
 
 public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
@@ -181,7 +181,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 
 	private Component createLink(final Period period, final DateTime time, final Booking booking) {
 		Component link;
-		link = new AjaxLink(LINK_ID) { 
+		link = new BlockingAjaxLink(LINK_ID) { 
 			private static final long serialVersionUID = 1L;
 			
 			private Booking localBooking = booking;
