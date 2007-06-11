@@ -69,6 +69,10 @@ ul p {
 
 /* CALENDAR */
 
+.calendar .indicator {
+	margin-top: 1px;
+}
+
 table.border {
 	border: 1px solid gray;
 	width: 1%;

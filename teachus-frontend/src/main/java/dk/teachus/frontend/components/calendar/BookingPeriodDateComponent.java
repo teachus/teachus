@@ -208,14 +208,8 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 					
 					this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
-											
-				String id2 = BookingPeriodDateComponent.this.getId();
-				Period period2 = BookingPeriodDateComponent.this.period;
-				DateMidnight date2 = date;
-				Bookings bookings2 = bookings;
-				BookingPeriodDateComponent newInstance = createNewInstance(id2, period2, date2, bookings2);
-				BookingPeriodDateComponent.this.getParent().replace(newInstance);
-				target.addComponent(newInstance);
+				
+				target.addComponent(this);
 			}					
 		};
 		if (booking != null) {

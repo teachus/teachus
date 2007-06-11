@@ -25,6 +25,9 @@ import dk.teachus.frontend.components.jquery.JQueryBehavior;
 
 public abstract class BlockingAjaxLink extends AjaxLink {
 
+	private static final String TAB = "\t";
+	private static final String NEWLINE = "\n";
+
 	public BlockingAjaxLink(String id) {
 		super(id);
 		
@@ -35,13 +38,16 @@ public abstract class BlockingAjaxLink extends AjaxLink {
 			public void onRenderHead(IHeaderResponse response) {
 				StringBuilder b = new StringBuilder();
 				
-				b.append("function blockOnClick(elm) {");
-				b.append("var e = $(elm);");
-				b.append("var id = e.attr('id');");
-				b.append("var img = $('<img>').attr('id', id).attr('style', 'margin-top: 1px').attr('src', '");
+				b.append("function blockOnClick(elm) {").append(NEWLINE);
+				b.append(TAB).append("e = $(elm);").append(NEWLINE);
+				b.append(TAB).append("id = e.attr('id');").append(NEWLINE);
+				b.append(TAB).append("img = $('<img>');").append(NEWLINE);
+				b.append(TAB).append("img.attr('id', id);").append(NEWLINE);
+				b.append(TAB).append("img.attr('class', 'indicator');").append(NEWLINE);
+				b.append(TAB).append("img.attr('src', '");
 				b.append(getRequestCycle().urlFor(AbstractDefaultAjaxBehavior.INDICATOR));
-				b.append("');");
-				b.append("e.after(img).remove();");
+				b.append("');").append(NEWLINE);
+				b.append(TAB).append("e.after(img).remove();").append(NEWLINE);
 				b.append("}");
 				
 				response.renderJavascript(b, "blockOnClick");
