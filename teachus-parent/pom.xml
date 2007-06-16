@@ -4,7 +4,7 @@
 	<groupId>dk.teachus</groupId>
 	<artifactId>teachus-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.37</version>
+	<version>1.38-SNAPSHOT</version>
 	<name>TeachUs Parent</name>
 	<description>Scheduling system for private teachers.</description>
 
@@ -263,8 +263,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://svn.billen.dk/dk.teachus/releases/teachus-parent-1.37</connection>
-		<developerConnection>scm:svn:http://svn.billen.dk/dk.teachus/releases/teachus-parent-1.37</developerConnection>
+		<connection>scm:svn:http://svn.billen.dk/dk.teachus/trunk</connection>
+		<developerConnection>scm:svn:http://svn.billen.dk/dk.teachus/trunk</developerConnection>
 	</scm>
 	
 	<developers>
