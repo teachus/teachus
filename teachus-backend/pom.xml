@@ -9,7 +9,6 @@
 		<relativePath>../teachus-parent/pom.xml</relativePath>
 	</parent>
 	
-	<groupId>dk.teachus</groupId>
 	<artifactId>teachus-backend</artifactId>
 	<packaging>jar</packaging>
 
