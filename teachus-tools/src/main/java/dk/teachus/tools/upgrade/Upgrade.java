@@ -22,6 +22,7 @@ public class Upgrade {
 	
 	private static final String PROPERTY_MAVEN_PATH = "maven.path";
 	private static final String PROPERTY_SVN_RELEASE = "svn.release";
+	private static final String PROPERTY_TEMP_DIR = "temp.dir";
 
 	private static final String PROPERTY_MAIN_TOMCAT = "main.tomcat";
 	private static final String PROPERTY_DEMO_TOMCAT = "demo.tomcat";
@@ -53,7 +54,7 @@ public class Upgrade {
 		stopTomcat(properties.getProperty(PROPERTY_DEMO_TOMCAT));
 		
 		// Get us a temporary folder
-		File workingDirectory = createWorkingDirectory();
+		File workingDirectory = createWorkingDirectory(properties);
 		
 		// Checkout release version
 		checkoutVersion(workingDirectory, properties);
@@ -194,7 +195,8 @@ public class Upgrade {
 		
 		checkProperty(properties, PROPERTY_MAVEN_PATH, "Absolute path to maven binary: ");
 		checkProperty(properties, PROPERTY_SVN_RELEASE, "Subversion release url (%r is replace by version number): ");
-		
+
+		checkProperty(properties, PROPERTY_TEMP_DIR, "Temporary directory: ");
 		checkProperty(properties, PROPERTY_BACKUP_DIR, "Database backup directory: ");
 		
 		checkProperty(properties, PROPERTY_MAIN_TOMCAT, "Main Tomcat home: ");
@@ -218,8 +220,8 @@ public class Upgrade {
 		return properties;
 	}
 
-	private File createWorkingDirectory() throws IOException {
-		File tempDir = File.createTempFile("teachus", "teachus");
+	private File createWorkingDirectory(Properties properties) throws IOException {
+		File tempDir = File.createTempFile("teachus", "teachus", new File(properties.getProperty(PROPERTY_TEMP_DIR)));
 		tempDir.delete();
 		tempDir.mkdir();
 		return tempDir;
