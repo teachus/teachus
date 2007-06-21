@@ -45,8 +45,8 @@
 			<version>1.2</version>
 		</dependency>
 		<dependency>
-			<groupId>nanoxml</groupId>
-			<artifactId>nanoxml-lite</artifactId>
+			<groupId>be.cyberelf.nanoxml</groupId>
+			<artifactId>lite</artifactId>
 			<version>2.2.3</version>
 		</dependency>
 		<dependency>
