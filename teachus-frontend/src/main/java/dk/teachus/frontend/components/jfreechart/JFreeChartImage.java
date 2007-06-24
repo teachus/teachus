@@ -16,13 +16,15 @@
  */
 package dk.teachus.frontend.components.jfreechart;
 
-import wicket.ajax.AbstractDefaultAjaxBehavior;
+import wicket.ResourceReference;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.image.NonCachingImage;
 
 public class JFreeChartImage extends NonCachingImage {
 	private static final long serialVersionUID = 1L;
 
+	public static final ResourceReference LOADING_INDICATOR = new ResourceReference(JFreeChartImage.class, "indicator_48.gif");
+	
 	private JFreeChartResource jFreeChartResource;
 	
 	public JFreeChartImage(String id, JFreeChartResource jFreeChartResource) {
@@ -39,7 +41,7 @@ public class JFreeChartImage extends NonCachingImage {
 		
 		StringBuilder style = new StringBuilder();
 		style.append("background: url('");
-		style.append(getRequestCycle().urlFor(AbstractDefaultAjaxBehavior.INDICATOR));
+		style.append(getRequestCycle().urlFor(LOADING_INDICATOR));
 		style.append("') no-repeat center center");
 		tag.put("style", style);
 	}

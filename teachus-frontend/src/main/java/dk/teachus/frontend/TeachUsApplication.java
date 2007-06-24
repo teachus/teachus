@@ -47,6 +47,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.imagebox.ImageBox;
+import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
@@ -174,6 +175,8 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/toolbar_green.png", Resources.TOOLBAR_GREEN.getSharedResourceKey());
 		mountSharedResource("/images/list_header_back_purple.png", Resources.LIST_HEADER_PURPLE.getSharedResourceKey());
 		mountSharedResource("/images/toolbar_purple.png", Resources.TOOLBAR_PURPLE.getSharedResourceKey());
+		
+		mountSharedResource("/images/loading.gif", JFreeChartImage.LOADING_INDICATOR.getSharedResourceKey());
 		
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
