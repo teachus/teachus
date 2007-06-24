@@ -24,5 +24,15 @@ public class MainUpgradeTeachUsAction extends UpgradeTeachUsAction {
 		BackupDatabaseAction backupDatabase = new BackupDatabaseAction(deployment.getDatabase(), backupFile);
 		backupDatabase.execute();
 	}
+	
+	@Override
+	protected int getMaxHeap() {
+		return 128;
+	}
+	
+	@Override
+	protected int getMaxPerm() {
+		return 128;
+	}
 
 }

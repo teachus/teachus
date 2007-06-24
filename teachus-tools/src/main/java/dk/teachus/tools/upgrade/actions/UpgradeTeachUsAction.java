@@ -68,6 +68,8 @@ abstract class UpgradeTeachUsAction implements Action {
 
 		// Start tomcat
 		TomcatAction startTomcat = new TomcatAction(deployment.getTomcat(), ProcessAction.START);
+		startTomcat.setMaxHeap(getMaxHeap());
+		startTomcat.setMaxPerm(getMaxPerm());
 		startTomcat.execute();
 		
 		// Clean up 
@@ -77,6 +79,14 @@ abstract class UpgradeTeachUsAction implements Action {
 		log.info("Upgrade completed!!");
 	}
 	
+	protected int getMaxPerm() {
+		return 64;
+	}
+
+	protected int getMaxHeap() {
+		return 64;
+	}
+
 	protected abstract String getName();
 	
 	protected void beforeUpgradeDatabase(File projectDirectory) throws Exception {

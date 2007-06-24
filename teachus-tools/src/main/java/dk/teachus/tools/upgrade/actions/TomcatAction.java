@@ -16,6 +16,10 @@ public class TomcatAction implements Action {
 	private TomcatNode tomcat;
 
 	private ProcessAction processAction;
+	
+	private int maxHeap = 64;
+	
+	private int maxPerm = 64;
 
 	public TomcatAction(TomcatNode tomcat, ProcessAction processAction) {
 		this.tomcat = tomcat;
@@ -30,6 +34,7 @@ public class TomcatAction implements Action {
 		}
 		
 		StringBuilder command = new StringBuilder();
+		command.append("export JAVA_OPTS=\"$JAVA_OPTS -Xmx"+maxHeap+"m -XX:MaxPermSize="+maxPerm+"m\";");
 		command.append("export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun;");
 		command.append(tomcat.getHome());
 		command.append("/bin/");
@@ -48,6 +53,14 @@ public class TomcatAction implements Action {
 		Session session = ssh.openSession();
 		session.execCommand(command.toString());
 		session.close();
+	}
+
+	public void setMaxHeap(int maxHeap) {
+		this.maxHeap = maxHeap;
+	}
+
+	public void setMaxPerm(int maxPerm) {
+		this.maxPerm = maxPerm;
 	}
 
 }
