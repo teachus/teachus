@@ -16,6 +16,7 @@
  */
 package dk.teachus.frontend.components.jfreechart;
 
+import wicket.ajax.AbstractDefaultAjaxBehavior;
 import wicket.markup.ComponentTag;
 import wicket.markup.html.image.NonCachingImage;
 
@@ -35,6 +36,12 @@ public class JFreeChartImage extends NonCachingImage {
 		
 		tag.put("width", jFreeChartResource.getWidth()); //$NON-NLS-1$
 		tag.put("height", jFreeChartResource.getHeight()); //$NON-NLS-1$
+		
+		StringBuilder style = new StringBuilder();
+		style.append("background: url('");
+		style.append(getRequestCycle().urlFor(AbstractDefaultAjaxBehavior.INDICATOR));
+		style.append("') no-repeat center center");
+		tag.put("style", style);
 	}
 
 }
