@@ -40,10 +40,11 @@ public class TomcatAction implements Action {
 		command.append("/bin/");
 		switch (processAction) {
 		case START:
-			command.append("startup.sh");
+			command.append("startup.sh;");
 			break;
 		case STOP:
-			command.append("shutdown.sh");
+			command.append("shutdown.sh;");
+			command.append("sleep 5s;");
 			break;
 		}
 
