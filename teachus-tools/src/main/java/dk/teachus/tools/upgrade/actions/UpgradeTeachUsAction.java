@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import dk.teachus.tools.upgrade.actions.TomcatAction.ProcessAction;
 import dk.teachus.tools.upgrade.config.AbstractDeploymentNode;
 import dk.teachus.tools.upgrade.config.MavenNode;
-import dk.teachus.tools.upgrade.config.SubversionNode;
+import dk.teachus.tools.upgrade.config.SubversionReleaseNode;
 
 abstract class UpgradeTeachUsAction implements Action {
 	private static final Log log = LogFactory.getLog(UpgradeTeachUsAction.class);
@@ -18,9 +18,9 @@ abstract class UpgradeTeachUsAction implements Action {
 	protected AbstractDeploymentNode deployment;
 	protected File workingDirectory;
 	protected String version;
-	protected SubversionNode subversion;
+	protected SubversionReleaseNode subversion;
 
-	public UpgradeTeachUsAction(MavenNode maven, SubversionNode subversion, File workingDirectory, AbstractDeploymentNode deployment, String version) {
+	public UpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, AbstractDeploymentNode deployment, String version) {
 		this.maven = maven;
 		this.deployment = deployment;
 		this.workingDirectory = workingDirectory;
@@ -41,7 +41,7 @@ abstract class UpgradeTeachUsAction implements Action {
 		projectDirectory.mkdir();
 		
 		// Checkout version from subversion
-		SubversionCheckoutAction subversionCheckout = new SubversionCheckoutAction(subversion, version, projectDirectory);
+		SubversionCheckoutReleaseAction subversionCheckout = new SubversionCheckoutReleaseAction(subversion, version, projectDirectory);
 		subversionCheckout.execute();
 		
 		// Configure database

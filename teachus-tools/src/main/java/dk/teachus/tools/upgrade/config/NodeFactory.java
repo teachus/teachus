@@ -21,10 +21,14 @@ public abstract class NodeFactory {
 			node = new DemoDeploymentNode();
 		} else if (name.equalsIgnoreCase("ssh")) {
 			node = new SshNode();
-		} else if (name.equalsIgnoreCase("subversion")) {
-			node = new SubversionNode();
+		} else if (name.equalsIgnoreCase("svnrelease")) {
+			node = new SubversionReleaseNode();
+		} else if (name.equalsIgnoreCase("svntrunk")) {
+			node = new SubversionTrunkNode();
 		} else if (name.equalsIgnoreCase("maven")) {
 			node = new MavenNode();
+		} else if (name.equalsIgnoreCase("workingdirectory")) {
+			node = new WorkingDirectoryNode();
 		}
 		
 		if (node != null) {

@@ -2,17 +2,23 @@ package dk.teachus.tools.upgrade.config;
 
 import nanoxml.XMLElement;
 
-public class SubversionNode extends AbstractNode {
+public class SubversionReleaseNode extends AbstractNode {
 	
 	private StringNode releaseUrl;
 	
-	public SubversionNode() {
+	public SubversionReleaseNode() {
 		this(null);
 	}
 	
-	public SubversionNode(String releaseUrl) {
+	public SubversionReleaseNode(String releaseUrl) {
 		this.releaseUrl = new StringNode("releaseurl");
 		this.releaseUrl.setValue(releaseUrl);
+	}
+	
+	public String getReleaseUrl(String version) {
+		String svnRelease = getReleaseUrl();
+		svnRelease = svnRelease.replace("%r", version);
+		return svnRelease;
 	}
 	
 	public String getReleaseUrl() {
@@ -24,7 +30,7 @@ public class SubversionNode extends AbstractNode {
 	}
 
 	public void deserialize(XMLElement element) {
-		if (element.getName().equalsIgnoreCase("subversion")) {
+		if (element.getName().equalsIgnoreCase("svnrelease")) {
 			releaseUrl = new StringNode();
 			releaseUrl.deserialize(findChild(element, "releaseurl"));
 		}
@@ -32,7 +38,7 @@ public class SubversionNode extends AbstractNode {
 
 	public XMLElement serialize() {
 		XMLElement element = new XMLElement();
-		element.setName("subversion");
+		element.setName("svnrelease");
 		element.addChild(releaseUrl.serialize());
 		return element;
 	}

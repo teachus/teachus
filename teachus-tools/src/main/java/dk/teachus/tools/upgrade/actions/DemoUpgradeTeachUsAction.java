@@ -4,11 +4,11 @@ import java.io.File;
 
 import dk.teachus.tools.upgrade.config.DemoDeploymentNode;
 import dk.teachus.tools.upgrade.config.MavenNode;
-import dk.teachus.tools.upgrade.config.SubversionNode;
+import dk.teachus.tools.upgrade.config.SubversionReleaseNode;
 
 public class DemoUpgradeTeachUsAction extends UpgradeTeachUsAction {
 
-	public DemoUpgradeTeachUsAction(MavenNode maven, SubversionNode subversion, File workingDirectory, DemoDeploymentNode deployment, String version) {
+	public DemoUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, DemoDeploymentNode deployment, String version) {
 		super(maven, subversion, workingDirectory, deployment, version);
 	}
 	

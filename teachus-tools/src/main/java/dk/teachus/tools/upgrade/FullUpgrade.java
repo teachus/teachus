@@ -11,28 +11,31 @@ import dk.teachus.tools.upgrade.config.Configuration;
 import dk.teachus.tools.upgrade.config.DemoDeploymentNode;
 import dk.teachus.tools.upgrade.config.MainDeploymentNode;
 import dk.teachus.tools.upgrade.config.MavenNode;
-import dk.teachus.tools.upgrade.config.SubversionNode;
+import dk.teachus.tools.upgrade.config.SubversionReleaseNode;
+import dk.teachus.tools.upgrade.config.WorkingDirectoryNode;
 
 public class FullUpgrade {
 	
 	public static void main(String[] args) throws Exception {
 		String version = getInput("Version number: ");
 		
-		File workingDirectory = new File("/home/fb/sandbox/teachus-tools");
-		
 		File preferenceFile = new File(System.getProperty("user.home"), ".teachus/upgrade.xml");
 		
 		Configuration configuration = new Configuration();
+		configuration.add(new WorkingDirectoryNode());
 		configuration.add(new MavenNode());
-		configuration.add(new SubversionNode());
+		configuration.add(new SubversionReleaseNode());
 		configuration.add(new MainDeploymentNode());
 		configuration.add(new DemoDeploymentNode());
 		configuration.initialize(preferenceFile);
 		
 		MavenNode maven = configuration.getNode(MavenNode.class);
-		SubversionNode subversion = configuration.getNode(SubversionNode.class);
+		SubversionReleaseNode subversion = configuration.getNode(SubversionReleaseNode.class);
 		
 		MainDeploymentNode mainDeployment = configuration.getNode(MainDeploymentNode.class);
+		
+		WorkingDirectoryNode workingDirectoryNode = configuration.getNode(WorkingDirectoryNode.class);
+		File workingDirectory = workingDirectoryNode.getWorkingDirectoryFile();
 		
 		MainUpgradeTeachUsAction mainUpgrade = new MainUpgradeTeachUsAction(maven, subversion, workingDirectory, mainDeployment, version);
 		mainUpgrade.execute();
