@@ -35,8 +35,7 @@ public class BackupDatabaseAction implements Action {
 		command.add("-u");
 		command.add(database.getUsername());
 		if (database.getPassword() != null && database.getPassword().length() > 0) {
-			command.add("-p");
-			command.add(database.getPassword());
+			command.add("--password="+database.getPassword());
 		}
 		command.add("-c");
 		command.add("--delayed-insert");
