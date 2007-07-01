@@ -16,11 +16,12 @@
  */
 package dk.teachus.frontend.components;
 
-import wicket.ajax.AbstractDefaultAjaxBehavior;
-import wicket.ajax.IAjaxCallDecorator;
-import wicket.ajax.calldecorator.AjaxCallDecorator;
-import wicket.ajax.markup.html.AjaxLink;
-import wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.IAjaxCallDecorator;
+import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.IHeaderResponse;
+
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 
 public abstract class BlockingAjaxLink extends AjaxLink {

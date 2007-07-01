@@ -16,10 +16,10 @@
  */
 package dk.teachus.frontend.components.jquery;
 
-import wicket.ResourceReference;
-import wicket.behavior.AbstractBehavior;
-import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 
 public class JQueryBehavior extends AbstractBehavior {
 	private static final long serialVersionUID = 1L;

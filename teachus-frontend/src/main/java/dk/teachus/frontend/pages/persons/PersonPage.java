@@ -36,6 +36,6 @@ public abstract class PersonPage<P extends PersonModel> extends AuthenticatedBas
 	
 	@Override
 	protected String getPageLabel() {
-		return personModel.getObject(this).getName();
+		return personModel.getObject().getName();
 	}
 }

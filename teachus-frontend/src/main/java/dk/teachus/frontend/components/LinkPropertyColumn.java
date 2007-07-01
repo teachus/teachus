@@ -16,12 +16,12 @@
  */
 package dk.teachus.frontend.components;
 
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.Link;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.PropertyModel;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
 public abstract class LinkPropertyColumn extends AbstractColumn {
 	private String propertyExpression;
@@ -40,7 +40,7 @@ public abstract class LinkPropertyColumn extends AbstractColumn {
 
 			@Override
 			public void onClick() {
-				LinkPropertyColumn.this.onClick(rowModel.getObject(cellItem));
+				LinkPropertyColumn.this.onClick(rowModel.getObject());
 			}			
 		};
 		Label label = new Label("label", new PropertyModel(rowModel, propertyExpression));

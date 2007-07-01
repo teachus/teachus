@@ -16,13 +16,14 @@
  */
 package dk.teachus.frontend.pages;
 
-import wicket.Application;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.link.Link;
-import wicket.request.target.component.BookmarkablePageRequestTarget;
+import org.apache.wicket.Application;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
+
 import dk.teachus.frontend.TeachUsSession;
 
 public class SignedOutPage extends SystemBasePage {

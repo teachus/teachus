@@ -18,7 +18,8 @@ package dk.teachus.frontend.pages;
 
 import java.io.Serializable;
 
-import wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.WebPage;
+
 import dk.teachus.frontend.pages.BasePage.PageCategory;
 
 public class MenuItem implements Serializable {

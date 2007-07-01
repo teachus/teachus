@@ -16,7 +16,7 @@
  */
 package dk.teachus.frontend.components.form;
 
-import wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.panel.Panel;
 
 public abstract class FormElement extends Panel {
 

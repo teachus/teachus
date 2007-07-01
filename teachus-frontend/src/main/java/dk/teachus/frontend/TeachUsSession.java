@@ -24,13 +24,14 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.Cookie;
 
-import wicket.Request;
-import wicket.RequestCycle;
-import wicket.Session;
-import wicket.protocol.http.WebApplication;
-import wicket.protocol.http.WebRequest;
-import wicket.protocol.http.WebResponse;
-import wicket.protocol.http.WebSession;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Session;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.protocol.http.WebSession;
+
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;

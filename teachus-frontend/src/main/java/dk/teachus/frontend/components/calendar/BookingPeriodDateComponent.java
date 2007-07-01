@@ -16,18 +16,18 @@
  */
 package dk.teachus.frontend.components.calendar;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.model.Model;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
-import wicket.Component;
-import wicket.MarkupContainer;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.behavior.AttributeAppender;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.image.Image;
-import wicket.model.Model;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;

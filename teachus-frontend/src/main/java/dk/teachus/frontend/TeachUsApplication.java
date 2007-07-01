@@ -22,24 +22,24 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.wicket.Application;
+import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.markup.html.AjaxServerAndClientTimeFilter;
+import org.apache.wicket.markup.html.WicketEventReference;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
+import org.apache.wicket.settings.IExceptionSettings;
+import org.apache.wicket.util.io.IObjectStreamFactory;
+import org.apache.wicket.util.lang.Objects;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import wicket.Application;
-import wicket.ISessionFactory;
-import wicket.Request;
-import wicket.RequestCycle;
-import wicket.Session;
-import wicket.ajax.AbstractDefaultAjaxBehavior;
-import wicket.markup.html.AjaxServerAndClientTimeFilter;
-import wicket.markup.html.WicketEventReference;
-import wicket.markup.html.resources.JavascriptResourceReference;
-import wicket.protocol.http.WebApplication;
-import wicket.protocol.http.WebRequestCycle;
-import wicket.request.target.coding.IndexedParamUrlCodingStrategy;
-import wicket.settings.IExceptionSettings;
-import wicket.util.io.IObjectStreamFactory;
-import wicket.util.lang.Objects;
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
@@ -109,8 +109,8 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
-		mount("/stats/incomeperperiod", new IndexedParamUrlCodingStrategy("/stats/incomeperperiod", IncomePerPeriodPage.class));
-		mount("/stats/lessonsperhour", new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class));
+		mount(new IndexedParamUrlCodingStrategy("/stats/incomeperperiod", IncomePerPeriodPage.class));
+		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class));
 		mountBookmarkablePage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$
 	}
@@ -219,14 +219,10 @@ public class TeachUsApplication extends WebApplication {
 	}
 	
 	@Override
-	protected ISessionFactory getSessionFactory() {
-		return new ISessionFactory() {
-			public Session newSession(Request request) {
-				return new TeachUsSession(TeachUsApplication.this, request);
-			}
-		};
+	public Session newSession(Request request, Response response) {
+		return new TeachUsSession(this, request);
 	}
-
+	
 	public static TeachUsApplication get() {
 		return (TeachUsApplication) Application.get();
 	}

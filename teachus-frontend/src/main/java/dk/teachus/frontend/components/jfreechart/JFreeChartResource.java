@@ -20,10 +20,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import org.apache.wicket.markup.html.image.resource.RenderedDynamicImageResource;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.Plot;
 
-import wicket.markup.html.image.resource.RenderedDynamicImageResource;
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class JFreeChartResource extends RenderedDynamicImageResource {

@@ -16,10 +16,10 @@
  */
 package dk.teachus.frontend.pages.persons;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
 
-import wicket.Page;
-import wicket.util.tester.ITestPageSource;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Pupil;
@@ -94,7 +94,8 @@ public class TestPersonPage extends WicketTestCase {
 	}
 	
 	public void testNewTeacherPage() {
-		final TeachUsWicketTester tester = createTester();
+		// Log in as admin
+		final TeachUsWicketTester tester = createTester(1);
 		
 		checking(new Expectations() {{
 			PersonDAO personDAO = createPersonDAO();
@@ -107,9 +108,6 @@ public class TestPersonPage extends WicketTestCase {
 			
 			tester.setPersonDAO(personDAO);
 		}});
-		
-		// Log in as admin
-		TesterTeachUsSession.get().setPerson(1l);
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
@@ -124,7 +122,8 @@ public class TestPersonPage extends WicketTestCase {
 	}
 	
 	public void testTeacherPage() {
-		final TeachUsWicketTester tester = createTester();
+		// Log in as admin
+		final TeachUsWicketTester tester = createTester(1);
 		
 		final Teacher teacher = createTeacher();
 		
@@ -139,9 +138,6 @@ public class TestPersonPage extends WicketTestCase {
 			
 			tester.setPersonDAO(personDAO);
 		}});
-		
-		// Log in as admin
-		TesterTeachUsSession.get().setPerson(1l);
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
@@ -158,7 +154,8 @@ public class TestPersonPage extends WicketTestCase {
 	}
 	
 	public void testNewAdminPage() {
-		final TeachUsWicketTester tester = createTester();
+		// Log in as admin
+		final TeachUsWicketTester tester = createTester(1);
 		
 		checking(new Expectations() {{
 			PersonDAO personDAO = createPersonDAO();
@@ -171,9 +168,6 @@ public class TestPersonPage extends WicketTestCase {
 			
 			tester.setPersonDAO(personDAO);
 		}});
-		
-		// Log in as admin
-		TesterTeachUsSession.get().setPerson(1l);
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
@@ -188,7 +182,8 @@ public class TestPersonPage extends WicketTestCase {
 	}
 	
 	public void testAdminPage() {
-		final TeachUsWicketTester tester = createTester();
+		// Log in as admin
+		final TeachUsWicketTester tester = createTester(1);
 		
 		final Admin admin = createAdmin(10L);
 		
@@ -203,10 +198,7 @@ public class TestPersonPage extends WicketTestCase {
 			
 			tester.setPersonDAO(personDAO);
 		}});
-		
-		// Log in as admin
-		TesterTeachUsSession.get().setPerson(1l);
-		
+				
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
 

@@ -19,8 +19,9 @@ package dk.teachus.frontend.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.Application;
-import wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.Application;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsSession;

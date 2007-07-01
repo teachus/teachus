@@ -19,9 +19,10 @@ package dk.teachus.frontend.pages;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.basic.MultiLineLabel;
-import wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
+import org.apache.wicket.markup.repeater.RepeatingView;
+
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.imagebox.ImageBox;
 import dk.teachus.frontend.components.imagebox.ImageBox.ImageResource;

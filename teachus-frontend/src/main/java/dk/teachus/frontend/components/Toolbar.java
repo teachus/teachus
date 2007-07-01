@@ -19,16 +19,16 @@ package dk.teachus.frontend.components;
 import java.io.Serializable;
 import java.util.List;
 
-import wicket.Component;
-import wicket.Page;
-import wicket.PageParameters;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.link.Link;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.Component;
+import org.apache.wicket.Page;
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.RepeatingView;
 
 public class Toolbar extends Panel {
 	private static final long serialVersionUID = 1L;

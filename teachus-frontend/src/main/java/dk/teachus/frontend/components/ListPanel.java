@@ -18,16 +18,16 @@ package dk.teachus.frontend.components;
 
 import java.util.List;
 
-import wicket.Component;
-import wicket.extensions.markup.html.repeater.data.table.DataTable;
-import wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.NavigationToolbar;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.data.ListDataProvider;
-import wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.NavigationToolbar;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.data.ListDataProvider;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+
 import dk.teachus.frontend.TeachUsSession;
 
 public class ListPanel extends Panel {
@@ -47,7 +47,7 @@ public class ListPanel extends Panel {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject(Component component) {
+					public Object getObject() {
 						int of = table.getRowCount();
 						int from = table.getCurrentPage() * table.getRowsPerPage();
 						int to = Math.min(of, from + table.getRowsPerPage());

@@ -18,8 +18,8 @@ package dk.teachus.frontend.components.form;
 
 import java.util.List;
 
-import wicket.markup.html.form.IChoiceRenderer;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.model.IModel;
 
 public abstract class AbstractChoiceElement extends AbstractValidationInputElement {
 	protected IModel inputModel;

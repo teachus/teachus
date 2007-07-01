@@ -21,26 +21,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.ExternalLink;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.string.Strings;
+import org.apache.wicket.util.template.TextTemplateHeaderContributor;
+
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
-
-import wicket.AttributeModifier;
-import wicket.Component;
-import wicket.RequestCycle;
-import wicket.ResourceReference;
-import wicket.behavior.HeaderContributor;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.extensions.util.resource.TextTemplateHeaderContributor;
-import wicket.markup.html.IHeaderContributor;
-import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.link.ExternalLink;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.html.resources.JavascriptResourceReference;
-import wicket.markup.repeater.RepeatingView;
-import wicket.model.LoadableDetachableModel;
-import wicket.model.Model;
-import wicket.util.string.Strings;
 
 public class ImageBox extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -176,7 +176,9 @@ public class ImageBox extends Panel {
 	}
 	
 	@Override
-	protected void onAttach() {
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		
 		if (attached == false) {			
 			RepeatingView imagesContainer = new RepeatingView("images"); //$NON-NLS-1$
 			add(imagesContainer);

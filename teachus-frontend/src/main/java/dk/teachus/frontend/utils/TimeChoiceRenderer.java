@@ -18,10 +18,9 @@ package dk.teachus.frontend.utils;
 
 import java.util.Date;
 
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
-
-import wicket.markup.html.form.ChoiceRenderer;
 
 public class TimeChoiceRenderer extends ChoiceRenderer {
 	private static final DateTimeFormatter FORMAT_TIME = Formatters.getFormatTime();

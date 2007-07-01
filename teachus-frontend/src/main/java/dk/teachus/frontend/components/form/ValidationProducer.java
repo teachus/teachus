@@ -18,8 +18,9 @@ package dk.teachus.frontend.components.form;
 
 import java.io.Serializable;
 
-import wicket.Component;
-import wicket.markup.html.form.FormComponent;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.form.FormComponent;
+
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
 public interface ValidationProducer extends Serializable {

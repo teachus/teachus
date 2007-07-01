@@ -19,12 +19,12 @@ package dk.teachus.frontend.pages.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
-import wicket.Page;
-import wicket.util.tester.ITestPageSource;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
@@ -77,11 +77,9 @@ public class TestPupilCalendarPage extends WicketTestCase {
 	}
 	
 	public void testRender_pupil() {
-		final TeachUsWicketTester tester = createTester();
-		
 		// Log in as pupil
-		TesterTeachUsSession.get().setPerson(11l);
-		
+		final TeachUsWicketTester tester = createTester(11);
+				
 		checking(new Expectations() {{
 			PersonDAO personDAO = createPersonDAO();
 			PeriodDAO periodDAO = createPeriodDAO();

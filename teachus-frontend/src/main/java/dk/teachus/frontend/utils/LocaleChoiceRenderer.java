@@ -19,7 +19,8 @@ package dk.teachus.frontend.utils;
 import java.util.Locale;
 import java.util.Properties;
 
-import wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
+
 import dk.teachus.frontend.TeachUsSession;
 
 public class LocaleChoiceRenderer extends ChoiceRenderer {

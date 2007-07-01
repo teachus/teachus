@@ -58,11 +58,9 @@ public class TestPaymentPage extends WicketTestCase {
 	}
 	
 	public void testRender_pupil() {
-		final TeachUsWicketTester tester = createTester();
-		
 		// Log in as pupil
-		TesterTeachUsSession.get().setPerson(11l);
-		
+		final TeachUsWicketTester tester = createTester(11);
+				
 		checking(new Expectations() {{
 			PersonDAO personDAO = createPersonDAO();
 			BookingDAO bookingDAO = createBookingDAO();	

@@ -16,11 +16,11 @@
  */
 package dk.teachus.frontend.components.form;
 
-import wicket.Component;
-import wicket.behavior.AbstractBehavior;
-import wicket.markup.html.IHeaderResponse;
-import wicket.markup.html.WicketEventReference;
-import wicket.markup.html.form.FormComponent;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WicketEventReference;
+import org.apache.wicket.markup.html.form.FormComponent;
 
 /**
  * 

@@ -20,12 +20,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.validation.IFormValidator;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.RepeatingView;
 
 public class FormPanel extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -63,8 +63,8 @@ public class FormPanel extends Panel {
 	}
 	
 	@Override
-	public void internalAttach() {
-		super.internalAttach();
+	public void onAfterRender() {
+		super.onAfterRender();
 		
 		for (FormValidator formValidator : validators) {
 			form.add(formValidator.getFormValidator());

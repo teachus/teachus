@@ -18,8 +18,8 @@ package dk.teachus.frontend.utils;
 
 import java.util.Currency;
 
-import wicket.Session;
-import wicket.markup.html.form.ChoiceRenderer;
+import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 public class CurrencyChoiceRenderer extends ChoiceRenderer {
 	private static final long serialVersionUID = 1L;

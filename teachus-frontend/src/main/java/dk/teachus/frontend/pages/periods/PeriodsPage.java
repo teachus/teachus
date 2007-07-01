@@ -19,8 +19,9 @@ package dk.teachus.frontend.pages.periods;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.model.Model;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.model.Model;
+
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;

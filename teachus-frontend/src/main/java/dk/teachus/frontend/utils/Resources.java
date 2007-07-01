@@ -16,8 +16,9 @@
  */
 package dk.teachus.frontend.utils;
 
-import wicket.ResourceReference;
-import wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+
 import dk.teachus.frontend.TeachUsApplication;
 
 public abstract class Resources {

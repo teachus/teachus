@@ -16,10 +16,10 @@
  */
 package dk.teachus.frontend.pages.persons;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
 
-import wicket.Page;
-import wicket.util.tester.ITestPageSource;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;

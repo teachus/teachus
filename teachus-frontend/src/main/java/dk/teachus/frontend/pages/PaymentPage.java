@@ -18,14 +18,15 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
-import wicket.Application;
-import wicket.RestartResponseAtInterceptPageException;
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.Application;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;

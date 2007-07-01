@@ -19,9 +19,9 @@ package dk.teachus.frontend.pages.persons;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.DataGridView;
 import org.jmock.Expectations;
 
-import wicket.extensions.markup.html.repeater.data.grid.DataGridView;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Pupil;
@@ -66,7 +66,8 @@ public class TestPersonsPage extends WicketTestCase {
 	}
 	
 	public void testTeachersPageRender() {
-		final TeachUsWicketTester tester = createTester();
+		// Log in as admin
+		final TeachUsWicketTester tester = createTester(1);
 		
 		final List<Teacher> teachers = new ArrayList<Teacher>();
 		teachers.add(createTeacher(2L));
@@ -86,9 +87,6 @@ public class TestPersonsPage extends WicketTestCase {
 			
 			tester.setPersonDAO(personDAO);
 		}});
-			
-		// Log in as admin
-		TesterTeachUsSession.get().setPerson(1l);
 		
 		tester.startPage(TeachersPage.class);
 		
@@ -100,7 +98,8 @@ public class TestPersonsPage extends WicketTestCase {
 	}
 	
 	public void testAdminsPageRender() {
-		final TeachUsWicketTester tester = createTester();
+		// Log in as admin
+		final TeachUsWicketTester tester = createTester(1);
 		
 		final List<Admin> admins = new ArrayList<Admin>();
 		admins.add(createAdmin(1L));
@@ -118,9 +117,6 @@ public class TestPersonsPage extends WicketTestCase {
 			
 			tester.setPersonDAO(personDAO);
 		}});
-			
-		// Log in as admin
-		TesterTeachUsSession.get().setPerson(1l);
 		
 		tester.startPage(AdminsPage.class);
 		

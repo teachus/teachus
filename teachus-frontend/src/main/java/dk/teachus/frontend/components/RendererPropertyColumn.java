@@ -16,11 +16,11 @@
  */
 package dk.teachus.frontend.components;
 
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import wicket.markup.html.form.IChoiceRenderer;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.PropertyModel;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 
 public class RendererPropertyColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;

@@ -21,14 +21,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.DateTime;
 
-import wicket.Component;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.form.validation.StringValidator;
-import wicket.model.AbstractModel;
-import wicket.model.IModel;
-import wicket.model.PropertyModel;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
@@ -51,7 +50,7 @@ import dk.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
 public class PeriodPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
-	private static class TimeModel extends AbstractModel {
+	private static class TimeModel extends Model {
 		private static final long serialVersionUID = 1L;
 		
 		private IModel nestedModel;
@@ -60,10 +59,10 @@ public class PeriodPage extends AuthenticatedBasePage {
 			this.nestedModel = nestedModel;
 		}
 
-		public Object getObject(Component component) {
+		public Object getObject() {
 			Object returnObject = null;
 			
-			Object object = nestedModel.getObject(component);
+			Object object = nestedModel.getObject();
 			if (object != null) {
 				Date date = (Date) object;
 				returnObject = new DateTime(date).getMinuteOfDay();
@@ -72,10 +71,10 @@ public class PeriodPage extends AuthenticatedBasePage {
 			return returnObject;
 		}
 
-		public void setObject(Component component, Object object) {
+		public void setObject(Object object) {
 			if (object != null) {
 				Integer minutesOfDay = (Integer) object;
-				nestedModel.setObject(component, new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay).toDate());
+				nestedModel.setObject(new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay).toDate());
 			}
 		}
 		

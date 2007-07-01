@@ -16,11 +16,12 @@
  */
 package dk.teachus.frontend.pages.settings;
 
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
-import wicket.markup.html.form.TextArea;
-import wicket.model.Model;
-import wicket.model.PropertyModel;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.TextArea;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;

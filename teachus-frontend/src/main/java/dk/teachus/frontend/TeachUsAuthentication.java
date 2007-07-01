@@ -16,7 +16,8 @@
  */
 package dk.teachus.frontend;
 
-import wicket.authorization.strategies.page.SimplePageAuthorizationStrategy;
+import org.apache.wicket.authorization.strategies.page.SimplePageAuthorizationStrategy;
+
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.pages.HomePage;
 

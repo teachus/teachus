@@ -16,8 +16,9 @@
  */
 package dk.teachus.frontend.components.form;
 
-import wicket.Component;
-import wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
 

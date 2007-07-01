@@ -19,16 +19,16 @@ package dk.teachus.frontend.components;
 import java.io.Serializable;
 import java.util.List;
 
-import wicket.Component;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.Link;
-import wicket.markup.repeater.Item;
-import wicket.markup.repeater.RepeatingView;
-import wicket.model.IModel;
-import wicket.util.string.JavascriptUtils;
-import wicket.util.string.Strings;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.JavascriptUtils;
+import org.apache.wicket.util.string.Strings;
 
 public class FunctionsColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;
@@ -70,7 +70,7 @@ public class FunctionsColumn extends AbstractColumn {
 
 	@SuppressWarnings("unchecked")
 	public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-		final Object object = rowModel.getObject(cellItem);
+		final Object object = rowModel.getObject();
 		
 		cellItem.add(new SimpleAttributeModifier("class", "functions"));
 		

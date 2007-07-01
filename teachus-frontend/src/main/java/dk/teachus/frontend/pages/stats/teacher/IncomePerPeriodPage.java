@@ -24,20 +24,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.wicket.PageParameters;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
+import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.string.Strings;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
-import wicket.PageParameters;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.DropDownChoice;
-import wicket.markup.html.form.Form;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.util.string.Strings;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
@@ -158,7 +158,7 @@ public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
 
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				int year = (Integer) yearModel.getObject(years);
+				int year = (Integer) yearModel.getObject();
 				PageParameters pageParameters = new PageParameters();
 				pageParameters.add("0", ""+year);
 				getRequestCycle().setResponsePage(IncomePerPeriodPage.class, pageParameters);

@@ -18,8 +18,9 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.model.Model;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.model.Model;
+
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;

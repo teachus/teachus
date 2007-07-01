@@ -18,12 +18,12 @@ package dk.teachus.frontend.components.form;
 
 import java.io.Serializable;
 
-import wicket.Component;
-import wicket.WicketRuntimeException;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import wicket.behavior.AbstractBehavior;
-import wicket.behavior.IBehavior;
+import org.apache.wicket.Component;
+import org.apache.wicket.WicketRuntimeException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.IBehavior;
 
 public class ElementModifier extends AbstractBehavior {
 	private static final long serialVersionUID = 1L;

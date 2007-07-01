@@ -20,19 +20,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import wicket.Application;
-import wicket.RestartResponseAtInterceptPageException;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.validation.EmailAddressPatternValidator;
-import wicket.markup.html.form.validation.EqualInputValidator;
-import wicket.markup.html.form.validation.IFormValidator;
-import wicket.markup.html.form.validation.IValidator;
-import wicket.markup.html.form.validation.PatternValidator;
-import wicket.markup.html.form.validation.StringValidator;
-import wicket.markup.html.panel.Panel;
-import wicket.model.PropertyModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.Application;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.string.Strings;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
+import org.apache.wicket.validation.validator.PatternValidator;
+import org.apache.wicket.validation.validator.StringValidator;
+
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
@@ -58,7 +60,7 @@ public abstract class PersonPanel extends Panel {
 	public PersonPanel(String id, final PersonModel personModel) {
 		super(id, personModel);
 		
-		if (allowUserEditing(TeachUsSession.get().getPerson(), personModel.getObject(this)) == false) {
+		if (allowUserEditing(TeachUsSession.get().getPerson(), personModel.getObject()) == false) {
 			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 		
@@ -72,7 +74,7 @@ public abstract class PersonPanel extends Panel {
 		
 		// Email
 		TextFieldElement emailField = new TextFieldElement(TeachUsSession.get().getString("General.email"), new PropertyModel(personModel, "email"), true, 50); //$NON-NLS-1$ //$NON-NLS-2$
-		emailField.add(EmailAddressPatternValidator.getInstance());
+		emailField.add(EmailAddressValidator.getInstance());
 		formPanel.addElement(emailField);
 		
 		// Phone number
@@ -88,8 +90,10 @@ public abstract class PersonPanel extends Panel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void error(FormComponent formComponent) {
-					formComponent.error(TeachUsSession.get().getString("PersonPanel.usernameCharacters")); //$NON-NLS-1$
+				public void error(IValidatable validatable) {
+					ValidationError validationError = new ValidationError();
+					validationError.setMessage(TeachUsSession.get().getString("PersonPanel.usernameCharacters"));
+					validatable.error(validationError); //$NON-NLS-1$
 				}
 			});
 			
@@ -97,18 +101,20 @@ public abstract class PersonPanel extends Panel {
 			usernameField.add(new IValidator() {
 				private static final long serialVersionUID = 1L;
 
-				public void validate(FormComponent component) {
+				public void validate(IValidatable validatable) {
 					PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-					String username = component.getValue();
+					String username = validatable.getValue().toString();
 					
 					Person existingPerson = personDAO.usernameExists(username);
 					
 					if (existingPerson != null && existingPerson.getId().equals(personModel.getPersonId()) == false) {
 						String localeString = TeachUsSession.get().getString("PersonPanel.userAlreadyExists"); //$NON-NLS-1$
 						localeString = localeString.replace("${username}", username); //$NON-NLS-1$
-						component.error(localeString);
+						ValidationError validationError = new ValidationError();
+						validationError.setMessage(localeString);
+						validatable.error(validationError);
 					}
-				}				
+				}
 			});
 			formPanel.addElement(usernameField);
 		} else {
@@ -170,12 +176,12 @@ public abstract class PersonPanel extends Panel {
 			@Override
 			protected void onSave(AjaxRequestTarget target) {
 				if (Strings.isEmpty(password1) == false) {
-					personModel.setPassword(PersonPanel.this, password1);
+					personModel.setPassword(password1);
 				}
 				
-				personModel.save(PersonPanel.this);			
+				personModel.save();			
 				
-				PersonPanel.this.onSave(personModel.getObject(PersonPanel.this));
+				PersonPanel.this.onSave(personModel.getObject());
 				
 				getRequestCycle().setResponsePage(getPersonsPageClass());
 			}			

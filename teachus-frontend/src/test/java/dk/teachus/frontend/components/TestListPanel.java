@@ -19,15 +19,16 @@ package dk.teachus.frontend.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import wicket.extensions.markup.html.repeater.data.table.DataTable;
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.Item;
-import wicket.model.IModel;
-import wicket.model.Model;
-import wicket.util.tester.TestPanelSource;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.tester.TestPanelSource;
+
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestListPanel extends WicketTestCase {

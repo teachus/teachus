@@ -16,7 +16,8 @@
  */
 package dk.teachus.frontend.pages;
 
-import wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 

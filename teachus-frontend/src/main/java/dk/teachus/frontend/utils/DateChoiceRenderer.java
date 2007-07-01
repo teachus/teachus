@@ -18,9 +18,8 @@ package dk.teachus.frontend.utils;
 
 import java.util.Date;
 
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
-
-import wicket.markup.html.form.ChoiceRenderer;
 
 public class DateChoiceRenderer extends ChoiceRenderer {
 	private static final long serialVersionUID = 1L;

@@ -2,9 +2,10 @@ package dk.teachus.frontend.pages.stats.admin;
 
 import java.util.List;
 
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
-import wicket.model.Model;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
+import org.apache.wicket.model.Model;
+
 import dk.teachus.backend.domain.TeacherStatistics;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;

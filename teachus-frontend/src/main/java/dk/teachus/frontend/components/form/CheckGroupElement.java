@@ -18,16 +18,17 @@ package dk.teachus.frontend.components.form;
 
 import java.util.List;
 
-import wicket.Component;
-import wicket.feedback.ComponentFeedbackMessageFilter;
-import wicket.feedback.IFeedbackMessageFilter;
-import wicket.markup.html.form.CheckBoxMultipleChoice;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.IChoiceRenderer;
-import wicket.markup.html.form.validation.IValidator;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.Component;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.CheckBoxMultipleChoice;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.validation.IValidator;
+
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
 public class CheckGroupElement extends AbstractChoiceElement {

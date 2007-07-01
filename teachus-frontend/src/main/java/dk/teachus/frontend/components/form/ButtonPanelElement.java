@@ -19,13 +19,14 @@ package dk.teachus.frontend.components.form;
 import java.util.HashMap;
 import java.util.Map;
 
-import wicket.Component;
-import wicket.ajax.AjaxEventBehavior;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.form.AjaxSubmitButton;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.form.Button;
-import wicket.markup.html.form.Form;
+import org.apache.wicket.Component;
+import org.apache.wicket.ajax.AjaxEventBehavior;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Form;
+
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class ButtonPanelElement extends FormElement {
@@ -52,7 +53,7 @@ public abstract class ButtonPanelElement extends FormElement {
 		});
 		add(cancelButton);
 		
-		AjaxSubmitButton saveButton = new AjaxSubmitButton("saveButton") {
+		AjaxButton saveButton = new AjaxButton("saveButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -62,7 +63,7 @@ public abstract class ButtonPanelElement extends FormElement {
 			
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form) {
-				associatedForm.visitChildren(ValidationProducer.class, new wicket.Component.IVisitor() {
+				associatedForm.visitChildren(ValidationProducer.class, new org.apache.wicket.Component.IVisitor() {
 					public Object component(Component component) {
 						ValidationProducer validationProducer = (ValidationProducer) component;
 						
@@ -95,7 +96,9 @@ public abstract class ButtonPanelElement extends FormElement {
 	}
 	
 	@Override
-	protected void onAttach() {
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		
 		associatedForm = (Form) findParent(Form.class);
 		
 		associatedForm.visitChildren(ValidationProducer.class, new IVisitor() {

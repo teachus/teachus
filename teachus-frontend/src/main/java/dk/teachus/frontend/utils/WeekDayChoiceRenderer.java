@@ -18,10 +18,10 @@ package dk.teachus.frontend.utils;
 
 import java.util.List;
 
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
-import wicket.markup.html.form.ChoiceRenderer;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
 public class WeekDayChoiceRenderer extends ChoiceRenderer {

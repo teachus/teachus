@@ -16,8 +16,8 @@
  */
 package dk.teachus.frontend.components.form;
 
-import wicket.markup.html.basic.Label;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 
 public class ReadOnlyElement extends FormElement {
 	private static final long serialVersionUID = 1L;

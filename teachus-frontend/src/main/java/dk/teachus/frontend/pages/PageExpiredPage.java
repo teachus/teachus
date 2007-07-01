@@ -16,10 +16,11 @@
  */
 package dk.teachus.frontend.pages;
 
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.basic.MultiLineLabel;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
+
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 

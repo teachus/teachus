@@ -16,16 +16,16 @@
  */
 package dk.teachus.frontend.components;
 
-import wicket.AttributeModifier;
-import wicket.Component;
-import wicket.RequestCycle;
-import wicket.ResourceReference;
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.AjaxLink;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.panel.Panel;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.model.IModel;
+import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.RequestCycle;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
@@ -42,7 +42,7 @@ public class PaidPanel extends Panel {
 
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				PupilBooking pupilBooking = (PupilBooking) model.getObject(PaidPanel.this);
+				PupilBooking pupilBooking = (PupilBooking) model.getObject();
 				
 				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 				bookingDAO.changePaidStatus(pupilBooking);
@@ -67,8 +67,8 @@ public class PaidPanel extends Panel {
 		}
 
 		@Override
-		public Object getObject(Component component) {
-			PupilBooking pupilBooking = (PupilBooking) rowModel.getObject(component);
+		public Object getObject() {
+			PupilBooking pupilBooking = (PupilBooking) rowModel.getObject();
 			ResourceReference icon;
 			if (pupilBooking.isPaid()) {
 				icon = Resources.PAID;

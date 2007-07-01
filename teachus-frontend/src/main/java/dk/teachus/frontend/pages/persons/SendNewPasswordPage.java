@@ -16,12 +16,13 @@
  */
 package dk.teachus.frontend.pages.persons;
 
-import wicket.ajax.AjaxRequestTarget;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.validation.EqualInputValidator;
-import wicket.markup.html.form.validation.IFormValidator;
-import wicket.markup.html.form.validation.StringValidator;
-import wicket.model.PropertyModel;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
+import org.apache.wicket.markup.html.form.validation.IFormValidator;
+import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.validator.StringValidator;
+
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Pupil;
@@ -56,13 +57,13 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		
 		// Find intro message from teachers attributes
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-		WelcomeIntroductionTeacherAttribute welcomeIntroduction = personDAO.getAttribute(WelcomeIntroductionTeacherAttribute.class, pupilModel.getObject(this).getTeacher());
+		WelcomeIntroductionTeacherAttribute welcomeIntroduction = personDAO.getAttribute(WelcomeIntroductionTeacherAttribute.class, pupilModel.getObject().getTeacher());
 		if (welcomeIntroduction != null) {
 			setIntroMessage(welcomeIntroduction.getValue());
 		}
 		
 		String title = TeachUsSession.get().getString("SendNewPasswordPage.title"); //$NON-NLS-1$
-		title = title.replace("{pupilname}", pupilModel.getObject(this).getName()); //$NON-NLS-1$
+		title = title.replace("{pupilname}", pupilModel.getObject().getName()); //$NON-NLS-1$
 		add(new Label("newPasswordTitle", title)); //$NON-NLS-1$
 		
 		FormPanel formPanel = new FormPanel("passwordForm"); //$NON-NLS-1$
@@ -87,7 +88,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		});
 		
 		// Password generator
-		formPanel.addElement(new GeneratePasswordElement("", pupilModel.getObject(this).getUsername()) { //$NON-NLS-1$
+		formPanel.addElement(new GeneratePasswordElement("", pupilModel.getObject().getUsername()) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -119,7 +120,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 				final MailBean mailBean = TeachUsApplication.get().getMailBean();
 				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 				
-				final Pupil pupil = pupilModel.getObject(SendNewPasswordPage.this);
+				final Pupil pupil = pupilModel.getObject();
 				pupil.setPassword(getPassword1());
 				
 				personDAO.save(pupil);

@@ -16,9 +16,9 @@
  */
 package dk.teachus.frontend.components.jfreechart;
 
-import wicket.ResourceReference;
-import wicket.markup.ComponentTag;
-import wicket.markup.html.image.NonCachingImage;
+import org.apache.wicket.ResourceReference;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.image.NonCachingImage;
 
 public class JFreeChartImage extends NonCachingImage {
 	private static final long serialVersionUID = 1L;

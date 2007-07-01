@@ -18,11 +18,11 @@ package dk.teachus.frontend.components.calendar;
 
 import java.util.Date;
 
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.markup.html.link.Link;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
-import wicket.MarkupContainer;
-import wicket.markup.html.link.Link;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;

@@ -16,12 +16,11 @@
  */
 package dk.teachus.frontend.components;
 
-import wicket.Component;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.IChoiceRenderer;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.model.IModel;
-import wicket.util.string.Strings;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.string.Strings;
 
 public class RenderingLabel extends Label {
 	private static final long serialVersionUID = 1L;
@@ -60,17 +59,17 @@ public class RenderingLabel extends Label {
 		}
 
 		@Override
-		public Object getObject(Component component) {
+		public Object getObject() {
 			Object displayValue;
 			if (renderer != null) {
-				displayValue = renderer.getDisplayValue(nestedModel.getObject(component));
+				displayValue = renderer.getDisplayValue(nestedModel.getObject());
 			} else {
-				displayValue = nestedModel.getObject(component);
+				displayValue = nestedModel.getObject();
 			}
 			
 			if (displayValue == null || Strings.isEmpty(displayValue.toString())) {
 				displayValue = "&nbsp;";
-				component.setEscapeModelStrings(false);
+//				component.setEscapeModelStrings(false);
 			}
 			
 			return displayValue;

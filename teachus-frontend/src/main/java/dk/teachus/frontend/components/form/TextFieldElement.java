@@ -16,16 +16,16 @@
  */
 package dk.teachus.frontend.components.form;
 
-import wicket.Component;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.feedback.ComponentFeedbackMessageFilter;
-import wicket.feedback.IFeedbackMessageFilter;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.form.validation.IValidator;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.IModel;
-import wicket.model.Model;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.validation.IValidator;
 
 public class TextFieldElement extends AbstractValidationInputElement {
 	private static final long serialVersionUID = 1L;

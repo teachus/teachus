@@ -16,8 +16,8 @@
  */
 package dk.teachus.frontend.models;
 
-import wicket.Component;
-import wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.LoadableDetachableModel;
+
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.TeachUsApplication;
@@ -35,20 +35,20 @@ public abstract class PersonModel<P extends Person> extends LoadableDetachableMo
 		return personId;
 	}
 	
-	public void setPassword(Component component, String password) {
-		getObject(component).setPassword(password);
+	public void setPassword(String password) {
+		getObject().setPassword(password);
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public P getObject(Component component) {
-		return (P) super.getObject(component);
+	public P getObject() {
+		return (P) super.getObject();
 	}
 
-	public void save(Component component) {
+	public void save() {
 		boolean newPerson = personId == null;
 		
-		P person = getObject(component);
+		P person = getObject();
 		
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		personDAO.save(person);

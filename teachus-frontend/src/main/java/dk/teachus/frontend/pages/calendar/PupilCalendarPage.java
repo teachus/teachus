@@ -19,10 +19,10 @@ package dk.teachus.frontend.pages.calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.markup.html.link.Link;
 import org.joda.time.DateMidnight;
 import org.joda.time.format.DateTimeFormatter;
 
-import wicket.markup.html.link.Link;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Bookings;

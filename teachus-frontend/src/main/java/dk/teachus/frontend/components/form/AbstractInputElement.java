@@ -19,14 +19,14 @@ package dk.teachus.frontend.components.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.Component;
-import wicket.feedback.IFeedbackMessageFilter;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.form.FormComponent;
-import wicket.markup.html.form.validation.IValidator;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.AbstractReadOnlyModel;
-import wicket.model.IModel;
+import org.apache.wicket.Component;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.FormComponent;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.validation.IValidator;
 
 public abstract class AbstractInputElement extends FormElement {
 	private static final long serialVersionUID = 1L;
@@ -56,7 +56,9 @@ public abstract class AbstractInputElement extends FormElement {
 	}
 	
 	@Override
-	protected void onAttach() {
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		
 		if (attached == false) {
 			Component label = newLabelComponent("label");
 			add(label);
@@ -65,7 +67,7 @@ public abstract class AbstractInputElement extends FormElement {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Object getObject(Component component) {
+				public Object getObject() {
 					return required ? "*" : "&nbsp;";
 				}
 			};

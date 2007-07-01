@@ -4,18 +4,18 @@ import java.io.Serializable;
 import java.lang.reflect.Proxy;
 import java.util.Date;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.Request;
+import org.apache.wicket.Response;
+import org.apache.wicket.Session;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.util.tester.TagTester;
+import org.apache.wicket.util.tester.WicketTester;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
-import wicket.Component;
-import wicket.ISessionFactory;
-import wicket.Request;
-import wicket.Session;
-import wicket.markup.html.image.Image;
-import wicket.protocol.http.WebApplication;
-import wicket.util.tester.TagTester;
-import wicket.util.tester.WicketTester;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
@@ -40,20 +40,21 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	public static class TestTeachUsApplication extends TeachUsApplication {		
 		private TeachUsWicketTester tester;
 		
+		private Long personId;
+		
+		public void setPersonId(Long personId) {
+			this.personId = personId;
+		}
+
 		public void setTester(TeachUsWicketTester tester) {
 			this.tester = tester;
 		}
 
 		@Override
-		protected ISessionFactory getSessionFactory() {
-			final WebApplication application = this;
-			return new ISessionFactory() {
-				public Session newSession(Request request) {
-					TesterTeachUsSession session = new TesterTeachUsSession(application, request);
-					session.setPerson(2L);							
-					return session;
-				}
-			};
+		public Session newSession(Request request, Response response) {
+			TesterTeachUsSession session = new TesterTeachUsSession(this, request);
+			session.setPerson(personId);							
+			return session;
 		}
 		
 		@Override
@@ -162,14 +163,20 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 			return personId != null;
 		}
 		
-		public void setPerson(Long personId) {
+		private void setPerson(Long personId) {
 			this.personId = personId;
 			this.person = null;
 		}
 	}
 	
 	protected TeachUsWicketTester createTester() {
-		TeachUsWicketTester tester = new TeachUsWicketTester(new TestTeachUsApplication());
+		return createTester(2);
+	}
+	
+	protected TeachUsWicketTester createTester(long personId) {
+		TestTeachUsApplication testTeachUsApplication = new TestTeachUsApplication();
+		testTeachUsApplication.setPersonId(personId);
+		TeachUsWicketTester tester = new TeachUsWicketTester(testTeachUsApplication);
 		
 		return tester;
 	}

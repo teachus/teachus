@@ -16,21 +16,21 @@
  */
 package dk.teachus.frontend.components.calendar;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebComponent;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.Model;
+import org.apache.wicket.util.string.Strings;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
-import wicket.Component;
-import wicket.MarkupContainer;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebComponent;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.image.Image;
-import wicket.markup.html.panel.Panel;
-import wicket.markup.repeater.RepeatingView;
-import wicket.model.Model;
-import wicket.util.string.Strings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.frontend.components.RenderingLabel;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
@@ -50,7 +50,9 @@ public abstract class PeriodDateComponent extends Panel {
 	}
 	
 	@Override
-	protected void onAttach() {
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+		
 		if (attached == false) {
 			// Checks
 			if (period.hasDate(date) == false) {

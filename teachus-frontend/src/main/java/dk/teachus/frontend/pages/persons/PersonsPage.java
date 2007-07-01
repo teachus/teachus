@@ -19,8 +19,9 @@ package dk.teachus.frontend.pages.persons;
 import java.util.ArrayList;
 import java.util.List;
 
-import wicket.extensions.markup.html.repeater.data.table.IColumn;
-import wicket.model.Model;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.model.Model;
+
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;

@@ -16,8 +16,9 @@
  */
 package dk.teachus.frontend.pages;
 
-import wicket.Page;
-import wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.Page;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
+
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;

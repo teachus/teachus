@@ -16,9 +16,9 @@
  */
 package dk.teachus.frontend.components.form;
 
-import wicket.markup.html.form.TextField;
-import wicket.markup.html.panel.FeedbackPanel;
-import wicket.model.IModel;
+import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
+import org.apache.wicket.model.IModel;
 
 public class IntegerFieldElement extends TextFieldElement {
 	private static final long serialVersionUID = 1L;

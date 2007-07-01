@@ -16,13 +16,12 @@
  */
 package dk.teachus.frontend.components.form;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.markup.html.basic.Label;
 import org.joda.time.DateTime;
 
 import dk.teachus.frontend.TeachUsSession;
-
-import wicket.ajax.AjaxRequestTarget;
-import wicket.ajax.markup.html.AjaxLink;
-import wicket.markup.html.basic.Label;
 
 public abstract class GeneratePasswordElement extends FormElement {
 	

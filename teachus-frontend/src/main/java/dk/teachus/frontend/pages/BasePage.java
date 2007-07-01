@@ -18,16 +18,16 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
+import org.apache.wicket.behavior.HeaderContributor;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.joda.time.DateMidnight;
 
-import wicket.behavior.HeaderContributor;
-import wicket.behavior.SimpleAttributeModifier;
-import wicket.markup.html.WebMarkupContainer;
-import wicket.markup.html.WebPage;
-import wicket.markup.html.basic.Label;
-import wicket.markup.html.link.BookmarkablePageLink;
-import wicket.markup.html.link.Link;
-import wicket.markup.repeater.RepeatingView;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -108,16 +108,13 @@ public abstract class BasePage extends WebPage {
 	}
 
 	@Override
-	protected final void onAttach() {
+	protected final void onBeforeRender() {
+		super.onBeforeRender();
+		
 		if (attached == false) {
 			add(new Label("pageLabel", getPageLabel())); //$NON-NLS-1$
 			attached = true;
 		}
-		
-		onAttach2();
-	}
-
-	protected void onAttach2() {
 	}
 	
 	protected Theme getTheme() {

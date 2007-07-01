@@ -19,11 +19,11 @@ package dk.teachus.frontend.pages.calendar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
 import org.joda.time.DateMidnight;
 
-import wicket.Page;
-import wicket.util.tester.ITestPageSource;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
