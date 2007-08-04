@@ -16,6 +16,7 @@
  */
 package dk.teachus.backend.database;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +49,7 @@ import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
+import dk.teachus.utils.DateUtils;
 
 public abstract class DynamicDataImport {
 	private static final Log log = LogFactory.getLog(DynamicDataImport.class);
@@ -67,7 +69,7 @@ public abstract class DynamicDataImport {
 		
 		createAdmin(sessionFactory);
 		
-		int numberOfTeachers = 10;
+		int numberOfTeachers = 1;
 		
 		for (int i = 1; i <= numberOfTeachers; i++) {
 			log.info("Creating teacher number " + i + " of " + numberOfTeachers);
@@ -106,7 +108,7 @@ public abstract class DynamicDataImport {
 		session.beginTransaction();
 
 		SQLQuery sqlQuery = session.createSQLQuery("SELECT date, COUNT(id) AS c FROM booking WHERE teacher_id = "+teacher.getId()+" GROUP BY date HAVING c > 1");
-		List result = sqlQuery.list();
+		List<?> result = sqlQuery.list();
 		
 		for (Object object : result) {
 			Object[] objects = (Object[]) object;
@@ -132,11 +134,12 @@ public abstract class DynamicDataImport {
 			DateMidnight date = new DateMidnight(startDate);
 			while(date.isBefore(endDate)) {
 				// First see if the pupil should have a booking here at all
-				long haveBooking = Math.round(Math.random());
-				if (haveBooking == 1) {
+				long shouldBook = Math.round(Math.random());
+				if (shouldBook == 1) {
 					// Then find out which period to book in
 					int periodIndex = (int) (Math.random()*periods.size());
 					Period period = periods.get(periodIndex);
+					log.debug("Booking lesson for period: "+period.getName());
 					
 					// Then find out which day in the period to book in
 					int weekDayIndex = (int) (Math.random()*period.getWeekDays().size());
@@ -144,12 +147,22 @@ public abstract class DynamicDataImport {
 					DateMidnight weekDayDate = date.withDayOfWeek(weekDay.getYodaWeekDay());
 					
 					// Now find out which time of day to use
-					int startHour = new DateTime(period.getStartTime()).getHourOfDay();
-					int endHour = new DateTime(period.getEndTime()).getHourOfDay();
-					int duration = endHour - startHour;
-					int bookHour = startHour + (int) (Math.random()*duration);
-					DateTime bookTime = weekDayDate.toDateTime().withHourOfDay(bookHour);
+					// We do that by listing the possible booking time entries. A lesson doesn't have to start at a whole number.
+					List<DateTime> avaiableLessonsStart = new ArrayList<DateTime>();
+					DateTime bookTime = DateUtils.resetDateTime(new DateTime(period.getStartTime()), weekDayDate.toDateTime());
+					DateTime et = DateUtils.resetDateTime(new DateTime(period.getEndTime()), weekDayDate.toDateTime());
+					while(bookTime.isBefore(et)) {
+						if (period.mayBook(bookTime)) {
+							avaiableLessonsStart.add(bookTime);
+						}
+						
+						bookTime = bookTime.plusMinutes(period.getIntervalBetweenLessonStart());
+					}
 					
+					int selectedIndex = (int) Math.round(Math.random()*(avaiableLessonsStart.size()-1));
+					log.debug("Selected lesson number "+selectedIndex+" out of "+avaiableLessonsStart.size());
+					bookTime = avaiableLessonsStart.get(selectedIndex);
+										
 					if (bookedDates.contains(bookTime) == false) {
 						bookedDates.add(bookTime);
 						
@@ -210,7 +223,7 @@ public abstract class DynamicDataImport {
 		
 		// Periods starting 1. january 3 years ago
 		Period period = new PeriodImpl();
-		period.setName("Mon/Wed/Fri");
+		period.setName("Mon/Wed");
 		period.setBeginDate(startDate.toDate());
 		period.setStartTime(startDate.toDateTime().withTime(10, 0, 0, 0).toDate());
 		period.setEndTime(startDate.toDateTime().withTime(17, 0, 0, 0).toDate());
@@ -218,7 +231,6 @@ public abstract class DynamicDataImport {
 		period.setPrice(450);
 		period.addWeekDay(WeekDay.MONDAY);
 		period.addWeekDay(WeekDay.WEDNESDAY);
-		period.addWeekDay(WeekDay.FRIDAY);
 		period.setTeacher(teacher);
 		session.save(period);
 		
@@ -231,6 +243,18 @@ public abstract class DynamicDataImport {
 		period.setPrice(450);
 		period.addWeekDay(WeekDay.TUESDAY);
 		period.addWeekDay(WeekDay.THURSDAY);
+		period.setTeacher(teacher);
+		session.save(period);
+		
+		period = new PeriodImpl();
+		period.setName("Fri");
+		period.setBeginDate(startDate.toDate());
+		period.setStartTime(startDate.toDateTime().withTime(9, 0, 0, 0).toDate());
+		period.setEndTime(startDate.toDateTime().withTime(16, 0, 0, 0).toDate());
+		period.setLocation("Aarhus");
+		period.setPrice(450);
+		period.setIntervalBetweenLessonStart(70);
+		period.addWeekDay(WeekDay.FRIDAY);
 		period.setTeacher(teacher);
 		session.save(period);
 		

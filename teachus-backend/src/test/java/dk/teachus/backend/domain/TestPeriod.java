@@ -109,6 +109,28 @@ public class TestPeriod extends TestCase {
 		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 14, 0, 0, 0)));
 		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 14, 15, 0, 0)));
 	}
+	
+	public void testIsTimeValid_70Min() {
+		Period period = new PeriodImpl();
+		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
+		period.setEndTime(new DateTime(2007, 1, 1, 15, 0, 0, 0).toDate());
+		period.setIntervalBetweenLessonStart(70);
+		
+		assertTrue(period.isTimeValid(new DateTime(2007, 1, 1, 10, 0, 0, 0)));
+		assertTrue(period.isTimeValid(new DateTime(2007, 1, 1, 11, 10, 0, 0)));
+		assertTrue(period.isTimeValid(new DateTime(2007, 1, 1, 12, 20, 0, 0)));
+		assertTrue(period.isTimeValid(new DateTime(2007, 1, 1, 13, 30, 0, 0)));
+		assertTrue(period.isTimeValid(new DateTime(2007, 1, 1, 14, 40, 0, 0)));
+		
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 11, 0, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 12, 0, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 13, 0, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 14, 0, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 15, 0, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 15, 50, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 10, 10, 0, 0)));
+		assertFalse(period.isTimeValid(new DateTime(2007, 1, 1, 8, 50, 0, 0)));
+	}
 
 	public void testMayBook_hour() {
 		Period period = new PeriodImpl();

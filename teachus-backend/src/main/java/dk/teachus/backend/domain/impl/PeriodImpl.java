@@ -24,11 +24,14 @@ import java.util.List;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.Duration;
 import org.joda.time.Interval;
+import org.joda.time.PeriodType;
 import org.joda.time.Weeks;
 
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.utils.DateUtils;
 
 public class PeriodImpl extends AbstractHibernateObject implements Serializable, Period {
 	public static enum WeekDay {
@@ -102,8 +105,8 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		
 		// On the same date
 		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
-			bookedTime = resetDateTime(bookedTime, time);
-			time = resetDateTime(time, time);
+			bookedTime = DateUtils.resetDateTime(bookedTime, time);
+			time = DateUtils.resetDateTime(time, time);
 			
 			DateTime st = bookedTime.minusMinutes(lessonDuration);
 			DateTime et = bookedTime.plusMinutes(lessonDuration);
@@ -252,8 +255,8 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		
 		// On the same date
 		if (bookedTime.toDateMidnight().equals(time.toDateMidnight())) {
-			bookedTime = resetDateTime(bookedTime, time);
-			time = resetDateTime(time, time);
+			bookedTime = DateUtils.resetDateTime(bookedTime, time);
+			time = DateUtils.resetDateTime(time, time);
 			
 				DateTime et = bookedTime.plusMinutes(lessonDuration);
 			
@@ -274,14 +277,13 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public boolean isTimeValid(DateTime time) {
 		boolean timeValid = false;
 
-		time = resetDateTime(time, time);
-		DateTime st = resetDateTime(new DateTime(startTime), time);
-		DateTime et = resetDateTime(new DateTime(endTime), time);
+		time = DateUtils.resetDateTime(time, time);
+		DateTime st = DateUtils.resetDateTime(new DateTime(startTime), time);
+		DateTime et = DateUtils.resetDateTime(new DateTime(endTime), time);
 		Interval periodTimeInterval = new Interval(st, et);
 		
 		if (periodTimeInterval.contains(time)) {
-			int timeMinutes = time.getMinuteOfHour();
-			timeMinutes -= st.getMinuteOfHour();
+			int timeMinutes = new Duration(st, time).toPeriod(PeriodType.minutes()).getMinutes();
 			
 			if (timeMinutes%intervalBetweenLessonStart == 0) {
 				timeValid = true;
@@ -294,8 +296,8 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public boolean mayBook(DateTime time) {
 		boolean mayBook = false;
 
-		time = resetDateTime(time, time);
-		DateTime et = resetDateTime(new DateTime(endTime), time);
+		time = DateUtils.resetDateTime(time, time);
+		DateTime et = DateUtils.resetDateTime(new DateTime(endTime), time);
 
 		if (isTimeValid(time)) {
 			time = time.plusMinutes(lessonDuration);
@@ -305,13 +307,6 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		}
 
 		return mayBook;
-	}
-	
-	private DateTime resetDateTime(DateTime time, DateTime resetTo) {
-		return time
-			.withDate(resetTo.getYear(), resetTo.getMonthOfYear(), resetTo.getDayOfMonth())
-			.withSecondOfMinute(0)
-			.withMillisOfSecond(0);
 	}
 	
 	public void setActive(boolean active) {
