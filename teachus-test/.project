@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
 	<name>teachus-test</name>
-	<comment></comment>
+	<comment>Scheduling system for private teachers.</comment>
 	<projects>
+		<project>teachus-frontend</project>
+		<project>teachus-ws</project>
+		<project>teachus-backend</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-		<buildCommand>
-			<name>org.maven.ide.eclipse.maven2Builder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
