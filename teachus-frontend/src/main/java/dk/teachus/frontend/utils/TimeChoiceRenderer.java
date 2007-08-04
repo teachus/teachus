@@ -20,10 +20,8 @@ import java.util.Date;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
 
 public class TimeChoiceRenderer extends ChoiceRenderer {
-	private static final DateTimeFormatter FORMAT_TIME = Formatters.getFormatTime();
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -34,10 +32,10 @@ public class TimeChoiceRenderer extends ChoiceRenderer {
 			if (object instanceof Integer) {
 				Integer minutesOfDay = (Integer) object;
 				DateTime dt = new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay);
-				display = FORMAT_TIME.print(dt);
+				display = Formatters.getFormatTime().print(dt);
 			} else if (object instanceof Date) {
 				Date date = (Date) object;
-				display = FORMAT_TIME.print(new DateTime(date));
+				display = Formatters.getFormatTime().print(new DateTime(date));
 			}
 		}
 		
