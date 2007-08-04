@@ -69,7 +69,7 @@ public class RenderingLabel extends Label {
 			
 			if (displayValue == null || Strings.isEmpty(displayValue.toString())) {
 				displayValue = "&nbsp;";
-//				component.setEscapeModelStrings(false);
+				setEscapeModelStrings(false);
 			}
 			
 			return displayValue;

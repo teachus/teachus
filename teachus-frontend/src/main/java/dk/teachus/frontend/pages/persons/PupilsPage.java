@@ -76,7 +76,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	}
 	
 	@Override
-	protected PersonPage getPersonPage(Long personId) {
+	protected PupilPage getPersonPage(Long personId) {
 		return new PupilPage(new PupilModel(personId));
 	}
 

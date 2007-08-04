@@ -57,7 +57,7 @@ public abstract class PersonPanel extends Panel {
 	protected String password1;
 	protected String password2;
 
-	public PersonPanel(String id, final PersonModel personModel) {
+	public PersonPanel(String id, final PersonModel<? extends Person> personModel) {
 		super(id, personModel);
 		
 		if (allowUserEditing(TeachUsSession.get().getPerson(), personModel.getObject()) == false) {
@@ -190,7 +190,7 @@ public abstract class PersonPanel extends Panel {
 	
 	protected abstract boolean allowUserEditing(Person loggedInPerson, Person editPerson);
 	
-	protected abstract Class<? extends PersonsPage> getPersonsPageClass();
+	protected abstract Class<? extends PersonsPage<? extends Person>> getPersonsPageClass();
 	
 	protected boolean isUsernameEnabled() {
 		return true;

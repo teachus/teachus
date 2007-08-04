@@ -20,7 +20,6 @@ import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.models.TeacherModel;
-import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 
 public class TeacherPanel extends PersonPanel {
@@ -31,7 +30,7 @@ public class TeacherPanel extends PersonPanel {
 	}
 	
 	@Override
-	protected Class<? extends PersonsPage> getPersonsPageClass() {
+	protected Class<TeachersPage> getPersonsPageClass() {
 		return TeachersPage.class;
 	}
 

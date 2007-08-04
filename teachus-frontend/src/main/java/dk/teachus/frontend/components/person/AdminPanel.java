@@ -19,7 +19,6 @@ package dk.teachus.frontend.components.person;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.models.AdminModel;
 import dk.teachus.frontend.pages.persons.AdminsPage;
-import dk.teachus.frontend.pages.persons.PersonsPage;
 
 public class AdminPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
@@ -29,7 +28,7 @@ public class AdminPanel extends PersonPanel {
 	}
 	
 	@Override
-	protected Class<? extends PersonsPage> getPersonsPageClass() {
+	protected Class<AdminsPage> getPersonsPageClass() {
 		return AdminsPage.class;
 	}
 

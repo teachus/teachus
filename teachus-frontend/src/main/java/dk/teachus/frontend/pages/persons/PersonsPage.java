@@ -33,6 +33,7 @@ import dk.teachus.frontend.components.Toolbar;
 import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
+import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
@@ -89,7 +90,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 	
 	protected abstract boolean showNewPersonLink();
 	
-	protected abstract PersonPage getPersonPage(Long personId);
+	protected abstract PersonPage<? extends PersonModel<P>> getPersonPage(Long personId);
 	
 	protected List<FunctionItem> getFunctions() {
 		return null;

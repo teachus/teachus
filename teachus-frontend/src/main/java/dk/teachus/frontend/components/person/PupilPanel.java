@@ -23,7 +23,6 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.models.PupilModel;
-import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 
 public class PupilPanel extends PersonPanel {
@@ -34,7 +33,7 @@ public class PupilPanel extends PersonPanel {
 	}
 
 	@Override
-	protected Class<? extends PersonsPage> getPersonsPageClass() {
+	protected Class<PupilsPage> getPersonsPageClass() {
 		return PupilsPage.class;
 	}
 	
