@@ -35,7 +35,7 @@ import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
-import dk.teachus.frontend.pages.stats.teacher.IncomePerPeriodPage;
+import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 
 public abstract class AuthenticatedBasePage extends BasePage {
 	
@@ -89,7 +89,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 				menuItemsList.add(new MenuItem(TeacherSettingsPage.class, teachUsSession.getString("General.settings"), AuthenticatedPageCategory.SETTINGS)); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(PeriodsPage.class, teachUsSession.getString("General.periods"), AuthenticatedPageCategory.PERIODS)); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(AgendaPage.class, teachUsSession.getString("General.agenda"), AuthenticatedPageCategory.AGENDA)); //$NON-NLS-1$
-				menuItemsList.add(new MenuItem(IncomePerPeriodPage.class, teachUsSession.getString("General.statistics"), AuthenticatedPageCategory.STATISTICS)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(IncomePerMonthPage.class, teachUsSession.getString("General.statistics"), AuthenticatedPageCategory.STATISTICS)); //$NON-NLS-1$
 			}
 			if (UserLevel.PUPIL == teachUsSession.getUserLevel()) {
 				menuItemsList.add(new MenuItem(PupilCalendarPage.class, teachUsSession.getString("General.calendar"), AuthenticatedPageCategory.CALENDAR)); //$NON-NLS-1$

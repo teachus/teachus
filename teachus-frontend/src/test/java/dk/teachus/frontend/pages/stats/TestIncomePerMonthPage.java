@@ -27,10 +27,10 @@ import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.frontend.pages.stats.teacher.IncomePerPeriodPage;
+import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
-public class TestIncomePerPeriodPage extends WicketTestCase {
+public class TestIncomePerMonthPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
 
 	public void testRender() {
@@ -73,9 +73,9 @@ public class TestIncomePerPeriodPage extends WicketTestCase {
 			tester.setBookingDAO(bookingDAO);
 		}});
 		
-		tester.startPage(IncomePerPeriodPage.class);
+		tester.startPage(IncomePerMonthPage.class);
 		
-		tester.assertRenderedPage(IncomePerPeriodPage.class);
+		tester.assertRenderedPage(IncomePerMonthPage.class);
 	}
 	
 }

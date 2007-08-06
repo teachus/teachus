@@ -66,7 +66,7 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.settings.WelcomeMailSettingsPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
-import dk.teachus.frontend.pages.stats.teacher.IncomePerPeriodPage;
+import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
 import dk.teachus.frontend.pages.stats.teacher.LessonsPerHourPage;
 import dk.teachus.frontend.utils.Resources;
@@ -109,7 +109,7 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
-		mount(new IndexedParamUrlCodingStrategy("/stats/incomeperperiod", IncomePerPeriodPage.class));
+		mount(new IndexedParamUrlCodingStrategy("/stats/incomepermonth", IncomePerMonthPage.class));
 		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class));
 		mountBookmarkablePage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$

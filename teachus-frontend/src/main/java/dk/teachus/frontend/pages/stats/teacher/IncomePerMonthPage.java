@@ -51,7 +51,7 @@ import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.Formatters;
 import dk.teachus.frontend.utils.MonthChoiceRenderer;
 
-public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
+public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 	private static class MonthIncome implements Serializable {
 		private static final long serialVersionUID = 1L;
 
@@ -135,7 +135,7 @@ public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
 
 	private static final long serialVersionUID = 1L;
 	
-	public IncomePerPeriodPage(PageParameters pageParameters) {
+	public IncomePerMonthPage(PageParameters pageParameters) {
 		int year = 0;
 		if (Strings.isEmpty(pageParameters.getString("0"))) {
 			year = new DateMidnight().getYear(); 
@@ -143,7 +143,7 @@ public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
 			year = pageParameters.getInt("0");
 		}
 		
-		add(new Label("perMonth", TeachUsSession.get().getString("IncomePerPeriodPage.perMonth"))); //$NON-NLS-1$ //$NON-NLS-2$
+		add(new Label("perMonth", TeachUsSession.get().getString("IncomePerMonthPage.perMonth"))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 		
@@ -161,7 +161,7 @@ public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
 				int year = (Integer) yearModel.getObject();
 				PageParameters pageParameters = new PageParameters();
 				pageParameters.add("0", ""+year);
-				getRequestCycle().setResponsePage(IncomePerPeriodPage.class, pageParameters);
+				getRequestCycle().setResponsePage(IncomePerMonthPage.class, pageParameters);
 			}			
 		});
 		form.add(years);
@@ -216,13 +216,13 @@ public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
 		IColumn[] columns = new IColumn[] {
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.month")), "month", new MonthChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.paid")), "paid", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.paidBookings")), "paidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.paidBookings")), "paidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.unpaid")), "unpaid", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.unPaidBookings")), "unpaidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.future")), "future", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.futureLessons")), "futureLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.unPaidBookings")), "unpaidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.future")), "future", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.futureLessons")), "futureLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerPeriodPage.totalLessons")), "totalLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.totalLessons")), "totalLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
 		};
 		
 		List<MonthIncome> data = new ArrayList<MonthIncome>();
@@ -300,7 +300,7 @@ public class IncomePerPeriodPage extends AbstractTeacherStatisticsPage {
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.incomePerPeriod"); //$NON-NLS-1$
+		return TeachUsSession.get().getString("General.incomePerMonth"); //$NON-NLS-1$
 	}
 
 }
