@@ -24,6 +24,7 @@ import org.joda.time.DateMidnight;
 
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
+import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
@@ -62,5 +63,7 @@ public interface BookingDAO extends Serializable {
 	Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate);
 
 	Booking getBooking(Long id);
+
+	int getBookingCount(Period period);
 	
 }

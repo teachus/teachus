@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.Model;
 
+import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
@@ -88,6 +89,14 @@ public class PeriodsPage extends AuthenticatedBasePage {
 				String deleteText = TeachUsSession.get().getString("PeriodPage.deleteConfirm"); //$NON-NLS-1$
 				deleteText = deleteText.replace("{periodname}", period.getName()); //$NON-NLS-1$
 				return deleteText;
+			}
+			
+			@Override
+			public boolean isEnabled(Object object) {
+				Period period = (Period) object;
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				int bookingCount = bookingDAO.getBookingCount(period);
+				return bookingCount == 0;
 			}
 		});
 		

@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.joda.time.DateMidnight;
@@ -308,8 +309,25 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		return new BookingsImpl(filteredBookings);
 	}
 	
+	@Transactional(readOnly=true)
 	public Booking getBooking(Long id) {
 		return (Booking) getHibernateTemplate().get(BookingImpl.class, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public int getBookingCount(Period period) {
+		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
+		c.add(Restrictions.eq("period", period));
+		c.setProjection(Projections.count("id"));
+		
+		List<Object> result = getHibernateTemplate().findByCriteria(c);
+		if (result.size() != 1) {
+			throw new IllegalStateException("Something weird going on");
+		}
+		Integer count = (Integer) result.get(0);
+		
+		return count;
 	}
 
 	private List<Booking> filterBookings(List<Booking> bookings) {

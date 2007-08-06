@@ -72,6 +72,7 @@ public abstract class PeriodDateComponent extends Panel {
 					}
 				});
 				add(new Label("date", Formatters.getFormatShortPrettyDate().print(date))); //$NON-NLS-1$
+				add(new Label("duration", new Model(period.getLessonDuration())));
 			}
 			
 			// Body
