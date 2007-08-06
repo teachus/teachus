@@ -52,6 +52,10 @@ public class FunctionsColumn extends AbstractColumn {
 		public String getClickConfirmText(Object object) {
 			return null;
 		}
+		
+		public boolean isEnabled(Object object) {
+			return true;
+		}
 	}
 	
 	private List<FunctionItem> functions;
@@ -88,6 +92,11 @@ public class FunctionsColumn extends AbstractColumn {
 				@Override
 				public void onClick() {
 					function.onEvent(object);
+				}
+				
+				@Override
+				public boolean isEnabled() {
+					return function.isEnabled(object);
 				}
 			};
 			

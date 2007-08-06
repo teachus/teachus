@@ -33,7 +33,7 @@ import dk.teachus.frontend.TeachUsSession;
 public class ListPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public ListPanel(String id, IColumn[] columns, List data) {
+	public ListPanel(String id, IColumn[] columns, List<?> data) {
 		super(id);
 		
 		DataTable dataTable = new DataTable("table", columns, new ListDataProvider(data), 40);
