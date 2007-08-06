@@ -39,6 +39,7 @@ import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
+import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer;
@@ -115,6 +116,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startTime")), "startTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endTime")), "endTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.weekDays")), "weekDays", weekDayChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions) //$NON-NLS-1$
 		};
 		
