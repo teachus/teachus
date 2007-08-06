@@ -23,15 +23,12 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.HeadersToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.extensions.yui.calendar.DateField;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.jfree.data.general.DefaultPieDataset;
@@ -41,6 +38,7 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.ListPanel;
 import dk.teachus.frontend.components.RendererPropertyColumn;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jfreechart.PieChartResource;
@@ -116,8 +114,7 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.percent")), "percent", new PercentChoiceRenderer()) //$NON-NLS-1$ //$NON-NLS-2$
 		};
 		
-		DataTable pctDistributionSheet = new DataTable("pctDistributionSheet", columns, new ListDataProvider(sumList), 20); //$NON-NLS-1$
-		pctDistributionSheet.addTopToolbar(new HeadersToolbar(pctDistributionSheet, null));
+		ListPanel pctDistributionSheet = new ListPanel("pctDistributionSheet", columns, sumList);
 		add(pctDistributionSheet);
 		
 		// Chart
