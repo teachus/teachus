@@ -33,8 +33,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
-import org.apache.wicket.markup.html.form.persistence.CookieValuePersister;
-import org.apache.wicket.markup.html.form.persistence.IValuePersister;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
@@ -46,6 +44,9 @@ import dk.teachus.frontend.components.form.DefaultFocusBehavior;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 
 public abstract class UnAuthenticatedBasePage extends BasePage {
+	public static final String USERNAME_PATH = "signInForm:username";
+	public static final String PASSWORD_PATH = "signInForm:password";
+	public static final String REMEMBER_PATH = "signInForm:remember";
 	
 	public static enum UnAuthenticatedPageCategory implements PageCategory {
 		INFO
@@ -137,15 +138,6 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		signInForm.add(new FormComponentLabel("rememberLabel", remember).add(new Label("rememberLabel", TeachUsSession.get().getString("General.remember")).setRenderBodyOnly(true)));
 		
 		signInForm.add(new Button("signIn", new Model("Log ind")));
-		
-		IValuePersister persister = new CookieValuePersister();
-		persister.load(username);
-		persister.load(password);
-		
-		user.setUsername(username.getModelObjectAsString());
-		user.setPassword(password.getModelObjectAsString());
-		
-		signin();
 	}
 		
 	private void signin() {		
@@ -154,7 +146,11 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		teachUsSession.signIn(user.getUsername(), user.getPassword());
 		
 		if (teachUsSession.isAuthenticated()) {
-			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
+//			setRedirect(true);
+			
+			if (continueToOriginalDestination() == false) {
+				throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
+			}
 		}
 	}
 

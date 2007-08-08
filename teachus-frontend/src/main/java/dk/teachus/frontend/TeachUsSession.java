@@ -37,6 +37,7 @@ import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.frontend.pages.UnAuthenticatedBasePage;
 import dk.teachus.utils.ClassUtils;
 
 public class TeachUsSession extends WebSession {
@@ -97,9 +98,9 @@ public class TeachUsSession extends WebSession {
 		Cookie[] cookies = webRequest.getCookies();
 		
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().indexOf("username") > -1
-					|| cookie.getName().indexOf("password") > -1
-					|| cookie.getName().indexOf("remember") > -1) {
+			if (UnAuthenticatedBasePage.USERNAME_PATH.equals(cookie.getName())
+					|| UnAuthenticatedBasePage.PASSWORD_PATH.equals(cookie.getName())
+					|| UnAuthenticatedBasePage.REMEMBER_PATH.equals(cookie.getName())) {
 				webResponse.clearCookie(cookie);
 			}
 		}
