@@ -30,7 +30,6 @@ import org.joda.time.PeriodType;
 import org.joda.time.Weeks;
 
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.PeriodStatus;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.utils.DateUtils;
 
@@ -95,7 +94,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	
 	private int repeatEveryWeek = 1;
 	
-	private PeriodStatus status = PeriodStatus.DRAFT;
+	private boolean active = true;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);
@@ -270,9 +269,9 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		
 		return inLesson;
 	}
-	
-	public PeriodStatus getStatus() {
-		return status;
+
+	public boolean isActive() {
+		return active;
 	}
 	
 	public boolean isTimeValid(DateTime time) {
@@ -310,8 +309,8 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return mayBook;
 	}
 	
-	public void setStatus(PeriodStatus status) {
-		this.status = status;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 	public void setBeginDate(Date beginDate) {
@@ -360,24 +359,5 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 
 	public void setWeekDays(List<WeekDay> weekDays) {
 		this.weekDays = weekDays;
-	}
-	
-	@Override
-	public String toString() {
-		StringBuilder b = new StringBuilder();
-		b.append("Name: ").append(name).append(", ");
-		b.append("Start date: ").append(beginDate).append(", ");
-		b.append("End date: ").append(endDate).append(", ");
-		b.append("Start time: ").append(startTime).append(", ");
-		b.append("End time: ").append(endTime).append(", ");
-		b.append("Status: ").append(status).append(", ");
-		b.append("Weekdays: ").append(weekDays).append(", ");
-		b.append("Teacher: ").append(teacher.getId()).append(", ");
-		b.append("Repeat every week: ").append(repeatEveryWeek).append(", ");
-		b.append("Lesson duration: ").append(lessonDuration).append(", ");
-		b.append("Interval between lesson start: ").append(intervalBetweenLessonStart).append(", ");
-		b.append("Price: ").append(price).append(", ");
-		b.append("Location: ").append(location).append(", ");
-		return b.toString();
 	}
 }

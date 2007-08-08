@@ -39,6 +39,8 @@ public interface Periods extends Serializable {
 	List<DatePeriod> generateDatesForWeek(DateMidnight startDate);
 	
 	List<DatePeriod> generateDates(DateMidnight startDate, int numberOfDays);
+	
+	List<DatePeriod> generateDates(DateMidnight startDate, int numberOfDays, boolean explicitNumberOfDays);
 
 	int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays);
 
