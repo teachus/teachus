@@ -16,7 +16,9 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -26,11 +28,18 @@ import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.repeater.RepeatingView;
 
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class ButtonPanelElement extends FormElement {
 	private static final long serialVersionUID = 1L;
+	
+	public static interface IButton extends Serializable {
+		String getValue();
+		
+		void onClick(AjaxRequestTarget target);
+	}
 	
 	private Map<ValidationProducer, Boolean> errorStates = new HashMap<ValidationProducer, Boolean>();
 	
@@ -93,6 +102,25 @@ public abstract class ButtonPanelElement extends FormElement {
 		};
 		saveButton.add(new SimpleAttributeModifier("value", submitLabel));
 		add(saveButton);
+		
+		RepeatingView additionalButtons = new RepeatingView("additionalButtons");
+		add(additionalButtons);
+		
+		List<IButton> additionalButtonsList = getAdditionalButtons();
+		if (additionalButtonsList != null) {
+			for (final IButton button : additionalButtonsList) {
+				AjaxButton ajaxButton = new AjaxButton(additionalButtons.newChildId()) {
+					private static final long serialVersionUID = 1L;
+
+					@Override
+					protected void onSubmit(AjaxRequestTarget target, Form form) {
+						button.onClick(target);
+					}					
+				};
+				ajaxButton.add(new SimpleAttributeModifier("value", button.getValue()));
+				additionalButtons.add(ajaxButton);
+			}
+		}
 	}
 	
 	@Override
@@ -110,6 +138,10 @@ public abstract class ButtonPanelElement extends FormElement {
 				return CONTINUE_TRAVERSAL;
 			}
 		});
+	}
+	
+	protected List<IButton> getAdditionalButtons() {
+		return null;
 	}
 	
 	protected abstract void onCancel(AjaxRequestTarget target);

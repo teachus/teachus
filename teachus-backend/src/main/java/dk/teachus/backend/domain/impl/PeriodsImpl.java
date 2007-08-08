@@ -142,14 +142,26 @@ public class PeriodsImpl implements Periods {
 		
 		return dates;
 	}
-
+	
 	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays) {
+		return generateDates(weekDate, numberOfDays, false);
+	}
+
+	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays, boolean explicitNumberOfDays) {
 		weekDate = weekDate.withDayOfWeek(DateTimeConstants.MONDAY);
 		
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		List<DatePeriod> weekDates = generateDatesForWeek(weekDate);
 		do {
-			dates.addAll(weekDates);
+			for (DatePeriod datePeriod : weekDates) {
+				dates.add(datePeriod);
+				
+				if (explicitNumberOfDays) {
+					if (dates.size() >= numberOfDays) {
+						break;
+					}
+				}
+			}
 			weekDate = weekDate.plusWeeks(1);
 			weekDates = generateDatesForWeek(weekDate);
 		} while(dates.size()+weekDates.size() <= numberOfDays

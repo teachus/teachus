@@ -145,9 +145,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		
 		teachUsSession.signIn(user.getUsername(), user.getPassword());
 		
-		if (teachUsSession.isAuthenticated()) {
-//			setRedirect(true);
-			
+		if (teachUsSession.isAuthenticated()) {			
 			if (continueToOriginalDestination() == false) {
 				throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 			}

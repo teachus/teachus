@@ -12,6 +12,21 @@ ul p {
 	margin: 0;
 }
 
+#content h3, #contentalt h3, #content h4, #contentalt h4 {
+background-color:inherit;
+color:#606060;
+font-size:1.8em;
+font-weight:bold;
+letter-spacing:-1px;
+margin:0 0 15px;
+padding:0;
+}
+
+#content h4, #contentalt h4 {
+font-size:1.6em;
+margin-bottom:10px;
+}
+
 .screenshots img {
 	vertical-align: top;
 	margin-right: 10px;

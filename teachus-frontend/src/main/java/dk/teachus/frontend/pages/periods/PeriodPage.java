@@ -21,19 +21,30 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 
 import dk.teachus.backend.dao.PeriodDAO;
+import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.calendar.PeriodDateComponent;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.CheckGroupElement;
 import dk.teachus.frontend.components.form.DateElement;
@@ -82,6 +93,8 @@ public class PeriodPage extends AuthenticatedBasePage {
 	
 	public PeriodPage(final Period period) {
 		super(UserLevel.TEACHER, true);
+		
+		add(new Label("editPeriodTitle", "Edit period"));
 		
 		FormPanel form = new FormPanel("form"); //$NON-NLS-1$
 		add(form);
@@ -151,7 +164,86 @@ public class PeriodPage extends AuthenticatedBasePage {
 				
 				getRequestCycle().setResponsePage(PeriodsPage.class);
 			}			
+			
+			@Override
+			protected List<IButton> getAdditionalButtons() {
+				List<IButton> buttons = new ArrayList<IButton>();
+				buttons.add(new IButton() {
+					private static final long serialVersionUID = 1L;
+
+					public String getValue() {
+						return "Preview";
+					}
+
+					public void onClick(AjaxRequestTarget target) {
+						WebMarkupContainer preview = generatePreview(period);
+						PeriodPage.this.replace(preview);
+						target.addComponent(preview);
+					}
+				});
+				return buttons;
+			}
 		});
+		
+		add(new Label("previewTitle", "Preview"));
+		
+		add(generatePreview(period));
+	}
+	
+	private WebMarkupContainer generatePreview(Period period) {
+		WebMarkupContainer preview = new WebMarkupContainer("preview");
+		preview.setOutputMarkupId(true);
+		
+		RepeatingView weekDays = new RepeatingView("weekDays");
+		preview.add(weekDays);
+		
+		Periods periods = new PeriodsImpl();
+		ArrayList<Period> periodList = new ArrayList<Period>();
+		periodList.add(period);
+		periods.setPeriods(periodList);
+		
+		DateMidnight beginDate = new DateMidnight(period.getBeginDate());
+		int weekDayCount = period.getWeekDays().size();
+		List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
+		if (dates.size() < weekDayCount) {
+			beginDate = beginDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
+			int diff = weekDayCount-dates.size();
+			dates.addAll(periods.generateDates(beginDate, diff, true));			
+		}
+		
+		for (DatePeriod datePeriod : dates) {
+			WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
+			weekDays.add(weekDay);
+			
+			DateMidnight date = new DateMidnight(datePeriod.getDate());
+			
+			weekDay.add(new PeriodDateComponent("weekDay", period, date) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected int getRowSpanForTimeContent(Period period, DateTime time) {
+					return 0;
+				}
+
+				@Override
+				protected Component getTimeContent(String wicketId, Period period, DateTime time, MarkupContainer contentContainer) {
+					return null;
+				}
+
+				@Override
+				protected boolean shouldDisplayTimeContent(Period period, DateTime time) {
+					return false;
+				}
+
+				@Override
+				protected boolean shouldHideEmptyContent(Period period, DateTime time) {
+					return false;
+				}
+				
+			});
+		}
+		
+		return preview;
 	}
 
 	@Override
