@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.bean.VelocityBean;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
@@ -28,9 +29,9 @@ public class TestMailBeanImpl extends SpringTestCase {
 		Pupil pupil = (Pupil) getPersonDAO().getPerson(3L);
 		endTransaction();
 		
-		Method createWelcomeMailMethod = MailBeanImpl.class.getDeclaredMethod("createWelcomeMail", new Class[] {Pupil.class, String.class, String.class});
+		Method createWelcomeMailMethod = MailBeanImpl.class.getDeclaredMethod("createWelcomeMail", new Class[] {Pupil.class, String.class, ApplicationConfiguration.class});
 		createWelcomeMailMethod.setAccessible(true);
-		MimeMessagePreparator preparator = (MimeMessagePreparator) createWelcomeMailMethod.invoke(mailBean, new Object[] {pupil, "No intro message", "http://www.teachus.dk/"});
+		MimeMessagePreparator preparator = (MimeMessagePreparator) createWelcomeMailMethod.invoke(mailBean, new Object[] {pupil, "No intro message", createDummyConfiguration()});
 		preparator.prepare(new JavaMailSenderImpl().createMimeMessage());
 	}
 	
@@ -43,7 +44,7 @@ public class TestMailBeanImpl extends SpringTestCase {
 		List<PupilBooking> pupilBookings = getBookingDAO().getUnpaidBookings(teacher);
 		endTransaction();
 		
-		mailBean.sendNewBookingsMail(teacher, pupilBookings);
+		mailBean.sendNewBookingsMail(teacher, pupilBookings, createDummyConfiguration());
 	}
 
 	private MailBean getMailBean() throws NoSuchFieldException, IllegalAccessException {

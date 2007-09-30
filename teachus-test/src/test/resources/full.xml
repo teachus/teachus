@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE dataset SYSTEM "src/test/resources/full.dtd">
 <dataset>
+  <application_configuration name="SERVER_URL" version="0" value="http://localhost:8080/"/>
   <person id="1" person_type="ADMIN" version="0" name="Admin" username="admin" password="D033E22AE348AEB5660FC2140AEC35850C4DA997" email="teachus@billen.dk" active="1"/>
   <person id="2" person_type="TEACHER" version="0" name="Cathrine Sadolin" username="sadolin" password="2E56050EE8AF31E471C1288C45058554E7425599" email="cathrine.sadolin@billen.dk" locale="da_DK_singers" active="1" currency="kr"/>
   <person id="3" person_type="PUPIL" version="0" name="Anne Pedersen" username="anne" password="96657FD33D4351FB0EC777FD7064E03B0ADC3A35" email="anne.pedersen@billen.dk" active="1" teacher_id="2"/>

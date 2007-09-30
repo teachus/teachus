@@ -33,6 +33,7 @@ import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
+import dk.teachus.frontend.pages.settings.ApplicationConfigurationPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
@@ -45,6 +46,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		PUPILS,
 		AGENDA,
 		SETTINGS,
+		GLOBAL_CONFIGURATION,
 		PERIODS,
 		STATISTICS,
 		PAYMENT,
@@ -82,6 +84,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 			menuItemsList.add(new MenuItem(AdminsPage.class, teachUsSession.getString("General.administrators"), AuthenticatedPageCategory.ADMINS)); //$NON-NLS-1$
 			menuItemsList.add(new MenuItem(TeachersPage.class, teachUsSession.getString("General.teachers"), AuthenticatedPageCategory.TEACHERS)); //$NON-NLS-1$
 			menuItemsList.add(new MenuItem(TeachersSummaryPage.class, teachUsSession.getString("General.statistics"), AuthenticatedPageCategory.STATISTICS)); //$NON-NLS-1$
+			menuItemsList.add(new MenuItem(ApplicationConfigurationPage.class, teachUsSession.getString("General.globalConfiguration"), AuthenticatedPageCategory.GLOBAL_CONFIGURATION)); //$NON-NLS-1$
 		}
 		if (UserLevel.ADMIN != teachUsSession.getUserLevel()) {
 			if (UserLevel.TEACHER.authorized(teachUsSession.getUserLevel())) {

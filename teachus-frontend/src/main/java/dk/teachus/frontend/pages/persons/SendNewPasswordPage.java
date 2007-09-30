@@ -125,11 +125,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 				
 				personDAO.save(pupil);
 				
-//				new Thread(new Runnable() {
-//					public void run() {
-						mailBean.sendWelcomeMail(pupil, getIntroMessage(), TeachUsApplication.get().getServerName());						
-//					}
-//				}).start();					
+				mailBean.sendWelcomeMail(pupil, getIntroMessage(), TeachUsApplication.get().getConfiguration());		
 				
 				getRequestCycle().setResponsePage(PupilsPage.class);
 			}			

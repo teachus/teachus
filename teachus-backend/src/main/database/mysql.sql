@@ -1,3 +1,12 @@
+CREATE TABLE
+	application_configuration
+(
+	name VARCHAR(255) NOT NULL, 
+	version INTEGER NOT NULL, 
+	value MEDIUMTEXT, 
+	primary key (name)
+) type=InnoDB;
+
 CREATE TABLE 
 	booking 
 (

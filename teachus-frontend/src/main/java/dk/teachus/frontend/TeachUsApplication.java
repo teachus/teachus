@@ -16,15 +16,15 @@
  */
 package dk.teachus.frontend;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.wicket.Application;
+import org.apache.wicket.Page;
 import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
@@ -32,7 +32,6 @@ import org.apache.wicket.markup.html.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.apache.wicket.protocol.http.WebRequestCycle;
 import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.io.IObjectStreamFactory;
@@ -41,10 +40,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import dk.teachus.backend.bean.MailBean;
+import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.imagebox.ImageBox;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
@@ -63,6 +64,7 @@ import dk.teachus.frontend.pages.periods.PeriodsPage;
 import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
+import dk.teachus.frontend.pages.settings.ApplicationConfigurationPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.settings.WelcomeMailSettingsPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
@@ -70,9 +72,10 @@ import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
 import dk.teachus.frontend.pages.stats.teacher.LessonsPerHourPage;
 import dk.teachus.frontend.utils.Resources;
-import dk.teachus.utils.ApplicationUtils;
 
 public class TeachUsApplication extends WebApplication {
+	
+	private ApplicationConfiguration configuration;
 	
 	@Override
 	protected void init() {
@@ -90,9 +93,20 @@ public class TeachUsApplication extends WebApplication {
 			getRequestCycleSettings().addResponseFilter(new AjaxServerAndClientTimeFilter());
 		}
 		
+		loadConfiguration();
+		
 		mountPages();
 		
 		mountResources();
+	}
+	
+	private void loadConfiguration() {
+		configuration = getApplicationDAO().loadConfiguration();
+		configuration.addPropertyListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				getApplicationDAO().saveConfiguration(configuration);
+			}
+		});
 	}
 
 	private void mountPages() {
@@ -113,6 +127,7 @@ public class TeachUsApplication extends WebApplication {
 		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class));
 		mountBookmarkablePage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/globalsettings", ApplicationConfigurationPage.class); //$NON-NLS-1$
 	}
 
 	private void mountResources() {
@@ -209,12 +224,20 @@ public class TeachUsApplication extends WebApplication {
 		return (StatisticsDAO) getApplicationContext().getBean("statisticsDao");
 	}
 	
+	public ApplicationConfiguration getConfiguration() {
+		return configuration;
+	}
+	
+	protected ApplicationDAO getApplicationDAO() {
+		return (ApplicationDAO) getApplicationContext().getBean("applicationDao");
+	}
+	
 	protected ApplicationContext getApplicationContext() {
 		return WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 	}
 
 	@Override
-	public Class getHomePage() {
+	public Class<? extends Page> getHomePage() {
 		return HomePage.class;
 	}
 	
@@ -237,25 +260,11 @@ public class TeachUsApplication extends WebApplication {
 	}
 	
 	public String getVersion() {
-		return ApplicationUtils.getVersion();
+		return getConfiguration().getConfiguration(ApplicationConfiguration.VERSION);
 	}
 	
 	public String getServerName() {
-		WebRequestCycle requestCycle = (WebRequestCycle) RequestCycle.get();
-		HttpServletRequest httpServletRequest = requestCycle.getWebRequest().getHttpServletRequest();
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append(httpServletRequest.getScheme());
-		sb.append("://"); //$NON-NLS-1$
-		sb.append(httpServletRequest.getServerName());
-		if (httpServletRequest.getServerPort() != 80) {
-			sb.append(":"); //$NON-NLS-1$
-			sb.append(httpServletRequest.getServerPort());
-		}
-		sb.append("/"); //$NON-NLS-1$
-		sb.append(httpServletRequest.getContextPath());
-		
-		return sb.toString();
+		return getConfiguration().getConfiguration(ApplicationConfiguration.SERVER_URL);
 	}
 
 	public Theme getDefaultTheme() {

@@ -1,8 +1,16 @@
 <!ELEMENT dataset (
+    application_configuration*,
     person*,
     period*,
     booking*,
     teacher_attribute*)>
+
+<!ELEMENT application_configuration EMPTY>
+<!ATTLIST application_configuration
+    name CDATA #REQUIRED
+    version CDATA #REQUIRED
+    value CDATA #IMPLIED
+>
 
 <!ELEMENT person EMPTY>
 <!ATTLIST person

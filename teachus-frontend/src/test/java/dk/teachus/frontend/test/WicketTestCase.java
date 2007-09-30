@@ -16,16 +16,19 @@ import org.jmock.integration.junit3.MockObjectTestCase;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
+import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.AdminImpl;
+import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
@@ -76,6 +79,30 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		public PersonDAO getPersonDAO() {
 			return tester.getPersonDAO();
 		}
+		
+		@Override
+		protected ApplicationDAO getApplicationDAO() {
+			if (tester == null) {
+				ApplicationDAO applicationDAO = new ApplicationDAO() {
+					public ApplicationConfiguration loadConfiguration() {
+						ApplicationConfigurationImpl conf = new ApplicationConfigurationImpl(null);
+						
+						conf.setConfiguration(ApplicationConfiguration.SERVER_URL, "http://localhost:8080/");
+						conf.setConfiguration(ApplicationConfiguration.VERSION, "1.2.3");
+						
+						return conf;
+					}
+
+					public void saveConfiguration(ApplicationConfiguration configuration) {
+						
+					}					
+				};
+				
+				return applicationDAO;
+			} else {
+				return tester.getApplicationDAO();
+			}			
+		}
 	}
 	
 	public static class TeachUsWicketTester extends WicketTester implements Serializable {
@@ -84,6 +111,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		private BookingDAO bookingDAO;
 		private PeriodDAO periodDAO;
 		private PersonDAO personDAO;
+		private ApplicationDAO applicationDAO;
 		
 		public TeachUsWicketTester(TestTeachUsApplication application) {
 			super(application);
@@ -96,7 +124,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		}
 
 		public void setBookingDAO(BookingDAO bookingDAO) {
-			Class[] interfaces = new Class[] {
+			Class<?>[] interfaces = new Class[] {
 				BookingDAO.class
 			};
 			this.bookingDAO = (BookingDAO) Proxy.newProxyInstance(BookingDAO.class.getClassLoader(), interfaces, new LazyInitProxy(bookingDAO));
@@ -107,7 +135,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		}
 
 		public void setPeriodDAO(PeriodDAO periodDAO) {
-			Class[] interfaces = new Class[] {
+			Class<?>[] interfaces = new Class[] {
 					PeriodDAO.class
 			};
 			this.periodDAO = (PeriodDAO) Proxy.newProxyInstance(PeriodDAO.class.getClassLoader(), interfaces, new LazyInitProxy(periodDAO));
@@ -118,10 +146,21 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		}
 
 		public void setPersonDAO(PersonDAO personDAO) {
-			Class[] interfaces = new Class[] {
+			Class<?>[] interfaces = new Class[] {
 					PersonDAO.class
 			};
 			this.personDAO = (PersonDAO) Proxy.newProxyInstance(PersonDAO.class.getClassLoader(), interfaces, new LazyInitProxy(personDAO));
+		}
+
+		public ApplicationDAO getApplicationDAO() {			
+			return applicationDAO;
+		}
+
+		public void setApplicationDAO(ApplicationDAO applicationDAO) {
+			Class<?>[] interfaces = new Class[] {
+					ApplicationDAO.class
+			};
+			this.applicationDAO = (ApplicationDAO) Proxy.newProxyInstance(ApplicationDAO.class.getClassLoader(), interfaces, new LazyInitProxy(applicationDAO));
 		}
 
 		public TeachUsApplication getTeachUsApplication() {

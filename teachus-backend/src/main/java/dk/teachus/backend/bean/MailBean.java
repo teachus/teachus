@@ -19,14 +19,15 @@ package dk.teachus.backend.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 
 public interface MailBean extends Serializable {
 
-	void sendWelcomeMail(Pupil pupil, String introMessage, String serverName);
+	void sendWelcomeMail(Pupil pupil, String introMessage, ApplicationConfiguration configuration);
 	
-	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings);
+	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration);
 	
 }

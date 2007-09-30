@@ -346,7 +346,7 @@ public abstract class DynamicDataImport {
 
 	private static void deleteExistingData(SessionFactory sessionFactory) {
 		executeSql(sessionFactory, "UPDATE person SET teacher_id = NULL");
-		
+
 		executeSql(sessionFactory, "TRUNCATE booking");
 		executeSql(sessionFactory, "TRUNCATE period");
 		executeSql(sessionFactory, "TRUNCATE teacher_attribute");

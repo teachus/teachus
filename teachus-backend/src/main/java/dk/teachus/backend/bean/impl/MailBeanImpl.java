@@ -34,10 +34,10 @@ import org.springframework.web.util.HtmlUtils;
 
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.bean.VelocityBean;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.utils.ApplicationUtils;
 import dk.teachus.utils.ClassUtils;
 
 public class MailBeanImpl implements MailBean {
@@ -51,12 +51,12 @@ public class MailBeanImpl implements MailBean {
 		this.velocityBean = velocityBean;
 	}
 
-	public void sendWelcomeMail(final Pupil pupil, final String introMessage, final String serverName) {
-		MimeMessagePreparator welcomeMail = createWelcomeMail(pupil, introMessage, serverName);
+	public void sendWelcomeMail(final Pupil pupil, final String introMessage, ApplicationConfiguration configuration) {
+		MimeMessagePreparator welcomeMail = createWelcomeMail(pupil, introMessage, configuration);
 		sendMail(welcomeMail);
 	}
 
-	private MimeMessagePreparator createWelcomeMail(final Pupil pupil, final String introMessage, final String serverName) {
+	private MimeMessagePreparator createWelcomeMail(final Pupil pupil, final String introMessage, final ApplicationConfiguration configuration) {
 		return new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, false, "UTF-8");
@@ -94,7 +94,7 @@ public class MailBeanImpl implements MailBean {
 				model.put("usernameLabel", bundle.getString("usernameLabel"));
 				model.put("passwordLabel", bundle.getString("passwordLabel"));
 				model.put("regard", bundle.getString("regard"));
-				model.put("server", serverName);
+				model.put("server", configuration.getConfiguration(ApplicationConfiguration.SERVER_URL));
 				model.put("from", HtmlUtils.htmlEscape(fromName));
 				model.put("name", HtmlUtils.htmlEscape(pupil.getName()));
 				model.put("username", HtmlUtils.htmlEscape(pupil.getUsername()));
@@ -110,12 +110,12 @@ public class MailBeanImpl implements MailBean {
 				String text = template.substring(template.indexOf('\n'));
 				message.setText(text, true);
 
-				mimeMessage.addHeader("X-Mailer", "TeachUs ("+ApplicationUtils.getVersion()+")");
+				mimeMessage.addHeader("X-Mailer", "TeachUs ("+configuration.getConfiguration(ApplicationConfiguration.VERSION)+")");
 			}
 		};
 	}
 	
-	public void sendNewBookingsMail(final Teacher teacher, final List<PupilBooking> pupilBookings) {
+	public void sendNewBookingsMail(final Teacher teacher, final List<PupilBooking> pupilBookings, final ApplicationConfiguration configuration) {
 		if (pupilBookings.isEmpty() == false) {
 			mailSender.send(new MimeMessagePreparator() {
 				public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -164,7 +164,7 @@ public class MailBeanImpl implements MailBean {
 					String text = template.substring(template.indexOf('\n'));
 					message.setText(text, true);
 	
-					mimeMessage.addHeader("X-Mailer", "TeachUs ("+ApplicationUtils.getVersion()+")");
+					mimeMessage.addHeader("X-Mailer", "TeachUs ("+configuration.getConfiguration(ApplicationConfiguration.VERSION)+")");
 				}
 			});
 		}

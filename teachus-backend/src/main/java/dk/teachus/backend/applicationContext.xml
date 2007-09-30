@@ -49,6 +49,9 @@
 				<value>
 					dk/teachus/backend/dao/hibernate/TeacherAttribute.hbm.xml
 				</value>
+				<value>
+					dk/teachus/backend/dao/hibernate/ApplicationConfiguration.hbm.xml
+				</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -145,6 +148,17 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="applicationDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernateApplicationDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
 
 	<!-- ========================== -->
 	<!--         SCHEDULING         -->
@@ -154,6 +168,7 @@
 		<constructor-arg ref="bookingDao" />
 		<constructor-arg ref="personDao" />
 		<constructor-arg ref="mailBean" />
+		<constructor-arg ref="applicationDao" />
 	</bean>
 	
 	<bean id="newBookingsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

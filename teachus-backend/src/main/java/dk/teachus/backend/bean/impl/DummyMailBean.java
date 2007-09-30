@@ -22,6 +22,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.bean.VelocityBean;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
@@ -35,10 +36,10 @@ public class DummyMailBean implements MailBean {
 	public DummyMailBean(JavaMailSender mailSender, VelocityBean velocityBean) {
 	}
 
-	public void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings) {
+	public void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration) {
 	}
 
-	public void sendWelcomeMail(Pupil pupil, String introMessage, String serverName) {
+	public void sendWelcomeMail(Pupil pupil, String introMessage, ApplicationConfiguration configuration) {
 	}
 
 }

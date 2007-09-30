@@ -25,16 +25,19 @@ import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
 
+import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.database.StaticDataImport;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
+import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 
@@ -93,10 +96,6 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		return teacherBooking.getId();
 	}
 
-	public BookingDAO getBookingDAO() {
-		return (BookingDAO) applicationContext.getBean("bookingDao");
-	}
-
 	@Override
 	protected String[] getConfigLocations() {
 		List<String> configLocations = new ArrayList<String>();
@@ -112,6 +111,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	protected void addConfigLocations(List<String> configLocations) {
 	}
 
+	public BookingDAO getBookingDAO() {
+		return (BookingDAO) applicationContext.getBean("bookingDao");
+	}
+
 	public PeriodDAO getPeriodDAO() {
 		return (PeriodDAO) applicationContext.getBean("periodDao");
 	}
@@ -122,6 +125,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 
 	public StatisticsDAO getStatisticsDAO() {
 		return (StatisticsDAO) applicationContext.getBean("statisticsDao");
+	}
+	
+	public ApplicationDAO getApplicationDAO() {
+		return (ApplicationDAO) applicationContext.getBean("applicationDao");
 	}
 
 	public SessionFactory getSessionFactory() {
@@ -157,7 +164,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		return teacher;
 	}
 	
-	protected Object loadObject(Class objectClass, Serializable objectId) {
+	protected Object loadObject(Class<?> objectClass, Serializable objectId) {
 		Object object = null;
 		
 		org.hibernate.Session session = getSessionFactory().openSession();
@@ -186,6 +193,15 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
 		endTransaction();
 		return teacher;
+	}
+	
+	protected ApplicationConfiguration createDummyConfiguration() {
+		ApplicationConfigurationImpl conf = new ApplicationConfigurationImpl(null);
+		
+		conf.setConfiguration(ApplicationConfiguration.SERVER_URL, "http://localhost:8080/");
+		conf.setConfiguration(ApplicationConfiguration.VERSION, "1.2.3");
+		
+		return conf;
 	}
 	
 }

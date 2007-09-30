@@ -20,8 +20,10 @@ import java.util.List;
 
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.bean.NewBookings;
+import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 
@@ -31,11 +33,14 @@ public class NewBookingsImpl implements NewBookings {
 	private BookingDAO bookingDAO;
 	private PersonDAO personDAO;
 	private MailBean mailBean;
+	private ApplicationConfiguration configuration;
 
-	public NewBookingsImpl(BookingDAO bookingDAO, PersonDAO personDAO, MailBean mailBean) {
+	public NewBookingsImpl(BookingDAO bookingDAO, PersonDAO personDAO, MailBean mailBean, ApplicationDAO applicationDAO) {
 		this.bookingDAO = bookingDAO;
 		this.personDAO = personDAO;
 		this.mailBean = mailBean;
+		
+		configuration = applicationDAO.loadConfiguration();
 	}
 
 	public void sendNewBookingsMail() {
@@ -44,7 +49,7 @@ public class NewBookingsImpl implements NewBookings {
 		for (Teacher teacher : teachers) {
 			List<PupilBooking> pupilBookings = bookingDAO.getUnsentBookings(teacher);
 			
-			mailBean.sendNewBookingsMail(teacher, pupilBookings);
+			mailBean.sendNewBookingsMail(teacher, pupilBookings, configuration);
 			
 			bookingDAO.newBookingsMailSent(pupilBookings);
 		}

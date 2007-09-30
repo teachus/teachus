@@ -18,6 +18,7 @@ package dk.teachus.backend.bean;
 
 import java.io.Serializable;
 
+
 public interface NewBookings extends Serializable {
 
 	void sendNewBookingsMail();
