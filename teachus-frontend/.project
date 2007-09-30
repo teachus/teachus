@@ -1,20 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>teachus-frontend</name>
-	<comment>Scheduling system for private teachers.</comment>
-	<projects>
-		<project>teachus-backend</project>
-		<project>teachus-ws</project>
-	</projects>
-	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.jdt.core.javabuilder</name>
-			<arguments>
-			</arguments>
-		</buildCommand>
-	</buildSpec>
-	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.maven.ide.eclipse.maven2Nature</nature>
-	</natures>
+  <name>teachus-frontend</name>
+  <comment>Scheduling system for private teachers.</comment>
+  <projects>
+    <project>teachus-backend</project>
+    <project>teachus-ws</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>org.maven.ide.eclipse.maven2Nature</nature>
+  </natures>
 </projectDescription>
