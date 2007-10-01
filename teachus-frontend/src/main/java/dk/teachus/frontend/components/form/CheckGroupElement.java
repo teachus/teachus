@@ -35,19 +35,19 @@ public class CheckGroupElement extends AbstractChoiceElement {
 	private static final long serialVersionUID = 1L;
 	private CheckBoxMultipleChoice checkGroup;
 	
-	public CheckGroupElement(String label, IModel inputModel, List choices) {
+	public CheckGroupElement(String label, IModel inputModel, List<?> choices) {
 		this(label, inputModel, choices, null, false);
 	}
 	
-	public CheckGroupElement(String label, IModel inputModel, List choices, IChoiceRenderer choiceRenderer) {
+	public CheckGroupElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer) {
 		this(label, inputModel, choices, choiceRenderer, false);
 	}
 	
-	public CheckGroupElement(String label, IModel inputModel, List choices, boolean required) {
+	public CheckGroupElement(String label, IModel inputModel, List<?> choices, boolean required) {
 		this(label, inputModel, choices, null, required);
 	}
 	
-	public CheckGroupElement(String label, IModel inputModel, List choices, IChoiceRenderer choiceRenderer, boolean required) {
+	public CheckGroupElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer, boolean required) {
 		super(label, inputModel, choices, choiceRenderer, required);
 	}
 
@@ -58,7 +58,14 @@ public class CheckGroupElement extends AbstractChoiceElement {
 
 	@Override
 	protected Component newInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
-		checkGroup = new CheckBoxMultipleChoice(wicketId, inputModel, choices, choiceRenderer);
+		checkGroup = new CheckBoxMultipleChoice(wicketId, inputModel, choices, choiceRenderer) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return isReadOnly() == false;
+			}
+		};
 		checkGroup.setRequired(required);
 		checkGroup.setLabel(new Model(label));
 		return checkGroup;

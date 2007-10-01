@@ -42,7 +42,7 @@ CREATE TABLE
 	lesson_duration INTEGER NOT NULL, 
 	interval_between_lesson_start INTEGER NOT NULL,
 	repeat_every_week INTEGER NOT NULL,
-	active TINYINT DEFAULT TRUE,
+	status VARCHAR(10) NOT NULL,
 	primary key (id)
 ) type=InnoDB;
 
@@ -105,3 +105,5 @@ ALTER TABLE
 	teacher_attribute 
 		ADD INDEX FKD49E7E7F1CC24034 (teacher_id), 
 		ADD CONSTRAINT FKD49E7E7F1CC24034 FOREIGN KEY (teacher_id) REFERENCES person (id);
+
+INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.40');

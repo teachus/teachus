@@ -31,6 +31,7 @@ import org.apache.wicket.validation.IValidator;
 public abstract class AbstractInputElement extends FormElement {
 	private static final long serialVersionUID = 1L;
 	
+	private boolean readOnly;
 	private boolean attached = false;
 	protected boolean required;
 	protected String label;
@@ -55,6 +56,14 @@ public abstract class AbstractInputElement extends FormElement {
 		return feedbackPanel;
 	}
 	
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+
 	@Override
 	protected void onBeforeRender() {
 		super.onBeforeRender();

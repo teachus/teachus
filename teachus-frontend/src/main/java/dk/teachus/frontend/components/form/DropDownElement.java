@@ -34,19 +34,19 @@ public class DropDownElement extends AbstractChoiceElement {
 	
 	private DropDownChoice dropDownChoice;
 	
-	public DropDownElement(String label, IModel inputModel, List choices) {
+	public DropDownElement(String label, IModel inputModel, List<?> choices) {
 		this(label, inputModel, choices, null, false);
 	}
 	
-	public DropDownElement(String label, IModel inputModel, List choices, IChoiceRenderer choiceRenderer) {
+	public DropDownElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer) {
 		this(label, inputModel, choices, choiceRenderer, false);
 	}
 	
-	public DropDownElement(String label, IModel inputModel, List choices, boolean required) {
+	public DropDownElement(String label, IModel inputModel, List<?> choices, boolean required) {
 		this(label, inputModel, choices, null, required);
 	}
 	
-	public DropDownElement(String label, IModel inputModel, List choices, IChoiceRenderer choiceRenderer, boolean required) {
+	public DropDownElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer, boolean required) {
 		super(label, inputModel, choices, choiceRenderer, required);
 	}
 	
@@ -60,11 +60,19 @@ public class DropDownElement extends AbstractChoiceElement {
 		DropDownElementPanel elementPanel = new DropDownElementPanel(wicketId);
 		elementPanel.setRenderBodyOnly(true);
 		
-		dropDownChoice = new DropDownChoice("dropDown", inputModel, choices, choiceRenderer);
+		dropDownChoice = new DropDownChoice("dropDown", inputModel, choices, choiceRenderer) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return isReadOnly() == false;
+			}
+		};
 		dropDownChoice.setLabel(new Model(label));
 		elementPanel.add(dropDownChoice);
 		dropDownChoice.setRequired(required);
 		dropDownChoice.setNullValid(required == false);
+		dropDownChoice.setEnabled(isReadOnly() == false);
 				
 		return elementPanel;
 	}

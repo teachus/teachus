@@ -27,6 +27,7 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AbstractTeacherAttribute;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
@@ -97,7 +98,7 @@ public class TestPersonDAO extends SpringTestCase {
 		// Create a periods
 		Period period = new PeriodImpl();
 		period.setTeacher(teacher);
-		period.setActive(true);
+		period.setStatus(Status.FINAL);
 		period.setBeginDate(new Date());
 		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime().withTime(16, 0, 0, 0).toDate());

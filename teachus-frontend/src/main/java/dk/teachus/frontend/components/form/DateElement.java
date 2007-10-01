@@ -17,7 +17,9 @@
 package dk.teachus.frontend.components.form;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.extensions.yui.calendar.DateField;
+import org.apache.wicket.datetime.PatternDateConverter;
+import org.apache.wicket.datetime.markup.html.form.DateTextField;
+import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -30,7 +32,7 @@ public class DateElement extends AbstractValidationInputElement {
 	private static final long serialVersionUID = 1L;
 
 	private IModel inputModel;
-	private DateField dateField;
+	private DateTextField dateField;
 	
 	public DateElement(String label, IModel inputModel) {
 		this(label, inputModel, false);
@@ -67,7 +69,22 @@ public class DateElement extends AbstractValidationInputElement {
 		DateElementPanel elementPanel = new DateElementPanel(wicketId);
 		elementPanel.setRenderBodyOnly(true);
 		
-		dateField = new DateField("dateField", inputModel);
+		dateField = new DateTextField("dateField", inputModel, new PatternDateConverter("yyyy-MM-dd", false)) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return isReadOnly() == false;
+			}
+		};
+		dateField.add(new DatePicker() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled(Component component) {
+				return isReadOnly() == false;
+			}
+		});
 		dateField.setLabel(new Model(label));
 		dateField.setRequired(required);
 		elementPanel.add(dateField);

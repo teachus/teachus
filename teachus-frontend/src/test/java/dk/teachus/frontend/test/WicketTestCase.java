@@ -27,6 +27,7 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
@@ -315,7 +316,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	protected Period createPeriod(Long periodId, Teacher teacher, DateMidnight beginDate, DateMidnight endDate, DateTime startTime, DateTime endTime) {
 		PeriodImpl period = new PeriodImpl();
 		period.setId(periodId);
-		period.setActive(true);
+		period.setStatus(Status.FINAL);
 		period.setBeginDate(beginDate.toDate());
 		period.setEndDate(endDate.toDate());
 		period.setStartTime(startTime.toDate());

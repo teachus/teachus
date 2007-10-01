@@ -29,6 +29,7 @@ import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 
@@ -48,7 +49,7 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		
 		c.add(Restrictions.eq("id", id));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
-		c.add(Restrictions.eq("active", true));
+		c.add(Restrictions.ne("status", Status.DELETED));
 		
 		Period period = null;
 		List<Period> result = getHibernateTemplate().findByCriteria(c);
@@ -66,7 +67,7 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		
 		c.add(Restrictions.eq("teacher", teacher));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
-		c.add(Restrictions.eq("active", true));
+		c.add(Restrictions.ne("status", Status.DELETED));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 		
@@ -78,7 +79,7 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 	}
 	
 	public void delete(Period period) {
-		period.setActive(false);
+		period.setStatus(Status.DELETED);
 		getHibernateTemplate().update(period);
 		getHibernateTemplate().flush();
 	}

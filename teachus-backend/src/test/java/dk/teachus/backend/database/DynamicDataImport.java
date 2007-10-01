@@ -42,6 +42,7 @@ import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Theme;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
@@ -223,6 +224,7 @@ public abstract class DynamicDataImport {
 		
 		// Periods starting 1. january 3 years ago
 		Period period = new PeriodImpl();
+		period.setStatus(Status.FINAL);
 		period.setName("Mon/Wed");
 		period.setBeginDate(startDate.toDate());
 		period.setStartTime(startDate.toDateTime().withTime(10, 0, 0, 0).toDate());
@@ -235,6 +237,7 @@ public abstract class DynamicDataImport {
 		session.save(period);
 		
 		period = new PeriodImpl();
+		period.setStatus(Status.FINAL);
 		period.setName("Tue/Thu");
 		period.setBeginDate(startDate.toDate());
 		period.setStartTime(startDate.toDateTime().withTime(9, 0, 0, 0).toDate());
@@ -247,6 +250,7 @@ public abstract class DynamicDataImport {
 		session.save(period);
 		
 		period = new PeriodImpl();
+		period.setStatus(Status.FINAL);
 		period.setName("Fri");
 		period.setBeginDate(startDate.toDate());
 		period.setStartTime(startDate.toDateTime().withTime(9, 0, 0, 0).toDate());

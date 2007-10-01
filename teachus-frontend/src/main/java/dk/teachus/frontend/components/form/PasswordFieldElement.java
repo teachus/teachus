@@ -63,8 +63,14 @@ public class PasswordFieldElement extends AbstractValidationInputElement {
 		PasswordFieldElementPanel inputPanel = new PasswordFieldElementPanel(wicketId);
 		inputPanel.setRenderBodyOnly(true);
 		
-		passwordTextField = new PasswordTextField("inputField", inputModel);
-//		passwordTextField.add(new TextFieldErrorModifier(feedbackPanel, "onchange"));
+		passwordTextField = new PasswordTextField("inputField", inputModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return isReadOnly() == false;
+			}
+		};
 		passwordTextField.setRequired(required);
 		passwordTextField.setResetPassword(false);
 		passwordTextField.setOutputMarkupId(true);

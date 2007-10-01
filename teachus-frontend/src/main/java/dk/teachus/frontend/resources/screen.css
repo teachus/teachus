@@ -43,7 +43,6 @@ margin-bottom:10px;
 
 .form {
 	margin: 10px;
-	width: 600px;
 }
 
 .form td {
@@ -59,7 +58,14 @@ margin-bottom:10px;
 	padding-top: 6px;
 }
 
+.form td.input {
+	width: 1%;
+	white-space: nowrap;	
+	vertical-align: top;
+}
+
 .form .required {
+	width: 1%;
 	color: red;
 	font-weight: bold;
 	vertical-align: top;
@@ -73,7 +79,6 @@ margin-bottom:10px;
 }
 
 .form .feedback {
-	white-space: nowrap;
 	vertical-align: top;
 	padding-top: 6px;
 }

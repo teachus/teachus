@@ -72,7 +72,14 @@ public class TextFieldElement extends AbstractValidationInputElement {
 	}
 
 	protected TextField getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
-		TextField textField = new TextField(wicketId, inputModel);
+		TextField textField = new TextField(wicketId, inputModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isEnabled() {
+				return isReadOnly() == false;
+			}
+		};
 		if (size > -1) {
 			textField.add(new SimpleAttributeModifier("size", ""+size));
 		}

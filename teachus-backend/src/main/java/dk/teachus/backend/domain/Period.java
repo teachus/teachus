@@ -26,6 +26,12 @@ import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
 public interface Period {
 
+	public static enum Status {
+		DRAFT,
+		FINAL,
+		DELETED
+	}
+	
 	Long getId();
 	
 	String getName();
@@ -46,7 +52,7 @@ public interface Period {
 	
 	double getPrice();
 	
-	boolean isActive();
+	Status getStatus();
 	
 	/**
 	 * @return The duration of a lesson in minutes
@@ -83,7 +89,7 @@ public interface Period {
 	
 	void setRepeatEveryWeek(int repeatEveryWeek);
 	
-	void setActive(boolean active);
+	void setStatus(Status status);
 
 	/*
 	 * Utility methods

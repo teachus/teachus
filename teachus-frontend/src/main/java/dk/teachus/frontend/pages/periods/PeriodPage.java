@@ -30,15 +30,20 @@ import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.IValidator;
+import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
+import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.frontend.TeachUsApplication;
@@ -54,189 +59,249 @@ import dk.teachus.frontend.components.form.FormPanel;
 import dk.teachus.frontend.components.form.IntegerFieldElement;
 import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
+import dk.teachus.frontend.utils.Formatters;
+import dk.teachus.frontend.utils.PeriodStatusRenderer;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
 
 public class PeriodPage extends AuthenticatedBasePage {
-	private static final long serialVersionUID = 1L;
-
 	private static class TimeModel extends Model {
 		private static final long serialVersionUID = 1L;
 		
-		private IModel nestedModel;
-
-		public TimeModel(IModel nestedModel) {
+		private final IModel nestedModel;
+		
+		public TimeModel(final IModel nestedModel) {
 			this.nestedModel = nestedModel;
 		}
-
+		
+		@Override
 		public Object getObject() {
 			Object returnObject = null;
 			
-			Object object = nestedModel.getObject();
+			final Object object = nestedModel.getObject();
 			if (object != null) {
-				Date date = (Date) object;
+				final Date date = (Date) object;
 				returnObject = new DateTime(date).getMinuteOfDay();
 			}
 			
 			return returnObject;
 		}
-
-		public void setObject(Object object) {
+		
+		@Override
+		public void setObject(final Object object) {
 			if (object != null) {
-				Integer minutesOfDay = (Integer) object;
+				final Integer minutesOfDay = (Integer) object;
 				nestedModel.setObject(new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay).toDate());
 			}
 		}
 		
 	}
 	
+	private static final long serialVersionUID = 1L;
+	
 	public PeriodPage(final Period period) {
 		super(UserLevel.TEACHER, true);
 		
-		add(new Label("editPeriodTitle", "Edit period"));
+		add(new Label("editPeriodTitle", TeachUsSession.get().getString("PeriodPage.editForm"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		FormPanel form = new FormPanel("form"); //$NON-NLS-1$
+		final FormPanel form = new FormPanel("form"); //$NON-NLS-1$
 		add(form);
 		
 		// Name
-		TextFieldElement nameElement = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(period, "name"), true);
+		final TextFieldElement nameElement = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(period, "name"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		nameElement.add(StringValidator.maximumLength(100));
-		form.addElement(nameElement); //$NON-NLS-1$ //$NON-NLS-2$
+		nameElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(nameElement);
 		
 		// Begin date
-		form.addElement(new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate"))); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate")); //$NON-NLS-1$ //$NON-NLS-2$
+		beginDateElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(beginDateElement);
 		
 		// End date
-		form.addElement(new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate"))); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate")); //$NON-NLS-1$ //$NON-NLS-2$
+		endDateElement.add(new IValidator() {
+			private static final long serialVersionUID = 1L;
+			
+			public void validate(IValidatable validatable) {
+				Object value = validatable.getValue();
+				if (value != null) {
+					if (value instanceof Date) {
+						Date date = (Date) value;
+						
+						// Check if the end date conflicts with some bookings
+						BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+						Date lastBookingDate = bookingDAO.getLastBookingDate(period);
+						if (lastBookingDate != null) {
+							if (date.before(lastBookingDate)) {
+								ValidationError validationError = new ValidationError();
+								String bookingConflictMessage = TeachUsSession.get().getString("PeriodPage.endDateBookingConflict");
+								bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(new DateTime(lastBookingDate)));
+								validationError.setMessage(bookingConflictMessage); //$NON-NLS-1$
+								validatable.error(validationError);
+							}
+						}
+					}
+				}
+			}
+		});
+		form.addElement(endDateElement);
 		
 		// Time elements
-		List<Integer> hours = new ArrayList<Integer>();
+		final List<Integer> hours = new ArrayList<Integer>();
 		DateTime dt = new DateTime().withTime(0, 0, 0, 0);
-		int day = dt.getDayOfMonth();
+		final int day = dt.getDayOfMonth();
 		while (day == dt.getDayOfMonth()) {
 			hours.add(dt.getMinuteOfDay());
 			dt = dt.plusMinutes(30);
 		}
 		
-		TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
+		final TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
 		
 		// Start time
-		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel(period, "startTime")), hours, timeChoiceRenderer, true)); //$NON-NLS-1$ //$NON-NLS-2$
+		final DropDownElement startTimeElement = new DropDownElement(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel( //$NON-NLS-1$
+				period, "startTime")), hours, timeChoiceRenderer, true); //$NON-NLS-1$
+		startTimeElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(startTimeElement);
 		
 		// End time
-		form.addElement(new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, "endTime")), hours, timeChoiceRenderer, true)); //$NON-NLS-1$ //$NON-NLS-2$
+		final DropDownElement endTimeElement = new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, //$NON-NLS-1$
+				"endTime")), hours, timeChoiceRenderer, true); //$NON-NLS-1$
+		endTimeElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(endTimeElement);
 		
 		// Location
-		TextFieldElement locationElement = new TextFieldElement(TeachUsSession.get().getString("General.location"), new PropertyModel(period, "location"));
+		final TextFieldElement locationElement = new TextFieldElement(TeachUsSession.get().getString("General.location"), new PropertyModel(period, "location")); //$NON-NLS-1$ //$NON-NLS-2$
 		locationElement.add(StringValidator.maximumLength(100));
-		form.addElement(locationElement); //$NON-NLS-1$ //$NON-NLS-2$
+		locationElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(locationElement);
 		
 		// Price
-		form.addElement(new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), 6)); //$NON-NLS-1$ //$NON-NLS-2$
+		final DecimalFieldElement priceElement = new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), 6); //$NON-NLS-1$ //$NON-NLS-2$
+		priceElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(priceElement);
 		
 		// Lesson duration
-		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel(period, "lessonDuration"), true, 4)); //$NON-NLS-1$ //$NON-NLS-2$
+		final IntegerFieldElement lessonDurationElement = new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel( //$NON-NLS-1$
+				period, "lessonDuration"), true, 4); //$NON-NLS-1$
+		lessonDurationElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(lessonDurationElement);
 		
 		// Interval Between Lesson Start
-		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.intervalBetweenLessonStart"), new PropertyModel(period, "intervalBetweenLessonStart"), true, 4)); //$NON-NLS-1$ //$NON-NLS-2$
+		final IntegerFieldElement intervalBetweenLessonStartElement = new IntegerFieldElement(TeachUsSession.get().getString(
+				"General.intervalBetweenLessonStart"), new PropertyModel(period, "intervalBetweenLessonStart"), true, 4); //$NON-NLS-1$ //$NON-NLS-2$
+		intervalBetweenLessonStartElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(intervalBetweenLessonStartElement);
 		
 		// Week days
-		form.addElement(new CheckGroupElement(TeachUsSession.get().getString("General.weekDays"), new PropertyModel(period, "weekDays"), Arrays.asList(WeekDay.values()), new WeekDayChoiceRenderer(Format.LONG), true)); //$NON-NLS-1$ //$NON-NLS-2$
+		final CheckGroupElement weekDaysElement = new CheckGroupElement(TeachUsSession.get().getString("General.weekDays"), new PropertyModel(period, //$NON-NLS-1$
+				"weekDays"), Arrays.asList(WeekDay.values()), new WeekDayChoiceRenderer(Format.LONG), true); //$NON-NLS-1$
+		weekDaysElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(weekDaysElement);
 		
 		// Repeat every week
-		form.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), new PropertyModel(period, "repeatEveryWeek"))); //$NON-NLS-1$ //$NON-NLS-2$
+		final IntegerFieldElement repeatEveryWeekElement = new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), //$NON-NLS-1$
+				new PropertyModel(period, "repeatEveryWeek")); //$NON-NLS-1$
+		repeatEveryWeekElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(repeatEveryWeekElement);
+		
+		// Status
+		final List<Status> statusList = Arrays.asList(Status.values());
+		final DropDownElement statusElement = new DropDownElement(TeachUsSession.get().getString("General.status"), new PropertyModel(period, "status"), statusList, new PeriodStatusRenderer()); //$NON-NLS-1$ //$NON-NLS-2$
+		statusElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		form.addElement(statusElement);
 		
 		// Buttons
 		form.addElement(new ButtonPanelElement() {
 			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onCancel(AjaxRequestTarget target) {
-				getRequestCycle().setResponsePage(PeriodsPage.class);
-			}
-
-			@Override
-			protected void onSave(AjaxRequestTarget target) {
-				PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
-
-				periodDAO.save(period);				
-				
-				getRequestCycle().setResponsePage(PeriodsPage.class);
-			}			
 			
 			@Override
 			protected List<IButton> getAdditionalButtons() {
-				List<IButton> buttons = new ArrayList<IButton>();
+				final List<IButton> buttons = new ArrayList<IButton>();
 				buttons.add(new IButton() {
 					private static final long serialVersionUID = 1L;
-
+					
 					public String getValue() {
-						return "Preview";
+						return TeachUsSession.get().getString("General.preview"); //$NON-NLS-1$
 					}
-
-					public void onClick(AjaxRequestTarget target) {
-						WebMarkupContainer preview = generatePreview(period);
+					
+					public void onClick(final AjaxRequestTarget target) {
+						final WebMarkupContainer preview = generatePreview(period);
 						PeriodPage.this.replace(preview);
 						target.addComponent(preview);
 					}
 				});
 				return buttons;
 			}
+			
+			@Override
+			protected void onCancel(final AjaxRequestTarget target) {
+				getRequestCycle().setResponsePage(PeriodsPage.class);
+			}
+			
+			@Override
+			protected void onSave(final AjaxRequestTarget target) {
+				final PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
+				
+				periodDAO.save(period);
+				
+				getRequestCycle().setResponsePage(PeriodsPage.class);
+			}
 		});
 		
-		add(new Label("previewTitle", "Preview"));
+		add(new Label("previewTitle", TeachUsSession.get().getString("General.preview"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		add(generatePreview(period));
 	}
 	
-	private WebMarkupContainer generatePreview(Period period) {
-		WebMarkupContainer preview = new WebMarkupContainer("preview");
+	private WebMarkupContainer generatePreview(final Period period) {
+		final WebMarkupContainer preview = new WebMarkupContainer("preview"); //$NON-NLS-1$
 		preview.setOutputMarkupId(true);
 		
-		RepeatingView weekDays = new RepeatingView("weekDays");
+		final RepeatingView weekDays = new RepeatingView("weekDays"); //$NON-NLS-1$
 		preview.add(weekDays);
 		
-		Periods periods = new PeriodsImpl();
-		ArrayList<Period> periodList = new ArrayList<Period>();
+		final Periods periods = new PeriodsImpl();
+		final ArrayList<Period> periodList = new ArrayList<Period>();
 		periodList.add(period);
 		periods.setPeriods(periodList);
 		
 		DateMidnight beginDate = new DateMidnight(period.getBeginDate());
-		int weekDayCount = period.getWeekDays().size();
-		List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
+		final int weekDayCount = period.getWeekDays().size();
+		final List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
 		if (dates.size() < weekDayCount) {
 			beginDate = beginDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
-			int diff = weekDayCount-dates.size();
-			dates.addAll(periods.generateDates(beginDate, diff, true));			
+			final int diff = weekDayCount - dates.size();
+			dates.addAll(periods.generateDates(beginDate, diff, true));
 		}
 		
-		for (DatePeriod datePeriod : dates) {
-			WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
+		for (final DatePeriod datePeriod : dates) {
+			final WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
 			weekDays.add(weekDay);
 			
-			DateMidnight date = new DateMidnight(datePeriod.getDate());
+			final DateMidnight date = new DateMidnight(datePeriod.getDate());
 			
-			weekDay.add(new PeriodDateComponent("weekDay", period, date) {
+			weekDay.add(new PeriodDateComponent("weekDay", period, date) { //$NON-NLS-1$
 				private static final long serialVersionUID = 1L;
-
+				
 				@Override
-				protected int getRowSpanForTimeContent(Period period, DateTime time) {
+				protected int getRowSpanForTimeContent(final Period period, final DateTime time) {
 					return 0;
 				}
-
+				
 				@Override
-				protected Component getTimeContent(String wicketId, Period period, DateTime time, MarkupContainer contentContainer) {
+				protected Component getTimeContent(final String wicketId, final Period period, final DateTime time, final MarkupContainer contentContainer) {
 					return null;
 				}
-
+				
 				@Override
-				protected boolean shouldDisplayTimeContent(Period period, DateTime time) {
+				protected boolean shouldDisplayTimeContent(final Period period, final DateTime time) {
 					return false;
 				}
-
+				
 				@Override
-				protected boolean shouldHideEmptyContent(Period period, DateTime time) {
+				protected boolean shouldHideEmptyContent(final Period period, final DateTime time) {
 					return false;
 				}
 				
@@ -245,15 +310,15 @@ public class PeriodPage extends AuthenticatedBasePage {
 		
 		return preview;
 	}
-
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.periods"); //$NON-NLS-1$
-	}
-
+	
 	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.PERIODS;
+	}
+	
+	@Override
+	protected String getPageLabel() {
+		return TeachUsSession.get().getString("General.periods"); //$NON-NLS-1$
 	}
 	
 }

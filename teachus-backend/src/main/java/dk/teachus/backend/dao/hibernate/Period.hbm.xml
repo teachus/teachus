@@ -34,9 +34,7 @@
         
         <property name="repeatEveryWeek" column="repeat_every_week" not-null="true" />
         
-        <property name="active" not-null="true" type="dk.teachus.backend.dao.hibernate.BooleanType">
-        	<column name="active" default="true" />
-        </property>
+        <property name="status" length="10" type="dk.teachus.backend.dao.hibernate.PeriodStatusUserType" />
     </class>
 
 </hibernate-mapping>

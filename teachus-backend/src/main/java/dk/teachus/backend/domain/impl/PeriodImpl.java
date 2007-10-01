@@ -94,7 +94,7 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	
 	private int repeatEveryWeek = 1;
 	
-	private boolean active = true;
+	private Status status = Status.DRAFT;
 
 	public void addWeekDay(WeekDay weekDay) {
 		weekDays.add(weekDay);
@@ -269,9 +269,9 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		
 		return inLesson;
 	}
-
-	public boolean isActive() {
-		return active;
+	
+	public Status getStatus() {
+		return status;
 	}
 	
 	public boolean isTimeValid(DateTime time) {
@@ -309,10 +309,10 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 		return mayBook;
 	}
 	
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setStatus(Status status) {
+		this.status = status;
 	}
-	
+
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}

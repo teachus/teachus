@@ -101,27 +101,6 @@
 				</excludes>
 			</testResource>
 		</testResources>
-		<plugins>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>Set version number</id>
-						<phase>process-classes</phase>
-						<configuration>
-							<tasks>
-								<property name="propertyFile" value="target/classes/dk/teachus/utils/version.properties" />
-								<replace file="${propertyFile}" token="!!version!!" value="${project.version}" />
-								<echo message="Packaging ${project.name} version: ${project.version}" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 	</build>
 	
 </project>

@@ -65,5 +65,7 @@ public interface BookingDAO extends Serializable {
 	Booking getBooking(Long id);
 
 	int getBookingCount(Period period);
+
+	Date getLastBookingDate(Period period);
 	
 }

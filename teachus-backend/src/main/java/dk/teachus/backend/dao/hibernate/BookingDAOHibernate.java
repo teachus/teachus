@@ -39,6 +39,7 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.BookingImpl;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
@@ -53,7 +54,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		Period period = booking.getPeriod();
 		Date date = booking.getDate();
 		
-		if (period.isActive() == false) {
+		if (period.getStatus() != Status.FINAL) {
 			throw new IllegalArgumentException("Can only book in active periods");
 		}
 		
@@ -107,7 +108,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DateTime end = new DateTime().minusDays(1).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
 		c.createCriteria("period")
-			.add(Restrictions.eq("active", true));
+			.add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil")
 			.add(Restrictions.eq("teacher", teacher))
 			.add(Restrictions.eq("active", true))
@@ -128,7 +129,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	public List<PupilBooking> getUnpaidBookings(Pupil pupil) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 
-		c.createCriteria("period").add(Restrictions.eq("active", true));
+		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil")
 			.add(Restrictions.eq("active", true))
 			.createCriteria("teacher")
@@ -149,7 +150,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
-			.add(Restrictions.eq("active", true));
+			.add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil")
 			.add(Restrictions.eq("teacher", teacher))
 			.add(Restrictions.eq("active", true))
@@ -170,7 +171,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
-			.add(Restrictions.eq("active", true));
+			.add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil")
 			.add(Restrictions.eq("teacher", teacher))
 			.add(Restrictions.eq("active", true))
@@ -221,7 +222,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
-			.add(Restrictions.eq("active", true));
+			.add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil")
 			.add(Restrictions.eq("teacher", teacher))
 			.add(Restrictions.eq("active", true))
@@ -249,7 +250,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
-			.add(Restrictions.eq("active", true));
+			.add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil")
 			.add(Restrictions.eq("teacher", teacher))
 			.add(Restrictions.eq("active", true))
@@ -274,7 +275,10 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithPaidBookings(Teacher teacher) {
-		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND b.paid = 1 AND pe.active = 1 AND t.active = 1 GROUP BY year(b.date)", teacher);
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND b.paid = 1 AND pe.status = ? AND t.active = 1 GROUP BY year(b.date)", new Object[] {
+				teacher,
+				Status.FINAL
+		});
 		
 		return years;
 	}
@@ -282,7 +286,10 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithBookings(Teacher teacher) {
-		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND pe.active = 1 AND t.active = 1 GROUP BY year(b.date)", teacher);
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND pe.status = ? AND t.active = 1 GROUP BY year(b.date)", new Object[] {
+				teacher,
+				Status.FINAL
+		});
 		
 		return years;
 	}
@@ -295,7 +302,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		DateTime start = new DateTime(fromDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
 		DateTime end = new DateTime(toDate).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
-		c.createCriteria("period").add(Restrictions.eq("active", true));
+		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("teacher", teacher));
 		c.add(Restrictions.between("date", start.toDate(), end.toDate()));
@@ -314,19 +321,44 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		return (Booking) getHibernateTemplate().get(BookingImpl.class, id);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public int getBookingCount(Period period) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		c.add(Restrictions.eq("period", period));
 		c.setProjection(Projections.count("id"));
 		
+		int count = getCount(c);
+		
+		return count;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Date getLastBookingDate(Period period) {
+		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
+		c.createCriteria("pupil").add(Restrictions.eq("active", true));
+		c.add(Restrictions.eq("period", period));
+		c.add(Restrictions.eq("active", true));
+		c.addOrder(Order.desc("date"));
+		
+		List<Booking> list = getHibernateTemplate().findByCriteria(c, 0, 1);
+		
+		Date lastBookingDate = null;
+		if (list.size() == 1) {
+			Booking booking = list.get(0);
+			lastBookingDate = booking.getDate();
+		}
+		
+		return lastBookingDate;
+	}
+
+	@SuppressWarnings("unchecked")
+	private int getCount(DetachedCriteria c) {
 		List<Object> result = getHibernateTemplate().findByCriteria(c);
 		if (result.size() != 1) {
 			throw new IllegalStateException("Something weird going on");
 		}
-		Integer count = (Integer) result.get(0);
-		
+		int count = (Integer) result.get(0);
 		return count;
 	}
 

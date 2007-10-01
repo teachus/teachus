@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
@@ -38,7 +39,7 @@ public class TestPeriodDAO extends SpringTestCase {
 		endTransaction();
 		
 		Period period = new PeriodImpl();
-		period.setActive(true);
+		period.setStatus(Status.FINAL);
 		period.setBeginDate(new DateMidnight().minusMonths(4).toDate());
 		period.setEndDate(new DateMidnight().plusMonths(6).toDate());
 		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
@@ -72,7 +73,7 @@ public class TestPeriodDAO extends SpringTestCase {
 		
 		// Add some periods
 		Period period = new PeriodImpl();
-		period.setActive(true);
+		period.setStatus(Status.FINAL);
 		period.setBeginDate(new DateMidnight().minusMonths(4).toDate());
 		period.setEndDate(new DateMidnight().plusMonths(6).toDate());
 		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
