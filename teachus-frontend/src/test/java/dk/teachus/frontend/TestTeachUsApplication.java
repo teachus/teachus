@@ -23,7 +23,7 @@ public class TestTeachUsApplication extends TestCase {
 		
 		int status = new HttpClient().executeMethod(getWsdl);
 		
-		assertEquals(200, status);
+		assertEquals(getWsdl.getResponseBodyAsString(), 200, status);
 		
 		server.stop();
 	}
