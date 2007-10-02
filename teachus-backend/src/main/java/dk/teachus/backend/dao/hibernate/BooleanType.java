@@ -35,7 +35,7 @@ public class BooleanType extends PrimitiveType implements DiscriminatorType {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Class getPrimitiveClass() {
+	public Class<Boolean> getPrimitiveClass() {
 		return boolean.class;
 	}
 
@@ -73,7 +73,7 @@ public class BooleanType extends PrimitiveType implements DiscriminatorType {
 		return ((Boolean) value) ? ""+1 : ""+0;
 	}
 
-	public Class getReturnedClass() {
+	public Class<Boolean> getReturnedClass() {
 		return Boolean.class;
 	}
 

@@ -18,7 +18,7 @@ package dk.teachus.utils;
 
 public abstract class ClassUtils {
 
-	public static String getAsResourcePath(Class clazz, String resourceName) {
+	public static String getAsResourcePath(Class<?> clazz, String resourceName) {
 		String resourcePath = clazz.getPackage().getName();
 		resourcePath = resourcePath.replace(".", "/");
 		resourcePath += "/";
@@ -27,7 +27,7 @@ public abstract class ClassUtils {
 		return resourcePath;
 	}
 	
-	public static String getAsResourceBundlePath(Class clazz, String bundleName) {
+	public static String getAsResourceBundlePath(Class<?> clazz, String bundleName) {
 		String resourceBundlePath = clazz.getPackage().getName();
 		resourceBundlePath += ".";
 		resourceBundlePath += bundleName;

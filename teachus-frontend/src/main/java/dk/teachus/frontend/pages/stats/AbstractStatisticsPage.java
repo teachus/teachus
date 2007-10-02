@@ -51,8 +51,8 @@ public abstract class AbstractStatisticsPage<P extends Person> extends Authentic
 
 	protected void appendDataset(PaintedDefaultCategoryDataset toDataset, PaintedDefaultCategoryDataset fromDataset) {
 		for (int i = 0; i < fromDataset.getColumnCount(); i++) {
-			Comparable columnKey = fromDataset.getColumnKey(i);
-			Comparable rowKey = fromDataset.getRowKey(0);
+			Comparable<?> columnKey = fromDataset.getColumnKey(i);
+			Comparable<?> rowKey = fromDataset.getRowKey(0);
 			Paint paint = fromDataset.getPaint(rowKey);
 			toDataset.addValue(fromDataset.getValue(rowKey, columnKey), rowKey, columnKey, paint);
 		}

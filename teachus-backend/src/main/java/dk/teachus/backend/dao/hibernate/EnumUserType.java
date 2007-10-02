@@ -39,7 +39,7 @@ public class EnumUserType<E extends Enum<E>> implements UserType {
         return SQL_TYPES;
     }
 
-    public Class returnedClass() {
+    public Class<E> returnedClass() {
         return clazz;
     }
 
@@ -56,7 +56,7 @@ public class EnumUserType<E extends Enum<E>> implements UserType {
         if ( null == value ) {
             preparedStatement.setNull( index, Types.VARCHAR );
         } else {
-            preparedStatement.setString( index, ( (Enum)value ).name() );
+            preparedStatement.setString( index, ( (Enum<?>)value ).name() );
         }
     }
 

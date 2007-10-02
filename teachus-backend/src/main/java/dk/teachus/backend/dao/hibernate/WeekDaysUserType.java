@@ -87,8 +87,8 @@ public class WeekDaysUserType extends ImmutableType {
 		return "WeekDay user type";
 	}
 
-	public Class getReturnedClass() {
-		return ArrayList.class;
+	public Class<?> getReturnedClass() {
+		return List.class;
 	}
 
 }

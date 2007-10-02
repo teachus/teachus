@@ -110,7 +110,7 @@ public class PasswordUserType implements UserType {
 		return target;
 	}
 
-	public Class returnedClass() {
+	public Class<String> returnedClass() {
 		return String.class;
 	}
 

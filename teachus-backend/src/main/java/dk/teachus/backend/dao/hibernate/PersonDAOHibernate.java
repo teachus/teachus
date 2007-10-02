@@ -170,7 +170,7 @@ public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO
 		DetachedCriteria c = DetachedCriteria.forClass(PersonImpl.class);
 		c.add(Restrictions.eq("username", username));
 		
-		List result = getHibernateTemplate().findByCriteria(c);
+		List<?> result = getHibernateTemplate().findByCriteria(c);
 		
 		if (result.size() > 0) {
 			existingPerson = (Person) result.get(0);

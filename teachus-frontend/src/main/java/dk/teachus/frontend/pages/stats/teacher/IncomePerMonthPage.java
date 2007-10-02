@@ -251,7 +251,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		add(new ListPanel("list", columns, data)); //$NON-NLS-1$
 	}
 
-	private PaintedDefaultCategoryDataset createCategoryDataset(List<PupilBooking> bookings, Comparable dataSetLabel, Paint paint) {
+	private PaintedDefaultCategoryDataset createCategoryDataset(List<PupilBooking> bookings, Comparable<?> dataSetLabel, Paint paint) {
 		Map<Integer, Double> months = new HashMap<Integer, Double>();
 		for (PupilBooking booking : bookings) {
 			int month = new DateMidnight(booking.getDate()).getMonthOfYear();
