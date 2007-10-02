@@ -15,22 +15,6 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>
-						dk.teachus.tools.upgrade.Upgrade
-					</mainClass>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
