@@ -60,7 +60,7 @@ public class Configuration extends AbstractNode {
 
 	public void deserialize(XMLElement element) {
 		if (element.getName().equalsIgnoreCase("configuration")) {
-			Vector children = element.getChildren();
+			Vector<?> children = element.getChildren();
 			if (children != null) {
 				for (Object object : children) {
 					XMLElement child = (XMLElement) object;

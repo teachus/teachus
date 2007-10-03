@@ -5,11 +5,12 @@ import java.io.File;
 import dk.teachus.tools.upgrade.config.MainDeploymentNode;
 import dk.teachus.tools.upgrade.config.MavenNode;
 import dk.teachus.tools.upgrade.config.SubversionReleaseNode;
+import dk.teachus.tools.upgrade.config.TomcatNode;
 
 public class MainUpgradeTeachUsAction extends UpgradeTeachUsAction {
 
-	public MainUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, MainDeploymentNode deployment, String version) {
-		super(maven, subversion, workingDirectory, deployment, version);
+	public MainUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, MainDeploymentNode deployment, TomcatNode tomcat, String version) {
+		super(maven, subversion, workingDirectory, deployment, tomcat, version);
 	}
 	
 	@Override
@@ -23,16 +24,6 @@ public class MainUpgradeTeachUsAction extends UpgradeTeachUsAction {
 		
 		BackupDatabaseAction backupDatabase = new BackupDatabaseAction(deployment.getDatabase(), backupFile);
 		backupDatabase.execute();
-	}
-	
-	@Override
-	protected int getMaxHeap() {
-		return 128;
-	}
-	
-	@Override
-	protected int getMaxPerm() {
-		return 128;
 	}
 
 }

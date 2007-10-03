@@ -13,25 +13,27 @@ public class DeployWarFileAction implements Action {
 	private File projectDirectory;
 	private TomcatNode tomcat;
 	private String version;
+	private String warName;
 
-	public DeployWarFileAction(File projectDirectory, TomcatNode tomcat, String version) {
+	public DeployWarFileAction(File projectDirectory, TomcatNode tomcat, String version, String warName) {
 		this.projectDirectory = projectDirectory;
 		this.tomcat = tomcat;
 		this.version = version;
+		this.warName = warName;
 	}
 	
 	public void execute() throws Exception {
 		// Remove old war and directory
-		SftpDeleteFileAction deleteFile = new SftpDeleteFileAction(tomcat.getHost(), tomcat.getHome()+"/webapps/ROOT.war");
+		SftpDeleteFileAction deleteFile = new SftpDeleteFileAction(tomcat.getHost(), tomcat.getHome()+"/wars/"+warName+".war");
 		deleteFile.execute();
 		
-		SftpDeleteDirectoryAction deleteDirectory = new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/webapps/ROOT");
+		SftpDeleteDirectoryAction deleteDirectory = new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/webapps/"+warName+"/ROOT");
 		deleteDirectory.execute();
 		
 		// Deploy war
 		File warFile = new File(projectDirectory, "teachus-frontend/target/teachus-frontend-"+version+".war");
-		String destinationFile = "ROOT.war";
-		String destinationDirectory = tomcat.getHome()+"/webapps";
+		String destinationFile = warName+".war";
+		String destinationDirectory = tomcat.getHome()+"/wars";
 		
 		log.info("Deploying war file");
 		

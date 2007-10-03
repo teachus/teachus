@@ -17,7 +17,7 @@ abstract class AbstractNode implements Node {
 	protected XMLElement findChild(XMLElement parent, String name) {
 		XMLElement foundChild = null;
 		
-		Vector children = parent.getChildren();
+		Vector<?> children = parent.getChildren();
 		if (children != null) {
 			for (Object object : children) {
 				XMLElement child = (XMLElement) object;
@@ -35,7 +35,7 @@ abstract class AbstractNode implements Node {
 	protected void traverse(XMLElement parent, XMLElementVisitor visitor) {
 		visitor.visit(parent);
 		
-		Vector children = parent.getChildren();
+		Vector<?> children = parent.getChildren();
 		if (children != null) {
 			for (Object object : children) {
 				XMLElement child = (XMLElement) object;

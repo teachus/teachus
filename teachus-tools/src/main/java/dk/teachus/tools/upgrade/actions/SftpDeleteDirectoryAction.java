@@ -39,7 +39,7 @@ public class SftpDeleteDirectoryAction extends AbstractSftpAction {
 	}
 	
 	private void deleteDirectory(SFTPv3Client client, String directory) throws Exception {
-		Vector directoryContent = client.ls(directory);
+		Vector<?> directoryContent = client.ls(directory);
 		for (Object object : directoryContent) {
 			SFTPv3DirectoryEntry entry = (SFTPv3DirectoryEntry) object;
 			
