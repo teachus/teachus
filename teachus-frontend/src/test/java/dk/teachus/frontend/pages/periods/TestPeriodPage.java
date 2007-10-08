@@ -22,12 +22,39 @@ import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestPeriodPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
 
-	public void testRender() {
+	public void testRenderNewPeriod() {
+		final TeachUsWicketTester tester = createTester();
+		
+		checking(new Expectations() {{
+			PersonDAO personDAO = createPersonDAO();
+			
+			one(personDAO).getPerson(2L);
+			will(returnValue(createTeacher(2L)));
+			
+			tester.setPersonDAO(personDAO);
+		}});
+			
+		final Period period = new PeriodImpl();
+		period.setTeacher(createTeacher(2L));
+		
+		tester.startPage(new ITestPageSource() {
+			private static final long serialVersionUID = 1L;
+
+			public Page getTestPage() {
+				return new PeriodPage(period);
+			}
+		});
+		
+		tester.assertRenderedPage(PeriodPage.class);
+	}
+
+	public void testRenderExistingPeriod() {
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{

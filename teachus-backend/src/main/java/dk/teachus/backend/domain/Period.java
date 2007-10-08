@@ -112,4 +112,6 @@ public interface Period {
 
 	boolean inLesson(DateTime bookedTime, DateTime time);
 	
+	boolean isValid();
+	
 }

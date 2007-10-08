@@ -48,7 +48,7 @@ public class PeriodsImpl implements Periods {
 	public boolean hasDate(DateMidnight date) {
 		boolean hasDate = false;
 		
-		for (Period period : periods) {
+		for (Period period : getValidPeriods()) {
 			if (period.hasDate(date)) {
 				hasDate = true;
 				break;
@@ -61,7 +61,7 @@ public class PeriodsImpl implements Periods {
 	public boolean containsDate(DateMidnight date) {
 		boolean contains = false;
 		
-		for (Period period : periods) {
+		for (Period period : getValidPeriods()) {
 			if (period.dateIntervalContains(date)) {
 				contains = true;
 				break;
@@ -74,7 +74,7 @@ public class PeriodsImpl implements Periods {
 	public boolean hasPeriodBefore(DateMidnight date) {
 		boolean hasPeriodBefore = false;
 		
-		for (Period period : periods) {
+		for (Period period : getValidPeriods()) {
 			if (period.getBeginDate() == null) {
 				hasPeriodBefore = true;
 				break;
@@ -93,7 +93,7 @@ public class PeriodsImpl implements Periods {
 	public boolean hasPeriodAfter(DateMidnight date) {
 		boolean hasPeriodAfter = false;
 		
-		for (Period period : periods) {
+		for (Period period : getValidPeriods()) {
 			if (period.getEndDate() == null) {
 				hasPeriodAfter = true;
 				break;
@@ -116,7 +116,7 @@ public class PeriodsImpl implements Periods {
 		
 		while(week == sd.getWeekOfWeekyear()) {			
 			DatePeriod datePeriod = null;
-			for (Period period : periods) {
+			for (Period period : getValidPeriods()) {
 				// Check if this period can handle the date at all
 				if (period.dateIntervalContains(sd)) {				
 					DateMidnight date = period.generateDate(sd);
@@ -152,20 +152,22 @@ public class PeriodsImpl implements Periods {
 		
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		List<DatePeriod> weekDates = generateDatesForWeek(weekDate);
-		do {
-			for (DatePeriod datePeriod : weekDates) {
-				dates.add(datePeriod);
-				
-				if (explicitNumberOfDays) {
-					if (dates.size() >= numberOfDays) {
-						break;
+		if (numberOfDays > 0) {
+			do {
+				for (DatePeriod datePeriod : weekDates) {
+					dates.add(datePeriod);
+					
+					if (explicitNumberOfDays) {
+						if (dates.size() >= numberOfDays) {
+							break;
+						}
 					}
 				}
-			}
-			weekDate = weekDate.plusWeeks(1);
-			weekDates = generateDatesForWeek(weekDate);
-		} while(dates.size()+weekDates.size() <= numberOfDays
-				&& hasPeriodAfter(weekDate));
+				weekDate = weekDate.plusWeeks(1);
+				weekDates = generateDatesForWeek(weekDate);
+			} while(dates.size()+weekDates.size() <= numberOfDays
+					&& hasPeriodAfter(weekDate));
+		}
 		
 		return dates;
 	}
@@ -184,5 +186,19 @@ public class PeriodsImpl implements Periods {
 		}
 		
 		return numberOfWeeks;
+	}
+	
+	private List<Period> getValidPeriods() {
+		List<Period> validPeriods = new ArrayList<Period>();
+		
+		if (periods != null) {
+			for (Period period : periods) {
+				if (period.isValid()) {
+					validPeriods.add(period);
+				}
+			}
+		}
+		
+		return validPeriods;
 	}
 }

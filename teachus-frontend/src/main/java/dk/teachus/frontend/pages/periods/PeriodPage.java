@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -252,7 +253,11 @@ public class PeriodPage extends AuthenticatedBasePage {
 		
 		add(new Label("previewTitle", TeachUsSession.get().getString("General.preview"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		add(generatePreview(period));
+		if (period.getId() != null) {
+			add(generatePreview(period));
+		} else {
+			add(new WebComponent("preview").setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true).setVisible(false));
+		}
 	}
 	
 	private WebMarkupContainer generatePreview(final Period period) {

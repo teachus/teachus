@@ -360,4 +360,21 @@ public class PeriodImpl extends AbstractHibernateObject implements Serializable,
 	public void setWeekDays(List<WeekDay> weekDays) {
 		this.weekDays = weekDays;
 	}
+	
+	public boolean isValid() {
+		boolean valid = false;
+		
+		if (name != null && name.length() > 0
+				&& startTime != null
+				&& endTime != null
+				&& teacher != null
+				&& weekDays != null && weekDays.isEmpty() == false
+				&& intervalBetweenLessonStart > 0
+				&& lessonDuration > 0
+				&& repeatEveryWeek > 0) {
+			valid = true;
+		}
+		
+		return valid;
+	}
 }

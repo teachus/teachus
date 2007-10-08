@@ -29,6 +29,7 @@ import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
+import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
 public class TestPeriods extends TestCase {
@@ -36,7 +37,7 @@ public class TestPeriods extends TestCase {
 	public void testGenerateDate_repeatEveryWeek() {
 		DateMidnight date = new DateMidnight(2007, 3, 12);
 
-		Period period = new PeriodImpl();
+		Period period = createBasicPeriod();
 		period.setBeginDate(date.toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 15, 0, 0, 0).toDate());
@@ -77,7 +78,7 @@ public class TestPeriods extends TestCase {
 	public void testGenerateDate_repeatEveryWeek2() {
 		DateMidnight date = new DateMidnight(2007, 2, 26);
 
-		Period period = new PeriodImpl();
+		Period period = createBasicPeriod();
 		period.setBeginDate(date.toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
@@ -135,8 +136,8 @@ public class TestPeriods extends TestCase {
 		Periods periods = new PeriodsImpl();
 		List<Period> periodList = new ArrayList<Period>();
 		periods.setPeriods(periodList);
-		
-		Period period = new PeriodImpl();
+
+		Period period = createBasicPeriod();
 		period.setBeginDate(new DateMidnight(2007, 3, 24).toDate());
 		period.setEndDate(new DateMidnight(2007, 3, 24).toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
@@ -152,8 +153,8 @@ public class TestPeriods extends TestCase {
 		Periods periods = new PeriodsImpl();
 		List<Period> periodList = new ArrayList<Period>();
 		periods.setPeriods(periodList);
-		
-		Period period = new PeriodImpl();
+
+		Period period = createBasicPeriod();
 		period.setBeginDate(new DateMidnight(2007, 3, 24).toDate());
 		period.setEndDate(new DateMidnight(2007, 3, 24).toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
@@ -165,6 +166,35 @@ public class TestPeriods extends TestCase {
 		assertEquals(1, dates.size());
 	}
 	
+	public void testGenerateDates_noNumberOfDays() {
+		Periods periods = new PeriodsImpl();
+		List<Period> periodList = new ArrayList<Period>();
+		periods.setPeriods(periodList);
+		
+		Period period = new PeriodImpl();
+		period.setBeginDate(new DateMidnight(2007, 3, 24).toDate());
+		period.setEndDate(new DateMidnight(2007, 3, 24).toDate());
+		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
+		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
+		period.addWeekDay(WeekDay.SATURDAY);
+		periodList.add(period);
+		
+		List<DatePeriod> dates = periods.generateDates(new DateMidnight(2007, 3, 20), 0);
+		assertEquals(0, dates.size());
+	}
+	
+	public void testGenerateDates_notCompletePeriod() {
+		Periods periods = new PeriodsImpl();
+		List<Period> periodList = new ArrayList<Period>();
+		periods.setPeriods(periodList);
+		
+		Period period = new PeriodImpl();
+		periodList.add(period);
+		
+		List<DatePeriod> dates = periods.generateDates(new DateMidnight(2007, 3, 20), 7);
+		assertEquals(0, dates.size());
+	}
+	
 	public void testNumberOfWeeksBack() {
 		DateMidnight date = new DateMidnight(2007, 2, 26);
 
@@ -172,7 +202,7 @@ public class TestPeriods extends TestCase {
 		List<Period> periodList = new ArrayList<Period>();
 		periods.setPeriods(periodList);
 
-		Period period = new PeriodImpl();
+		Period period = createBasicPeriod();
 		period.setBeginDate(date.toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
@@ -189,15 +219,15 @@ public class TestPeriods extends TestCase {
 		List<Period> periodList = new ArrayList<Period>();
 		periods.setPeriods(periodList);
 
-		Period period = new PeriodImpl();
+		Period period = createBasicPeriod();
 		period.setBeginDate(new DateMidnight(2007, 3, 1).toDate());
 		period.setEndDate(new DateMidnight(2007, 5, 31).toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
 		period.addWeekDay(WeekDay.MONDAY);
 		periodList.add(period);
-		
-		period = new PeriodImpl();
+
+		period = createBasicPeriod();
 		period.setBeginDate(new DateMidnight(2007, 8, 1).toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
@@ -213,15 +243,15 @@ public class TestPeriods extends TestCase {
 		List<Period> periodList = new ArrayList<Period>();
 		periods.setPeriods(periodList);
 
-		Period period = new PeriodImpl();
+		Period period = createBasicPeriod();
 		period.setBeginDate(new DateMidnight(2007, 3, 1).toDate());
 		period.setEndDate(new DateMidnight(2007, 3, 31).toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
 		period.addWeekDay(WeekDay.MONDAY);
 		periodList.add(period);
-		
-		period = new PeriodImpl();
+
+		period = createBasicPeriod();
 		period.setBeginDate(new DateMidnight(2007, 5, 1).toDate());
 		period.setStartTime(new DateTime(2007, 1, 1, 10, 0, 0, 0).toDate());
 		period.setEndTime(new DateTime(2007, 1, 1, 16, 0, 0, 0).toDate());
@@ -230,6 +260,17 @@ public class TestPeriods extends TestCase {
 		
 		int numberOfWeeks = periods.numberOfWeeksBack(new DateMidnight(2007, 5, 14), 7);
 		assertEquals(11, numberOfWeeks);
+	}
+	
+	private Period createBasicPeriod() {
+		Period period = new PeriodImpl();
+		period.setName("Test Period");
+		
+		TeacherImpl teacher = new TeacherImpl();
+		teacher.setId(2L);
+		period.setTeacher(teacher);
+		
+		return period;
 	}
 	
 }
