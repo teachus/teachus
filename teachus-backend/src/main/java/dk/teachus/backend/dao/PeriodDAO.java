@@ -29,6 +29,8 @@ public interface PeriodDAO extends Serializable {
 	Period get(Long id);
 
 	Periods getPeriods(Teacher teacher);
+	
+	Periods getPeriods(Teacher teacher, boolean onlyFinal);
 
 	void delete(Period period);
 	

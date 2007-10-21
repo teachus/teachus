@@ -38,7 +38,7 @@ public class TestPeriodsPage extends WicketTestCase {
 			Teacher teacher = createTeacher(2L);
 			will(returnValue(teacher));
 			
-			one(periodDAO).getPeriods(teacher);
+			one(periodDAO).getPeriods(teacher, false);
 			will(returnValue(new PeriodsImpl()));
 			
 			tester.setPersonDAO(personDAO);

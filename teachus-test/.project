@@ -2,9 +2,9 @@
   <name>teachus-test</name>
   <comment>Scheduling system for private teachers.</comment>
   <projects>
-    <project>teachus-backend</project>
-    <project>teachus-frontend</project>
     <project>teachus-ws</project>
+    <project>teachus-frontend</project>
+    <project>teachus-backend</project>
   </projects>
   <buildSpec>
     <buildCommand>

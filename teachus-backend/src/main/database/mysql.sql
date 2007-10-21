@@ -106,4 +106,4 @@ ALTER TABLE
 		ADD INDEX FKD49E7E7F1CC24034 (teacher_id), 
 		ADD CONSTRAINT FKD49E7E7F1CC24034 FOREIGN KEY (teacher_id) REFERENCES person (id);
 
-INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.40');
+INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.42');

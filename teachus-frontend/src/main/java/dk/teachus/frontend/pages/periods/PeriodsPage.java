@@ -68,7 +68,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		});
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
 
-		Periods periods = periodDAO.getPeriods(teacher);
+		Periods periods = periodDAO.getPeriods(teacher, false);
 		final DateChoiceRenderer dateChoiceRenderer = new DateChoiceRenderer();
 		final TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
 		final WeekDayChoiceRenderer weekDayChoiceRenderer = new WeekDayChoiceRenderer(Format.SHORT);

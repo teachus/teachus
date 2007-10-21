@@ -116,6 +116,13 @@ public class TestPeriodDAO extends SpringTestCase {
 		getPeriodDAO().delete(periods.getPeriods().get(0));
 		endTransaction();
 		
+		// Add a period which is draft		
+		Period period = getPeriodDAO().createPeriodObject();
+		period.setStatus(Status.DRAFT);
+		period.setTeacher(teacher);
+		getPeriodDAO().save(period);
+		endTransaction();
+		
 		// Get the periods again
 		periods = getPeriodDAO().getPeriods(teacher);
 		endTransaction();
@@ -123,6 +130,30 @@ public class TestPeriodDAO extends SpringTestCase {
 		int periodsAfter = periods.getPeriods().size();
 		
 		assertEquals(periodsBefore-1, periodsAfter);
+	}
+	
+	public void testGetPeriods_bothDraftAndActive() {
+		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
+		endTransaction();
+		
+		Periods periods = getPeriodDAO().getPeriods(teacher, false);
+		endTransaction();
+		
+		int periodsBefore = periods.getPeriods().size();
+		
+		// Add a period which is draft		
+		Period period = getPeriodDAO().createPeriodObject();
+		period.setStatus(Status.DRAFT);
+		period.setTeacher(teacher);
+		getPeriodDAO().save(period);
+		endTransaction();
+
+		periods = getPeriodDAO().getPeriods(teacher, false);
+		endTransaction();
+		
+		int periodsAfter = periods.getPeriods().size();
+	
+		assertEquals(periodsBefore+1, periodsAfter);
 	}
 
 	public void testGetPeriods_onlyActiveTeacher() {

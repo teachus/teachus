@@ -49,7 +49,6 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		
 		c.add(Restrictions.eq("id", id));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
-		c.add(Restrictions.ne("status", Status.DELETED));
 		
 		Period period = null;
 		List<Period> result = getHibernateTemplate().findByCriteria(c);
@@ -60,14 +59,23 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 		return period;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public Periods getPeriods(Teacher teacher) {
+		return getPeriods(teacher, true);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Periods getPeriods(Teacher teacher, boolean onlyFinal) {
 		DetachedCriteria c = DetachedCriteria.forClass(PeriodImpl.class);
 		
 		c.add(Restrictions.eq("teacher", teacher));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
-		c.add(Restrictions.ne("status", Status.DELETED));
+		if (onlyFinal) {
+			c.add(Restrictions.eq("status", Status.FINAL));
+		} else {
+			c.add(Restrictions.ne("status", Status.DELETED));
+		}
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
 		
