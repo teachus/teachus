@@ -38,7 +38,7 @@
 			<artifactId>teachus-frontend</artifactId>
 			<version>${project.version}</version>
 			<scope>test</scope>
-			<type>war</type>
+			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>dk.teachus</groupId>

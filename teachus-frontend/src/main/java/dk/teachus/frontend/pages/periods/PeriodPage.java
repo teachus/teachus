@@ -132,15 +132,17 @@ public class PeriodPage extends AuthenticatedBasePage {
 						Date date = (Date) value;
 						
 						// Check if the end date conflicts with some bookings
-						BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-						Date lastBookingDate = bookingDAO.getLastBookingDate(period);
-						if (lastBookingDate != null) {
-							if (date.before(lastBookingDate)) {
-								ValidationError validationError = new ValidationError();
-								String bookingConflictMessage = TeachUsSession.get().getString("PeriodPage.endDateBookingConflict");
-								bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(new DateTime(lastBookingDate)));
-								validationError.setMessage(bookingConflictMessage); //$NON-NLS-1$
-								validatable.error(validationError);
+						if (period.getId() != null) {
+							BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+							Date lastBookingDate = bookingDAO.getLastBookingDate(period);
+							if (lastBookingDate != null) {
+								if (date.before(lastBookingDate)) {
+									ValidationError validationError = new ValidationError();
+									String bookingConflictMessage = TeachUsSession.get().getString("PeriodPage.endDateBookingConflict");
+									bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(new DateTime(lastBookingDate)));
+									validationError.setMessage(bookingConflictMessage); //$NON-NLS-1$
+									validatable.error(validationError);
+								}
 							}
 						}
 					}
