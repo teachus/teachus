@@ -51,6 +51,12 @@ abstract class AbstractNode implements Node {
 		}
 	}
 	
+	protected void getInputForInteger(IntegerNode integer, String label) {
+		if (integer.getValue() == -1) {
+			integer.setValue(getInput(label));
+		}
+	}
+	
 	protected String getInput(String label) {
 		System.out.print(label);
 		

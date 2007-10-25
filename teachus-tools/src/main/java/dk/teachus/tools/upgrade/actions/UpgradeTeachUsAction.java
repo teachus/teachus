@@ -14,72 +14,103 @@ import dk.teachus.tools.upgrade.config.TomcatNode;
 abstract class UpgradeTeachUsAction implements Action {
 	private static final Log log = LogFactory.getLog(UpgradeTeachUsAction.class);
 
-	protected MavenNode maven;
-	protected AbstractDeploymentNode deployment;
-	protected TomcatNode tomcat;
-	protected File workingDirectory;
-	protected String version;
-	protected SubversionReleaseNode subversion;
+	private SubversionCheckoutReleaseAction subversionCheckout;
 
-	public UpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, AbstractDeploymentNode deployment, TomcatNode tomcat, String version) {
-		this.maven = maven;
-		this.deployment = deployment;
+	protected File projectDirectory;
+
+	private ConfigureTeachUsDatabaseAction configureDatabase;
+
+	private ConfigureSmtpServerAction configureSmtpServer;
+
+	private MavenPackageAction mavenPackage;
+
+	private UpgradeDatabaseAction upgradeDatabase;
+
+	private DeployWarFileAction deployWarFile;
+
+	protected final File workingDirectory;
+
+	protected final AbstractDeploymentNode deployment;
+
+	protected final TomcatNode tomcat;
+	
+	public UpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, AbstractDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
 		this.workingDirectory = workingDirectory;
+		this.deployment = deployment;
 		this.tomcat = tomcat;
-		this.version = version;
-		this.subversion = subversion;
+		
+		projectDirectory = File.createTempFile("teachus", "", workingDirectory);
+		projectDirectory.delete();
+		projectDirectory.mkdir();
+		
+		subversionCheckout = new SubversionCheckoutReleaseAction(subversion, version, projectDirectory);
+		configureDatabase = new ConfigureTeachUsDatabaseAction(projectDirectory, deployment.getDatabase());
+		configureSmtpServer = new ConfigureSmtpServerAction(projectDirectory, deployment.getSmtpServer());
+		mavenPackage = new MavenPackageAction(maven, projectDirectory);
+		upgradeDatabase = new UpgradeDatabaseAction(tomcat.getHost(), deployment.getDatabase(), projectDirectory, version);
+		deployWarFile = new DeployWarFileAction(projectDirectory, tomcat, version, getName());
 	}
 
 	public void execute() throws Exception {
 		log.info("Start upgrade of "+getName());
 		
-		// Create a temporary directory inside the working directory
-		File projectDirectory = File.createTempFile("teachus", "", workingDirectory);
-		projectDirectory.delete();
-		projectDirectory.mkdir();
-		
-		// Checkout version from subversion
-		SubversionCheckoutReleaseAction subversionCheckout = new SubversionCheckoutReleaseAction(subversion, version, projectDirectory);
 		subversionCheckout.execute();
 		
-		// Configure database
-		ConfigureTeachUsDatabaseAction configureDatabase = new ConfigureTeachUsDatabaseAction(projectDirectory, deployment.getDatabase());
 		configureDatabase.execute();
 		
-		beforePackage(projectDirectory);
+		configureSmtpServer.execute();
 		
-		// Package
-		MavenPackageAction mavenPackage = new MavenPackageAction(maven, projectDirectory);
+		beforePackage();
+		
 		mavenPackage.execute();
 		
-		beforeUpgradeDatabase(projectDirectory);
+		beforeUpgradeDatabase();
 		
-		// Upgrade database
-//		UpgradeDatabaseAction upgradeDatabase = new UpgradeDatabaseAction(deployment.getDatabase(), projectDirectory, version);
-//		upgradeDatabase.execute();
+		upgradeDatabase.execute();
 
-		// Deploy
-		DeployWarFileAction deployWarFile = new DeployWarFileAction(projectDirectory, tomcat, version, getName());
 		deployWarFile.execute();
 		
-		afterDeployment(projectDirectory);
+		afterDeployment();		
+		
+		log.info("Upgrade completed!!");
+	}
+	
+	public final void check() throws Exception {
+		subversionCheckout.check();
+		configureDatabase.check();
+		configureSmtpServer.check();
+		mavenPackage.check();
+		upgradeDatabase.check();
+		deployWarFile.check();
+		
+		doCheck();
+	}
+	
+	protected void doCheck() throws Exception {
+	}
+	
+	public void cleanup() throws Exception {
+		subversionCheckout.cleanup();
+		configureDatabase.cleanup();
+		configureSmtpServer.cleanup();
+		mavenPackage.cleanup();
+		upgradeDatabase.cleanup();
+		deployWarFile.cleanup();
 		
 		// Clean up 
 		log.info("Cleaning up the project directory: "+projectDirectory);
-		FileUtils.deleteDirectory(projectDirectory);
-		
-		log.info("Upgrade completed!!");
+		FileUtils.deleteDirectory(projectDirectory);		
 	}
 
 	protected abstract String getName();
 	
-	protected void beforeUpgradeDatabase(File projectDirectory) throws Exception {
+	protected void beforeUpgradeDatabase() throws Exception {
 	}
 
-	protected void beforePackage(File projectDirectory) throws Exception {
+	protected void beforePackage() throws Exception {
 	}
 	
-	protected void afterDeployment(File projectDirectory) throws Exception {
+	protected void afterDeployment() throws Exception {
 	}
 
 }

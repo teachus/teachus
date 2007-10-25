@@ -24,6 +24,12 @@ abstract class AbstractConfigurePropertiesAction implements Action {
 		log.info("Modified properties file: "+propertiesFile);
 	}
 	
+	public void check() throws Exception {
+	}
+	
+	public void cleanup() throws Exception {
+	}
+	
 	protected abstract File getPropertiesFile();
 	
 	protected abstract void configureProperties(Properties properties);

@@ -29,6 +29,23 @@ abstract class AbstractSubversionCheckoutAction implements Action {
 		updateClient.doCheckout(url, workingDirectory, SVNRevision.HEAD, SVNRevision.HEAD, true);
 	}
 	
+	public void check() throws Exception {
+		if (workingDirectory == null) {
+			throw new IllegalStateException("Working directory must not be null");
+		}
+		
+		if (workingDirectory.exists() == false) {
+			throw new IllegalStateException("Working directory doesn't exist");
+		}
+		
+		if (workingDirectory.isDirectory() == false) {
+			throw new IllegalStateException("Working directory is not a directory");
+		}
+	}
+	
+	public void cleanup() throws Exception {
+	}
+	
 	protected abstract String getCheckoutUrl();
 
 }

@@ -11,6 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import dk.teachus.tools.upgrade.config.DatabaseNode;
+import dk.teachus.tools.upgrade.config.SshNode;
 
 public class BackupDatabaseAction implements Action {
 	private static final Log log = LogFactory.getLog(BackupDatabaseAction.class);
@@ -18,20 +19,27 @@ public class BackupDatabaseAction implements Action {
 	private DatabaseNode database;
 	private File destination;
 
-	public BackupDatabaseAction(DatabaseNode database, File destination) {
+	private SshTunnelAction dbTunnel;
+
+	public BackupDatabaseAction(SshNode tunnelHost, DatabaseNode database, File destination) {
 		this.database = database;
 		this.destination = destination;
+		
+		dbTunnel = new SshTunnelAction(tunnelHost, 13306, database.getHost(), database.getPort());
 	}
 
-	public void execute() throws Exception {
-		log.info("Backing up database: "+database.getJdbcUrl());
+	public void execute() throws Exception {		
+		// Start tunnel
+		dbTunnel.execute();
 		
 		FileWriter writer = new FileWriter(destination);
 		
 		List<String> command = new ArrayList<String>();
 		command.add("mysqldump");
 		command.add("-h");
-		command.add(database.getHost());
+		command.add("127.0.0.1");
+		command.add("-P");
+		command.add(""+13306);
 		command.add("-u");
 		command.add(database.getUsername());
 		if (database.getPassword() != null && database.getPassword().length() > 0) {
@@ -46,7 +54,8 @@ public class BackupDatabaseAction implements Action {
 		command.add(database.getDatabase());
 		
 		ProcessBuilder pb = new ProcessBuilder(command);
-	
+
+		log.info("Backing up database: "+database.getJdbcUrl());
 		Process databaseBackup = pb.start();
 		
 		BufferedReader inputReader = new BufferedReader(new InputStreamReader(databaseBackup.getInputStream()));
@@ -66,6 +75,16 @@ public class BackupDatabaseAction implements Action {
 		}
 		
 		writer.close();
+
+		dbTunnel.cleanup();
+	}
+	
+	public void check() throws Exception {
+		dbTunnel.check();
+	}
+	
+	public void cleanup() throws Exception {
+		dbTunnel.cleanup();
 	}
 
 }

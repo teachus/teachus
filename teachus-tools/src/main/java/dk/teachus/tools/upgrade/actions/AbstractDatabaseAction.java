@@ -12,7 +12,7 @@ import dk.teachus.tools.upgrade.config.DatabaseNode;
 abstract class AbstractDatabaseAction implements Action {
 	private static final Log log = LogFactory.getLog(AbstractDatabaseAction.class);
 
-	private DatabaseNode database;
+	protected DatabaseNode database;
 	
 	public AbstractDatabaseAction(DatabaseNode database) {
 		this.database = database;
@@ -22,11 +22,11 @@ abstract class AbstractDatabaseAction implements Action {
 		String sqlScript = getSqlScript();
 		
 		if (sqlScript != null && sqlScript.length() > 0) {			
-			log.info("Connection to database: "+database.getJdbcUrl());
+			log.info("Connection to database: "+getJdbcUrl());
 			
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			Connection connection = DriverManager.getConnection(database.getJdbcUrl(), database.getUsername(), database.getPassword());
+			Connection connection = DriverManager.getConnection(getJdbcUrl(), database.getUsername(), database.getPassword());
 			
 			Statement statement = connection.createStatement();
 			statement.addBatch(sqlScript);
@@ -46,6 +46,16 @@ abstract class AbstractDatabaseAction implements Action {
 		}
 	}
 	
+	public void check() throws Exception {
+	}
+	
+	public void cleanup() throws Exception {
+	}
+	
 	protected abstract String getSqlScript() throws Exception;
+	
+	protected String getJdbcUrl() {
+		return database.getJdbcUrl();
+	}
 
 }

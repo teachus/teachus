@@ -33,6 +33,23 @@ public class DetermineVersionAction implements Action {
 	public String getVersion() {
 		return version;
 	}
+	
+	public void check() throws Exception {
+		if (projectDirectory == null) {
+			throw new IllegalStateException("Project directory must not be null");
+		}
+		
+		if (projectDirectory.exists() == false) {
+			throw new IllegalStateException("Project directory doesn't exist");
+		}
+		
+		if (projectDirectory.isDirectory() == false) {
+			throw new IllegalStateException("Project directory is not a directory");
+		}
+	}
+	
+	public void cleanup() throws Exception {
+	}
 
 	public void execute() throws Exception {
 		File parentPom = new File(projectDirectory, "teachus-parent/pom.xml");

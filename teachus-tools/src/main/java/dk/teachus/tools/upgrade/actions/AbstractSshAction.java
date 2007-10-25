@@ -11,6 +11,8 @@ abstract class AbstractSshAction implements Action {
 	
 	protected SshNode host;
 
+	private Connection connection;
+
 	public AbstractSshAction(SshNode host) {
 		this.host = host;
 	}
@@ -18,14 +20,35 @@ abstract class AbstractSshAction implements Action {
 	public void execute() throws Exception {
 		log.info("Connecting to remote host: "+host.getHost());
 		
-		Connection connection = new Connection(host.getHost());
+		connection = new Connection(host.getHost());
 		connection.connect();
 		connection.authenticateWithPassword(host.getUsername(), host.getPassword());
 		
 		doExecute(connection);
-		
-		connection.close();
 	}
+	
+	public final void check() throws Exception {
+		// Check that the host is there and listens on the port,
+		// and that the username/password is valid
+		Connection connection = new Connection(host.getHost());
+		connection.connect();
+		connection.authenticateWithPassword(host.getUsername(), host.getPassword());
+		connection.close();
+		
+		doCheck();
+	}
+	
+	protected void doCheck() throws Exception {}
+	
+	public final void cleanup() throws Exception {
+		doCleanup();
+		
+		if (connection != null) {
+			connection.close();
+		}
+	}
+	
+	protected void doCleanup() throws Exception {}
 	
 	protected abstract void doExecute(Connection connection) throws Exception;
 

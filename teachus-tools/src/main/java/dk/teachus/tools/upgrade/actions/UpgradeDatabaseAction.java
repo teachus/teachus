@@ -7,15 +7,16 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import dk.teachus.tools.upgrade.config.DatabaseNode;
+import dk.teachus.tools.upgrade.config.SshNode;
 
-public class UpgradeDatabaseAction extends AbstractDatabaseAction {
+public class UpgradeDatabaseAction extends AbstractTunnelledDatabaseAction {
 	private static final Log log = LogFactory.getLog(UpgradeDatabaseAction.class);
 
 	private File projectDirectory;
 	private String version;
 
-	public UpgradeDatabaseAction(DatabaseNode database, File projectDirectory, String version) {
-		super(database);
+	public UpgradeDatabaseAction(SshNode tunnelHost, DatabaseNode database, File projectDirectory, String version) {
+		super(tunnelHost, database);
 		this.projectDirectory = projectDirectory;
 		this.version = version;
 	}

@@ -20,8 +20,15 @@ public class ModifyPomVersionAction implements Action {
 	private File projectDirectory;
 	private String version;
 	
-	public ModifyPomVersionAction(File projectDirectory, String version) {
+	public ModifyPomVersionAction(File projectDirectory) {
 		this.projectDirectory = projectDirectory;
+	}
+	
+	public void setVersion(String version) {
+		if (version == null || version.length() == 0) {
+			throw new IllegalArgumentException("The version can not be empty");
+		}
+		
 		this.version = version;
 	}
 
@@ -43,6 +50,23 @@ public class ModifyPomVersionAction implements Action {
 				"teachus-ws/pom.xml",
 				"teachus-test/pom.xml"));
 		subversionCommit.execute();
+	}
+	
+	public void check() throws Exception {		
+		if (projectDirectory == null) {
+			throw new IllegalStateException("Project directory must not be null");
+		}
+		
+		if (projectDirectory.exists() == false) {
+			throw new IllegalStateException("Project directory doesn't exist");
+		}
+		
+		if (projectDirectory.isDirectory() == false) {
+			throw new IllegalStateException("Project directory is not a directory");
+		}
+	}
+	
+	public void cleanup() throws Exception {
 	}
 	
 	private File[] getFiles(String... files) {

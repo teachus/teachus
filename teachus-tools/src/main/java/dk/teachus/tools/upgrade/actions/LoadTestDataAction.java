@@ -8,40 +8,69 @@ import org.apache.commons.logging.LogFactory;
 
 import dk.teachus.tools.upgrade.config.DatabaseNode;
 import dk.teachus.tools.upgrade.config.MavenNode;
+import dk.teachus.tools.upgrade.config.SshNode;
 
 
 public class LoadTestDataAction implements Action {
 	private static final Log log = LogFactory.getLog(LoadTestDataAction.class);
 
-	private File projectDirectory;
 	private DatabaseNode database;
-	private MavenNode maven;
+
+	private ConfigureDemoDatabaseAction configureDemoDatabase;
+
+	private MavenAntAction mavenAnt;
+
+	private File demoAntSrc;
+
+	private File demoAntDst;
+
+	private RunAntAction runAnt;
+
+	private SshTunnelAction dbTunnel;
 	
-	public LoadTestDataAction(File projectDirectory, DatabaseNode database, MavenNode maven) {
-		this.projectDirectory = projectDirectory;
+	public LoadTestDataAction(SshNode tunnelHost, File projectDirectory, DatabaseNode database, MavenNode maven) {
 		this.database = database;
-		this.maven = maven;
+		
+		dbTunnel = new SshTunnelAction(tunnelHost, 13306, database.getHost(), database.getPort());
+		configureDemoDatabase = new ConfigureDemoDatabaseAction(projectDirectory, database.withHostPort("127.0.0.1", 13306));
+		mavenAnt = new MavenAntAction(maven, projectDirectory);
+		demoAntSrc = new File(projectDirectory, "teachus-backend/src/test/resources/build.xml");
+		demoAntDst = new File(projectDirectory, "teachus-backend/demodata_build.xml");
+		runAnt = new RunAntAction(demoAntDst);
 	}
 
 	public void execute() throws Exception {		
-		// First modify the test datas database properties
-		ConfigureDemoDatabaseAction configureDemoDatabase = new ConfigureDemoDatabaseAction(projectDirectory, database);
+		dbTunnel.execute();
+		
 		configureDemoDatabase.execute();
 		
 		// Generate an ant file from the maven project
-		MavenAntAction mavenAnt = new MavenAntAction(maven, projectDirectory);
 		mavenAnt.execute();
 		
 		// Copy the build file down so it can be executed directly
-		File demoAntSrc = new File(projectDirectory, "teachus-backend/src/test/resources/build.xml");
-		File demoAntDst = new File(projectDirectory, "teachus-backend/demodata_build.xml");
 		FileUtils.copyFile(demoAntSrc, demoAntDst);
 		
 		log.info("Loading testdata for database: "+database.getJdbcUrl());
 		
 		// Run ant
-		RunAntAction runAnt = new RunAntAction(demoAntDst);
 		runAnt.execute();
+		
+		// Close the port again
+		dbTunnel.cleanup();
+	}
+
+	public void check() throws Exception {
+		dbTunnel.check();
+		configureDemoDatabase.check();
+		mavenAnt.check();
+		runAnt.check();
+	}
+	
+	public void cleanup() throws Exception {
+		dbTunnel.cleanup();
+		configureDemoDatabase.cleanup();
+		mavenAnt.cleanup();
+		runAnt.cleanup();
 	}
 	
 }

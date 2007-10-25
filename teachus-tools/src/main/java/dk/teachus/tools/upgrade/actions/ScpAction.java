@@ -22,6 +22,10 @@ public class ScpAction extends AbstractSshAction {
 		this.destinationDirectory = destinationDirectory;
 		this.destinationFile = destinationFile;
 	}
+	
+	@Override
+	protected void doCheck() throws Exception {
+	}
 
 	@Override
 	protected void doExecute(Connection connection) throws Exception {

@@ -50,6 +50,27 @@ abstract class AbstractMavenAction implements Action {
 		}
 	}
 	
+	public void check() throws Exception {
+		if (new File(maven.getHome()).exists() == false) {
+			throw new IllegalArgumentException("The maven binary doesn't exist: "+maven.getHome());
+		}
+		
+		if (projectDirectory == null) {
+			throw new IllegalStateException("Project directory must not be null");
+		}
+		
+		if (projectDirectory.exists() == false) {
+			throw new IllegalStateException("Project directory doesn't exist");
+		}
+		
+		if (projectDirectory.isDirectory() == false) {
+			throw new IllegalStateException("Project directory is not a directory");
+		}
+	}
+	
+	public void cleanup() throws Exception {
+	}
+	
 	protected abstract String getProject();
 	
 	protected abstract String[] getGoals();

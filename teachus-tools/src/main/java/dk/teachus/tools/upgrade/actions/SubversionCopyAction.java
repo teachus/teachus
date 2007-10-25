@@ -18,9 +18,12 @@ public class SubversionCopyAction implements Action {
 	private SubversionTrunkNode subversionTrunk;
 	private String version;
 
-	public SubversionCopyAction(SubversionReleaseNode subversionRelease, SubversionTrunkNode subversionTrunk, String version) {
+	public SubversionCopyAction(SubversionReleaseNode subversionRelease, SubversionTrunkNode subversionTrunk) {
 		this.subversionRelease = subversionRelease;
 		this.subversionTrunk = subversionTrunk;
+	}
+	
+	public void setVersion(String version) {
 		this.version = version;
 	}
 
@@ -38,6 +41,14 @@ public class SubversionCopyAction implements Action {
 		
 		SVNCopyClient copyClient = new SVNCopyClient(null, null);
 		copyClient.doCopy(srcUrl, SVNRevision.HEAD, dstUrl, false, true, "Release "+version);		
+	}
+	
+	public void check() throws Exception {
+		
+	}
+	
+	public void cleanup() throws Exception {
+		
 	}
 
 }

@@ -40,5 +40,11 @@ public class RunAntAction implements Action {
 			throw new RuntimeException("Ant didn't complete correctly");
 		}
 	}
+	
+	public void check() throws Exception {
+	}
+	
+	public void cleanup() throws Exception {
+	}
 
 }

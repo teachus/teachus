@@ -39,25 +39,28 @@ public class FullUpgrade {
 		TomcatNode tomcat = configuration.getNode(TomcatNode.class);
 		
 		MainDeploymentNode mainDeployment = configuration.getNode(MainDeploymentNode.class);
+		DemoDeploymentNode demoDeployment = configuration.getNode(DemoDeploymentNode.class);
 		
 		WorkingDirectoryNode workingDirectoryNode = configuration.getNode(WorkingDirectoryNode.class);
 		File workingDirectory = workingDirectoryNode.getWorkingDirectoryFile();
 
-		// Stop tomcat
-		TomcatAction stopTomcat = new TomcatAction(tomcat, ProcessAction.STOP);
-		stopTomcat.execute();
+		/*
+		 * Build up workflow
+		 */
+		Workflow workflow = new Workflow();
 		
-		MainUpgradeTeachUsAction mainUpgrade = new MainUpgradeTeachUsAction(maven, subversion, workingDirectory, mainDeployment, tomcat, version);
-		mainUpgrade.execute();
+		workflow.addAction(new TomcatAction(tomcat, ProcessAction.STOP));
 		
-		DemoDeploymentNode demoDeployment = configuration.getNode(DemoDeploymentNode.class);
+		workflow.addAction(new MainUpgradeTeachUsAction(maven, subversion, workingDirectory, mainDeployment, tomcat, version));
 		
-		DemoUpgradeTeachUsAction demoUpgrade = new DemoUpgradeTeachUsAction(maven, subversion, workingDirectory, demoDeployment, tomcat, version);
-		demoUpgrade.execute();
+		workflow.addAction(new DemoUpgradeTeachUsAction(maven, subversion, workingDirectory, demoDeployment, tomcat, version));
 
-		// Start tomcat
-		TomcatAction startTomcat = new TomcatAction(tomcat, ProcessAction.START);
-		startTomcat.execute();
+		workflow.addAction(new TomcatAction(tomcat, ProcessAction.START));
+		
+		/*
+		 * Start work flow
+		 */
+		workflow.start();
 	}
 	
 	private static String getInput(String label) {

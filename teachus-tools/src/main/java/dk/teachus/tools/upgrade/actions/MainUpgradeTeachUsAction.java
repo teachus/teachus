@@ -9,7 +9,7 @@ import dk.teachus.tools.upgrade.config.TomcatNode;
 
 public class MainUpgradeTeachUsAction extends UpgradeTeachUsAction {
 
-	public MainUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, MainDeploymentNode deployment, TomcatNode tomcat, String version) {
+	public MainUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, MainDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
 		super(maven, subversion, workingDirectory, deployment, tomcat, version);
 	}
 	
@@ -19,10 +19,10 @@ public class MainUpgradeTeachUsAction extends UpgradeTeachUsAction {
 	}
 	
 	@Override
-	protected void beforeUpgradeDatabase(File projectDirectory) throws Exception {
+	protected void beforeUpgradeDatabase() throws Exception {
 		File backupFile = new File(workingDirectory, "backup.sql");
 		
-		BackupDatabaseAction backupDatabase = new BackupDatabaseAction(deployment.getDatabase(), backupFile);
+		BackupDatabaseAction backupDatabase = new BackupDatabaseAction(tomcat.getHost(), deployment.getDatabase(), backupFile);
 		backupDatabase.execute();
 	}
 

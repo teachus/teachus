@@ -9,8 +9,20 @@ import dk.teachus.tools.upgrade.config.TomcatNode;
 
 public class DemoUpgradeTeachUsAction extends UpgradeTeachUsAction {
 
-	public DemoUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, DemoDeploymentNode deployment, TomcatNode tomcat, String version) {
+	private ConfigureMailBeanAction configureMailBean;
+	private LoadTestDataAction loadTestData;
+
+	public DemoUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, DemoDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
 		super(maven, subversion, workingDirectory, deployment, tomcat, version);
+
+		configureMailBean = new ConfigureMailBeanAction(projectDirectory);
+		loadTestData = new LoadTestDataAction(tomcat.getHost(), projectDirectory, deployment.getDatabase(), maven);
+	}
+	
+	@Override
+	protected void doCheck() throws Exception {
+		configureMailBean.check();
+		loadTestData.check();
 	}
 	
 	@Override
@@ -19,14 +31,12 @@ public class DemoUpgradeTeachUsAction extends UpgradeTeachUsAction {
 	}
 	
 	@Override
-	protected void beforePackage(File projectDirectory) throws Exception {
-		ConfigureMailBeanAction configureMailBean = new ConfigureMailBeanAction(projectDirectory);
+	protected void beforePackage() throws Exception {
 		configureMailBean.execute();
 	}
 	
 	@Override
-	protected void afterDeployment(File projectDirectory) throws Exception {
-		LoadTestDataAction loadTestData = new LoadTestDataAction(projectDirectory, deployment.getDatabase(), maven);
+	protected void afterDeployment() throws Exception {
 		loadTestData.execute();
 	}
 

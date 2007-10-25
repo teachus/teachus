@@ -3,7 +3,6 @@ package dk.teachus.tools.upgrade.actions;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ch.ethz.ssh2.Session;
 import dk.teachus.tools.upgrade.config.TomcatNode;
 
 public class TomcatAction implements Action {
@@ -12,30 +11,16 @@ public class TomcatAction implements Action {
 	public static enum ProcessAction {
 		START, STOP
 	}
-
-	private TomcatNode tomcat;
-
-	private ProcessAction processAction;
 	
-	private int maxHeap = 64;
-	
-	private int maxPerm = 64;
+	private SshRemoteCommandAction remoteCommand;
+	private final ProcessAction processAction;
+	private final TomcatNode tomcat;
 
 	public TomcatAction(TomcatNode tomcat, ProcessAction processAction) {
 		this.tomcat = tomcat;
 		this.processAction = processAction;
-	}
-
-	public void execute() throws Exception {
-		if (processAction == ProcessAction.START) {
-			log.info("Starting tomcat on: "+tomcat.getHost().getHost());
-		} else {
-			log.info("Stopping tomcat on: "+tomcat.getHost().getHost());			
-		}
 		
 		StringBuilder command = new StringBuilder();
-		command.append("export JAVA_OPTS=\"$JAVA_OPTS -Xmx"+maxHeap+"m -XX:MaxPermSize="+maxPerm+"m\";");
-		command.append("export JAVA_HOME=/usr/lib/jvm/java-1.5.0-sun;");
 		command.append(tomcat.getHome());
 		command.append("/bin/");
 		switch (processAction) {
@@ -47,21 +32,26 @@ public class TomcatAction implements Action {
 			command.append("sleep 5s;");
 			break;
 		}
-
-		SshAction ssh = new SshAction(tomcat.getHost());
-		ssh.execute();
-
-		Session session = ssh.openSession();
-		session.execCommand(command.toString());
-		session.close();
+		
+		remoteCommand = new SshRemoteCommandAction(tomcat.getHost(), command.toString());
 	}
 
-	public void setMaxHeap(int maxHeap) {
-		this.maxHeap = maxHeap;
+	public void execute() throws Exception {
+		if (processAction == ProcessAction.START) {
+			log.info("Starting tomcat on: "+tomcat.getHost().getHost());
+		} else {
+			log.info("Stopping tomcat on: "+tomcat.getHost().getHost());			
+		}
+		
+		remoteCommand.execute();
 	}
-
-	public void setMaxPerm(int maxPerm) {
-		this.maxPerm = maxPerm;
+	
+	public void check() throws Exception {
+		remoteCommand.check();
+	}
+	
+	public void cleanup() throws Exception {
+		remoteCommand.cleanup();
 	}
 
 }

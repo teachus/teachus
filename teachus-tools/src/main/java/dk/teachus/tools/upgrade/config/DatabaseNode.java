@@ -5,16 +5,22 @@ import nanoxml.XMLElement;
 public class DatabaseNode extends AbstractNode {
 	
 	private StringNode host;
+	private IntegerNode port;
 	private StringNode database;
 	private StringNode username;
 	private StringNode password;
 	
 	public DatabaseNode() {
-		this(null, null, null, null);
+		this(null, -1, null, null, null);
 	}
 	
 	public DatabaseNode(String host, String database, String username, String password) {
+		this(host, 3306, database, username, password);
+	}
+	
+	public DatabaseNode(String host, int port, String database, String username, String password) {
 		this.host = new StringNode("host", host);
+		this.port = new IntegerNode("port", port);
 		this.database = new StringNode("dbname", database);
 		this.username = new StringNode("username", username);
 		this.password = new StringNode("password", password);
@@ -25,6 +31,8 @@ public class DatabaseNode extends AbstractNode {
 		
 		url.append("jdbc:mysql://");
 		url.append(getHost());
+		url.append(":");
+		url.append(getPort());
 		url.append("/");
 		url.append(getDatabase());
 		
@@ -37,6 +45,14 @@ public class DatabaseNode extends AbstractNode {
 	
 	public void setHost(String host) {
 		this.host.setValue(host);
+	}
+	
+	public int getPort() {
+		return this.port.getValue();
+	}
+	
+	public void setPort(int port) {
+		this.port.setValue(port);
 	}
 	
 	public String getDatabase() {
@@ -68,6 +84,9 @@ public class DatabaseNode extends AbstractNode {
 			host = new StringNode();
 			host.deserialize(findChild(element, "host"));
 			
+			port = new IntegerNode();
+			port.deserialize(findChild(element, "port"));
+			
 			database = new StringNode();
 			database.deserialize(findChild(element, "dbname"));
 			
@@ -83,6 +102,7 @@ public class DatabaseNode extends AbstractNode {
 		XMLElement element = new XMLElement();
 		element.setName("database");
 		element.addChild(host.serialize());
+		element.addChild(port.serialize());
 		element.addChild(database.serialize());
 		element.addChild(username.serialize());
 		element.addChild(password.serialize());
@@ -91,9 +111,14 @@ public class DatabaseNode extends AbstractNode {
 	
 	public void requestValue() {
 		getInputForString(host, "Hostname: ");
+		getInputForInteger(port, "Port: ");
 		getInputForString(database, "Database: ");
 		getInputForString(username, "Username: ");
 		getInputForString(password, "Password: ");
+	}
+
+	public DatabaseNode withHostPort(String host, int port) {
+		return new DatabaseNode(host, port, getDatabase(), getUsername(), getPassword());
 	}
 
 }

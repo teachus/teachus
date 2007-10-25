@@ -26,8 +26,11 @@ public class Release {
 		SubversionReleaseNode subversionRelease = configuration.getNode(SubversionReleaseNode.class);
 		SubversionTrunkNode subversionTrunk = configuration.getNode(SubversionTrunkNode.class);
 		
-		ReleaseAction release = new ReleaseAction(maven, workingDirectory, subversionRelease, subversionTrunk);
-		release.execute();
+		Workflow workflow = new Workflow();
+		
+		workflow.addAction(new ReleaseAction(maven, workingDirectory, subversionRelease, subversionTrunk));
+		
+		workflow.start();
 	}
 
 }
