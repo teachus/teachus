@@ -9,8 +9,8 @@
 		<java classname="dk.teachus.backend.database.DynamicDataImport">
 			<classpath>
 				<path refid="build.classpath" />
-				<pathelement location="${maven.build.output}" />
-				<pathelement location="${maven.test.output}" />
+				<pathelement location="${maven.build.outputDir}" />
+				<pathelement location="${maven.build.testOutputDir}" />
 			</classpath>
 		</java>
 	</target>
