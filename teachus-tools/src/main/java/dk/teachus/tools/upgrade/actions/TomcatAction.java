@@ -20,20 +20,22 @@ public class TomcatAction implements Action {
 		this.tomcat = tomcat;
 		this.processAction = processAction;
 		
+		long sleep = 0;
+		
 		StringBuilder command = new StringBuilder();
 		command.append(tomcat.getHome());
 		command.append("/bin/");
 		switch (processAction) {
 		case START:
-			command.append("startup.sh;");
+			command.append("startup.sh");
 			break;
 		case STOP:
-			command.append("shutdown.sh;");
-			command.append("sleep 5s;");
+			command.append("shutdown.sh");
+			sleep = 5000;
 			break;
 		}
 		
-		remoteCommand = new SshRemoteCommandAction(tomcat.getHost(), command.toString());
+		remoteCommand = new SshRemoteCommandAction(tomcat.getHost(), command.toString(), sleep);
 	}
 
 	public void execute() throws Exception {

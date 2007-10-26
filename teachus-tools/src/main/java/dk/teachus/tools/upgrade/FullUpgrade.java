@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 
 import dk.teachus.tools.upgrade.actions.DemoUpgradeTeachUsAction;
 import dk.teachus.tools.upgrade.actions.MainUpgradeTeachUsAction;
+import dk.teachus.tools.upgrade.actions.SftpDeleteDirectoryAction;
 import dk.teachus.tools.upgrade.actions.TomcatAction;
 import dk.teachus.tools.upgrade.actions.TomcatAction.ProcessAction;
 import dk.teachus.tools.upgrade.config.Configuration;
@@ -54,6 +55,8 @@ public class FullUpgrade {
 		workflow.addAction(new MainUpgradeTeachUsAction(maven, subversion, workingDirectory, mainDeployment, tomcat, version));
 		
 		workflow.addAction(new DemoUpgradeTeachUsAction(maven, subversion, workingDirectory, demoDeployment, tomcat, version));
+		
+		workflow.addAction(new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina"));
 
 		workflow.addAction(new TomcatAction(tomcat, ProcessAction.START));
 		
