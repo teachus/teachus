@@ -89,6 +89,12 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/main/database</directory>
+				<includes>
+					<include>**/*.sql</include>
+				</includes>
+			</resource>
 		</resources>
 		<testResources>
 			<testResource>

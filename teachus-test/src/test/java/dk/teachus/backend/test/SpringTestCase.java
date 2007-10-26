@@ -17,6 +17,7 @@
 package dk.teachus.backend.test;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +44,15 @@ import dk.teachus.backend.domain.impl.TeacherImpl;
 
 public abstract class SpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 
+	private static boolean useMysql = false;
+	
+	static {
+		String mysql = System.getProperty("teachus.test.use.mysql");
+		if (mysql != null && mysql.length() > 0) {
+			useMysql = true;
+		}
+	}
+	
 	public SpringTestCase() {
 		setDefaultRollback(false);	
 	}
@@ -101,7 +111,12 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		List<String> configLocations = new ArrayList<String>();
 		
 		configLocations.add("/dk/teachus/backend/applicationContext.xml");
-		configLocations.add("/dk/teachus/backend/test/applicationContext-test.xml");
+		
+		if (useMysql) {
+			configLocations.add("/dk/teachus/backend/test/applicationContext-test-mysql.xml");
+		} else {
+			configLocations.add("/dk/teachus/backend/test/applicationContext-test-hsqldb.xml");
+		}
 		
 		addConfigLocations(configLocations);
 		
@@ -109,6 +124,12 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	}
 	
 	protected void addConfigLocations(List<String> configLocations) {
+	}
+	
+	@Override
+	protected void onSetUpBeforeTransaction() throws Exception {
+		Connection connection = getSessionFactory().openSession().connection();
+		new StaticDataImport(connection);
 	}
 
 	public BookingDAO getBookingDAO() {
@@ -133,12 +154,6 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 
 	public SessionFactory getSessionFactory() {
 		return (SessionFactory) applicationContext.getBean("sessionFactory");
-	}
-
-	@Override
-	protected void onSetUpBeforeTransaction() throws Exception {
-		SessionFactory sessionFactory = (SessionFactory) applicationContext.getBean("sessionFactory");
-		new StaticDataImport(sessionFactory.openSession().connection());
 	}
 
 	protected Pupil createPupil(Teacher teacher, int pupilNumber) {
