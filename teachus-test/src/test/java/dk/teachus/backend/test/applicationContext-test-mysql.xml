@@ -2,7 +2,7 @@
 <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	<bean id="createTestDatabase" class="dk.teachus.backend.test.CreateTestDatabase" />
+	<bean id="createTestDatabase" class="dk.teachus.backend.test.CreateMysqlTestDatabase" />
 
 	<bean id="placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"

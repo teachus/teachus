@@ -52,7 +52,6 @@ public class CreateMysqlTestDatabase {
 			
 			// Create new tables based on the schema
 			String schemaSql = IOUtils.toString(getClass().getResourceAsStream("/mysql.sql"), "UTF-8");
-			System.out.println(schemaSql);
 			executeSql(connection, schemaSql);
 		} catch (SQLException e) {
 			e.printStackTrace();
