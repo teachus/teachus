@@ -16,10 +16,12 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
@@ -112,12 +114,25 @@ public class TestPeriodDAO extends SpringTestCase {
 		
 		int periodsBefore = periods.getPeriods().size();
 		
-		// Delete one of the periods
-		getPeriodDAO().delete(periods.getPeriods().get(0));
+		// Add a period and delete it
+		Period period = new PeriodImpl();
+		period.setName("Empty period");
+		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
+		period.setEndTime(new DateTime().withTime(18, 0, 0, 0).toDate());
+		period.setEndDate(new DateMidnight(2005, 12, 15).toDate());
+		period.setLocation("Private");
+		period.setPrice(300);
+		period.setStatus(Status.FINAL);
+		period.setTeacher(getTeacher());
+		period.addWeekDay(WeekDay.MONDAY);
+		getPeriodDAO().save(period);
+		endTransaction();
+		
+		getPeriodDAO().delete(period);
 		endTransaction();
 		
 		// Add a period which is draft		
-		Period period = getPeriodDAO().createPeriodObject();
+		period = getPeriodDAO().createPeriodObject();
 		period.setStatus(Status.DRAFT);
 		period.setTeacher(teacher);
 		getPeriodDAO().save(period);
@@ -129,7 +144,7 @@ public class TestPeriodDAO extends SpringTestCase {
 		
 		int periodsAfter = periods.getPeriods().size();
 		
-		assertEquals(periodsBefore-1, periodsAfter);
+		assertEquals(periodsBefore, periodsAfter);
 	}
 	
 	public void testGetPeriods_bothDraftAndActive() {
@@ -192,6 +207,54 @@ public class TestPeriodDAO extends SpringTestCase {
 		endTransaction();
 		
 		assertNull(period);
+	}
+
+	/**
+	 *  It's not possible to delete a period with active bookings
+	 */
+	public void testDeletePeriod_withActiveBookings() {
+		// Get period with active bookings
+		Period period = getPeriodDAO().get(1L);
+		endTransaction();
+		
+		try {
+			getPeriodDAO().delete(period);
+			fail("Didn't throw an exception");
+		} catch (IllegalArgumentException e) {
+			// OK, expected
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Unexpected exception");
+		}
+	}
+	
+	public void testDeletePeriod_noActiveBookings() {		
+		// Create period which has a deleted booking
+		Period period = new PeriodImpl();
+		period.setName("Empty period with deleted booking");
+		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
+		period.setEndTime(new DateTime().withTime(18, 0, 0, 0).toDate());
+		period.setEndDate(new DateMidnight(2005, 12, 15).toDate());
+		period.setLocation("Private");
+		period.setPrice(300);
+		period.setStatus(Status.FINAL);
+		period.setTeacher(getTeacher());
+		period.addWeekDay(WeekDay.TUESDAY);
+		getPeriodDAO().save(period);
+		endTransaction();
+		
+		Long booking = createPupilBooking(period.getId(), 3, new DateTime(2005, 10, 10, 11, 0, 0, 0).withDayOfWeek(DateTimeConstants.TUESDAY), new Date());
+		getBookingDAO().deleteBooking(getBookingDAO().getBooking(booking));
+		endTransaction();
+		
+		// Try to delete the period. It should be possible
+		getPeriodDAO().delete(period);
+		endTransaction();
+		
+		period = getPeriodDAO().get(period.getId());
+		endTransaction();
+		
+		assertEquals(Status.DELETED, period.getStatus());
 	}
 	
 }

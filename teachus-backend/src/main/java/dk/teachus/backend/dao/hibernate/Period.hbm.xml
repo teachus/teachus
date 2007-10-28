@@ -36,5 +36,19 @@
         
         <property name="status" length="10" type="dk.teachus.backend.dao.hibernate.PeriodStatusUserType" />
     </class>
+    
+    <sql-query name="periodDeleteability">
+    	<return-scalar column="pid" type="long"/>
+    	<return-scalar column="booking_count" type="long"/>
+    	SELECT 
+    		p.id AS pid, 
+    		COUNT( b.id ) AS booking_count
+		FROM
+			period AS p
+			LEFT JOIN 
+			booking AS b ON ( p.id = b.period_id AND b.active = 1 )
+		GROUP BY 
+			p.id
+    </sql-query>
 
 </hibernate-mapping>

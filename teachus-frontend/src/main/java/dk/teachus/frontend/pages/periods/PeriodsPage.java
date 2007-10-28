@@ -18,11 +18,11 @@ package dk.teachus.frontend.pages.periods;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.Model;
 
-import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
@@ -69,6 +69,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
 
 		Periods periods = periodDAO.getPeriods(teacher, false);
+		final Map<Long, Boolean> periodDeleteability = periodDAO.getPeriodDeleteability();
 		final DateChoiceRenderer dateChoiceRenderer = new DateChoiceRenderer();
 		final TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
 		final WeekDayChoiceRenderer weekDayChoiceRenderer = new WeekDayChoiceRenderer(Format.SHORT);
@@ -95,9 +96,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 			@Override
 			public boolean isEnabled(Object object) {
 				Period period = (Period) object;
-				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-				int bookingCount = bookingDAO.getBookingCount(period);
-				return bookingCount == 0;
+				return periodDeleteability.get(period.getId());
 			}
 		});
 		

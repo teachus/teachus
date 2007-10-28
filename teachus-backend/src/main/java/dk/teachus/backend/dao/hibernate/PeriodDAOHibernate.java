@@ -16,7 +16,9 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -87,14 +89,50 @@ public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO
 	}
 	
 	public void delete(Period period) {
+		if (period == null) {
+			throw new IllegalArgumentException("Period may not be null");
+		}
+		
+		if (period.getId() == null) {
+			throw new IllegalArgumentException("Period must have been saved (must have an id)");
+		}
+		
+		// See if the period may be deleted
+		Map<Long, Boolean> periodDeleteability = getPeriodDeleteability();
+		boolean mayDelete = periodDeleteability.get(period.getId());
+		
+		if (mayDelete == false) {
+			throw new IllegalArgumentException("Can only delete periods which doesn't have active bookings associated");
+		}
+		
+		// Load the period from scratch
+		getHibernateTemplate().evict(period);
+		
+		period = get(period.getId());
+		
 		period.setStatus(Status.DELETED);
-		getHibernateTemplate().update(period);
-		getHibernateTemplate().flush();
+		save(period);
 	}
 
 	@Transactional(readOnly=true)
 	public Period createPeriodObject() {
 		return new PeriodImpl();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Map<Long, Boolean> getPeriodDeleteability() {
+		Map<Long, Boolean> periodDeleteability = new HashMap<Long, Boolean>();
+		
+		List<Object[]> result = getHibernateTemplate().findByNamedQuery("periodDeleteability");
+		for (Object[] object : result) {
+			Long periodId = (Long) object[0];
+			Long bookingCount = (Long) object[1];
+			boolean deleteable = bookingCount == 0;
+			periodDeleteability.put(periodId, deleteable);
+		}
+		
+		return periodDeleteability;
 	}
 
 }
