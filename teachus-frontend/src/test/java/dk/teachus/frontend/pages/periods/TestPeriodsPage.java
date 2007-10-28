@@ -16,6 +16,8 @@
  */
 package dk.teachus.frontend.pages.periods;
 
+import java.util.HashMap;
+
 import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PeriodDAO;
@@ -40,6 +42,9 @@ public class TestPeriodsPage extends WicketTestCase {
 			
 			one(periodDAO).getPeriods(teacher, false);
 			will(returnValue(new PeriodsImpl()));
+			
+			one(periodDAO).getPeriodDeleteability();
+			will(returnValue(new HashMap<Long, Boolean>()));
 			
 			tester.setPersonDAO(personDAO);
 			tester.setPeriodDAO(periodDAO);
