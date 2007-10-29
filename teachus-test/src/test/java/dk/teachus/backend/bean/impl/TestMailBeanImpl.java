@@ -17,9 +17,9 @@
 package dk.teachus.backend.bean.impl;
 
 import java.io.InputStream;
-import java.lang.reflect.Method;
 import java.util.List;
 
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.MailException;
@@ -30,29 +30,15 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.bean.VelocityBean;
-import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.test.SpringTestCase;
 
 public class TestMailBeanImpl extends SpringTestCase {
 	private static final long serialVersionUID = 1L;
-
-	public void testSendWelcomeMail() throws Exception {
-		MailBean mailBean = getMailBean();
-		
-		Pupil pupil = (Pupil) getPersonDAO().getPerson(3L);
-		endTransaction();
-		
-		Method createWelcomeMailMethod = MailBeanImpl.class.getDeclaredMethod("createWelcomeMail", new Class[] {Pupil.class, String.class, ApplicationConfiguration.class});
-		createWelcomeMailMethod.setAccessible(true);
-		MimeMessagePreparator preparator = (MimeMessagePreparator) createWelcomeMailMethod.invoke(mailBean, new Object[] {pupil, "No intro message", createDummyConfiguration()});
-		preparator.prepare(new JavaMailSenderImpl().createMimeMessage());
-	}
 	
 	public void testSendNewBookingsMail() throws Exception {
-		MailBean mailBean = getMailBean();
+		MailBean mailBean = createMailBean();
 		
 		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
 		endTransaction();
@@ -62,8 +48,14 @@ public class TestMailBeanImpl extends SpringTestCase {
 		
 		mailBean.sendNewBookingsMail(teacher, pupilBookings, createDummyConfiguration());
 	}
+	
+	public void testSendMail() throws Exception {
+		MailBean mailBean = createMailBean();
+		
+		mailBean.sendMail(new InternetAddress("test@teachus.dk"), new InternetAddress("test2@teachus.dk"), "A subject", "A body");
+	}
 
-	private MailBean getMailBean() throws NoSuchFieldException, IllegalAccessException {
+	private MailBean createMailBean() throws NoSuchFieldException, IllegalAccessException {
 		// Replace mailsender with a dummy
 		JavaMailSender mailSender = new JavaMailSender() {
 			private JavaMailSender wrappedSender = new JavaMailSenderImpl();

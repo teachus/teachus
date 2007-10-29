@@ -239,7 +239,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 			}
 			
 			@Override
-			protected void onCancel(final AjaxRequestTarget target) {
+			protected void onCancel() {
 				getRequestCycle().setResponsePage(PeriodsPage.class);
 			}
 			

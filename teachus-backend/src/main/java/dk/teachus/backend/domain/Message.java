@@ -14,22 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.backend.bean;
+package dk.teachus.backend.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
-import javax.mail.internet.InternetAddress;
-
-import dk.teachus.backend.MailException;
-import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.Teacher;
-
-public interface MailBean extends Serializable {
+public interface Message extends Serializable {
 	
-	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration);
+	Long getId();
 	
-	void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body) throws MailException;
+	Date getCreateDate();
+	void setCreateDate(Date createDate);
+	
+	boolean isSent();
+	void setSent(boolean sent);
+	
+	Date getSentDate();
+	void setSentDate(Date sentDate);
+	
+	Person getSender();
+	void setSender(Person sender);
+	
+	Set<Person> getRecipients();
+	void setRecipients(Set<Person> recipients);
+	void addRecipient(Person recipient);
+		
+	String getSubject();
+	void setSubject(String subject);
+	
+	String getBody();
+	void setBody(String body);
 	
 }

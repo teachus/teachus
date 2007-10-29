@@ -16,16 +16,25 @@
  */
 package dk.teachus.frontend.pages.persons;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.validation.EqualInputValidator;
 import org.apache.wicket.markup.html.form.validation.IFormValidator;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.util.string.Strings;
 import org.apache.wicket.validation.validator.StringValidator;
 
-import dk.teachus.backend.bean.MailBean;
+import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.dao.PersonDAO;
+import dk.teachus.backend.domain.ApplicationConfiguration;
+import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.Pupil;
+import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -41,6 +50,7 @@ import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public class SendNewPasswordPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
+	private static final Log log = LogFactory.getLog(SendNewPasswordPage.class);
 
 	private String password1;
 	private String password2;
@@ -111,21 +121,63 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onCancel(AjaxRequestTarget target) {
+			protected void onCancel() {
 				getRequestCycle().setResponsePage(PupilsPage.class);
 			}
 
 			@Override
 			protected void onSave(AjaxRequestTarget target) {
-				final MailBean mailBean = TeachUsApplication.get().getMailBean();
 				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+				MessageDAO messageDAO = TeachUsApplication.get().getMessageDAO();
 				
+				// Update pupil
 				final Pupil pupil = pupilModel.getObject();
 				pupil.setPassword(getPassword1());
-				
 				personDAO.save(pupil);
 				
-				mailBean.sendWelcomeMail(pupil, getIntroMessage(), TeachUsApplication.get().getConfiguration());		
+				// Create mail message
+				Message message = new MailMessage();
+				message.setSender(pupil.getTeacher());
+				message.addRecipient(pupil);
+				
+				String subject = TeachUsSession.get().getString("NewPasswordMail.subject");
+				message.setSubject(subject);
+				
+				String body = TeachUsSession.get().getString("NewPasswordMail.body");
+				body = body.replace("${username}", pupil.getUsername());
+				body = body.replace("${password}", getPassword1());
+				String serverUrl = TeachUsApplication.get().getConfiguration().getConfiguration(ApplicationConfiguration.SERVER_URL);
+				
+				/*
+				 * If the server URL is empty, then the administrator have misconfigured the system (forgot to set the
+				 * server URL in the settings). We will get the server URL from the current server, but we will also
+				 * warn the administrator by adding an entry to the log.
+				 */
+				if (Strings.isEmpty(serverUrl)) {
+					log.error("No server url is set for the system. It's very important that you set it.");
+					
+					WebRequest request = (WebRequest) getRequest();
+					HttpServletRequest httpServletRequest = request.getHttpServletRequest();
+					
+					StringBuilder b = new StringBuilder();
+					b.append(httpServletRequest.getScheme()).append("://");
+					b.append(httpServletRequest.getServerName());
+					if (httpServletRequest.getServerPort() != 80 && httpServletRequest.getServerPort() != 443) {
+						b.append(":").append(httpServletRequest.getServerPort());
+					}
+					
+					serverUrl = b.toString();
+				}
+				
+				body = body.replace("${server}", serverUrl);
+				String im = getIntroMessage();
+				if (Strings.isEmpty(im) == false) {
+					im += "\n\n";
+				}
+				body = body.replace("${introMessage}", im);
+				message.setBody(body);
+				
+				messageDAO.save(message);
 				
 				getRequestCycle().setResponsePage(PupilsPage.class);
 			}			

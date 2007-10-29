@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -50,16 +49,15 @@ public abstract class ButtonPanelElement extends FormElement {
 	}
 	
 	public ButtonPanelElement(String submitLabel) {
-		Button cancelButton = new Button("cancelButton");
-		cancelButton.add(new SimpleAttributeModifier("value", TeachUsSession.get().getString("PeriodPanel.regretInput")));
-		cancelButton.add(new AjaxEventBehavior("onclick") {
+		Button cancelButton = new Button("cancelButton") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onEvent(AjaxRequestTarget target) {
-				onCancel(target);
-			}			
-		});
+			public void onSubmit() {
+				onCancel();
+			}
+		};
+		cancelButton.add(new SimpleAttributeModifier("value", TeachUsSession.get().getString("PeriodPanel.regretInput")));
 		add(cancelButton);
 		
 		AjaxButton saveButton = new AjaxButton("saveButton") {
@@ -144,7 +142,7 @@ public abstract class ButtonPanelElement extends FormElement {
 		return null;
 	}
 	
-	protected abstract void onCancel(AjaxRequestTarget target);
+	protected abstract void onCancel();
 	
 	protected abstract void onSave(AjaxRequestTarget target);
 	

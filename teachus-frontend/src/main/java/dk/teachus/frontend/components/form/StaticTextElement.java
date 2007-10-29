@@ -14,22 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.backend.bean;
+package dk.teachus.frontend.components.form;
 
-import java.io.Serializable;
-import java.util.List;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.IModel;
 
-import javax.mail.internet.InternetAddress;
+public class StaticTextElement extends FormElement {
+	private static final long serialVersionUID = 1L;
 
-import dk.teachus.backend.MailException;
-import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.Teacher;
-
-public interface MailBean extends Serializable {
-	
-	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration);
-	
-	void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body) throws MailException;
+	public StaticTextElement(IModel textModel) {
+		add(new Label("text", textModel));
+	}
 	
 }

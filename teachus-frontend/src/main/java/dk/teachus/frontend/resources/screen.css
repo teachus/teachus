@@ -72,6 +72,10 @@ margin-bottom:10px;
 	padding-top: 6px;
 }
 
+.form input.textField {
+	border: 1px solid gray;
+}
+
 .form textarea {
 	width: 100%;
 	border: 1px solid gray;
@@ -263,4 +267,30 @@ table.border th {
 
 .list tfoot td {
 	background-color: #EEEEEE;
+}
+
+.innerlist {
+	height: 200px; 
+	overflow: auto; 
+	display: block;
+	border: 1px solid gray;
+	border-right: 0;
+}
+
+.innerlist table {
+	width: 100%;
+}
+
+.innerlist th, .innerlist td {
+	padding: 1px;
+	padding-left: 2px;
+	padding-right: 2px;
+}
+
+.innerlist thead th {
+	background-color: #CCCCCC;
+}
+
+.innerlist tbody tr.even td {
+	background-color: #F0F0F0;
 }

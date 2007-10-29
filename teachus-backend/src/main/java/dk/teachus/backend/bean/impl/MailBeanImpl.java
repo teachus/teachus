@@ -27,15 +27,16 @@ import java.util.ResourceBundle;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.web.util.HtmlUtils;
 
+import dk.teachus.backend.MailException;
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.bean.VelocityBean;
 import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.utils.ClassUtils;
@@ -49,70 +50,6 @@ public class MailBeanImpl implements MailBean {
 	public MailBeanImpl(JavaMailSender mailSender, VelocityBean velocityBean) {
 		this.mailSender = mailSender;
 		this.velocityBean = velocityBean;
-	}
-
-	public void sendWelcomeMail(final Pupil pupil, final String introMessage, ApplicationConfiguration configuration) {
-		MimeMessagePreparator welcomeMail = createWelcomeMail(pupil, introMessage, configuration);
-		sendMail(welcomeMail);
-	}
-
-	private MimeMessagePreparator createWelcomeMail(final Pupil pupil, final String introMessage, final ApplicationConfiguration configuration) {
-		return new MimeMessagePreparator() {
-			public void prepare(MimeMessage mimeMessage) throws Exception {
-				MimeMessageHelper message = new MimeMessageHelper(mimeMessage, false, "UTF-8");
-				
-				Teacher teacher = pupil.getTeacher();
-
-				// Sender and recipient
-				String email = teacher.getEmail();
-				String fromName = teacher.getName();
-				
-				message.setFrom(new InternetAddress(email, fromName));
-				message.setTo(new InternetAddress(pupil.getEmail(), pupil.getName()));
-				
-				
-				// Welcome introduction
-				String teacherIntroduction = "";
-				if (introMessage != null && introMessage.length() > 0) {
-					teacherIntroduction = HtmlUtils.htmlEscape(introMessage);
-					teacherIntroduction = teacherIntroduction.replace("\r\n", "\n").replace("\r", "\n");
-					teacherIntroduction = teacherIntroduction.replace("\n", "<br />");
-				}
-
-				Locale locale = teacher.getLocale();
-				
-				// Load the properties
-				ResourceBundle bundle = ResourceBundle.getBundle(ClassUtils.getAsResourceBundlePath(MailBeanImpl.class, "WelcomeMail"), locale);
-				
-				// Parse the template
-				Map<String, Object> model = new HashMap<String, Object>();
-				model.put("subject", bundle.getString("subject"));
-				model.put("teacherIntroduction", teacherIntroduction);
-				model.put("welcome", bundle.getString("welcome"));
-				model.put("introduction", bundle.getString("introduction"));
-				model.put("serverLabel", bundle.getString("serverLabel"));
-				model.put("usernameLabel", bundle.getString("usernameLabel"));
-				model.put("passwordLabel", bundle.getString("passwordLabel"));
-				model.put("regard", bundle.getString("regard"));
-				model.put("server", configuration.getConfiguration(ApplicationConfiguration.SERVER_URL));
-				model.put("from", HtmlUtils.htmlEscape(fromName));
-				model.put("name", HtmlUtils.htmlEscape(pupil.getName()));
-				model.put("username", HtmlUtils.htmlEscape(pupil.getUsername()));
-				model.put("password", HtmlUtils.htmlEscape(pupil.getPassword()));
-				String template = velocityBean.mergeTemplate(ClassUtils.getAsResourcePath(MailBeanImpl.class, "WelcomeMail.vm"), model);
-				
-				// Subject
-				// First line in parsed template is the subject
-				String subject = template.substring(0, template.indexOf('\n'));
-				message.setSubject(subject);
-				
-				// Text
-				String text = template.substring(template.indexOf('\n'));
-				message.setText(text, true);
-
-				mimeMessage.addHeader("X-Mailer", "TeachUs ("+configuration.getConfiguration(ApplicationConfiguration.VERSION)+")");
-			}
-		};
 	}
 	
 	public void sendNewBookingsMail(final Teacher teacher, final List<PupilBooking> pupilBookings, final ApplicationConfiguration configuration) {
@@ -170,12 +107,21 @@ public class MailBeanImpl implements MailBean {
 		}
 	}
 	
-	private void sendMail(final MimeMessagePreparator messagePreparator) {
-		new Thread(new Runnable() {
-			public void run() {
-				mailSender.send(messagePreparator);
-			}
-		}).start();
+	public void sendMail(final InternetAddress sender, final InternetAddress recipient, final String subject, final String body) throws MailException {
+		try {
+			mailSender.send(new MimeMessagePreparator() {
+				public void prepare(MimeMessage mimeMessage) throws Exception {
+					MimeMessageHelper message = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+					
+					message.setFrom(sender);
+					message.addTo(recipient);
+					message.setSubject(subject);
+					message.setText(body);
+				}
+			});
+		} catch (MailSendException e) {
+			throw new MailException(e);
+		}
 	}
 	
 	public static class FormattedPupilBooking {

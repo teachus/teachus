@@ -39,9 +39,9 @@ import org.apache.wicket.util.lang.Objects;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
+import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
@@ -215,25 +215,25 @@ public class TeachUsApplication extends WebApplication {
 	public PeriodDAO getPeriodDAO() {
 		return (PeriodDAO) getApplicationContext().getBean("periodDao"); //$NON-NLS-1$
 	}
-
-	public MailBean getMailBean() {
-		return (MailBean) getApplicationContext().getBean("mailBean"); //$NON-NLS-1$
-	}
 	
 	public StatisticsDAO getStatisticsDAO() {
 		return (StatisticsDAO) getApplicationContext().getBean("statisticsDao");
-	}
-	
-	public ApplicationConfiguration getConfiguration() {
-		return configuration;
 	}
 	
 	protected ApplicationDAO getApplicationDAO() {
 		return (ApplicationDAO) getApplicationContext().getBean("applicationDao");
 	}
 	
+	public MessageDAO getMessageDAO() {
+		return (MessageDAO) getApplicationContext().getBean("messageDao");
+	}
+	
 	protected ApplicationContext getApplicationContext() {
 		return WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+	}
+	
+	public ApplicationConfiguration getConfiguration() {
+		return configuration;
 	}
 
 	@Override
@@ -261,10 +261,6 @@ public class TeachUsApplication extends WebApplication {
 	
 	public String getVersion() {
 		return getConfiguration().getConfiguration(ApplicationConfiguration.VERSION);
-	}
-	
-	public String getServerName() {
-		return getConfiguration().getConfiguration(ApplicationConfiguration.SERVER_URL);
 	}
 
 	public Theme getDefaultTheme() {

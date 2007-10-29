@@ -35,6 +35,7 @@ import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
+import dk.teachus.frontend.pages.persons.mail.MailPage;
 
 public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
 	protected PersonsPage(UserLevel userLevel) {
@@ -48,6 +49,14 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			@Override
 			public void onEvent() {
 				getRequestCycle().setResponsePage(getPersonPage(null));
+			}			
+		});		
+		items.add(new ToolbarItem(TeachUsSession.get().getString("General.mail")) { //$NON-NLS-1$
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onEvent() {
+				getRequestCycle().setResponsePage(MailPage.class);
 			}			
 		});
 		add(new Toolbar("toolbar", items) { //$NON-NLS-1$
@@ -64,24 +73,24 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		final List<FunctionItem> functions = getFunctions();
 		
 		List<IColumn> columns = new ArrayList<IColumn>();
-		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") {
+		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") { //$NON-NLS-1$ //$NON-NLS-2$
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("unchecked") //$NON-NLS-1$
 			@Override
 			protected void onClick(Object rowModelObject) {
 				P person = (P) rowModelObject;
 				getRequestCycle().setResponsePage(getPersonPage(person.getId()));
 			}					
 		});
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username"));
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email"));
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber"));
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (functions != null) {
-			columns.add(new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions));
+			columns.add(new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)); //$NON-NLS-1$
 		}
 		
-		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), persons));
+		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), persons)); //$NON-NLS-1$
 	}
 
 	protected abstract List<P> getPersons();
@@ -101,13 +110,13 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			super(label);
 		}
 
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		@Override
 		public final void onEvent(Object object) {
 			onEvent((P) object);
 		}
 		
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //$NON-NLS-1$
 		@Override
 		public final String getClickConfirmText(Object object) {
 			return getClickConfirmText((P) object);

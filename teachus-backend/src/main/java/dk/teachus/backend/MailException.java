@@ -14,22 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.backend.bean;
+package dk.teachus.backend;
 
-import java.io.Serializable;
-import java.util.List;
+public class MailException extends Exception {
+	private static final long serialVersionUID = 1L;
 
-import javax.mail.internet.InternetAddress;
+	public MailException() {
+		super();
+	}
 
-import dk.teachus.backend.MailException;
-import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.Teacher;
+	public MailException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-public interface MailBean extends Serializable {
-	
-	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration);
-	
-	void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body) throws MailException;
+	public MailException(String message) {
+		super(message);
+	}
+
+	public MailException(Throwable cause) {
+		super(cause);
+	}
 	
 }

@@ -49,7 +49,7 @@ public class ApplicationConfigurationPage extends AuthenticatedBasePage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onCancel(AjaxRequestTarget target) {
+			protected void onCancel() {
 				setResponsePage(ApplicationConfigurationPage.class);
 			}
 
