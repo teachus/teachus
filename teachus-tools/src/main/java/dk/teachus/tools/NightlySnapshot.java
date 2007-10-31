@@ -40,10 +40,10 @@ public class NightlySnapshot {
 		 * Build up workflow
 		 */
 		Workflow workflow = new Workflow();
-				
-		workflow.addAction(new TestUpgradeTeachUsAction(maven, subversion, workingDirectory, testDeployment, tomcat));
 
 		workflow.addAction(new TomcatAction(tomcat, ProcessAction.STOP));
+				
+		workflow.addAction(new TestUpgradeTeachUsAction(maven, subversion, workingDirectory, testDeployment, tomcat));
 		
 		workflow.addAction(new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina"));
 		
