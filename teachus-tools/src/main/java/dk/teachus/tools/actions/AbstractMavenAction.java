@@ -22,6 +22,9 @@ abstract class AbstractMavenAction implements Action {
 		this.maven = maven;
 		this.projectDirectory = projectDirectory;
 	}
+	
+	public void init() throws Exception {
+	}
 
 	public void execute() throws Exception {
 		String mavenHome = maven.getHome();

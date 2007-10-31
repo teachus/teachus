@@ -19,6 +19,13 @@ public class Workflow {
 	
 	public void start() throws Exception {
 		try {
+			// INIT
+			log.info("Start initializing the actions");
+			for (Action action : actions) {
+				log.debug("Initialize action: "+action.getClass());
+				action.init();
+			}
+			
 			// CHECK
 			log.info("Start checking the actions");
 			for (Action action : actions) {
@@ -32,6 +39,8 @@ public class Workflow {
 				log.debug("Execute action: "+action.getClass());
 				action.execute();
 			}
+		} catch (Exception e) {
+			log.error("Error during processing of the workflow", e);
 		} finally {
 			try {
 				// CLEANUP

@@ -8,13 +8,13 @@ import org.apache.commons.logging.LogFactory;
 
 import dk.teachus.tools.config.AbstractDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
-import dk.teachus.tools.config.SubversionReleaseNode;
 import dk.teachus.tools.config.TomcatNode;
+;
 
 abstract class UpgradeTeachUsAction implements Action {
 	private static final Log log = LogFactory.getLog(UpgradeTeachUsAction.class);
 
-	private SubversionCheckoutReleaseAction subversionCheckout;
+	private AbstractSubversionCheckoutAction subversionCheckout;
 
 	protected File projectDirectory;
 
@@ -24,8 +24,6 @@ abstract class UpgradeTeachUsAction implements Action {
 
 	private MavenPackageAction mavenPackage;
 
-	private UpgradeDatabaseAction upgradeDatabase;
-
 	private DeployWarFileAction deployWarFile;
 
 	protected final File workingDirectory;
@@ -33,22 +31,39 @@ abstract class UpgradeTeachUsAction implements Action {
 	protected final AbstractDeploymentNode deployment;
 
 	protected final TomcatNode tomcat;
+
+	protected final MavenNode maven;
+
+	protected String version;
 	
-	public UpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, AbstractDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
+	public UpgradeTeachUsAction(MavenNode maven, File workingDirectory, AbstractDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
+		this.maven = maven;
 		this.workingDirectory = workingDirectory;
 		this.deployment = deployment;
 		this.tomcat = tomcat;
-		
+		this.version = version;
+	}
+	
+	public void init() throws Exception {
 		projectDirectory = File.createTempFile("teachus", "", workingDirectory);
 		projectDirectory.delete();
 		projectDirectory.mkdir();
 		
-		subversionCheckout = new SubversionCheckoutReleaseAction(subversion, version, projectDirectory);
+		subversionCheckout = getCheckoutAction();
+		subversionCheckout.init();
 		configureDatabase = new ConfigureTeachUsDatabaseAction(projectDirectory, deployment.getDatabase());
+		configureDatabase.init();
 		configureSmtpServer = new ConfigureSmtpServerAction(projectDirectory, deployment.getSmtpServer());
+		configureSmtpServer.init();
 		mavenPackage = new MavenPackageAction(maven, projectDirectory);
-		upgradeDatabase = new UpgradeDatabaseAction(tomcat.getHost(), deployment.getDatabase(), projectDirectory, version);
-		deployWarFile = new DeployWarFileAction(projectDirectory, tomcat, version, getName());
+		mavenPackage.init();
+		VersionProvider versionProvider = new VersionProvider() {
+			public String getVersion() {
+				return version;
+			}
+		};
+		deployWarFile = new DeployWarFileAction(projectDirectory, tomcat, versionProvider, getName());
+		deployWarFile.init();
 	}
 
 	public void execute() throws Exception {
@@ -64,9 +79,9 @@ abstract class UpgradeTeachUsAction implements Action {
 		
 		mavenPackage.execute();
 		
-		beforeUpgradeDatabase();
+		beforeDatabase();
 		
-		upgradeDatabase.execute();
+		doDatabase();
 
 		deployWarFile.execute();
 		
@@ -80,7 +95,6 @@ abstract class UpgradeTeachUsAction implements Action {
 		configureDatabase.check();
 		configureSmtpServer.check();
 		mavenPackage.check();
-		upgradeDatabase.check();
 		deployWarFile.check();
 		
 		doCheck();
@@ -94,7 +108,6 @@ abstract class UpgradeTeachUsAction implements Action {
 		configureDatabase.cleanup();
 		configureSmtpServer.cleanup();
 		mavenPackage.cleanup();
-		upgradeDatabase.cleanup();
 		deployWarFile.cleanup();
 		
 		// Clean up 
@@ -104,7 +117,11 @@ abstract class UpgradeTeachUsAction implements Action {
 
 	protected abstract String getName();
 	
-	protected void beforeUpgradeDatabase() throws Exception {
+	protected abstract AbstractSubversionCheckoutAction getCheckoutAction();
+	
+	protected abstract void doDatabase() throws Exception;
+	
+	protected void beforeDatabase() throws Exception {
 	}
 
 	protected void beforePackage() throws Exception {

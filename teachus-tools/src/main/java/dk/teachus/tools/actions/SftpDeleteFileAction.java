@@ -3,9 +3,9 @@ package dk.teachus.tools.actions;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ch.ethz.ssh2.SFTPException;
-import ch.ethz.ssh2.SFTPv3Client;
-import ch.ethz.ssh2.sftp.ErrorCodes;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.SftpException;
+
 import dk.teachus.tools.config.SshNode;
 
 public class SftpDeleteFileAction extends AbstractSftpAction {
@@ -19,14 +19,14 @@ public class SftpDeleteFileAction extends AbstractSftpAction {
 	}
 
 	@Override
-	protected void executeSftp(SFTPv3Client client) throws Exception {
+	protected void executeSftp(ChannelSftp client) throws Exception {
 		log.info("Deleting remote file: "+host.getHost()+":"+remoteFile);
 		
 		try {
 			client.rm(remoteFile);
-		} catch (SFTPException e) {
+		} catch (SftpException e) {
 			// Check if the error is an file doesn't exist error. Because then we can continue
-			if (e.getServerErrorCode() != ErrorCodes.SSH_FX_NO_SUCH_FILE) {
+			if (e.id != ChannelSftp.SSH_FX_NO_SUCH_FILE) {
 				throw new RuntimeException(e);
 			}
 		}

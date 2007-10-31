@@ -1,5 +1,7 @@
 package dk.teachus.tools.config;
 
+import java.util.Map;
+
 import nanoxml.XMLElement;
 
 public class DatabaseNode extends AbstractNode {
@@ -27,6 +29,10 @@ public class DatabaseNode extends AbstractNode {
 	}
 	
 	public String getJdbcUrl() {
+		return getJdbcUrl(null);
+	}
+	
+	public String getJdbcUrl(Map<String, String> parameters) {
 		StringBuilder url = new StringBuilder();
 		
 		url.append("jdbc:mysql://");
@@ -35,6 +41,23 @@ public class DatabaseNode extends AbstractNode {
 		url.append(getPort());
 		url.append("/");
 		url.append(getDatabase());
+		
+		if (parameters != null) {
+			StringBuilder p = new StringBuilder();
+			for (String parameter : parameters.keySet()) {
+				if (p.length() == 0) {
+					p.append("?");
+				} else {
+					p.append("&");
+				}
+				
+				p.append(parameter);
+				p.append("=");
+				p.append(parameters.get(parameter));
+			}
+			
+			url.append(p);
+		}
 		
 		return url.toString();
 	}

@@ -27,10 +27,21 @@ public class LoadTestDataAction implements Action {
 	private RunAntAction runAnt;
 
 	private SshTunnelAction dbTunnel;
+
+	private final SshNode tunnelHost;
+
+	private final File projectDirectory;
+
+	private final MavenNode maven;
 	
 	public LoadTestDataAction(SshNode tunnelHost, File projectDirectory, DatabaseNode database, MavenNode maven) {
+		this.tunnelHost = tunnelHost;
+		this.projectDirectory = projectDirectory;
 		this.database = database;
-		
+		this.maven = maven;
+	}
+	
+	public void init() throws Exception {		
 		dbTunnel = new SshTunnelAction(tunnelHost, 13306, database.getHost(), database.getPort());
 		configureDemoDatabase = new ConfigureDemoDatabaseAction(projectDirectory, database.withHostPort("127.0.0.1", 13306));
 		mavenAnt = new MavenAntAction(maven, projectDirectory);

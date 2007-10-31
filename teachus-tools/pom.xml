@@ -6,7 +6,19 @@
 	<groupId>dk.teachus</groupId>
 	<artifactId>teachus-tools</artifactId>
 	<version>0.0.1</version>
+	<name>TeachUs Tools</name>
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -18,6 +30,11 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.31</version>
+		</dependency>
 		<dependency>
 			<groupId>com.svnkit</groupId>
 			<artifactId>svnkit</artifactId>
@@ -58,7 +75,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
 		</dependency>
-		
+
 		<!-- Tests -->
 		<dependency>
 			<groupId>junit</groupId>

@@ -15,6 +15,9 @@ public class RunAntAction implements Action {
 	public RunAntAction(File antFile) {
 		this.antFile = antFile;
 	}
+	
+	public void init() throws Exception {
+	}
 
 	public void execute() throws Exception {
 		String[] command = new String[] {

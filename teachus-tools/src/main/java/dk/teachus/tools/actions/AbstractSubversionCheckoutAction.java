@@ -17,6 +17,9 @@ abstract class AbstractSubversionCheckoutAction implements Action {
 	public AbstractSubversionCheckoutAction(File workingDirectory) {
 		this.workingDirectory = workingDirectory;
 	}
+	
+	public void init() throws Exception {
+	}
 
 	public final void execute() throws Exception {
 		String checkoutUrl = getCheckoutUrl();

@@ -6,11 +6,18 @@ import dk.teachus.tools.config.SshNode;
 abstract class AbstractTunnelledDatabaseAction extends AbstractDatabaseAction {
 
 	private SshTunnelAction dbTunnel;
+	private final SshNode host;
 
 	public AbstractTunnelledDatabaseAction(SshNode host, DatabaseNode database) {
 		super(database);
+		this.host = host;
+	}
+	
+	@Override
+	public void init() throws Exception {
+		super.init();
 		
-		dbTunnel = new SshTunnelAction(host, 13306, database.getHost(), database.getPort());
+		dbTunnel = new SshTunnelAction(host, 13306, database.getHost(), database.getPort());		
 	}
 
 	@Override
@@ -25,10 +32,13 @@ abstract class AbstractTunnelledDatabaseAction extends AbstractDatabaseAction {
 	}
 	
 	@Override
-	protected String getJdbcUrl() {
-		DatabaseNode localTunnelDb = database.withHostPort("localhost", 13306);
-		
-		return localTunnelDb.getJdbcUrl();
+	protected String getHost() {
+		return "localhost";
+	}
+	
+	@Override
+	protected int getPort() {
+		return 13306;
 	}
 	
 	@Override

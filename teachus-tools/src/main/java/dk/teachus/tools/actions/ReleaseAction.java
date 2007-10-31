@@ -26,7 +26,22 @@ public class ReleaseAction implements Action {
 
 	private SubversionCopyAction subversionCopy;
 
+	private final MavenNode maven;
+
+	private final WorkingDirectoryNode workingDirectory;
+
+	private final SubversionReleaseNode subversionRelease;
+
+	private final SubversionTrunkNode subversionTrunk;
+
 	public ReleaseAction(MavenNode maven, WorkingDirectoryNode workingDirectory, SubversionReleaseNode subversionRelease, SubversionTrunkNode subversionTrunk) throws Exception {
+		this.maven = maven;
+		this.workingDirectory = workingDirectory;
+		this.subversionRelease = subversionRelease;
+		this.subversionTrunk = subversionTrunk;
+	}
+	
+	public void init() throws Exception {
 		log.info("Creating project directory");
 		projectDirectory = File.createTempFile("teachus", "", workingDirectory.getWorkingDirectoryFile());
 		projectDirectory.delete();

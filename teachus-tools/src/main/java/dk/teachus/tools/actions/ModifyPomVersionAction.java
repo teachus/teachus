@@ -24,6 +24,9 @@ public class ModifyPomVersionAction implements Action {
 		this.projectDirectory = projectDirectory;
 	}
 	
+	public void init() throws Exception {
+	}
+	
 	public void setVersion(String version) {
 		if (version == null || version.length() == 0) {
 			throw new IllegalArgumentException("The version can not be empty");

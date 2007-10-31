@@ -13,6 +13,9 @@ public class SubversionCommitAction implements Action {
 		this.files = files;
 		this.message = message;
 	}
+	
+	public void init() throws Exception {
+	}
 
 	public void execute() throws Exception {		
 		SVNCommitClient commitClient = new SVNCommitClient(null, null);

@@ -49,12 +49,12 @@ public class FullUpgrade {
 		 * Build up workflow
 		 */
 		Workflow workflow = new Workflow();
-		
-		workflow.addAction(new TomcatAction(tomcat, ProcessAction.STOP));
-		
+				
 		workflow.addAction(new MainUpgradeTeachUsAction(maven, subversion, workingDirectory, mainDeployment, tomcat, version));
 		
 		workflow.addAction(new DemoUpgradeTeachUsAction(maven, subversion, workingDirectory, demoDeployment, tomcat, version));
+		
+		workflow.addAction(new TomcatAction(tomcat, ProcessAction.STOP));
 		
 		workflow.addAction(new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina"));
 

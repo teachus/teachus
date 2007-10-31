@@ -21,10 +21,16 @@ public class BackupDatabaseAction implements Action {
 
 	private SshTunnelAction dbTunnel;
 
+	private final SshNode tunnelHost;
+
 	public BackupDatabaseAction(SshNode tunnelHost, DatabaseNode database, File destination) {
+		this.tunnelHost = tunnelHost;
 		this.database = database;
 		this.destination = destination;
 		
+	}
+	
+	public void init() throws Exception {
 		dbTunnel = new SshTunnelAction(tunnelHost, 13306, database.getHost(), database.getPort());
 	}
 

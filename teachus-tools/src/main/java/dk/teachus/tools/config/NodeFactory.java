@@ -19,6 +19,8 @@ public abstract class NodeFactory {
 			node = new MainDeploymentNode();
 		} else if (name.equalsIgnoreCase("demo")) {
 			node = new DemoDeploymentNode();
+		} else if (name.equalsIgnoreCase("test")) {
+			node = new TestDeploymentNode();
 		} else if (name.equalsIgnoreCase("ssh")) {
 			node = new SshNode();
 		} else if (name.equalsIgnoreCase("svnrelease")) {

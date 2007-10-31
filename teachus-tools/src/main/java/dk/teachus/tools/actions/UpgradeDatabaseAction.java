@@ -1,6 +1,8 @@
 package dk.teachus.tools.actions;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.Statement;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -22,7 +24,23 @@ public class UpgradeDatabaseAction extends AbstractTunnelledDatabaseAction {
 	}
 	
 	@Override
-	protected String getSqlScript() throws Exception {		
+	protected void doExecute(Connection connection) throws Exception {
+		Statement statement = connection.createStatement();
+		statement.addBatch(getSqlScript());
+		int[] batchResult = statement.executeBatch();
+		
+		for (int result : batchResult) {
+			if (result == Statement.EXECUTE_FAILED) {
+				throw new RuntimeException("Error when executing sql.");
+			} else if (result != Statement.SUCCESS_NO_INFO) {
+				System.out.println("Upgrade modifed: "+result+" rows.");
+			}
+		}
+		
+		statement.close();
+	}
+	
+	private String getSqlScript() throws Exception {		
 		String sql = null;
 		
 		// Check if there is an upgrade file for this version

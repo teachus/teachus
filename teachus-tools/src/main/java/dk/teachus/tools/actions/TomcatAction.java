@@ -19,7 +19,9 @@ public class TomcatAction implements Action {
 	public TomcatAction(TomcatNode tomcat, ProcessAction processAction) {
 		this.tomcat = tomcat;
 		this.processAction = processAction;
-		
+	}
+	
+	public void init() throws Exception {
 		long sleep = 0;
 		
 		StringBuilder command = new StringBuilder();

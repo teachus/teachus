@@ -1,7 +1,9 @@
 package dk.teachus.tools.actions;
 
-import ch.ethz.ssh2.Connection;
-import ch.ethz.ssh2.SFTPv3Client;
+import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.Session;
+
 import dk.teachus.tools.config.SshNode;
 
 abstract class AbstractSftpAction extends AbstractSshAction {
@@ -11,14 +13,16 @@ abstract class AbstractSftpAction extends AbstractSshAction {
 	}
 
 	@Override
-	protected void doExecute(Connection connection) throws Exception {
-		SFTPv3Client client = new SFTPv3Client(connection);
+	protected void doExecute(Session session) throws Exception {
+		Channel channel = session.openChannel("sftp");
+		channel.connect();
+		ChannelSftp c = (ChannelSftp) channel;
 		
-		executeSftp(client);
+		executeSftp(c);
 		
-		client.close();
+		channel.disconnect();
 	}
 	
-	protected abstract void executeSftp(SFTPv3Client client) throws Exception;
+	protected abstract void executeSftp(ChannelSftp client) throws Exception;
 
 }

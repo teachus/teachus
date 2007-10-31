@@ -34,6 +34,9 @@ public class DetermineVersionAction implements Action {
 		return version;
 	}
 	
+	public void init() throws Exception {
+	}
+	
 	public void check() throws Exception {
 		if (projectDirectory == null) {
 			throw new IllegalStateException("Project directory must not be null");

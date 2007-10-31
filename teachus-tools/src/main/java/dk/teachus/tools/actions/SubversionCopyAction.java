@@ -23,6 +23,9 @@ public class SubversionCopyAction implements Action {
 		this.subversionTrunk = subversionTrunk;
 	}
 	
+	public void init() throws Exception {
+	}
+	
 	public void setVersion(String version) {
 		this.version = version;
 	}

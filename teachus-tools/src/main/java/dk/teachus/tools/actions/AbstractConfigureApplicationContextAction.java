@@ -12,6 +12,9 @@ abstract class AbstractConfigureApplicationContextAction implements Action {
 		this.projectDirectory = projectDirectory;
 	}
 	
+	public void init() throws Exception {
+	}
+	
 	public void check() throws Exception {
 	}
 	

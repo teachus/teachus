@@ -5,20 +5,24 @@ import java.io.File;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ch.ethz.ssh2.Connection;
-import ch.ethz.ssh2.SCPClient;
+import com.jcraft.jsch.ChannelSftp;
+
 import dk.teachus.tools.config.SshNode;
 
-public class ScpAction extends AbstractSshAction {
+public class ScpAction extends AbstractSftpAction {
 	private static final Log log = LogFactory.getLog(ScpAction.class);
 
-	private File sourceFile;
+	public static interface SourceProvider {
+		File getSourceFile();
+	}
+	
+	private SourceProvider sourceProvider;
 	private String destinationDirectory;
 	private String destinationFile;
 	
-	public ScpAction(SshNode host, File sourceFile, String destinationDirectory, String destinationFile) {
+	public ScpAction(SshNode host, SourceProvider sourceProvider, String destinationDirectory, String destinationFile) {
 		super(host);
-		this.sourceFile = sourceFile;
+		this.sourceProvider = sourceProvider;
 		this.destinationDirectory = destinationDirectory;
 		this.destinationFile = destinationFile;
 	}
@@ -28,12 +32,13 @@ public class ScpAction extends AbstractSshAction {
 	}
 
 	@Override
-	protected void doExecute(Connection connection) throws Exception {
+	protected void executeSftp(ChannelSftp client) throws Exception {
+		File sourceFile = sourceProvider.getSourceFile();
 		log.info("Copying file "+sourceFile.getName()+" to "+host.getHost()+":"+destinationDirectory+"/"+destinationFile);
 		
-		SCPClient scpClient = connection.createSCPClient();
+		String dst = destinationDirectory+"/"+destinationFile;
 		
-		scpClient.put(sourceFile.getAbsolutePath(), destinationFile, destinationDirectory, "0600");
+		client.put(sourceFile.getAbsolutePath(), dst, ChannelSftp.OVERWRITE);
 	}
 	
 }

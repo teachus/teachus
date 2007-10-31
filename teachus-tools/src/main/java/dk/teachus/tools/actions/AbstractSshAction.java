@@ -1,9 +1,14 @@
 package dk.teachus.tools.actions;
 
+import java.io.File;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ch.ethz.ssh2.Connection;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
+
 import dk.teachus.tools.config.SshNode;
 
 abstract class AbstractSshAction implements Action {
@@ -11,29 +16,27 @@ abstract class AbstractSshAction implements Action {
 	
 	protected SshNode host;
 
-	private Connection connection;
+	private Session session;
 
 	public AbstractSshAction(SshNode host) {
 		this.host = host;
 	}
 	
+	public void init() throws Exception {
+	}
+	
 	public void execute() throws Exception {
 		log.info("Connecting to remote host: "+host.getHost());
 		
-		connection = new Connection(host.getHost());
-		connection.connect();
-		connection.authenticateWithPassword(host.getUsername(), host.getPassword());
+		createSession();
 		
-		doExecute(connection);
+		doExecute(session);
 	}
 	
 	public final void check() throws Exception {
-		// Check that the host is there and listens on the port,
-		// and that the username/password is valid
-		Connection connection = new Connection(host.getHost());
-		connection.connect();
-		connection.authenticateWithPassword(host.getUsername(), host.getPassword());
-		connection.close();
+		createSession();
+		session.disconnect();
+		session = null;
 		
 		doCheck();
 	}
@@ -43,13 +46,29 @@ abstract class AbstractSshAction implements Action {
 	public final void cleanup() throws Exception {
 		doCleanup();
 		
-		if (connection != null) {
-			connection.close();
+		if (session != null) {
+			session.disconnect();
 		}
 	}
 	
 	protected void doCleanup() throws Exception {}
 	
-	protected abstract void doExecute(Connection connection) throws Exception;
+	protected abstract void doExecute(Session session) throws Exception;
 
+	private void createSession() throws JSchException {
+		JSch jsch = new JSch();
+		
+		// Set known hosts
+		File userHome = new File(System.getProperty("user.home"));
+		File sshHome = new File(userHome, ".ssh");
+		File knownHosts = new File(sshHome, "known_hosts");
+		if (knownHosts.exists()) {
+			jsch.setKnownHosts(knownHosts.getAbsolutePath());
+		}
+		
+		session = jsch.getSession(host.getUsername(), host.getHost());
+		session.setPassword(host.getPassword());
+		session.connect();
+	}
+	
 }

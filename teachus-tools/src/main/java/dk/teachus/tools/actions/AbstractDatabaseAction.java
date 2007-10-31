@@ -2,7 +2,8 @@ package dk.teachus.tools.actions;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,33 +18,21 @@ abstract class AbstractDatabaseAction implements Action {
 	public AbstractDatabaseAction(DatabaseNode database) {
 		this.database = database;
 	}
+	
+	public void init() throws Exception {
+	}
 
-	public void execute() throws Exception {
-		String sqlScript = getSqlScript();
+	public void execute() throws Exception {		
+		String jdbcUrl = createJdbcUrl();
+		log.info("Connection to database: "+jdbcUrl);
 		
-		if (sqlScript != null && sqlScript.length() > 0) {			
-			log.info("Connection to database: "+getJdbcUrl());
-			
-			Class.forName("com.mysql.jdbc.Driver");
-			
-			Connection connection = DriverManager.getConnection(getJdbcUrl(), database.getUsername(), database.getPassword());
-			
-			Statement statement = connection.createStatement();
-			statement.addBatch(sqlScript);
-			int[] batchResult = statement.executeBatch();
-			
-			for (int result : batchResult) {
-				if (result == Statement.EXECUTE_FAILED) {
-					throw new RuntimeException("Error when executing sql.");
-				} else if (result != Statement.SUCCESS_NO_INFO) {
-					System.out.println("Upgrade modifed: "+result+" rows.");
-				}
-			}
-			
-			statement.close();
-			
-			connection.close();
-		}
+		Class.forName("com.mysql.jdbc.Driver");
+		
+		Connection connection = DriverManager.getConnection(jdbcUrl, database.getUsername(), database.getPassword());
+		
+		doExecute(connection);
+		
+		connection.close();
 	}
 	
 	public void check() throws Exception {
@@ -52,10 +41,30 @@ abstract class AbstractDatabaseAction implements Action {
 	public void cleanup() throws Exception {
 	}
 	
-	protected abstract String getSqlScript() throws Exception;
+	protected void addJdbcConnectionParamaters(Map<String, String> parameters) {
+	}
 	
-	protected String getJdbcUrl() {
-		return database.getJdbcUrl();
+	protected abstract void doExecute(Connection connection) throws Exception;
+
+	private String createJdbcUrl() {
+		DatabaseNode db = new DatabaseNode(getHost(), getPort(), getDatabase(), null, null);
+		
+		Map<String, String> parameters = new HashMap<String, String>();
+		addJdbcConnectionParamaters(parameters);
+		
+		return db.getJdbcUrl(parameters);
+	}
+	
+	protected String getHost() {
+		return database.getHost();
+	}
+	
+	protected int getPort() {
+		return database.getPort();
+	}
+	
+	protected String getDatabase() {
+		return database.getDatabase();
 	}
 
 }
