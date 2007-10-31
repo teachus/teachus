@@ -34,11 +34,12 @@ public class SshRemoteCommandAction extends AbstractSshAction {
 		log.info("Executing command: " + command);
 
 		Channel channel = session.openChannel("exec");
-		((ChannelExec) channel).setCommand(command);
+		ChannelExec channelExec = (ChannelExec) channel;
+		channelExec.setCommand(command);
 
 		channel.setInputStream(null);
 
-		((ChannelExec) channel).setErrStream(System.err);
+		channelExec.setErrStream(System.err);
 
 		InputStream in = channel.getInputStream();
 
@@ -52,7 +53,7 @@ public class SshRemoteCommandAction extends AbstractSshAction {
 					break;
 				}
 				
-				log.debug(new String(tmp, 0, i));
+				log.info(new String(tmp, 0, i));
 			}
 			if (channel.isClosed()) {
 				if (channel.getExitStatus() != 0) {

@@ -26,6 +26,7 @@ public abstract class ReleaseBasedUpgradeTeachUsAction extends
 		super.init();
 		
 		upgradeDatabase = new UpgradeDatabaseAction(tomcat.getHost(), deployment.getDatabase(), projectDirectory, version);
+		upgradeDatabase.init();
 	}
 	
 	@Override

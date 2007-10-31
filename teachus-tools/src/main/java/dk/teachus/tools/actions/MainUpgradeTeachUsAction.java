@@ -9,6 +9,8 @@ import dk.teachus.tools.config.TomcatNode;
 
 public class MainUpgradeTeachUsAction extends ReleaseBasedUpgradeTeachUsAction {
 
+	private BackupDatabaseAction backupDatabase;
+
 	public MainUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, MainDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
 		super(maven, subversion, workingDirectory, deployment, tomcat, version);
 	}
@@ -19,11 +21,31 @@ public class MainUpgradeTeachUsAction extends ReleaseBasedUpgradeTeachUsAction {
 	}
 	
 	@Override
-	protected void beforeDatabase() throws Exception {
+	public void init() throws Exception {
+		super.init();
+
 		File backupFile = new File(workingDirectory, "backup.sql");
+		backupDatabase = new BackupDatabaseAction(tomcat.getHost(), deployment.getDatabase(), backupFile);
+		backupDatabase.init();
+	}
+	
+	@Override
+	protected void doCheck() throws Exception {
+		super.doCheck();
 		
-		BackupDatabaseAction backupDatabase = new BackupDatabaseAction(tomcat.getHost(), deployment.getDatabase(), backupFile);
+		backupDatabase.check();
+	}
+	
+	@Override
+	protected void beforeDatabase() throws Exception {		
 		backupDatabase.execute();
+	}
+	
+	@Override
+	public void cleanup() throws Exception {
+		super.cleanup();
+		
+		backupDatabase.cleanup();
 	}
 
 }
