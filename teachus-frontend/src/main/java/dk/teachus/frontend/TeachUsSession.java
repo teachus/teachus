@@ -27,7 +27,6 @@ import javax.servlet.http.Cookie;
 import org.apache.wicket.Request;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
-import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
@@ -47,8 +46,8 @@ public class TeachUsSession extends WebSession {
 	protected Person person;
 	private Properties resourceBundle;
 	
-	public TeachUsSession(WebApplication application, Request request) {
-		super(application, request);
+	public TeachUsSession(Request request) {
+		super(request);
 
 		changeLocale(getLocale());
 	}

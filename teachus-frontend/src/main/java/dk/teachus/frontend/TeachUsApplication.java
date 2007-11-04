@@ -243,7 +243,7 @@ public class TeachUsApplication extends WebApplication {
 	
 	@Override
 	public Session newSession(Request request, Response response) {
-		return new TeachUsSession(this, request);
+		return new TeachUsSession(request);
 	}
 	
 	public static TeachUsApplication get() {

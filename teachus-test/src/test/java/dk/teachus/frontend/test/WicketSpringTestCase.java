@@ -42,7 +42,7 @@ public abstract class WicketSpringTestCase extends SpringTestCase {
 		
 		@Override
 		public Session newSession(Request request, Response response) {
-			return new TeachUsSession(this, request) {
+			return new TeachUsSession(request) {
 				private static final long serialVersionUID = 1L;
 				
 				{

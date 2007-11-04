@@ -195,7 +195,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		private Long personId;
 		
 		public TesterTeachUsSession(WebApplication application, Request request) {
-			super(application, request);
+			super(request);
 		}
 		
 		@Override

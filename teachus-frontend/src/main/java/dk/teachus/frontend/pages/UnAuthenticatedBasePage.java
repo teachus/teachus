@@ -119,7 +119,14 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		signInForm.add(username);
 		signInForm.add(new FormComponentLabel("usernameLabel", username).add(new Label("usernameLabel", TeachUsSession.get().getString("General.username")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		final PasswordTextField password = new PasswordTextField("password"); //$NON-NLS-1$
+		final PasswordTextField password = new PasswordTextField("password") {
+			private static final long serialVersionUID = 1L; //$NON-NLS-1$
+
+			@Override
+			protected boolean supportsPersistence() {
+				return true;
+			}
+		};
 		password.setResetPassword(false);
 		signInForm.add(password);
 		signInForm.add(new FormComponentLabel("passwordLabel", password).add(new Label("passwordLabel", TeachUsSession.get().getString("General.password")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
