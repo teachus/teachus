@@ -16,8 +16,27 @@
  */
 package dk.teachus.ws.service;
 
-public interface FinanceService {
 
+/**
+ * Financial service for querying the balance for a given teacher.
+ */
+public interface FinanceService {
+	
+	/**
+	 * Get the total amount of paid lessons in a given month. This is calculated as lessons which has been held in that
+	 * month and which has been paid. This also means that the amount returned might change if a lesson is paid at a
+	 * later time.
+	 * 
+	 * @param teacherUserId
+	 *            The teachers username
+	 * @param password
+	 *            The teachers password
+	 * @param year
+	 *            The year for which to get the total amount of paid lessons
+	 * @param month
+	 *            The month for which to get the total amount of paid lessons
+	 * @return The total amount of paid lessons in the given month
+	 */
 	double getIncomeForMonth(String teacherUserId, String password, int year, int month);
 	
 }
