@@ -5,6 +5,8 @@ import java.sql.Statement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
+import org.joda.time.format.ISODateTimeFormat;
 
 import dk.teachus.tools.config.DatabaseNode;
 import dk.teachus.tools.config.SshNode;
@@ -24,6 +26,8 @@ public class SetDatabaseVersionAction extends AbstractTunnelledDatabaseAction {
 		Statement statement = connection.createStatement();
 		
 		String version = versionProvider.getVersion();
+		version = version.replace("SNAPSHOT", ISODateTimeFormat.dateTime().print(new DateTime()));
+		
 		log.info("Setting database version to: "+version);
 		statement.executeUpdate("REPLACE INTO application_configuration (name, version, value) VALUES ('VERSION', 0, '"+version+"')");
 		

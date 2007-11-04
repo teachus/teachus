@@ -2,9 +2,6 @@ package dk.teachus.tools.actions;
 
 import java.io.File;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
-
 import dk.teachus.tools.config.DemoDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SubversionTrunkNode;
@@ -94,7 +91,6 @@ public class TestUpgradeTeachUsAction extends UpgradeTeachUsAction {
 		getVersion.execute();
 		
 		version = getVersion.getVersion();
-		version = version.replace("SNAPSHOT", ISODateTimeFormat.dateTime().print(new DateTime()));
 	}
 	
 	@Override
