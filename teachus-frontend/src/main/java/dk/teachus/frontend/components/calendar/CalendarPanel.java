@@ -174,7 +174,7 @@ public abstract class CalendarPanel extends Panel {
 			
 					
 			// Navigation
-			int backNumberOfWeeks = periods.numberOfWeeksBack(firstWeekDate.minusDays(1), 7);
+			int backNumberOfWeeks = periods.numberOfWeeksBack(firstWeekDate, 7);
 			Link backLink = createBackLink("backLink", firstWeekDate.minusWeeks(backNumberOfWeeks), backNumberOfWeeks); //$NON-NLS-1$
 			backLink.add(new Image("backIcon", Resources.LEFT)); //$NON-NLS-1$ 
 			calendar.add(backLink);
