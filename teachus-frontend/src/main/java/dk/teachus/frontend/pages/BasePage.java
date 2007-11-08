@@ -20,9 +20,12 @@ import java.util.List;
 
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.html.IHeaderContributor;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -61,6 +64,31 @@ public abstract class BasePage extends WebPage {
 		createMenu();		
 		
 		add(new Label("copyright", "2006-"+new DateMidnight().getYear()+" TeachUs Booking Systems"));
+		
+		final WebMarkupContainer ajaxLoader = new WebMarkupContainer("ajaxLoader");
+		ajaxLoader.setOutputMarkupId(true);
+		add(ajaxLoader);
+		
+		ajaxLoader.add(new Image("loadingImage", Resources.DOT_INDICATOR));
+		
+		add(new HeaderContributor(new IHeaderContributor() {
+			private static final long serialVersionUID = 1L;
+
+			public void renderHead(IHeaderResponse response) {
+				StringBuilder b = new StringBuilder();
+				
+				b.append("wicketGlobalPreCallHandler = function() {").append("\n");
+				b.append("\t").append("wicketShow('"+ajaxLoader.getMarkupId()+"');").append("\n");
+				b.append("}").append("\n");
+				
+				b.append("wicketGlobalPostCallHandler = function() {").append("\n");
+				b.append("\t").append("wicketHide('"+ajaxLoader.getMarkupId()+"');").append("\n");
+				b.append("}").append("\n");
+				
+				response.renderJavascript(b, "ajaxLoadingIndicator");
+			}
+			
+		}));
 	}
 	
 	private void setTheme(Theme theme) {

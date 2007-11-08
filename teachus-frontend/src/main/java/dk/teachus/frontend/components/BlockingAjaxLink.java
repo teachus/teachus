@@ -16,45 +16,14 @@
  */
 package dk.teachus.frontend.components;
 
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
-import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 
-import dk.teachus.frontend.components.jquery.JQueryBehavior;
-
-public abstract class BlockingAjaxLink extends AjaxLink {
-
-	private static final String TAB = "\t";
-	private static final String NEWLINE = "\n";
+public abstract class BlockingAjaxLink extends AjaxFallbackLink {
 
 	public BlockingAjaxLink(String id) {
-		super(id);
-		
-		add(new JQueryBehavior() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onRenderHead(IHeaderResponse response) {
-				StringBuilder b = new StringBuilder();
-				
-				b.append("function blockOnClick(elm) {").append(NEWLINE);
-				b.append(TAB).append("e = $(elm);").append(NEWLINE);
-				b.append(TAB).append("id = e.attr('id');").append(NEWLINE);
-				b.append(TAB).append("img = $('<img>');").append(NEWLINE);
-				b.append(TAB).append("img.attr('id', id);").append(NEWLINE);
-				b.append(TAB).append("img.attr('class', 'indicator');").append(NEWLINE);
-				b.append(TAB).append("img.attr('src', '");
-				b.append(getRequestCycle().urlFor(AbstractDefaultAjaxBehavior.INDICATOR));
-				b.append("');").append(NEWLINE);
-				b.append(TAB).append("e.after(img).remove();").append(NEWLINE);
-				b.append("}");
-				
-				response.renderJavascript(b, "blockOnClick");
-			}
-		});
-		
+		super(id);		
 	}
 
 	@Override
@@ -66,8 +35,10 @@ public abstract class BlockingAjaxLink extends AjaxLink {
 			public CharSequence decorateScript(CharSequence script) {
 				StringBuilder b = new StringBuilder();
 				
-				b.append("blockOnClick(this);");
+				b.append("if (this.blockLink == null) {");
+				b.append("this.blockLink = true;");
 				b.append(script);
+				b.append("} else { return false; }");
 				
 				return b;
 			}

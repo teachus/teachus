@@ -209,7 +209,9 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 					this.add(new SimpleAttributeModifier("class", "")); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				
-				target.addComponent(this);
+				if (target != null) {
+					target.addComponent(this);
+				}
 			}					
 		};
 		if (booking != null) {

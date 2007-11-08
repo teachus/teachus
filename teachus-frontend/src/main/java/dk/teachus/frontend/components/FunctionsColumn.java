@@ -27,8 +27,6 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.util.string.JavascriptUtils;
-import org.apache.wicket.util.string.Strings;
 
 public class FunctionsColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;
@@ -101,14 +99,7 @@ public class FunctionsColumn extends AbstractColumn {
 			};
 			
 			String clickConfirmText = function.getClickConfirmText(object);
-			if (Strings.isEmpty(clickConfirmText) == false) {
-				StringBuilder confirmJavascript = new StringBuilder();
-				confirmJavascript.append("return confirm('");
-				confirmJavascript.append(JavascriptUtils.escapeQuotes(clickConfirmText));
-				confirmJavascript.append("');");
-				SimpleAttributeModifier onClickModifier = new SimpleAttributeModifier("onclick", confirmJavascript.toString());
-				link.add(onClickModifier);
-			}
+			link.add(new ConfirmClickBehavior(clickConfirmText));
 			
 			link.add(new Label("label", function.getLabel(object)).setRenderBodyOnly(true));
 			

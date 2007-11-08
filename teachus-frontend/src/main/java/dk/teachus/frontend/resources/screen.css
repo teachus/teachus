@@ -12,6 +12,10 @@ ul p {
 	margin: 0;
 }
 
+#contentalt {
+	padding-top: 30px;
+}
+
 #content h3, #contentalt h3, #content h4, #contentalt h4 {
 background-color:inherit;
 color:#606060;
@@ -194,6 +198,7 @@ table.border th {
 	border: 1px solid gray;
 	width: 100%;
 	background: white url(/images/toolbar.png) center center repeat-x;
+	margin-bottom: 10px;
 }
 
 .toolbar td {
@@ -228,7 +233,6 @@ table.border th {
 	border: 1px solid silver;
 	border-bottom: 0;
 	width: 100%;
-	margin-top: 10px;
 }
 
 .list tbody tr:hover td {
@@ -293,4 +297,18 @@ table.border th {
 
 .innerlist tbody tr.even td {
 	background-color: #F0F0F0;
+}
+
+
+.ajaxLoader {
+	position: absolute;
+	margin-left: 21px;
+	margin-top: 1px;
+	padding: 2px;
+	padding-right: 6px;
+	border-bottom: 1px solid #909090;
+	border-right: 1px solid #909090;
+	background-color: #FF6633;
+	font-weight: bold;
+	color: white;
 }

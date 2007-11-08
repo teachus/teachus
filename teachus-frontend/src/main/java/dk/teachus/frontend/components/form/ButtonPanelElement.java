@@ -25,11 +25,13 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.ConfirmClickBehavior;
 
 public abstract class ButtonPanelElement extends FormElement {
 	private static final long serialVersionUID = 1L;
@@ -45,22 +47,23 @@ public abstract class ButtonPanelElement extends FormElement {
 	private Form associatedForm;
 
 	public ButtonPanelElement() {
-		this(TeachUsSession.get().getString("General.save"));
+		this(TeachUsSession.get().getString("General.save")); //$NON-NLS-1$
 	}
 	
 	public ButtonPanelElement(String submitLabel) {
-		Button cancelButton = new Button("cancelButton") {
+		Link cancelButton = new Link("cancelButton") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onSubmit() {
+			public void onClick() {
 				onCancel();
 			}
 		};
-		cancelButton.add(new SimpleAttributeModifier("value", TeachUsSession.get().getString("PeriodPanel.regretInput")));
+		cancelButton.add(new ConfirmClickBehavior(TeachUsSession.get().getString("ButtonPanelElement.confirmCancel"))); //$NON-NLS-1$
+		cancelButton.add(new Label("label", TeachUsSession.get().getString("PeriodPanel.regretInput")).setRenderBodyOnly(true)); //$NON-NLS-1$ //$NON-NLS-2$
 		add(cancelButton);
 		
-		AjaxButton saveButton = new AjaxButton("saveButton") {
+		AjaxButton saveButton = new AjaxButton("saveButton") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -98,10 +101,10 @@ public abstract class ButtonPanelElement extends FormElement {
 				});
 			}
 		};
-		saveButton.add(new SimpleAttributeModifier("value", submitLabel));
+		saveButton.add(new SimpleAttributeModifier("value", submitLabel)); //$NON-NLS-1$
 		add(saveButton);
 		
-		RepeatingView additionalButtons = new RepeatingView("additionalButtons");
+		RepeatingView additionalButtons = new RepeatingView("additionalButtons"); //$NON-NLS-1$
 		add(additionalButtons);
 		
 		List<IButton> additionalButtonsList = getAdditionalButtons();
@@ -115,7 +118,7 @@ public abstract class ButtonPanelElement extends FormElement {
 						button.onClick(target);
 					}					
 				};
-				ajaxButton.add(new SimpleAttributeModifier("value", button.getValue()));
+				ajaxButton.add(new SimpleAttributeModifier("value", button.getValue())); //$NON-NLS-1$
 				additionalButtons.add(ajaxButton);
 			}
 		}

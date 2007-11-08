@@ -38,6 +38,7 @@ public abstract class Resources {
 	public static final ResourceReference TOOLBAR = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back.png"); //$NON-NLS-1$;
 	public static final ResourceReference LIST_HEADER = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back.png"); //$NON-NLS-1$;
 	public static final ResourceReference EMPTY = new ResourceReference(TeachUsApplication.class, "resources/img/empty.gif"); //$NON-NLS-1$;
+	public static final ResourceReference DOT_INDICATOR = new ResourceReference(TeachUsApplication.class, "resources/img/dot_indicator.gif");
 	
 	public static final ResourceReference TOOLBAR_RED = new ResourceReference(TeachUsApplication.class, "resources/img/toolbar_back_red.png"); //$NON-NLS-1$;
 	public static final ResourceReference LIST_HEADER_RED = new ResourceReference(TeachUsApplication.class, "resources/img/list_header_back_red.png"); //$NON-NLS-1$;

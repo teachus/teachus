@@ -20,7 +20,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
@@ -37,7 +37,7 @@ public class PaidPanel extends Panel {
 	public PaidPanel(String id, final IModel model) {
 		super(id, model);
 		
-		AjaxLink link = new BlockingAjaxLink("link") { //$NON-NLS-1$
+		AjaxFallbackLink link = new BlockingAjaxLink("link") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -47,7 +47,9 @@ public class PaidPanel extends Panel {
 				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 				bookingDAO.changePaidStatus(pupilBooking);
 				
-				target.addComponent(this);
+				if (target != null) {
+					target.addComponent(this);
+				}
 			}
 		};
 		link.setOutputMarkupId(true);

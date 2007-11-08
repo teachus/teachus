@@ -18,14 +18,10 @@ package dk.teachus.frontend;
 
 import javax.servlet.http.Cookie;
 
-import org.apache.wicket.Application;
 import org.apache.wicket.RequestCycle;
 import org.apache.wicket.authorization.strategies.page.SimplePageAuthorizationStrategy;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebRequestCycle;
-import org.apache.wicket.settings.ISecuritySettings;
-import org.apache.wicket.util.crypt.ICrypt;
-import org.apache.wicket.util.crypt.ICryptFactory;
 import org.apache.wicket.util.string.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,11 +57,6 @@ public class TeachUsAuthentication extends SimplePageAuthorizationStrategy {
 					}
 					if (UnAuthenticatedBasePage.PASSWORD_PATH.equals(cookie.getName())) {
 						password = cookie.getValue();
-						
-						ISecuritySettings securitySettings = Application.get().getSecuritySettings();
-						ICryptFactory cryptFactory = securitySettings.getCryptFactory();
-						ICrypt crypt = cryptFactory.newCrypt();
-						password = crypt.decryptUrlSafe(password);
 					}
 				}
 			}
