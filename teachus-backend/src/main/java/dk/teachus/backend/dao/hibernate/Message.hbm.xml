@@ -32,7 +32,8 @@
         </set>       	
         
         <!-- SUBCLASSES -->
-        <subclass name="MailMessage" discriminator-value="MAIL"> 
+        <subclass name="MailMessage" discriminator-value="MAIL">         	
+			<property name="type" column="type" type="dk.teachus.backend.dao.hibernate.MailMessageUserType" />     
         </subclass>
     </class>
 

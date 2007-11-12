@@ -17,19 +17,14 @@
 package dk.teachus.backend.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.mail.internet.InternetAddress;
 
 import dk.teachus.backend.MailException;
-import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.MailMessage.Type;
 
 public interface MailBean extends Serializable {
 	
-	void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration);
-	
-	void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body) throws MailException;
+	void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body, Type mailType) throws MailException;
 	
 }

@@ -75,7 +75,7 @@ public class MailMessageSendingBean {
 							log.debug("Sending mail to: "+recipient);
 						}
 						
-						mailBean.sendMail(sender, recipient, subject, body);
+						mailBean.sendMail(sender, recipient, subject, body, mailMessage.getType());
 					}
 					
 					message.setSent(true);

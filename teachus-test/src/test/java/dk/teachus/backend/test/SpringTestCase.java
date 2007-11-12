@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.hibernate.SessionFactory;
 import org.joda.time.DateTime;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
@@ -44,6 +46,13 @@ import dk.teachus.backend.domain.impl.TeacherImpl;
 
 public abstract class SpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
 
+	protected static final String TABLE_APPLICATION_CONFIGURATION = "application_configuration";
+	protected static final String TABLE_BOOKING = "booking";
+	protected static final String TABLE_PERIOD = "period";
+	protected static final String TABLE_PERSON = "person";
+	protected static final String TABLE_TEACHER_ATTRIBUTE = "teacher_attribute";
+	protected static final String TABLE_MESSAGE = "message";
+	protected static final String TABLE_MESSAGE_RECIPIENT = "message_recipient";
 	private static boolean useMysql = false;
 	
 	static {
@@ -130,6 +139,9 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	protected void onSetUpBeforeTransaction() throws Exception {
 		Connection connection = getSessionFactory().openSession().connection();
 		new StaticDataImport(connection);
+		
+		DataSource dataSource = (DataSource) applicationContext.getBean("dataSource");
+		setDataSource(dataSource);
 	}
 
 	public BookingDAO getBookingDAO() {

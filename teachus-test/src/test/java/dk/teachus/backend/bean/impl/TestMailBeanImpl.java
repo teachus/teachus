@@ -17,7 +17,6 @@
 package dk.teachus.backend.bean.impl;
 
 import java.io.InputStream;
-import java.util.List;
 
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -29,30 +28,16 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import dk.teachus.backend.bean.MailBean;
-import dk.teachus.backend.bean.VelocityBean;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.backend.test.SpringTestCase;
 
 public class TestMailBeanImpl extends SpringTestCase {
 	private static final long serialVersionUID = 1L;
-	
-	public void testSendNewBookingsMail() throws Exception {
-		MailBean mailBean = createMailBean();
 		
-		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
-		endTransaction();
-		
-		List<PupilBooking> pupilBookings = getBookingDAO().getUnpaidBookings(teacher);
-		endTransaction();
-		
-		mailBean.sendNewBookingsMail(teacher, pupilBookings, createDummyConfiguration());
-	}
-	
 	public void testSendMail() throws Exception {
 		MailBean mailBean = createMailBean();
 		
-		mailBean.sendMail(new InternetAddress("test@teachus.dk"), new InternetAddress("test2@teachus.dk"), "A subject", "A body");
+		mailBean.sendMail(new InternetAddress("test@teachus.dk"), new InternetAddress("test2@teachus.dk"), "A subject", "A body", MailMessage.Type.PLAIN);
 	}
 
 	private MailBean createMailBean() throws NoSuchFieldException, IllegalAccessException {
@@ -94,8 +79,7 @@ public class TestMailBeanImpl extends SpringTestCase {
 			}			
 		};
 
-		VelocityBean velocityBean = (VelocityBean) applicationContext.getBean("velocityBean");
-		return new MailBeanImpl(mailSender, velocityBean);
+		return new MailBeanImpl(mailSender);
 	}
 	
 }

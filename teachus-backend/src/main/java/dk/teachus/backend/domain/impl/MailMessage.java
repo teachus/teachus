@@ -18,5 +18,20 @@ package dk.teachus.backend.domain.impl;
 
 public class MailMessage extends AbstractMessage {
 	private static final long serialVersionUID = 1L;
+
+	public static enum Type {
+		PLAIN,
+		HTML
+	}
+	
+	private Type type;
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
 	
 }

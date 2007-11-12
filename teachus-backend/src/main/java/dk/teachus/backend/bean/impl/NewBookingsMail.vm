@@ -1,4 +1,3 @@
-${subject}
 <html>
 	<body>
 		<p>
@@ -17,10 +16,5 @@ ${subject}
 			</tr>
 #end
 		</table>
-		
-		<p>
-			${regard}<br />
-			${from}
-		</p>
 	</body>
 </html>

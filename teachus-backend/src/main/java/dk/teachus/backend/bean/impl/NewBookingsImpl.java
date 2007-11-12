@@ -16,31 +16,41 @@
  */
 package dk.teachus.backend.bean.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
-import dk.teachus.backend.bean.MailBean;
+import org.apache.velocity.exception.VelocityException;
+
 import dk.teachus.backend.bean.NewBookings;
-import dk.teachus.backend.dao.ApplicationDAO;
+import dk.teachus.backend.bean.VelocityBean;
+import dk.teachus.backend.bean.impl.MailBeanImpl.FormattedPupilBooking;
 import dk.teachus.backend.dao.BookingDAO;
+import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.dao.PersonDAO;
-import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.MailMessage;
+import dk.teachus.backend.domain.impl.MailMessage.Type;
+import dk.teachus.utils.ClassUtils;
 
 public class NewBookingsImpl implements NewBookings {
 	private static final long serialVersionUID = 1L;
 	
 	private BookingDAO bookingDAO;
 	private PersonDAO personDAO;
-	private MailBean mailBean;
-	private ApplicationConfiguration configuration;
+	private final VelocityBean velocityBean;
+	private final MessageDAO messageDAO;
 
-	public NewBookingsImpl(BookingDAO bookingDAO, PersonDAO personDAO, MailBean mailBean, ApplicationDAO applicationDAO) {
+	public NewBookingsImpl(BookingDAO bookingDAO, PersonDAO personDAO, VelocityBean velocityBean, MessageDAO messageDAO) {
 		this.bookingDAO = bookingDAO;
 		this.personDAO = personDAO;
-		this.mailBean = mailBean;
-		
-		configuration = applicationDAO.loadConfiguration();
+		this.velocityBean = velocityBean;
+		this.messageDAO = messageDAO;
 	}
 
 	public void sendNewBookingsMail() {
@@ -49,9 +59,52 @@ public class NewBookingsImpl implements NewBookings {
 		for (Teacher teacher : teachers) {
 			List<PupilBooking> pupilBookings = bookingDAO.getUnsentBookings(teacher);
 			
-			mailBean.sendNewBookingsMail(teacher, pupilBookings, configuration);
+			if (pupilBookings.isEmpty() == false) {
+				// Create message to the teacher
+				MailMessage message = new MailMessage();
+		
+				// Sender and recipient
+				message.setSender(teacher);
+				message.addRecipient(teacher);
+				
+				// The locale
+				Locale locale = teacher.getLocale();
+				
+				// Build up bookingslist and format date
+				List<FormattedPupilBooking> pupilBookingList = new ArrayList<FormattedPupilBooking>();
+				for (PupilBooking pupilBooking : pupilBookings) {
+					FormattedPupilBooking formattedPupilBooking = new FormattedPupilBooking();
+					formattedPupilBooking.setPupilBooking(pupilBooking);
+					SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);
+					formattedPupilBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate()));
+					pupilBookingList.add(formattedPupilBooking);
+				}
+				
+				// Load properties
+				ResourceBundle bundle = ResourceBundle.getBundle(ClassUtils.getAsResourceBundlePath(MailBeanImpl.class, "NewBookingsMail"), locale);	
 			
-			bookingDAO.newBookingsMailSent(pupilBookings);
+				// Subject
+				message.setSubject(bundle.getString("subject"));
+				
+				// Parse the template
+				Map<String, Object> model = new HashMap<String, Object>();
+				model.put("followingPupilsHasBookings", bundle.getString("followingPupilsHasBookings"));
+				model.put("pupilHeader", bundle.getString("pupilHeader"));
+				model.put("dateHeader", bundle.getString("dateHeader"));
+				model.put("pupilBookingList", pupilBookingList);
+				String template = "";
+				try {
+					template = velocityBean.mergeTemplate(ClassUtils.getAsResourcePath(NewBookingsImpl.class, "NewBookingsMail.vm"), model);
+				} catch (VelocityException e) {
+					throw new RuntimeException(e);
+				}
+								
+				// Text
+				message.setBody(template);
+				message.setType(Type.HTML);
+				
+				messageDAO.save(message);
+			}
 		}
 	}
 

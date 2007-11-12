@@ -16,32 +16,19 @@
  */
 package dk.teachus.backend.bean.impl;
 
-import java.util.List;
-
 import javax.mail.internet.InternetAddress;
-
-import org.springframework.mail.javamail.JavaMailSender;
 
 import dk.teachus.backend.MailException;
 import dk.teachus.backend.bean.MailBean;
-import dk.teachus.backend.bean.VelocityBean;
-import dk.teachus.backend.domain.ApplicationConfiguration;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.MailMessage.Type;
 
 /**
  * Mail implementation which doesn't send mails.
  */
 public class DummyMailBean implements MailBean {
 	private static final long serialVersionUID = 1L;
-	
-	public DummyMailBean(JavaMailSender mailSender, VelocityBean velocityBean) {
-	}
-
-	public void sendNewBookingsMail(Teacher teacher, List<PupilBooking> pupilBookings, ApplicationConfiguration configuration) {
-	}
-	
-	public void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body) throws MailException {
+		
+	public void sendMail(InternetAddress sender, InternetAddress recipient, String subject, String body, Type mailType) throws MailException {
 	}
 
 }

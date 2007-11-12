@@ -82,9 +82,9 @@
 	<!--         BEANS         -->
 	<!-- ===================== -->
 	
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="${mail.smtp}"/>
-	</bean>   
+<!--	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">-->
+<!--		<property name="host" value="${mail.smtp}"/>-->
+<!--	</bean>   -->
 	
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
@@ -99,9 +99,8 @@
 		<constructor-arg ref="velocityEngine" />
 	</bean>   
 	
-	<bean id="mailBean" class="dk.teachus.backend.bean.impl.MailBeanImpl">
-		<constructor-arg ref="mailSender" />
-		<constructor-arg ref="velocityBean" />	
+	<bean id="mailBean" class="dk.teachus.backend.bean.impl.DummyMailBean">
+<!--		<constructor-arg ref="mailSender" />-->
 	</bean>
 
 	<!-- ==================== -->
@@ -182,8 +181,8 @@
 	<bean id="newBookings" class="dk.teachus.backend.bean.impl.NewBookingsImpl">
 		<constructor-arg ref="bookingDao" />
 		<constructor-arg ref="personDao" />
-		<constructor-arg ref="mailBean" />
-		<constructor-arg ref="applicationDao" />
+		<constructor-arg ref="velocityBean" />	
+		<constructor-arg ref="messageDao" />
 	</bean>
 	
 	<bean id="newBookingsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
