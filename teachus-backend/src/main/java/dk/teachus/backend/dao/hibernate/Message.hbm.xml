@@ -33,7 +33,7 @@
         
         <!-- SUBCLASSES -->
         <subclass name="MailMessage" discriminator-value="MAIL">         	
-			<property name="type" column="type" type="dk.teachus.backend.dao.hibernate.MailMessageUserType" />     
+			<property name="type" column="mail_type" type="dk.teachus.backend.dao.hibernate.MailMessageUserType" />     
         </subclass>
     </class>
 
