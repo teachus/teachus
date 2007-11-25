@@ -40,6 +40,8 @@ public class StaticDataExport {
 		ITableFilter filter = new DatabaseSequenceFilter(connection);
 		ReplacementDataSet dataset = new ReplacementDataSet(new FilteredDataSet(filter, connection.createDataSet()));
 		dataset.addReplacementSubstring("\n", "\\n");
+		dataset.addReplacementObject(true, "1");
+		dataset.addReplacementObject(false, "0");
 		
         // write DTD file
         FlatDtdDataSet.write(dataset, new FileOutputStream("src/test/resources/full.dtd"));

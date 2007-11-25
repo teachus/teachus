@@ -24,7 +24,7 @@ public class MailMessage extends AbstractMessage {
 		HTML
 	}
 	
-	private Type type;
+	private Type type = Type.PLAIN;
 
 	public Type getType() {
 		return type;

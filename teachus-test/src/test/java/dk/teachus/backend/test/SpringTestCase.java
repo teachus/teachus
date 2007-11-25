@@ -30,6 +30,7 @@ import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalT
 
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
+import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
@@ -162,6 +163,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	
 	public ApplicationDAO getApplicationDAO() {
 		return (ApplicationDAO) applicationContext.getBean("applicationDao");
+	}
+	
+	public MessageDAO getMessageDAO() {
+		return (MessageDAO) applicationContext.getBean("messageDao");
 	}
 
 	public SessionFactory getSessionFactory() {

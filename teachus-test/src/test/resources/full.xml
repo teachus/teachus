@@ -160,5 +160,28 @@
   <booking id="132" booking_type="PUPIL" version="0" active="1" period_id="1" date="2007-02-28 14:00:00.0" create_date="2007-02-23 00:54:24.0" teacher_id="2" pupil_id="3" notification_sent="1" paid="0"/>
   <booking id="133" booking_type="PUPIL" version="0" active="1" period_id="1" date="2007-03-05 14:00:00.0" create_date="2007-02-23 00:54:27.0" teacher_id="2" pupil_id="3" notification_sent="1" paid="0"/>
   <booking id="134" booking_type="PUPIL" version="0" active="1" period_id="1" date="2007-03-14 14:00:00.0" create_date="2007-02-23 00:54:29.0" teacher_id="2" pupil_id="3" notification_sent="1" paid="0"/>
+  <message id="1" message_type="MAIL" version="0" create_date="2007-11-15 09:07:15.0" subject="Undervisningen er aflyst på torsdag" body="Pga. vejret er undervisningen aflyst på torsdag. Vi ses i næste uge." sender="2" sent="1" sent_date="2007-11-15 09:08:00.0" mail_type="PLAIN"/>
+  <message_recipient message_id="1" person_id="3"/>
+  <message_recipient message_id="1" person_id="4"/>
+  <message_recipient message_id="1" person_id="5"/>
+  <message_recipient message_id="1" person_id="6"/>
+  <message_recipient message_id="1" person_id="7"/>
+  <message_recipient message_id="1" person_id="8"/>
+  <message_recipient message_id="1" person_id="9"/>
+  <message_recipient message_id="1" person_id="10"/>
+  <message_recipient message_id="1" person_id="11"/>
+  <message_recipient message_id="1" person_id="12"/>
+  <message_recipient message_id="1" person_id="13"/>
+  <message_recipient message_id="1" person_id="14"/>
+  <message_recipient message_id="1" person_id="15"/>
+  <message_recipient message_id="1" person_id="16"/>
+  <message_recipient message_id="1" person_id="17"/>
+  <message_recipient message_id="1" person_id="18"/>
+  <message_recipient message_id="1" person_id="19"/>
+  <message_recipient message_id="1" person_id="20"/>
+  <message_recipient message_id="1" person_id="21"/>
+  <message_recipient message_id="1" person_id="22"/>
+  <message_recipient message_id="1" person_id="23"/>
+  <message_recipient message_id="1" person_id="24"/>
   <teacher_attribute id="4" attribute="WELCOME_INTRODUCTION" version="0" teacher_id="2" value="Jeg har fået lavet et nyt system, så du nu selv kan booke sangtimer hos mig.\nDet gør det lettere for dig at se hvornår der er ledige tider.\n\nJeg håber du vil bruge det!\n\nDu kan stadig ringe eller sende mails hvis du hellere vil det. Hvis tiderne passer dig dårligt er du altid velkommen til at skrive og høre om der er mulighed for tidligere eller senere tider. Men jeg forsøger at få lagt timerne efter hinanden så jeg ikke har for mange mellem timer!"/>
 </dataset>
