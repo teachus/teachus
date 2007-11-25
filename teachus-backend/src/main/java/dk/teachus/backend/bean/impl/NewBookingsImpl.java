@@ -53,7 +53,7 @@ public class NewBookingsImpl implements NewBookings {
 		this.messageDAO = messageDAO;
 	}
 
-	public void sendNewBookingsMail() {
+	public synchronized void sendNewBookingsMail() {
 		List<Teacher> teachers = personDAO.getPersons(Teacher.class);
 		
 		for (Teacher teacher : teachers) {
@@ -105,6 +105,9 @@ public class NewBookingsImpl implements NewBookings {
 				
 				messageDAO.save(message);
 			}
+
+			// Send mails
+			bookingDAO.newBookingsMailSent(pupilBookings);
 		}
 	}
 

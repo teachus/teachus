@@ -16,9 +16,12 @@
  */
 package dk.teachus.backend.bean.impl;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.bean.NewBookings;
+import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.test.SpringTestCase;
 
 public class TestNewBookingsImpl extends SpringTestCase {
@@ -52,6 +55,20 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		assertEquals(secondMessageCount+1, thirdMessageCount);
 		assertEquals(secondMessageRecCount+1, thirdMessageRecCount);
 		
+	}
+	
+	public void testSetSentFlag() {
+		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		
+		List<PupilBooking> unsentBookingsBefore = getBookingDAO().getUnsentBookings(getTeacher());
+		
+		newBookings.sendNewBookingsMail();
+		
+		List<PupilBooking> unsentBookingsAfter = getBookingDAO().getUnsentBookings(getTeacher());
+		
+		assertEquals(unsentBookingsBefore.size()-1, unsentBookingsAfter.size());
 	}
 	
 }
