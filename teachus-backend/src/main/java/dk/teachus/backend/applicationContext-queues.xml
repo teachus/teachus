@@ -13,7 +13,7 @@
 	</bean>
 	
 	<bean id="teacherNotificationTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="teacherNotification" />
+		<property name="jobDetail" ref="teacherNotificationJob" />
 		<property name="startDelay" value="120000" />
 		<!-- run every 15 minute -->
 		<property name="repeatInterval" value="900000" />
