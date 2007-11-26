@@ -19,19 +19,32 @@ public class SshRemoteCommandAction extends AbstractSshAction {
 
 	private final long sleep;
 
+	private final boolean failOnNonOkExitStatus;
+
 	public SshRemoteCommandAction(SshNode host, String command) {
-		this(host, command, 0);
+		this(host, command, 0, true);
+	}
+	
+	public SshRemoteCommandAction(SshNode host, String command, boolean failOnNonOkExitStatus) {
+		this(host, command, 0, failOnNonOkExitStatus);
 	}
 
 	public SshRemoteCommandAction(SshNode host, String command, long sleep) {
+		this(host, command, sleep, true);
+	}
+	
+	public SshRemoteCommandAction(SshNode host, String command, long sleep, boolean failOnNonOkExitStatus) {
 		super(host);
 		this.command = command;
 		this.sleep = sleep;
+		this.failOnNonOkExitStatus = failOnNonOkExitStatus;
 	}
 
 	@Override
 	protected void doExecute(Session session) throws Exception {
-		log.info("Executing command: " + command);
+		if (log.isDebugEnabled()) {
+			log.debug("Executing command: " + command);
+		}
 
 		Channel channel = session.openChannel("exec");
 		ChannelExec channelExec = (ChannelExec) channel;
@@ -56,7 +69,7 @@ public class SshRemoteCommandAction extends AbstractSshAction {
 				log.info(new String(tmp, 0, i));
 			}
 			if (channel.isClosed()) {
-				if (channel.getExitStatus() != 0) {
+				if (channel.getExitStatus() != 0 && failOnNonOkExitStatus) {
 					throw new RuntimeException("The remote command exited with a not-ok status: "+channel.getExitStatus());
 				}
 				break;

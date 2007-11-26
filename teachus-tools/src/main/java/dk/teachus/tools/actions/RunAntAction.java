@@ -25,7 +25,9 @@ public class RunAntAction implements Action {
 				"-f", antFile.getAbsolutePath()
 		};
 		
-		log.info("Running ant with file: "+antFile);
+		if (log.isDebugEnabled()) {
+			log.debug("Running ant with file: "+antFile);
+		}
 		
 		ProcessBuilder pb = new ProcessBuilder(command);
 		pb.directory(antFile.getParentFile().getAbsoluteFile());
@@ -36,7 +38,9 @@ public class RunAntAction implements Action {
 		
 		String line = null;
 		while ((line = inputReader.readLine()) != null) {
-			log.debug(line);
+			if (log.isDebugEnabled()) {
+				log.debug(line);
+			}
 		}
 		
 		if (antProcess.waitFor() != 0) {

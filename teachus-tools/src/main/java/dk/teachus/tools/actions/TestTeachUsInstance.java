@@ -2,12 +2,12 @@ package dk.teachus.tools.actions;
 
 import java.io.File;
 
-import dk.teachus.tools.config.DemoDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
+import dk.teachus.tools.config.SshNode;
 import dk.teachus.tools.config.SubversionTrunkNode;
-import dk.teachus.tools.config.TomcatNode;
+import dk.teachus.tools.config.TestDeploymentNode;
 
-public class TestUpgradeTeachUsAction extends UpgradeTeachUsAction {
+public class TestTeachUsInstance extends AbstractTeachUsInstance {
 
 	private ConfigureMailBeanAction configureMailBean;
 	private LoadTestDataAction loadTestData;
@@ -17,48 +17,49 @@ public class TestUpgradeTeachUsAction extends UpgradeTeachUsAction {
 	private GetVersionAction getVersion;
 	private SetDatabaseVersionAction setDatabaseVersion;
 
-	public TestUpgradeTeachUsAction(MavenNode maven, SubversionTrunkNode subversion, File workingDirectory, DemoDeploymentNode deployment, TomcatNode tomcat) throws Exception {
-		super(maven, workingDirectory, deployment, tomcat, null);
+	public TestTeachUsInstance(MavenNode maven, File workingDirectory,
+			TestDeploymentNode deployment, SshNode databaseHost,
+			SubversionTrunkNode subversion) throws Exception {
+		super(maven, workingDirectory, deployment, databaseHost, null);
 		this.subversion = subversion;
 	}
 
 	@Override
-	protected void doDatabase() throws Exception {
-		dropAllTables.execute();
-		
-		loadSchema.execute();
-	}
-	
-	@Override
 	protected AbstractSubversionCheckoutAction getCheckoutAction() {
 		return new SubversionCheckoutTrunkAction(projectDirectory, subversion);
 	}
+
+	public String getInstanceName() {
+		return "test";
+	}	
 	
 	@Override
 	public void init() throws Exception {
 		super.init();
 
-		dropAllTables = new DropAllTablesAction(tomcat.getHost(), deployment.getDatabase());
+		dropAllTables = new DropAllTablesAction(databaseHost, deployment.getDatabase());
 		dropAllTables.init();
-		loadSchema = new LoadSchemaAction(tomcat.getHost(), deployment.getDatabase(), projectDirectory);
+		loadSchema = new LoadSchemaAction(databaseHost, deployment.getDatabase(), projectDirectory);
 		loadSchema.init();
 		configureMailBean = new ConfigureMailBeanAction(projectDirectory);
 		configureMailBean.init();
 		getVersion = new GetVersionAction(projectDirectory);
 		getVersion.init();
-		loadTestData = new LoadTestDataAction(tomcat.getHost(), projectDirectory, deployment.getDatabase(), maven);
+		loadTestData = new LoadTestDataAction(databaseHost, projectDirectory, deployment.getDatabase(), maven);
 		loadTestData.init();
 		VersionProvider versionProvider = new VersionProvider() {
 			public String getVersion() {
 				return version;
 			}
 		};		
-		setDatabaseVersion = new SetDatabaseVersionAction(tomcat.getHost(), deployment.getDatabase(), versionProvider);
+		setDatabaseVersion = new SetDatabaseVersionAction(databaseHost, deployment.getDatabase(), versionProvider);
 		setDatabaseVersion.init();
 	}
 	
 	@Override
-	protected void doCheck() throws Exception {
+	public void check() throws Exception {
+		super.check();
+		
 		dropAllTables.check();
 		loadSchema.check();
 		configureMailBean.check();
@@ -80,11 +81,6 @@ public class TestUpgradeTeachUsAction extends UpgradeTeachUsAction {
 	}
 	
 	@Override
-	protected String getName() {
-		return "test";
-	}
-	
-	@Override
 	protected void beforePackage() throws Exception {
 		configureMailBean.execute();
 		
@@ -92,12 +88,20 @@ public class TestUpgradeTeachUsAction extends UpgradeTeachUsAction {
 		
 		version = getVersion.getVersion();
 	}
-	
-	@Override
-	protected void afterDeployment() throws Exception {
+
+	public void onAfterUpgradeDatabase() throws Exception {
 		loadTestData.execute();
 		
 		setDatabaseVersion.execute();
+	}
+
+	public void upgradeDatabase() throws Exception {
+		dropAllTables.execute();
+		
+		loadSchema.execute();
+	}
+
+	public void onBeforeUpgradeDatabase() throws Exception {
 	}
 
 }

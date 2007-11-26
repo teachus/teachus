@@ -23,7 +23,9 @@ public class SftpDeleteDirectoryAction extends AbstractSftpAction {
 
 	@Override
 	protected void executeSftp(ChannelSftp client) throws Exception {
-		log.info("Deleting remote directory: "+host.getHost()+":"+remoteDirectory);
+		if (log.isDebugEnabled()) {
+			log.debug("Deleting remote directory: "+host.getHost()+":"+remoteDirectory);
+		}
 		
 		// Check that the remote directory exists at all
 		try {

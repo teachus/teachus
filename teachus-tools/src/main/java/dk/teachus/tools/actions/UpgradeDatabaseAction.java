@@ -2,6 +2,7 @@ package dk.teachus.tools.actions;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Map;
 
@@ -31,10 +32,25 @@ public class UpgradeDatabaseAction extends AbstractTunnelledDatabaseAction {
 	
 	@Override
 	protected void doExecute(Connection connection) throws Exception {
+		// First check the version in the database
+		String existingVersion = "";
 		Statement statement = connection.createStatement();
-		statement.execute(getSqlScript());
-		
+		ResultSet resultSet = statement.executeQuery("SELECT value FROM application_configuration WHERE name='VERSION'");
+		if (resultSet.next()) {
+			existingVersion = resultSet.getString("value");
+		}
 		statement.close();
+		
+		// Only upgrade if the version is not the same
+		if (version.equals(existingVersion) == false) {
+			// Do the upgrade
+			statement = connection.createStatement();
+			statement.execute(getSqlScript());
+			
+			statement.close();
+		} else {
+			log.warn("Skipping upgrade of the database. It's already version: "+version);
+		}
 	}
 	
 	private String getSqlScript() throws Exception {		

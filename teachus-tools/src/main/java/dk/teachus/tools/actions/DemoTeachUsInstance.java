@@ -4,16 +4,22 @@ import java.io.File;
 
 import dk.teachus.tools.config.DemoDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
+import dk.teachus.tools.config.SshNode;
 import dk.teachus.tools.config.SubversionReleaseNode;
-import dk.teachus.tools.config.TomcatNode;
 
-public class DemoUpgradeTeachUsAction extends ReleaseBasedUpgradeTeachUsAction {
+public class DemoTeachUsInstance extends ReleaseBasedTeachUsInstance {
 
 	private ConfigureMailBeanAction configureMailBean;
 	private LoadTestDataAction loadTestData;
 
-	public DemoUpgradeTeachUsAction(MavenNode maven, SubversionReleaseNode subversion, File workingDirectory, DemoDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
-		super(maven, subversion, workingDirectory, deployment, tomcat, version);
+	public DemoTeachUsInstance(MavenNode maven, File workingDirectory,
+			DemoDeploymentNode deployment, SshNode databaseHost,
+			String version, SubversionReleaseNode subversion) throws Exception {
+		super(maven, workingDirectory, deployment, databaseHost, version, subversion);
+	}
+
+	public String getInstanceName() {
+		return "demo";
 	}
 	
 	@Override
@@ -22,12 +28,14 @@ public class DemoUpgradeTeachUsAction extends ReleaseBasedUpgradeTeachUsAction {
 
 		configureMailBean = new ConfigureMailBeanAction(projectDirectory);
 		configureMailBean.init();
-		loadTestData = new LoadTestDataAction(tomcat.getHost(), projectDirectory, deployment.getDatabase(), maven);
+		loadTestData = new LoadTestDataAction(databaseHost, projectDirectory, deployment.getDatabase(), maven);
 		loadTestData.init();
 	}
 	
 	@Override
-	protected void doCheck() throws Exception {
+	public void check() throws Exception {
+		super.check();
+		
 		configureMailBean.check();
 		loadTestData.check();
 	}
@@ -41,17 +49,12 @@ public class DemoUpgradeTeachUsAction extends ReleaseBasedUpgradeTeachUsAction {
 	}
 	
 	@Override
-	protected String getName() {
-		return "demo";
-	}
-	
-	@Override
 	protected void beforePackage() throws Exception {
 		configureMailBean.execute();
 	}
 	
 	@Override
-	protected void afterDeployment() throws Exception {
+	public void onAfterUpgradeDatabase() throws Exception {
 		loadTestData.execute();
 	}
 

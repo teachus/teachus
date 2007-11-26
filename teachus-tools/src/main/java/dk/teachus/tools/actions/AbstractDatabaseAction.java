@@ -24,7 +24,10 @@ abstract class AbstractDatabaseAction implements Action {
 
 	public void execute() throws Exception {		
 		String jdbcUrl = createJdbcUrl();
-		log.info("Connection to database: "+jdbcUrl);
+		
+		if (log.isDebugEnabled()) {
+			log.debug("Connection to database: "+jdbcUrl);
+		}
 		
 		Class.forName("com.mysql.jdbc.Driver");
 		

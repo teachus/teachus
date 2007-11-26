@@ -1,10 +1,9 @@
 package dk.teachus.tools.actions;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -14,14 +13,32 @@ abstract class AbstractConfigurePropertiesAction implements Action {
 	public final void execute() throws Exception {		
 		File propertiesFile = getPropertiesFile();
 		
-		Properties properties = new Properties();
-		properties.load(new FileInputStream(propertiesFile));
+		if (log.isDebugEnabled()) {
+			log.debug("Modifying properties file: "+propertiesFile);
+		}
 		
+		Properties properties = new Properties();
 		configureProperties(properties);
 		
-		properties.store(new FileOutputStream(propertiesFile), "Modified by the upgrade tool.");
+		if (properties.size() > 0) {
+			String content = FileUtils.readFileToString(propertiesFile, "UTF-8");
+			
+			for (Object keyObject : properties.keySet()) {
+				String key = keyObject.toString();
+				String value = properties.getProperty(key);
+				
+				String[] parts = content.split("\n|\r|\r\n");
+				for (String part : parts) {
+					if (part.matches("^"+key+"[\\s]*=.*$")) {
+						String newPart = part.replaceAll("^"+key+"[\\s]*=.*$", key+"="+value);
+						content = content.replace(part, newPart);
+					}
+				}
+			}
+			
+			FileUtils.writeStringToFile(propertiesFile, content, "UTF-8");
+		}
 		
-		log.info("Modified properties file: "+propertiesFile);
 	}
 	
 	public void init() throws Exception {

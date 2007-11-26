@@ -6,13 +6,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import dk.teachus.tools.actions.UpgradeTeachUsInstancesAction.TeachUsInstance;
 import dk.teachus.tools.config.AbstractDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
-import dk.teachus.tools.config.TomcatNode;
-;
+import dk.teachus.tools.config.SshNode;
 
-abstract class UpgradeTeachUsAction implements Action {
-	private static final Log log = LogFactory.getLog(UpgradeTeachUsAction.class);
+public abstract class AbstractTeachUsInstance implements TeachUsInstance {
+	private static final Log log = LogFactory.getLog(AbstractTeachUsInstance.class);
 
 	private AbstractSubversionCheckoutAction subversionCheckout;
 
@@ -24,26 +24,44 @@ abstract class UpgradeTeachUsAction implements Action {
 
 	private MavenPackageAction mavenPackage;
 
-	private DeployWarFileAction deployWarFile;
-
 	protected final File workingDirectory;
 
 	protected final AbstractDeploymentNode deployment;
 
-	protected final TomcatNode tomcat;
-
 	protected final MavenNode maven;
 
 	protected String version;
+
+	protected final SshNode databaseHost;
 	
-	public UpgradeTeachUsAction(MavenNode maven, File workingDirectory, AbstractDeploymentNode deployment, TomcatNode tomcat, String version) throws Exception {
+	public AbstractTeachUsInstance(MavenNode maven, File workingDirectory, AbstractDeploymentNode deployment, SshNode databaseHost, String version) throws Exception {
 		this.maven = maven;
 		this.workingDirectory = workingDirectory;
 		this.deployment = deployment;
-		this.tomcat = tomcat;
+		this.databaseHost = databaseHost;
 		this.version = version;
 	}
 	
+	public void check() throws Exception {
+		subversionCheckout.check();
+		configureDatabase.check();
+		configureSmtpServer.check();
+		mavenPackage.check();
+	}
+	
+	public void cleanup() throws Exception {
+		subversionCheckout.cleanup();
+		configureDatabase.cleanup();
+		configureSmtpServer.cleanup();
+		mavenPackage.cleanup();
+		
+		// Clean up
+		if (log.isDebugEnabled()) {
+			log.debug("Cleaning up the project directory: "+projectDirectory);
+		}
+		FileUtils.deleteDirectory(projectDirectory);		
+	}
+
 	public void init() throws Exception {
 		projectDirectory = File.createTempFile("teachus", "", workingDirectory);
 		projectDirectory.delete();
@@ -57,18 +75,9 @@ abstract class UpgradeTeachUsAction implements Action {
 		configureSmtpServer.init();
 		mavenPackage = new MavenPackageAction(maven, projectDirectory);
 		mavenPackage.init();
-		VersionProvider versionProvider = new VersionProvider() {
-			public String getVersion() {
-				return version;
-			}
-		};
-		deployWarFile = new DeployWarFileAction(projectDirectory, tomcat, versionProvider, getName());
-		deployWarFile.init();
 	}
 
-	public void execute() throws Exception {
-		log.info("Start upgrade of "+getName());
-		
+	public File prepareWarFile() throws Exception {
 		subversionCheckout.execute();
 		
 		configureDatabase.execute();
@@ -79,55 +88,12 @@ abstract class UpgradeTeachUsAction implements Action {
 		
 		mavenPackage.execute();
 		
-		beforeDatabase();
-		
-		doDatabase();
-
-		deployWarFile.execute();
-		
-		afterDeployment();		
-		
-		log.info("Upgrade completed!!");
-	}
-	
-	public final void check() throws Exception {
-		subversionCheckout.check();
-		configureDatabase.check();
-		configureSmtpServer.check();
-		mavenPackage.check();
-		deployWarFile.check();
-		
-		doCheck();
-	}
-	
-	protected void doCheck() throws Exception {
-	}
-	
-	public void cleanup() throws Exception {
-		subversionCheckout.cleanup();
-		configureDatabase.cleanup();
-		configureSmtpServer.cleanup();
-		mavenPackage.cleanup();
-		deployWarFile.cleanup();
-		
-		// Clean up 
-		log.info("Cleaning up the project directory: "+projectDirectory);
-		FileUtils.deleteDirectory(projectDirectory);		
+		return new File(projectDirectory, "teachus-frontend/target/teachus-frontend-"+version+".war");
 	}
 
-	protected abstract String getName();
-	
 	protected abstract AbstractSubversionCheckoutAction getCheckoutAction();
 	
-	protected abstract void doDatabase() throws Exception;
-	
-	protected void beforeDatabase() throws Exception {
-	}
-
 	protected void beforePackage() throws Exception {
-	}
-	
-	protected void afterDeployment() throws Exception {
 	}
 
 }

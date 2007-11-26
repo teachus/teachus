@@ -34,7 +34,9 @@ abstract class AbstractMavenAction implements Action {
 		command.add(mavenHome);
 		command.addAll(Arrays.asList(getGoals()));
 		
-		log.info("Executing maven goals: "+Arrays.toString(getGoals()));
+		if (log.isDebugEnabled()) {
+			log.debug("Executing maven goals: "+Arrays.toString(getGoals()));
+		}
 		
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.directory(parentDir);
@@ -45,7 +47,9 @@ abstract class AbstractMavenAction implements Action {
 		
 		String line = null;
 		while ((line = inputReader.readLine()) != null) {
-			log.debug(line);
+			if (log.isDebugEnabled()) {
+				log.debug(line);
+			}
 		}
 		
 		if (maven.waitFor() != 0) {

@@ -26,7 +26,9 @@ abstract class AbstractSshAction implements Action {
 	}
 	
 	public void execute() throws Exception {
-		log.info("Connecting to remote host: "+host.getHost());
+		if (log.isDebugEnabled()) {
+			log.debug("Connecting to remote host: "+host.getHost());
+		}
 		
 		createSession();
 		

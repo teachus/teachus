@@ -2,6 +2,9 @@ package dk.teachus.tools.actions;
 
 import java.io.File;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tmatesoft.svn.core.SVNURL;
@@ -24,7 +27,9 @@ abstract class AbstractSubversionCheckoutAction implements Action {
 	public final void execute() throws Exception {
 		String checkoutUrl = getCheckoutUrl();
 		
-		log.info("Checking out project from: "+checkoutUrl);
+		if (log.isDebugEnabled()) {
+			log.debug("Checking out project from: "+checkoutUrl);
+		}
 		
 		DAVRepositoryFactory.setup();
 		SVNURL url = SVNURL.parseURIDecoded(checkoutUrl);
@@ -43,6 +48,14 @@ abstract class AbstractSubversionCheckoutAction implements Action {
 		
 		if (workingDirectory.isDirectory() == false) {
 			throw new IllegalStateException("Working directory is not a directory");
+		}
+		
+		// Check that the version exists in the repository
+		String checkoutUrl = getCheckoutUrl();
+		GetMethod getMethod = new GetMethod(checkoutUrl);
+		int status = new HttpClient().executeMethod(getMethod);
+		if (status != HttpStatus.SC_OK) {
+			throw new IllegalArgumentException("The release path doesn't exist: "+checkoutUrl);
 		}
 	}
 	

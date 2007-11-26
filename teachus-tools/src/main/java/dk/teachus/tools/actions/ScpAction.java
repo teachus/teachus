@@ -16,6 +16,18 @@ public class ScpAction extends AbstractSftpAction {
 		File getSourceFile();
 	}
 	
+	public static class SimpleSourceProvider implements SourceProvider {
+		private File sourceFile;
+
+		public SimpleSourceProvider(File sourceFile) {
+			this.sourceFile = sourceFile;
+		}
+
+		public File getSourceFile() {
+			return sourceFile;
+		}
+	}
+	
 	private SourceProvider sourceProvider;
 	private String destinationDirectory;
 	private String destinationFile;
@@ -25,10 +37,6 @@ public class ScpAction extends AbstractSftpAction {
 		this.sourceProvider = sourceProvider;
 		this.destinationDirectory = destinationDirectory;
 		this.destinationFile = destinationFile;
-	}
-	
-	@Override
-	protected void doCheck() throws Exception {
 	}
 
 	@Override

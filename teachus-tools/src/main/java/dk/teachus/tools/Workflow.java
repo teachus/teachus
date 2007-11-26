@@ -50,7 +50,7 @@ public class Workflow {
 					action.cleanup();
 				}
 			} catch(Exception e) {
-				throw new RuntimeException("FATAL exception. Were not able to clean everyting up.", e);
+				log.fatal("FATAL exception. Were not able to clean everyting up.", e);
 			}
 		}
 	}

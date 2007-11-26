@@ -2,10 +2,8 @@ package dk.teachus.tools;
 
 import java.io.File;
 
-import dk.teachus.tools.actions.SftpDeleteDirectoryAction;
-import dk.teachus.tools.actions.TestUpgradeTeachUsAction;
-import dk.teachus.tools.actions.TomcatAction;
-import dk.teachus.tools.actions.TomcatAction.ProcessAction;
+import dk.teachus.tools.actions.TestTeachUsInstance;
+import dk.teachus.tools.actions.UpgradeTeachUsInstancesAction;
 import dk.teachus.tools.config.Configuration;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SubversionTrunkNode;
@@ -41,13 +39,9 @@ public class NightlySnapshot {
 		 */
 		Workflow workflow = new Workflow();
 
-		workflow.addAction(new TomcatAction(tomcat, ProcessAction.STOP));
-				
-		workflow.addAction(new TestUpgradeTeachUsAction(maven, subversion, workingDirectory, testDeployment, tomcat));
-		
-		workflow.addAction(new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina"));
-		
-		workflow.addAction(new TomcatAction(tomcat, ProcessAction.START));
+		UpgradeTeachUsInstancesAction upgradeTeachUsInstances = new UpgradeTeachUsInstancesAction(tomcat);
+		upgradeTeachUsInstances.addTeachUsInstance(new TestTeachUsInstance(maven, workingDirectory, testDeployment, tomcat.getHost(), subversion));
+		workflow.addAction(upgradeTeachUsInstances);
 		
 		/*
 		 * Start work flow

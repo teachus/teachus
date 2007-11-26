@@ -5,11 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import dk.teachus.tools.actions.DemoUpgradeTeachUsAction;
-import dk.teachus.tools.actions.MainUpgradeTeachUsAction;
-import dk.teachus.tools.actions.SftpDeleteDirectoryAction;
-import dk.teachus.tools.actions.TomcatAction;
-import dk.teachus.tools.actions.TomcatAction.ProcessAction;
+import dk.teachus.tools.actions.DemoTeachUsInstance;
+import dk.teachus.tools.actions.MainTeachUsInstance;
+import dk.teachus.tools.actions.UpgradeTeachUsInstancesAction;
 import dk.teachus.tools.config.Configuration;
 import dk.teachus.tools.config.DemoDeploymentNode;
 import dk.teachus.tools.config.MainDeploymentNode;
@@ -50,16 +48,11 @@ public class FullUpgrade {
 		 */
 		Workflow workflow = new Workflow();
 		
-		workflow.addAction(new TomcatAction(tomcat, ProcessAction.STOP));
-				
-		workflow.addAction(new MainUpgradeTeachUsAction(maven, subversion, workingDirectory, mainDeployment, tomcat, version));
-		
-		workflow.addAction(new DemoUpgradeTeachUsAction(maven, subversion, workingDirectory, demoDeployment, tomcat, version));
-		
-		workflow.addAction(new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina"));
-
-		workflow.addAction(new TomcatAction(tomcat, ProcessAction.START));
-		
+		UpgradeTeachUsInstancesAction upgradeTeachUsInstances = new UpgradeTeachUsInstancesAction(tomcat);
+		upgradeTeachUsInstances.addTeachUsInstance(new MainTeachUsInstance(maven, workingDirectory, mainDeployment, tomcat.getHost(), version, subversion));
+		upgradeTeachUsInstances.addTeachUsInstance(new DemoTeachUsInstance(maven, workingDirectory, demoDeployment, tomcat.getHost(), version, subversion));
+		workflow.addAction(upgradeTeachUsInstances);
+	
 		/*
 		 * Start work flow
 		 */

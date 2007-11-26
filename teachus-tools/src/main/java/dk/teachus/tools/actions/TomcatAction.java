@@ -37,7 +37,7 @@ public class TomcatAction implements Action {
 			break;
 		}
 		
-		remoteCommand = new SshRemoteCommandAction(tomcat.getHost(), command.toString(), sleep);
+		remoteCommand = new SshRemoteCommandAction(tomcat.getHost(), command.toString(), sleep, processAction == ProcessAction.START);
 	}
 
 	public void execute() throws Exception {

@@ -20,7 +20,9 @@ public class SftpDeleteFileAction extends AbstractSftpAction {
 
 	@Override
 	protected void executeSftp(ChannelSftp client) throws Exception {
-		log.info("Deleting remote file: "+host.getHost()+":"+remoteFile);
+		if (log.isDebugEnabled()) {
+			log.debug("Deleting remote file: "+host.getHost()+":"+remoteFile);
+		}
 		
 		try {
 			client.rm(remoteFile);
