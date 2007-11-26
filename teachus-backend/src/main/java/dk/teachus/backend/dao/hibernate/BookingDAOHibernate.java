@@ -18,7 +18,9 @@ package dk.teachus.backend.dao.hibernate;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
@@ -183,6 +185,34 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Map<Pupil, List<PupilBooking>> getPupilNotificationBookings() {
+		Map<Pupil, List<PupilBooking>> pupilNotificationBookings = new HashMap<Pupil, List<PupilBooking>>();
+		
+		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
+		
+		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
+		c.createCriteria("pupil").add(Restrictions.eq("active", true)).createCriteria("teacher").add(Restrictions.eq("active", true));
+		c.add(Restrictions.eq("pupilNotificationSent", false));
+		c.add(Restrictions.lt("createDate", new DateTime().minusHours(1).toDate()));
+		c.add(Restrictions.eq("active", true));
+		
+		List<PupilBooking> bookings = getHibernateTemplate().findByCriteria(c);
+		
+		for (PupilBooking pupilBooking : bookings) {
+			List<PupilBooking> pupilBookings = pupilNotificationBookings.get(pupilBooking.getPupil());
+			if (pupilBookings == null) {
+				pupilBookings = new ArrayList<PupilBooking>();
+				pupilNotificationBookings.put(pupilBooking.getPupil(), pupilBookings);
+			}
+			
+			pupilBookings.add(pupilBooking);
+		}
+		
+		return pupilNotificationBookings;
+	}
 	
 	public void newBookingsMailSent(List<PupilBooking> pupilBookings) {
 		if (pupilBookings.isEmpty() == false) {
@@ -195,6 +225,28 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 				hql.append(sep);
 				hql.append(pupilBooking.getId());
 				sep = ",";
+			}
+			
+			hql.append(")");
+			
+			getHibernateTemplate().bulkUpdate(hql.toString());
+			getHibernateTemplate().flush();
+		}
+	}
+	
+	public void pupilNotificationMailSent(Map<Pupil, List<PupilBooking>> pupilBookings) {
+		if (pupilBookings.isEmpty() == false) {
+			StringBuilder hql = new StringBuilder();
+			
+			hql.append("UPDATE PupilBookingImpl SET pupilNotificationSent=1, updateDate=NOW() WHERE active = 1 AND id IN(");
+			
+			String sep = "";
+			for (List<PupilBooking> pupilBookingList : pupilBookings.values()) {
+				for (PupilBooking pupilBooking : pupilBookingList) {
+					hql.append(sep);
+					hql.append(pupilBooking.getId());
+					sep = ",";
+				}
 			}
 			
 			hql.append(")");

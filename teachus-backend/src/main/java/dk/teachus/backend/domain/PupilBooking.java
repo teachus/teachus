@@ -24,6 +24,9 @@ public interface PupilBooking extends Booking {
 	boolean isNotificationSent();
 	void setNotificationSent(boolean notificationSent);
 	
+	boolean isPupilNotificationSent();
+	void setPupilNotificationSent(boolean pupilNotificationSent);
+	
 	boolean isPaid();
 	void setPaid(boolean paid);
 }

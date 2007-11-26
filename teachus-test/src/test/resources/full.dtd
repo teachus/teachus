@@ -63,6 +63,7 @@
     teacher_id CDATA #IMPLIED
     pupil_id CDATA #IMPLIED
     notification_sent CDATA #IMPLIED
+    pupil_notification_sent CDATA #IMPLIED
     paid CDATA #IMPLIED
 >
 

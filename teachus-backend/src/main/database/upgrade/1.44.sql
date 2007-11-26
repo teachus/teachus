@@ -8,6 +8,16 @@ UPDATE
 SET
 	mail_type = 'PLAIN';
 
+-- Add pupil notification flag
+ALTER TABLE
+	booking
+	ADD COLUMN pupil_notification_sent TINYINT(1) AFTER notification_sent;
+
+UPDATE
+	booking
+SET
+	pupil_notification_sent = 1;
+
 -- Upgrade version
 UPDATE
 	application_configuration 

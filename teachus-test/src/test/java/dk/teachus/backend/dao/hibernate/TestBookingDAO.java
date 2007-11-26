@@ -18,6 +18,7 @@ package dk.teachus.backend.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -88,6 +89,53 @@ public class TestBookingDAO extends SpringTestCase {
 		assertEquals(1, unsentBookings.size());
 	}
 	
+	public void testGetPupilNotificationBookings() {
+		BookingDAO bookingDAO = getBookingDAO();
+		endTransaction();
+		
+		// First create a list of new bookings
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		
+		Map<Pupil, List<PupilBooking>> unsentBookings = bookingDAO.getPupilNotificationBookings();
+		endTransaction();
+		
+		// Number of different pupils
+		assertEquals(3, unsentBookings.size());
+		
+		// Number of bookings in for each pupil
+		assertEquals(2, getPupilBookings(unsentBookings, 6).size());
+		assertEquals(1, getPupilBookings(unsentBookings, 7).size());
+		assertEquals(1, getPupilBookings(unsentBookings, 8).size());
+	}
+	
+	private Pupil getPupil(Map<Pupil, List<PupilBooking>> unsentBookings, long pupilId) {
+		Pupil pupil = null;
+		
+		for (Pupil p : unsentBookings.keySet()) {
+			if (new Long(pupilId).equals(p.getId())) {
+				pupil = p;
+				break;
+			}
+		}
+		
+		return pupil;
+	}
+	
+	private List<PupilBooking> getPupilBookings(Map<Pupil, List<PupilBooking>> unsentBookings, long pupilId) {
+		List<PupilBooking> pupilBookings = null;
+		
+		Pupil pupil = getPupil(unsentBookings, pupilId);
+		
+		if (pupil != null) {
+			pupilBookings = unsentBookings.get(pupil);
+		}
+		
+		return pupilBookings;
+	}
+	
 	public void testNewBookingsMailSent() {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
@@ -116,6 +164,37 @@ public class TestBookingDAO extends SpringTestCase {
 			Booking checkBooking = bookingDAO.getBooking(booking.getId());
 			assertNotNull(checkBooking.getUpdateDate());
 		}
+	}
+	
+	public void testPupilNotificationMailSent() {
+		BookingDAO bookingDAO = getBookingDAO();
+		endTransaction();
+		
+		// First create a list of new bookings
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		
+		Map<Pupil, List<PupilBooking>> pupilNotificationBookings = bookingDAO.getPupilNotificationBookings();
+		endTransaction();
+		
+		assertEquals(3, pupilNotificationBookings.size());
+		
+		// Lets remove one of them
+		Pupil pupil = getPupil(pupilNotificationBookings, 7);
+		pupilNotificationBookings.remove(pupil);
+		
+		// Now lets update
+		bookingDAO.pupilNotificationMailSent(pupilNotificationBookings);
+		endTransaction();
+		
+		pupilNotificationBookings = bookingDAO.getPupilNotificationBookings();
+		endTransaction();
+		
+		assertEquals(1, pupilNotificationBookings.size());
+		
+		assertNotNull(getPupil(pupilNotificationBookings, 7));
 	}
 	
 	public void testGetBookings() {

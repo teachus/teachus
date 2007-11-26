@@ -17,10 +17,12 @@
 package dk.teachus.backend.bean.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.bean.NewBookings;
+import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.test.SpringTestCase;
 
@@ -57,7 +59,7 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		
 	}
 	
-	public void testSetSentFlag() {
+	public void testSetSentTeacherNotificationFlag() {
 		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
 
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
@@ -67,6 +69,53 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		newBookings.sendNewBookingsMail();
 		
 		List<PupilBooking> unsentBookingsAfter = getBookingDAO().getUnsentBookings(getTeacher());
+		
+		assertEquals(unsentBookingsBefore.size()-1, unsentBookingsAfter.size());
+	}
+	
+	public void testCreatePupilNotificationMail() {
+
+		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+		
+		// Count the number of mails before
+		int firstMessageCount = countRowsInTable(TABLE_MESSAGE);
+		int firstMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
+		
+		// Execute the new bookings bean
+		newBookings.sendPupilNotificationMail();
+		
+		// The number of messages shouldn't have changed
+		int secondMessageCount = countRowsInTable(TABLE_MESSAGE);
+		int secondMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
+		assertEquals(firstMessageCount, secondMessageCount);
+		assertEquals(firstMessageRecCount, secondMessageRecCount);
+		
+		// Create some bookings
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
+				
+		// Execute the new bookings bean
+		newBookings.sendPupilNotificationMail();
+
+		// Now the message count should be one larger
+		int thirdMessageCount = countRowsInTable(TABLE_MESSAGE);
+		int thirdMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
+		assertEquals(secondMessageCount+3, thirdMessageCount);
+		assertEquals(secondMessageRecCount+3, thirdMessageRecCount);
+	}
+	
+	public void testSetSentPupilNotificationFlag() {
+		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		
+		Map<Pupil, List<PupilBooking>> unsentBookingsBefore = getBookingDAO().getPupilNotificationBookings();
+		
+		newBookings.sendPupilNotificationMail();
+		
+		Map<Pupil, List<PupilBooking>> unsentBookingsAfter = getBookingDAO().getPupilNotificationBookings();
 		
 		assertEquals(unsentBookingsBefore.size()-1, unsentBookingsAfter.size());
 	}

@@ -26,7 +26,6 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import dk.teachus.backend.MailException;
 import dk.teachus.backend.bean.MailBean;
-import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.impl.MailMessage.Type;
 
 public class MailBeanImpl implements MailBean {
@@ -60,28 +59,6 @@ public class MailBeanImpl implements MailBean {
 			});
 		} catch (MailSendException e) {
 			throw new MailException(e);
-		}
-	}
-	
-	public static class FormattedPupilBooking {
-		private PupilBooking pupilBooking;
-
-		private String formattedDate;
-
-		public String getFormattedDate() {
-			return formattedDate;
-		}
-
-		public void setFormattedDate(String formattedDate) {
-			this.formattedDate = formattedDate;
-		}
-
-		public PupilBooking getPupilBooking() {
-			return pupilBooking;
-		}
-
-		public void setPupilBooking(PupilBooking pupilBooking) {
-			this.pupilBooking = pupilBooking;
 		}
 	}
 	

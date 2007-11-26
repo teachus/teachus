@@ -31,6 +31,8 @@
 		
 			<property name="notificationSent" column="notification_sent" type="dk.teachus.backend.dao.hibernate.BooleanType" />
 			
+			<property name="pupilNotificationSent" column="pupil_notification_sent" type="dk.teachus.backend.dao.hibernate.BooleanType" />
+			
 			<property name="paid" column="paid" type="dk.teachus.backend.dao.hibernate.BooleanType" />
 		</subclass>
 		

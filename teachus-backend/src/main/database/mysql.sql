@@ -20,7 +20,8 @@ CREATE TABLE
 	update_date DATETIME,
 	teacher_id BIGINT, 
 	pupil_id BIGINT, 
-	notification_sent TINYINT(1), 
+	notification_sent TINYINT(1),
+	pupil_notification_sent TINYINT(1), 
 	paid TINYINT(1), 
 	primary key (id)
 ) type=InnoDB;

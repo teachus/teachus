@@ -19,6 +19,7 @@ package dk.teachus.backend.dao;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateMidnight;
 
@@ -47,8 +48,12 @@ public interface BookingDAO extends Serializable {
 	List<PupilBooking> getUnpaidBookings(Teacher teacher);
 
 	List<PupilBooking> getUnsentBookings(Teacher teacher);
+	
+	Map<Pupil, List<PupilBooking>> getPupilNotificationBookings();
 
 	void newBookingsMailSent(List<PupilBooking> pupilBookings);
+	
+	void pupilNotificationMailSent(Map<Pupil, List<PupilBooking>> pupilBookings);
 
 	void changePaidStatus(PupilBooking pupilBooking);
 

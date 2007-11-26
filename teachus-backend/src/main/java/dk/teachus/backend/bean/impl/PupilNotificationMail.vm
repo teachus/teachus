@@ -1,0 +1,25 @@
+<html>
+	<body>
+		<p>
+			${newBookings}
+		</p>
+		
+		<table cellspacing="0" cellpadding="10" border="0">
+			<tr>
+				<th>${locationHeader}</th>
+				<th>${dateHeader}</th>
+			</tr>
+#foreach( $booking in $bookingList )
+			<tr>
+				<td>${booking.location}</td>
+				<td>${booking.formattedDate}</td>
+			</tr>
+#end
+		</table>
+		
+		<p>
+			${regard}<br />
+			${from}
+		</p>
+	</body>
+</html>

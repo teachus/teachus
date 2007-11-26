@@ -23,4 +23,6 @@ public interface NewBookings extends Serializable {
 
 	void sendNewBookingsMail();
 	
+	void sendPupilNotificationMail();
+	
 }

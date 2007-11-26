@@ -26,6 +26,8 @@ public class PupilBookingImpl extends BookingImpl implements PupilBooking {
 
 	private boolean notificationSent;
 	
+	private boolean pupilNotificationSent;
+	
 	private boolean paid;
 
 	public Pupil getPupil() {
@@ -50,6 +52,14 @@ public class PupilBookingImpl extends BookingImpl implements PupilBooking {
 
 	public void setPupil(Pupil pupil) {
 		this.pupil = pupil;
+	}
+
+	public boolean isPupilNotificationSent() {
+		return pupilNotificationSent;
+	}
+
+	public void setPupilNotificationSent(boolean pupilNotificationSent) {
+		this.pupilNotificationSent = pupilNotificationSent;
 	}
 
 }
