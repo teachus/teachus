@@ -169,7 +169,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getUnsentBookings(Teacher teacher) {
+	public List<PupilBooking> getTeacherNotificationBookings(Teacher teacher) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
@@ -180,7 +180,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 			.createCriteria("teacher")
 				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("notificationSent", false));
-		c.add(Restrictions.lt("createDate", new DateTime().minusHours(1).toDate()));
+		c.add(Restrictions.lt("createDate", new DateTime().minusMinutes(15).toDate()));
 		c.add(Restrictions.eq("active", true));
 		
 		return getHibernateTemplate().findByCriteria(c);
@@ -196,7 +196,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil").add(Restrictions.eq("active", true)).createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("pupilNotificationSent", false));
-		c.add(Restrictions.lt("createDate", new DateTime().minusHours(1).toDate()));
+		c.add(Restrictions.lt("createDate", new DateTime().minusMinutes(15).toDate()));
 		c.add(Restrictions.eq("active", true));
 		
 		List<PupilBooking> bookings = getHibernateTemplate().findByCriteria(c);
@@ -214,7 +214,7 @@ public class BookingDAOHibernate extends HibernateDaoSupport implements BookingD
 		return pupilNotificationBookings;
 	}
 	
-	public void newBookingsMailSent(List<PupilBooking> pupilBookings) {
+	public void teacherNotificationMailSent(List<PupilBooking> pupilBookings) {
 		if (pupilBookings.isEmpty() == false) {
 			StringBuilder hql = new StringBuilder();
 			

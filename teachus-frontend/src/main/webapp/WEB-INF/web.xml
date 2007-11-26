@@ -10,6 +10,7 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath:/dk/teachus/backend/applicationContext.xml
+			classpath:/dk/teachus/backend/applicationContext-queues.xml
 			classpath:/dk/teachus/ws/applicationContext.xml
 			classpath:/org/codehaus/xfire/spring/xfire.xml
 		</param-value>

@@ -37,7 +37,7 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		int firstMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		
 		// Execute the new bookings bean
-		newBookings.sendNewBookingsMail();
+		newBookings.sendTeacherNotificationMail();
 		
 		// The number of messages shouldn't have changed
 		int secondMessageCount = countRowsInTable(TABLE_MESSAGE);
@@ -49,7 +49,7 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		// Execute the new bookings bean
-		newBookings.sendNewBookingsMail();
+		newBookings.sendTeacherNotificationMail();
 
 		// Now the message count should be one larger
 		int thirdMessageCount = countRowsInTable(TABLE_MESSAGE);
@@ -64,11 +64,11 @@ public class TestNewBookingsImpl extends SpringTestCase {
 
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
-		List<PupilBooking> unsentBookingsBefore = getBookingDAO().getUnsentBookings(getTeacher());
+		List<PupilBooking> unsentBookingsBefore = getBookingDAO().getTeacherNotificationBookings(getTeacher());
 		
-		newBookings.sendNewBookingsMail();
+		newBookings.sendTeacherNotificationMail();
 		
-		List<PupilBooking> unsentBookingsAfter = getBookingDAO().getUnsentBookings(getTeacher());
+		List<PupilBooking> unsentBookingsAfter = getBookingDAO().getTeacherNotificationBookings(getTeacher());
 		
 		assertEquals(unsentBookingsBefore.size()-1, unsentBookingsAfter.size());
 	}

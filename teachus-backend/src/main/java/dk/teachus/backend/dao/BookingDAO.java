@@ -47,11 +47,11 @@ public interface BookingDAO extends Serializable {
 
 	List<PupilBooking> getUnpaidBookings(Teacher teacher);
 
-	List<PupilBooking> getUnsentBookings(Teacher teacher);
+	List<PupilBooking> getTeacherNotificationBookings(Teacher teacher);
 	
 	Map<Pupil, List<PupilBooking>> getPupilNotificationBookings();
 
-	void newBookingsMailSent(List<PupilBooking> pupilBookings);
+	void teacherNotificationMailSent(List<PupilBooking> pupilBookings);
 	
 	void pupilNotificationMailSent(Map<Pupil, List<PupilBooking>> pupilBookings);
 

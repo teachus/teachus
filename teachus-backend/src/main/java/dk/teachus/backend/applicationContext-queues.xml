@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<!-- ========================== -->
+	<!--         SCHEDULING         -->
+	<!-- ========================== -->
+	
+	<bean id="teacherNotificationJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="newBookings" />
+		<property name="targetMethod" value="sendTeacherNotificationMail" />
+	</bean>
+	
+	<bean id="teacherNotificationTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="teacherNotification" />
+		<property name="startDelay" value="120000" />
+		<!-- run every 15 minute -->
+		<property name="repeatInterval" value="900000" />
+	</bean>
+	
+	<bean id="pupilNotificationJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="newBookings" />
+		<property name="targetMethod" value="sendPupilNotificationMail" />
+	</bean>
+	
+	<bean id="pupilNotificationTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="pupilNotificationJob" />
+		<property name="startDelay" value="120000" />
+		<!-- run every 15 minute -->
+		<property name="repeatInterval" value="900000" />
+	</bean>
+	
+	<!-- Mail Message sender -->
+	<bean id="mailMessageSendingBean" class="dk.teachus.backend.bean.impl.MailMessageSendingBean">
+		<constructor-arg ref="mailBean" />
+		<constructor-arg ref="messageDao" />
+	</bean>
+	
+	<bean id="mailMessageSendingJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="mailMessageSendingBean" />
+		<property name="targetMethod" value="sendMailMessages" />
+	</bean>
+	
+	<bean id="mailMessageSendingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail" ref="mailMessageSendingJob" />
+		<property name="startDelay" value="120000" />
+		<!-- run every minute -->
+		<property name="repeatInterval" value="60000" />
+	</bean>
+	
+	<!-- Scheduler -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="teacherNotificationTrigger" />
+				<ref bean="pupilNotificationTrigger" />
+				<ref bean="mailMessageSendingTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -21,7 +21,7 @@ import java.io.Serializable;
 
 public interface NewBookings extends Serializable {
 
-	void sendNewBookingsMail();
+	void sendTeacherNotificationMail();
 	
 	void sendPupilNotificationMail();
 	

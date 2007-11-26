@@ -83,7 +83,7 @@ public class TestBookingDAO extends SpringTestCase {
 		// First create a list of new bookings
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
-		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(teacher);
+		List<PupilBooking> unsentBookings = bookingDAO.getTeacherNotificationBookings(teacher);
 		endTransaction();
 		
 		assertEquals(1, unsentBookings.size());
@@ -146,15 +146,15 @@ public class TestBookingDAO extends SpringTestCase {
 		// First create a list of new bookings
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
-		List<PupilBooking> unsentBookings = bookingDAO.getUnsentBookings(teacher);
+		List<PupilBooking> unsentBookings = bookingDAO.getTeacherNotificationBookings(teacher);
 		endTransaction();
 		
 		assertEquals(1, unsentBookings.size());
 		
-		bookingDAO.newBookingsMailSent(unsentBookings);
+		bookingDAO.teacherNotificationMailSent(unsentBookings);
 		endTransaction();
 		
-		List<PupilBooking> unsentBookings2 = bookingDAO.getUnsentBookings(teacher);
+		List<PupilBooking> unsentBookings2 = bookingDAO.getTeacherNotificationBookings(teacher);
 		endTransaction();
 		
 		assertEquals(0, unsentBookings2.size());
@@ -310,7 +310,7 @@ public class TestBookingDAO extends SpringTestCase {
 		
 		Teacher teacher = getTeacher();
 		
-		List<PupilBooking> unsentBookings = getBookingDAO().getUnsentBookings(teacher);
+		List<PupilBooking> unsentBookings = getBookingDAO().getTeacherNotificationBookings(teacher);
 		endTransaction();
 		
 		assertEquals(3, unsentBookings.size());
@@ -318,7 +318,7 @@ public class TestBookingDAO extends SpringTestCase {
 		// Inactive teacher
 		teacher = inactivateTeacher();
 		
-		unsentBookings = getBookingDAO().getUnsentBookings(teacher);
+		unsentBookings = getBookingDAO().getTeacherNotificationBookings(teacher);
 		endTransaction();
 		
 		assertEquals(0, unsentBookings.size());

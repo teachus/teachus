@@ -82,10 +82,10 @@
 	<!--         BEANS         -->
 	<!-- ===================== -->
 	
-<!--	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">-->
-<!--		<property name="host" value="${mail.smtp}"/>-->
-<!--	</bean>   -->
-	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.smtp}"/>
+	</bean>   
+		
 	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
@@ -99,8 +99,16 @@
 		<constructor-arg ref="velocityEngine" />
 	</bean>   
 	
-	<bean id="mailBean" class="dk.teachus.backend.bean.impl.DummyMailBean">
-<!--		<constructor-arg ref="mailSender" />-->
+	<bean id="mailBean" class="dk.teachus.backend.bean.impl.MailBeanImpl">
+		<constructor-arg ref="mailSender" />
+	</bean>
+
+	<!-- New bookings -->
+	<bean id="newBookings" class="dk.teachus.backend.bean.impl.NewBookingsImpl">
+		<constructor-arg ref="bookingDao" />
+		<constructor-arg ref="personDao" />
+		<constructor-arg ref="velocityBean" />	
+		<constructor-arg ref="messageDao" />
 	</bean>
 
 	<!-- ==================== -->
@@ -170,56 +178,6 @@
 					<ref bean="sessionFactory" />
 				</property>
 			</bean>
-		</property>
-	</bean>
-
-	<!-- ========================== -->
-	<!--         SCHEDULING         -->
-	<!-- ========================== -->
-
-	<!-- New bookings -->
-	<bean id="newBookings" class="dk.teachus.backend.bean.impl.NewBookingsImpl">
-		<constructor-arg ref="bookingDao" />
-		<constructor-arg ref="personDao" />
-		<constructor-arg ref="velocityBean" />	
-		<constructor-arg ref="messageDao" />
-	</bean>
-	
-	<bean id="newBookingsJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="newBookings" />
-		<property name="targetMethod" value="sendNewBookingsMail" />
-	</bean>
-	
-	<bean id="newBookingsCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
-		<property name="jobDetail" ref="newBookingsJob" />
-		<!-- run 10 minutes past every hour -->
-		<property name="cronExpression" value="0 10 * * * ?" />
-	</bean>
-	
-	<!-- Mail Message sender -->
-	<bean id="mailMessageSendingBean" class="dk.teachus.backend.bean.impl.MailMessageSendingBean">
-		<constructor-arg ref="mailBean" />
-		<constructor-arg ref="messageDao" />
-	</bean>
-	
-	<bean id="mailMessageSendingJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="mailMessageSendingBean" />
-		<property name="targetMethod" value="sendMailMessages" />
-	</bean>
-	
-	<bean id="mailMessageSendingCronTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
-		<property name="jobDetail" ref="mailMessageSendingJob" />
-		<!-- run every minute -->
-		<property name="repeatInterval" value="60000" />
-	</bean>
-	
-	<!-- Scheduler -->
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="triggers">
-			<list>
-				<ref bean="newBookingsCronTrigger" />
-				<ref bean="mailMessageSendingCronTrigger" />
-			</list>
 		</property>
 	</bean>
 

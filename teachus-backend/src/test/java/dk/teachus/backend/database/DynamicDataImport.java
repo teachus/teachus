@@ -175,6 +175,7 @@ public abstract class DynamicDataImport {
 						booking.setTeacher(teacher);
 						booking.setPupil(pupil);
 						booking.setNotificationSent(true);
+						booking.setPupilNotificationSent(true);
 						
 						// Set the paid based on the booking time is in the past
 						if (now.isAfter(bookTime)) {
@@ -354,6 +355,8 @@ public abstract class DynamicDataImport {
 		executeSql(sessionFactory, "TRUNCATE booking");
 		executeSql(sessionFactory, "TRUNCATE period");
 		executeSql(sessionFactory, "TRUNCATE teacher_attribute");
+		executeSql(sessionFactory, "TRUNCATE message_recipient");
+		executeSql(sessionFactory, "TRUNCATE message");
 		executeSql(sessionFactory, "TRUNCATE person");
 	}
 	

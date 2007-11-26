@@ -24,6 +24,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.exception.VelocityException;
 
 import dk.teachus.backend.bean.NewBookings;
@@ -40,6 +42,7 @@ import dk.teachus.utils.ClassUtils;
 
 public class NewBookingsImpl implements NewBookings {
 	private static final long serialVersionUID = 1L;
+	private static final Log log = LogFactory.getLog(NewBookingsImpl.class);
 	
 	public static class FormattedBooking {
 		private String location;
@@ -97,13 +100,19 @@ public class NewBookingsImpl implements NewBookings {
 		this.messageDAO = messageDAO;
 	}
 
-	public synchronized void sendNewBookingsMail() {
+	public synchronized void sendTeacherNotificationMail() {
+		log.info("Start sending notification mails to the teachers");
+		
 		List<Teacher> teachers = personDAO.getPersons(Teacher.class);
 		
-		for (Teacher teacher : teachers) {
-			List<PupilBooking> pupilBookings = bookingDAO.getUnsentBookings(teacher);
+		for (Teacher teacher : teachers) {			
+			List<PupilBooking> pupilBookings = bookingDAO.getTeacherNotificationBookings(teacher);
 			
 			if (pupilBookings.isEmpty() == false) {
+				if (log.isDebugEnabled()) {
+					log.debug("Sending mails with booking count: "+pupilBookings.size()+" for teacher: "+teacher.getName());
+				}
+				
 				// Create message to the teacher
 				MailMessage message = new MailMessage();
 		
@@ -151,16 +160,22 @@ public class NewBookingsImpl implements NewBookings {
 			}
 
 			// Send mails
-			bookingDAO.newBookingsMailSent(pupilBookings);
+			bookingDAO.teacherNotificationMailSent(pupilBookings);
 		}
 	}
 	
 	public synchronized void sendPupilNotificationMail() {
+		log.info("Start sending notification mails to the pupil");
+		
 		Map<Pupil, List<PupilBooking>> pupilNotificationBookings = bookingDAO.getPupilNotificationBookings();
 		
 		if (pupilNotificationBookings.isEmpty() == false) {
-			for (Pupil pupil : pupilNotificationBookings.keySet()) {
+			for (Pupil pupil : pupilNotificationBookings.keySet()) {				
 				List<PupilBooking> bookings = pupilNotificationBookings.get(pupil);
+
+				if (log.isDebugEnabled()) {
+					log.debug("Sending mail with booking count: "+bookings.size()+" for pupil: "+pupil.getName());
+				}
 				
 				// Create message to the teacher
 				MailMessage message = new MailMessage();
