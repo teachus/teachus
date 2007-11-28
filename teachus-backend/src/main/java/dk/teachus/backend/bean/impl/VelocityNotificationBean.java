@@ -28,7 +28,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.exception.VelocityException;
 
-import dk.teachus.backend.bean.NewBookings;
+import dk.teachus.backend.bean.NotificationBean;
 import dk.teachus.backend.bean.VelocityBean;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.MessageDAO;
@@ -40,9 +40,9 @@ import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.backend.domain.impl.MailMessage.Type;
 import dk.teachus.utils.ClassUtils;
 
-public class NewBookingsImpl implements NewBookings {
+public class VelocityNotificationBean implements NotificationBean {
 	private static final long serialVersionUID = 1L;
-	private static final Log log = LogFactory.getLog(NewBookingsImpl.class);
+	private static final Log log = LogFactory.getLog(VelocityNotificationBean.class);
 	
 	public static class FormattedBooking {
 		private String location;
@@ -93,7 +93,7 @@ public class NewBookingsImpl implements NewBookings {
 	private final VelocityBean velocityBean;
 	private final MessageDAO messageDAO;
 
-	public NewBookingsImpl(BookingDAO bookingDAO, PersonDAO personDAO, VelocityBean velocityBean, MessageDAO messageDAO) {
+	public VelocityNotificationBean(BookingDAO bookingDAO, PersonDAO personDAO, VelocityBean velocityBean, MessageDAO messageDAO) {
 		this.bookingDAO = bookingDAO;
 		this.personDAO = personDAO;
 		this.velocityBean = velocityBean;
@@ -124,9 +124,9 @@ public class NewBookingsImpl implements NewBookings {
 				Locale locale = teacher.getLocale();
 				
 				// Build up bookingslist and format date
-				List<NewBookingsImpl.FormattedPupilBooking> pupilBookingList = new ArrayList<NewBookingsImpl.FormattedPupilBooking>();
+				List<VelocityNotificationBean.FormattedPupilBooking> pupilBookingList = new ArrayList<VelocityNotificationBean.FormattedPupilBooking>();
 				for (PupilBooking pupilBooking : pupilBookings) {
-					NewBookingsImpl.FormattedPupilBooking formattedPupilBooking = new NewBookingsImpl.FormattedPupilBooking();
+					VelocityNotificationBean.FormattedPupilBooking formattedPupilBooking = new VelocityNotificationBean.FormattedPupilBooking();
 					formattedPupilBooking.setPupilBooking(pupilBooking);
 					SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);
 					formattedPupilBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate()));
@@ -134,7 +134,7 @@ public class NewBookingsImpl implements NewBookings {
 				}
 				
 				// Load properties
-				ResourceBundle bundle = ResourceBundle.getBundle(ClassUtils.getAsResourceBundlePath(NewBookingsImpl.class, "NewBookingsMail"), locale);	
+				ResourceBundle bundle = ResourceBundle.getBundle(ClassUtils.getAsResourceBundlePath(VelocityNotificationBean.class, "NewBookingsMail"), locale);	
 			
 				// Subject
 				message.setSubject(bundle.getString("subject"));
@@ -147,7 +147,7 @@ public class NewBookingsImpl implements NewBookings {
 				model.put("pupilBookingList", pupilBookingList);
 				String template = "";
 				try {
-					template = velocityBean.mergeTemplate(ClassUtils.getAsResourcePath(NewBookingsImpl.class, "NewBookingsMail.vm"), model);
+					template = velocityBean.mergeTemplate(ClassUtils.getAsResourcePath(VelocityNotificationBean.class, "NewBookingsMail.vm"), model);
 				} catch (VelocityException e) {
 					throw new RuntimeException(e);
 				}
@@ -198,7 +198,7 @@ public class NewBookingsImpl implements NewBookings {
 				}
 				
 				// Load properties
-				ResourceBundle bundle = ResourceBundle.getBundle(ClassUtils.getAsResourceBundlePath(NewBookingsImpl.class, "NewBookingsMail"), locale);	
+				ResourceBundle bundle = ResourceBundle.getBundle(ClassUtils.getAsResourceBundlePath(VelocityNotificationBean.class, "NewBookingsMail"), locale);	
 			
 				// Subject
 				message.setSubject(bundle.getString("subject"));
@@ -214,7 +214,7 @@ public class NewBookingsImpl implements NewBookings {
 				
 				String template = "";
 				try {
-					template = velocityBean.mergeTemplate(ClassUtils.getAsResourcePath(NewBookingsImpl.class, "PupilNotificationMail.vm"), model);
+					template = velocityBean.mergeTemplate(ClassUtils.getAsResourcePath(VelocityNotificationBean.class, "PupilNotificationMail.vm"), model);
 				} catch (VelocityException e) {
 					throw new RuntimeException(e);
 				}

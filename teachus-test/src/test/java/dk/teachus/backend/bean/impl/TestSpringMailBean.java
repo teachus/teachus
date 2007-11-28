@@ -31,7 +31,7 @@ import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.backend.test.SpringTestCase;
 
-public class TestMailBeanImpl extends SpringTestCase {
+public class TestSpringMailBean extends SpringTestCase {
 	private static final long serialVersionUID = 1L;
 		
 	public void testSendMail() throws Exception {
@@ -79,7 +79,7 @@ public class TestMailBeanImpl extends SpringTestCase {
 			}			
 		};
 
-		return new MailBeanImpl(mailSender);
+		return new SpringMailBean(mailSender);
 	}
 	
 }

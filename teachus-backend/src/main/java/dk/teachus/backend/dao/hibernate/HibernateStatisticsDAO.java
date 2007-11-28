@@ -27,7 +27,7 @@ import dk.teachus.backend.domain.TeacherStatistics;
 import dk.teachus.backend.domain.Period.Status;
 
 @Transactional(propagation=Propagation.REQUIRED)
-public class StatisticsDAOHibernate extends HibernateDaoSupport implements StatisticsDAO {
+public class HibernateStatisticsDAO extends HibernateDaoSupport implements StatisticsDAO {
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)

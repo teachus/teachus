@@ -39,7 +39,7 @@ import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 
 @Transactional(propagation=Propagation.REQUIRED)
-public class PersonDAOHibernate extends HibernateDaoSupport implements PersonDAO {
+public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO {
 	private static final long serialVersionUID = 1L;
 
 	public void save(Person person) {

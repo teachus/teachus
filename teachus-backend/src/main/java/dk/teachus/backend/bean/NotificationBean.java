@@ -19,7 +19,7 @@ package dk.teachus.backend.bean;
 import java.io.Serializable;
 
 
-public interface NewBookings extends Serializable {
+public interface NotificationBean extends Serializable {
 
 	void sendTeacherNotificationMail();
 	

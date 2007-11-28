@@ -28,12 +28,12 @@ import dk.teachus.backend.MailException;
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.domain.impl.MailMessage.Type;
 
-public class MailBeanImpl implements MailBean {
+public class SpringMailBean implements MailBean {
 	private static final long serialVersionUID = 1L;
 	
 	private JavaMailSender mailSender;
 
-	public MailBeanImpl(JavaMailSender mailSender) {
+	public SpringMailBean(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
 	}
 	

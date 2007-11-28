@@ -26,7 +26,7 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import dk.teachus.backend.bean.VelocityBean;
 
-public class VelocityBeanImpl implements VelocityBean {
+public class SpringVelocityBean implements VelocityBean {
 	private static final String UNDERSCORE = "_";
 	private static final String VM = ".vm";
 
@@ -34,7 +34,7 @@ public class VelocityBeanImpl implements VelocityBean {
 
 	private VelocityEngine velocityEngine;
 
-	public VelocityBeanImpl(VelocityEngine velocityEngine) {
+	public SpringVelocityBean(VelocityEngine velocityEngine) {
 		this.velocityEngine = velocityEngine;
 	}
 	

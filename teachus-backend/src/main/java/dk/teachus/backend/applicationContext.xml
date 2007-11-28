@@ -95,16 +95,16 @@
 		</property>
 	</bean>
 	
-	<bean id="velocityBean" class="dk.teachus.backend.bean.impl.VelocityBeanImpl">
+	<bean id="velocityBean" class="dk.teachus.backend.bean.impl.SpringVelocityBean">
 		<constructor-arg ref="velocityEngine" />
 	</bean>   
 	
-	<bean id="mailBean" class="dk.teachus.backend.bean.impl.MailBeanImpl">
+	<bean id="mailBean" class="dk.teachus.backend.bean.impl.SpringMailBean">
 		<constructor-arg ref="mailSender" />
 	</bean>
 
-	<!-- New bookings -->
-	<bean id="newBookings" class="dk.teachus.backend.bean.impl.NewBookingsImpl">
+	<!-- Notification bean -->
+	<bean id="notificationBean" class="dk.teachus.backend.bean.impl.VelocityNotificationBean">
 		<constructor-arg ref="bookingDao" />
 		<constructor-arg ref="personDao" />
 		<constructor-arg ref="velocityBean" />	
@@ -118,7 +118,7 @@
 	<bean id="personDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
-				class="dk.teachus.backend.dao.hibernate.PersonDAOHibernate">
+				class="dk.teachus.backend.dao.hibernate.HibernatePersonDAO">
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>
@@ -129,7 +129,7 @@
 	<bean id="periodDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
-				class="dk.teachus.backend.dao.hibernate.PeriodDAOHibernate">
+				class="dk.teachus.backend.dao.hibernate.HibernatePeriodDAO">
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>
@@ -140,7 +140,7 @@
 	<bean id="bookingDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
-				class="dk.teachus.backend.dao.hibernate.BookingDAOHibernate">
+				class="dk.teachus.backend.dao.hibernate.HibernateBookingDAO">
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>
@@ -151,7 +151,7 @@
 	<bean id="statisticsDao" parent="txProxyTemplate">
 		<property name="target">
 			<bean
-				class="dk.teachus.backend.dao.hibernate.StatisticsDAOHibernate">
+				class="dk.teachus.backend.dao.hibernate.HibernateStatisticsDAO">
 				<property name="sessionFactory">
 					<ref bean="sessionFactory" />
 				</property>

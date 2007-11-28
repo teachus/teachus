@@ -3,12 +3,14 @@
 
 <beans>
 
+	<import resource="applicationContext.xml" />
+
 	<!-- ========================== -->
 	<!--         SCHEDULING         -->
 	<!-- ========================== -->
 	
 	<bean id="teacherNotificationJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="newBookings" />
+		<property name="targetObject" ref="notificationBean" />
 		<property name="targetMethod" value="sendTeacherNotificationMail" />
 	</bean>
 	
@@ -20,7 +22,7 @@
 	</bean>
 	
 	<bean id="pupilNotificationJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject" ref="newBookings" />
+		<property name="targetObject" ref="notificationBean" />
 		<property name="targetMethod" value="sendPupilNotificationMail" />
 	</bean>
 	

@@ -21,23 +21,23 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
-import dk.teachus.backend.bean.NewBookings;
+import dk.teachus.backend.bean.NotificationBean;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.test.SpringTestCase;
 
-public class TestNewBookingsImpl extends SpringTestCase {
+public class TestVelocityNotificationBean extends SpringTestCase {
 	private static final long serialVersionUID = 1L;
 
 	public void testCreateMails() {
-		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+		NotificationBean notificationBean = (NotificationBean) applicationContext.getBean("notificationBean");
 		
 		// Count the number of mails before
 		int firstMessageCount = countRowsInTable(TABLE_MESSAGE);
 		int firstMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		
 		// Execute the new bookings bean
-		newBookings.sendTeacherNotificationMail();
+		notificationBean.sendTeacherNotificationMail();
 		
 		// The number of messages shouldn't have changed
 		int secondMessageCount = countRowsInTable(TABLE_MESSAGE);
@@ -49,7 +49,7 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		// Execute the new bookings bean
-		newBookings.sendTeacherNotificationMail();
+		notificationBean.sendTeacherNotificationMail();
 
 		// Now the message count should be one larger
 		int thirdMessageCount = countRowsInTable(TABLE_MESSAGE);
@@ -60,13 +60,13 @@ public class TestNewBookingsImpl extends SpringTestCase {
 	}
 	
 	public void testSetSentTeacherNotificationFlag() {
-		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+		NotificationBean notificationBean = (NotificationBean) applicationContext.getBean("notificationBean");
 
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		List<PupilBooking> unsentBookingsBefore = getBookingDAO().getTeacherNotificationBookings(getTeacher());
 		
-		newBookings.sendTeacherNotificationMail();
+		notificationBean.sendTeacherNotificationMail();
 		
 		List<PupilBooking> unsentBookingsAfter = getBookingDAO().getTeacherNotificationBookings(getTeacher());
 		
@@ -75,14 +75,14 @@ public class TestNewBookingsImpl extends SpringTestCase {
 	
 	public void testCreatePupilNotificationMail() {
 
-		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+		NotificationBean notificationBean = (NotificationBean) applicationContext.getBean("notificationBean");
 		
 		// Count the number of mails before
 		int firstMessageCount = countRowsInTable(TABLE_MESSAGE);
 		int firstMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		
 		// Execute the new bookings bean
-		newBookings.sendPupilNotificationMail();
+		notificationBean.sendPupilNotificationMail();
 		
 		// The number of messages shouldn't have changed
 		int secondMessageCount = countRowsInTable(TABLE_MESSAGE);
@@ -97,7 +97,7 @@ public class TestNewBookingsImpl extends SpringTestCase {
 		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
 				
 		// Execute the new bookings bean
-		newBookings.sendPupilNotificationMail();
+		notificationBean.sendPupilNotificationMail();
 
 		// Now the message count should be one larger
 		int thirdMessageCount = countRowsInTable(TABLE_MESSAGE);
@@ -107,13 +107,13 @@ public class TestNewBookingsImpl extends SpringTestCase {
 	}
 	
 	public void testSetSentPupilNotificationFlag() {
-		NewBookings newBookings = (NewBookings) applicationContext.getBean("newBookings");
+		NotificationBean notificationBean = (NotificationBean) applicationContext.getBean("notificationBean");
 
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
 		
 		Map<Pupil, List<PupilBooking>> unsentBookingsBefore = getBookingDAO().getPupilNotificationBookings();
 		
-		newBookings.sendPupilNotificationMail();
+		notificationBean.sendPupilNotificationMail();
 		
 		Map<Pupil, List<PupilBooking>> unsentBookingsAfter = getBookingDAO().getPupilNotificationBookings();
 		

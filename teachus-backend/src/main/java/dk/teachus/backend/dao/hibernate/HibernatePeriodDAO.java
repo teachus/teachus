@@ -36,7 +36,7 @@ import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 
 @Transactional(propagation=Propagation.REQUIRED)
-public class PeriodDAOHibernate extends HibernateDaoSupport implements PeriodDAO {
+public class HibernatePeriodDAO extends HibernateDaoSupport implements PeriodDAO {
 	private static final long serialVersionUID = 1L;
 
 	public void save(Period p) {

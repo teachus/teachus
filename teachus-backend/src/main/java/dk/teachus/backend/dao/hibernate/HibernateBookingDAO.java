@@ -48,7 +48,7 @@ import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
 
 @Transactional(propagation=Propagation.REQUIRED)
-public class BookingDAOHibernate extends HibernateDaoSupport implements BookingDAO {
+public class HibernateBookingDAO extends HibernateDaoSupport implements BookingDAO {
 	private static final long serialVersionUID = 1L;
 
 	public void book(Booking booking) {
