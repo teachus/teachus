@@ -72,6 +72,19 @@ public class TeachUsSession extends WebSession {
 		
 		changeLocale(getLocale());
 	}
+
+	/**
+	 * Should only be used for an Admin to be able to login as a teacher to see his/hers settings.
+	 * 
+	 * @param teacher The teacher to authenticate as.
+	 */
+	public void setAuthenticatedPerson(Teacher teacher) {
+		if (getUserLevel() == UserLevel.ADMIN) {
+			person = teacher;
+		}
+		
+		// We don't set any locale because the teacher might not have the same as the admin.
+	}
 	
 	public void changeLocale(Locale locale) {
 		setLocale(locale);

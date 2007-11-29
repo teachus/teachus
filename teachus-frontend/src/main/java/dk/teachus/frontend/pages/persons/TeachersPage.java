@@ -120,6 +120,28 @@ public class TeachersPage extends PersonsPage<Teacher> {
 			}
 		});
 		
+		// Login
+		functions.add(new FunctionItem("Login") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void onEvent(Object object) {
+				Teacher teacher = (Teacher) object;
+				
+				TeachUsSession.get().setAuthenticatedPerson(teacher);
+				
+				getRequestCycle().setResponsePage(TeachUsApplication.get().getHomePage());
+			}
+			
+			@Override
+			public String getClickConfirmText(Object object) {
+				Teacher teacher = (Teacher) object;
+				String loginText = "Are you sure you wish to login as the teacher: '{personname}'? This should only be used when requested by the teacher.";
+				loginText = loginText.replace("{personname}", teacher.getName());
+				return loginText;
+			}
+		});
+		
 		return functions;
 	}
 
