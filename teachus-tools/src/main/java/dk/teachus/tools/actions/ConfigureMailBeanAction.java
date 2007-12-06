@@ -15,7 +15,7 @@ public class ConfigureMailBeanAction extends AbstractConfigureApplicationContext
 		beanEndIndex += "</bean>".length();
 		
 		String mailBean = applicationContext.substring(beanStartIndex, beanEndIndex);
-		String dummyMailBean = mailBean.replace("impl.MailBeanImpl", "impl.DummyMailBean");
+		String dummyMailBean = mailBean.replace("impl.SpringMailBean", "impl.DummyMailBean");
 		dummyMailBean = dummyMailBean.replace("<constructor-arg ref=\"mailSender\" />", "");
 		
 		return applicationContext.substring(0, beanStartIndex)+dummyMailBean+applicationContext.substring(beanEndIndex);
