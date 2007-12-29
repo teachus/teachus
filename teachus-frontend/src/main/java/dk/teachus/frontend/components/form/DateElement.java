@@ -16,6 +16,9 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.util.Calendar;
+import java.util.Map;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.datetime.PatternDateConverter;
 import org.apache.wicket.datetime.markup.html.form.DateTextField;
@@ -83,6 +86,14 @@ public class DateElement extends AbstractValidationInputElement {
 			@Override
 			public boolean isEnabled(Component component) {
 				return isReadOnly() == false;
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			protected void configure(Map widgetProperties) {
+				super.configure(widgetProperties);
+				
+				widgetProperties.put("START_WEEKDAY", Calendar.getInstance(getLocale()).getFirstDayOfWeek()-1);
 			}
 		});
 		dateField.setLabel(new Model(label));
