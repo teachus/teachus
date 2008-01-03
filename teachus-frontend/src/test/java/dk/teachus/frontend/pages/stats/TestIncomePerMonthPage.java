@@ -45,13 +45,13 @@ public class TestIncomePerMonthPage extends WicketTestCase {
 			will(returnValue(teacher));
 			
 			List<Integer> years = new ArrayList<Integer>();
-			years.add(2007);
+			years.add(new DateMidnight().getYear());
 			
 			one(bookingDAO).getYearsWithBookings(teacher);
 			will(returnValue(years));
 			
-			Date startDate = new DateMidnight(2007, 1, 1).toDate();
-			Date endDate = new DateMidnight(2007, 12, 31).toDate();
+			Date startDate = new DateMidnight().withMonthOfYear(1).withDayOfMonth(1).toDate();
+			Date endDate = new DateMidnight().withMonthOfYear(12).withDayOfMonth(31).toDate();
 			
 			List<PupilBooking> bookings = new ArrayList<PupilBooking>();
 			PupilBooking pupilBooking = createPupilBooking(1L);

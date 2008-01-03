@@ -111,7 +111,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage();
+				return new TeacherCalendarPage(new DateMidnight(2007, 5, 9));
 			}			
 		});
 		
@@ -129,7 +129,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage();
+				return new TeacherCalendarPage(new DateMidnight(2007, 5, 9));
 			}			
 		});
 		
