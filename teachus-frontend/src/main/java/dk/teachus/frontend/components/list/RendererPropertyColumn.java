@@ -14,13 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.components;
+package dk.teachus.frontend.components.list;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
+
+import dk.teachus.frontend.components.RenderingLabel;
 
 public class RendererPropertyColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;

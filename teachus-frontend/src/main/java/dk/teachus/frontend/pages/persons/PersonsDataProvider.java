@@ -4,8 +4,8 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilt
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Person;
-import dk.teachus.frontend.components.StringComparator;
-import dk.teachus.frontend.components.TeachUsSortableDataProvider;
+import dk.teachus.frontend.components.list.StringComparator;
+import dk.teachus.frontend.components.list.TeachUsSortableDataProvider;
 
 public class PersonsDataProvider extends TeachUsSortableDataProvider<Person> implements IFilterStateLocator {
 	private static final long serialVersionUID = 1L;

@@ -29,6 +29,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.tester.TestPanelSource;
 
+import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestListPanel extends WicketTestCase {

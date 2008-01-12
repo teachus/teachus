@@ -25,7 +25,7 @@ import org.apache.wicket.model.Model;
 import dk.teachus.backend.domain.TeacherStatistics;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.ListPanel;
+import dk.teachus.frontend.components.list.ListPanel;
 
 public class TeachersSummaryPage extends AbstractAdminStatisticsPage {
 	private static final long serialVersionUID = 1L;

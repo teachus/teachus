@@ -1,4 +1,4 @@
-package dk.teachus.frontend.components;
+package dk.teachus.frontend.components.list;
 
 import java.io.Serializable;
 import java.util.Collections;

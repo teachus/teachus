@@ -38,10 +38,10 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.ListPanel;
-import dk.teachus.frontend.components.RendererPropertyColumn;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jfreechart.PieChartResource;
+import dk.teachus.frontend.components.list.ListPanel;
+import dk.teachus.frontend.components.list.RendererPropertyColumn;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.PercentChoiceRenderer;
 

@@ -3,10 +3,10 @@ package dk.teachus.frontend.pages;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.frontend.components.DateComparator;
-import dk.teachus.frontend.components.DoubleComparator;
-import dk.teachus.frontend.components.StringComparator;
-import dk.teachus.frontend.components.TeachUsSortableDataProvider;
+import dk.teachus.frontend.components.list.DateComparator;
+import dk.teachus.frontend.components.list.DoubleComparator;
+import dk.teachus.frontend.components.list.StringComparator;
+import dk.teachus.frontend.components.list.TeachUsSortableDataProvider;
 
 public class PaymentDataProvider extends TeachUsSortableDataProvider<PupilBooking> {
 	private static final long serialVersionUID = 1L;

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.components;
+package dk.teachus.frontend.components.list;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +27,8 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
+
+import dk.teachus.frontend.components.ConfirmClickBehavior;
 
 public class FunctionsColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;

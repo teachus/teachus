@@ -27,7 +27,7 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.FunctionsColumn.FunctionItem;
+import dk.teachus.frontend.components.list.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 

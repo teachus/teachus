@@ -3,12 +3,12 @@ package dk.teachus.frontend.pages.periods;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Period;
-import dk.teachus.frontend.components.DateComparator;
-import dk.teachus.frontend.components.DoubleComparator;
-import dk.teachus.frontend.components.StringComparator;
-import dk.teachus.frontend.components.TeachUsSortableDataProvider;
-import dk.teachus.frontend.components.TimeComparator;
-import dk.teachus.frontend.components.WeekDayComparator;
+import dk.teachus.frontend.components.list.DateComparator;
+import dk.teachus.frontend.components.list.DoubleComparator;
+import dk.teachus.frontend.components.list.StringComparator;
+import dk.teachus.frontend.components.list.TeachUsSortableDataProvider;
+import dk.teachus.frontend.components.list.TimeComparator;
+import dk.teachus.frontend.components.list.WeekDayComparator;
 
 public class PeriodsDataProvider extends TeachUsSortableDataProvider<Period> {
 	private static final long serialVersionUID = 1L;
