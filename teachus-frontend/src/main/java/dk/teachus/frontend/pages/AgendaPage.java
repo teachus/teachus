@@ -16,9 +16,9 @@
  */
 package dk.teachus.frontend.pages;
 
-import java.util.List;
-
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import dk.teachus.backend.dao.BookingDAO;
@@ -42,13 +42,10 @@ public class AgendaPage extends AuthenticatedBasePage {
 	public AgendaPage() {
 		super(UserLevel.TEACHER, true);
 		
-		Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
-		
-		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		List<PupilBooking> bookings = bookingDAO.getFutureBookingsForTeacher(teacher);
-		
+		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
+				
 		IColumn[] columns = new IColumn[] {
-				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name") {
+				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -57,13 +54,24 @@ public class AgendaPage extends AuthenticatedBasePage {
 						getRequestCycle().setResponsePage(new PupilPage(new PupilModel(booking.getPupil().getId())));
 					}
 				},
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", new DateChoiceRenderer()),
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()),
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "pupil.phoneNumber"),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", new CurrencyChoiceRenderer())
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "pupil.phoneNumber", "pupil.phoneNumber"),
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer())
 		};
 		
-		add(new ListPanel("list", columns, bookings));
+		IModel bookingsModel = new LoadableDetachableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Object load() {
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				return bookingDAO.getFutureBookingsForTeacher(teacher);
+			}
+			
+		};
+		
+		add(new ListPanel("list", columns, new AgendaDataProvider(bookingsModel)));
 	}
 
 	@Override

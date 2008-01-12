@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import dk.teachus.backend.dao.PeriodDAO;
@@ -68,7 +70,6 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		});
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
 
-		Periods periods = periodDAO.getPeriods(teacher, false);
 		final Map<Long, Boolean> periodDeleteability = periodDAO.getPeriodDeleteability();
 		final DateChoiceRenderer dateChoiceRenderer = new DateChoiceRenderer();
 		final TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
@@ -101,7 +102,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		});
 		
 		IColumn[] columns = new IColumn[] {
-				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") { //$NON-NLS-1$ //$NON-NLS-2$
+				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name", "name") { //$NON-NLS-1$ //$NON-NLS-2$
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -110,16 +111,27 @@ public class PeriodsPage extends AuthenticatedBasePage {
 						getRequestCycle().setResponsePage(new PeriodPage(period));
 					}					
 				},
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startDate")), "beginDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endDate")), "endDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startTime")), "startTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endTime")), "endTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.weekDays")), "weekDays", weekDayChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startDate")), "beginDate", "beginDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endDate")), "endDate", "endDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.startTime")), "startTime", "startTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.endTime")), "endTime", "endTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.weekDays")), "weekDays", "weekDays", weekDayChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "price", "price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions) //$NON-NLS-1$
 		};
 		
-		add(new ListPanel("list", columns, periods.getPeriods())); //$NON-NLS-1$
+		IModel periodsModel = new LoadableDetachableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Object load() {
+				PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
+				Periods periods = periodDAO.getPeriods(teacher, false);
+				return periods.getPeriods();
+			}
+		};
+		
+		add(new ListPanel("list", columns, new PeriodsDataProvider(periodsModel))); //$NON-NLS-1$
 	}
 
 	@Override

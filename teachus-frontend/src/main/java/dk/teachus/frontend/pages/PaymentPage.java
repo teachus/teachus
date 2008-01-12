@@ -25,6 +25,7 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import dk.teachus.backend.dao.BookingDAO;
@@ -48,20 +49,10 @@ public class PaymentPage extends AuthenticatedBasePage {
 	public PaymentPage() {
 		super(UserLevel.PUPIL);
 		
-		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		List<PupilBooking> pupilBookings = null;
-		if (TeachUsSession.get().getPerson() instanceof Pupil) {
-			pupilBookings = bookingDAO.getUnpaidBookings((Pupil) TeachUsSession.get().getPerson());
-		} else if (TeachUsSession.get().getPerson() instanceof Teacher) {
-			pupilBookings = bookingDAO.getUnpaidBookings((Teacher) TeachUsSession.get().getPerson());
-		} else {
-			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
-		}
-		
-		init(pupilBookings);
+		init();
 	}
 	
-	private void init(final List<PupilBooking> pupilBookings) {
+	private void init() {
 		IColumn paidColumn;
 		Model paidHeader = new Model(TeachUsSession.get().getString("General.paid")); //$NON-NLS-1$
 		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
@@ -77,14 +68,35 @@ public class PaymentPage extends AuthenticatedBasePage {
 		}
 		
 		IColumn[] columns = new IColumn[] {
-				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", new DateChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				paidColumn
 		};
+		
+		IModel bookingsModel = new LoadableDetachableModel() {
+			private static final long serialVersionUID = 1L;
 
-		add(new ListPanel("list", columns, pupilBookings));
+			@Override
+			protected Object load() {
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				List<PupilBooking> pupilBookings = null;
+				
+				if (TeachUsSession.get().getPerson() instanceof Pupil) {
+					pupilBookings = bookingDAO.getUnpaidBookings((Pupil) TeachUsSession.get().getPerson());
+				} else if (TeachUsSession.get().getPerson() instanceof Teacher) {
+					pupilBookings = bookingDAO.getUnpaidBookings((Teacher) TeachUsSession.get().getPerson());
+				} else {
+					throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
+				}
+				
+				return pupilBookings;
+			}
+			
+		};
+
+		add(new ListPanel("list", columns, new PaymentDataProvider(bookingsModel)));
 	}
 
 	@Override
