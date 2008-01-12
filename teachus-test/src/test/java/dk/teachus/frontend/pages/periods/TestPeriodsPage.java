@@ -85,11 +85,11 @@ public class TestPeriodsPage extends WicketSpringTestCase {
 
 	private Item getPeriodRow(WicketTester tester, String periodName) {
 		Item periodRow = null;
-		DataGridView gridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:table:rows");
+		DataGridView gridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:rows");
 		for (int i = 1; i <= gridView.size(); i++) {
-			Label label = (Label) tester.getComponentFromLastRenderedPage("list:table:rows:"+i+":cells:1:cell:link:label");
+			Label label = (Label) tester.getComponentFromLastRenderedPage("list:filterForm:table:rows:"+i+":cells:1:cell:link:label");
 			if (periodName.equals(label.getModelObjectAsString())) {
-				periodRow = (Item) tester.getComponentFromLastRenderedPage("list:table:rows:"+i);
+				periodRow = (Item) tester.getComponentFromLastRenderedPage("list:filterForm:table:rows:"+i);
 				break;
 			}
 		}
