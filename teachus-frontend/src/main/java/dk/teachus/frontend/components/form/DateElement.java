@@ -95,6 +95,11 @@ public class DateElement extends AbstractValidationInputElement {
 				
 				widgetProperties.put("START_WEEKDAY", Calendar.getInstance(getLocale()).getFirstDayOfWeek()-1);
 			}
+			
+			@Override
+			protected boolean enableMonthYearSelection() {
+				return true;
+			}
 		});
 		dateField.setLabel(new Model(label));
 		dateField.setRequired(required);
