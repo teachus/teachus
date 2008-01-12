@@ -27,7 +27,11 @@ public abstract class LinkPropertyColumn extends AbstractColumn {
 	private String propertyExpression;
 	
 	public LinkPropertyColumn(IModel displayModel, String propertyExpression) {
-		super(displayModel);
+		this(displayModel, null, propertyExpression);
+	}
+	
+	public LinkPropertyColumn(IModel displayModel, String sortProperty, String propertyExpression) {
+		super(displayModel, sortProperty);
 		
 		this.propertyExpression = propertyExpression;
 	}

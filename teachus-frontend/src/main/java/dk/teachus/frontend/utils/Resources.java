@@ -66,6 +66,9 @@ public abstract class Resources {
 	public static final ResourceReference ANDREAS09_BODYBG_PURPLE = new ResourceReference(TeachUsApplication.class, "resources/img/bodybg-purple.jpg"); //$NON-NLS-1$;
 	public static final ResourceReference ANDREAS09_MENUHOVER_PURPLE = new ResourceReference(TeachUsApplication.class, "resources/img/menuhover-purple.jpg"); //$NON-NLS-1$;
 	
+	public static final ResourceReference ASC = new ResourceReference(TeachUsApplication.class, "resources/img/asc.png"); //$NON-NLS-1$;
+	public static final ResourceReference DESC = new ResourceReference(TeachUsApplication.class, "resources/img/desc.png"); //$NON-NLS-1$;
+	
 	/*
 	 * CSS and JS
 	 */

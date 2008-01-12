@@ -194,6 +194,9 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/loading.gif", JFreeChartImage.LOADING_INDICATOR.getSharedResourceKey());
 		mountSharedResource("/images/loading_dots.gif", Resources.DOT_INDICATOR.getSharedResourceKey());
 		
+		mountSharedResource("/images/asc.png", Resources.ASC.getSharedResourceKey());
+		mountSharedResource("/images/desc.png", Resources.DESC.getSharedResourceKey());
+		
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
 		mountSharedResource("/css/print.css", Resources.CSS_PRINT.getSharedResourceKey());

@@ -269,8 +269,24 @@ table.border th {
 	border: 0;
 }
 
-.list tfoot td {
-	background-color: #EEEEEE;
+.list tr.navigation td {
+	background-color: #F5F5F5;
+}
+
+.list .wicket_orderNone {
+	color: white;	
+}
+
+.list .wicket_orderUp a {
+	color: white;	
+	background: url(/images/asc.png) no-repeat left center;
+	padding-left: 10px;
+}
+
+.list .wicket_orderDown a {
+	color: white;	
+	background: url(/images/desc.png) no-repeat left center;
+	padding-left: 10px;	
 }
 
 .innerlist {

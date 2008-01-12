@@ -29,12 +29,19 @@ public class RendererPropertyColumn extends AbstractColumn {
 	private String propertyExpressions;
 
 	public RendererPropertyColumn(IModel displayModel, String propertyExpressions) {
-		super(displayModel);
-		this.propertyExpressions = propertyExpressions;
+		this(displayModel, null, propertyExpressions, null);
+	}
+
+	public RendererPropertyColumn(IModel displayModel, String sortProperty, String propertyExpressions) {
+		this(displayModel, sortProperty, propertyExpressions, null);
 	}
 	
 	public RendererPropertyColumn(IModel displayModel, String propertyExpressions, IChoiceRenderer renderer) {
-		super(displayModel);
+		this(displayModel, null, propertyExpressions, renderer);
+	}
+	
+	public RendererPropertyColumn(IModel displayModel, String sortProperty, String propertyExpressions, IChoiceRenderer renderer) {
+		super(displayModel, sortProperty);
 		this.renderer = renderer;
 		this.propertyExpressions = propertyExpressions;
 	}

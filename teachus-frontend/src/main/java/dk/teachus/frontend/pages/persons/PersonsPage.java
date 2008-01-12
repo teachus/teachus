@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import dk.teachus.backend.domain.Person;
@@ -67,13 +69,11 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				return showNewPersonLink();
 			}
 		});
-
-		List<P> persons = getPersons();
 		
 		final List<FunctionItem> functions = getFunctions();
 		
 		List<IColumn> columns = new ArrayList<IColumn>();
-		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name") { //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.name")), "name", "name") { //$NON-NLS-1$ //$NON-NLS-2$
 			private static final long serialVersionUID = 1L;
 
 			@SuppressWarnings("unchecked") //$NON-NLS-1$
@@ -83,14 +83,25 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 				getRequestCycle().setResponsePage(getPersonPage(person.getId()));
 			}					
 		});
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username")); //$NON-NLS-1$ //$NON-NLS-2$
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email")); //$NON-NLS-1$ //$NON-NLS-2$
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username", "username")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email", "email")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber", "phoneNumber")); //$NON-NLS-1$ //$NON-NLS-2$
 		if (functions != null) {
 			columns.add(new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)); //$NON-NLS-1$
 		}
 		
-		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), persons)); //$NON-NLS-1$
+		final IModel personsModel = new LoadableDetachableModel() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Object load() {
+				return getPersons();
+			}			
+		};
+		
+		PersonsDataProvider dataProvider = new PersonsDataProvider(personsModel);
+		
+		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), dataProvider)); //$NON-NLS-1$
 	}
 
 	protected abstract List<P> getPersons();

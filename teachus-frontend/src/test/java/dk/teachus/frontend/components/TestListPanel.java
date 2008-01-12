@@ -60,7 +60,7 @@ public class TestListPanel extends WicketTestCase {
 		
 		
 		tester.assertComponent("panel", ListPanel.class);
-		tester.assertComponent("panel:table", DataTable.class);
+		tester.assertComponent("panel:filterForm:table", DataTable.class);
 	}
 	
 }
