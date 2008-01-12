@@ -146,4 +146,4 @@ ALTER TABLE
 		ADD INDEX FK398E4FE1CAFD62F8 (message_id), 
 		ADD CONSTRAINT FK398E4FE1CAFD62F8 FOREIGN KEY (message_id) REFERENCES message (id);
 
-INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.44');
+INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.45');
