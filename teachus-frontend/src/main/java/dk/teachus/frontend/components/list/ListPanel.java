@@ -27,7 +27,6 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.ISortableDataProvider;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -47,7 +46,7 @@ public class ListPanel extends Panel {
 		this(id, columns, dataProvider, null);
 	}
 	
-	public ListPanel(String id, IColumn[] columns, ISortableDataProvider dataProvider, IFilterStateLocator filterStateLocator) {
+	public ListPanel(String id, IColumn[] columns, ISortableDataProvider dataProvider, TeachUsFilter filterStateLocator) {
 		super(id);
 		
 		createList(columns, dataProvider, filterStateLocator);
@@ -77,25 +76,35 @@ public class ListPanel extends Panel {
 		createList(columns, dataProvider, null);
 	}
 
-	private void createList(IColumn[] columns, ISortableDataProvider dataProvider, IFilterStateLocator filterStateLocator) {
+	private void createList(IColumn[] columns, ISortableDataProvider dataProvider, final TeachUsFilter filterStateLocator) {
 		FilterForm form = null;
 		MarkupContainer parent = null;
 		if (filterStateLocator != null) {
-			form = new FilterForm("filterForm", filterStateLocator);
+			form = new FilterForm("filterForm", filterStateLocator) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				protected void onSubmit() {
+					filterStateLocator.onSubmit();
+				}
+			};
 			parent = form;
 		} else {
 			parent = new WebMarkupContainer("filterForm");
 			parent.setRenderBodyOnly(true);
+			parent.add(new WebComponent("focus-tracker").setVisible(false));
+			parent.add(new WebComponent("focus-restore").setVisible(false));
 		}
 		add(parent);
 		
 		parent.add(createDataTable(columns, dataProvider, form, filterStateLocator));
 	}
 
-	private DataTable createDataTable(IColumn[] columns, ISortableDataProvider dataProvider, FilterForm form, IFilterStateLocator filterStateLocator) {
+	private DataTable createDataTable(IColumn[] columns, ISortableDataProvider dataProvider, FilterForm form, TeachUsFilter filterStateLocator) {
 		DataTable dataTable = new DataTable("table", columns, dataProvider, 40);
 
 		if (form != null && filterStateLocator != null) {
+			dataTable.addTopToolbar(new FilterSubmitToolbar(dataTable, filterStateLocator));
 			dataTable.addTopToolbar(new FilterToolbar(dataTable, form, filterStateLocator));
 		}
 		

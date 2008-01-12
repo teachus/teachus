@@ -16,14 +16,16 @@
  */
 package dk.teachus.frontend.components.list;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.Component;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
-public abstract class LinkPropertyColumn extends AbstractColumn {
+public abstract class LinkPropertyColumn extends FilteredAbstractColumn {
 	private String propertyExpression;
 	
 	public LinkPropertyColumn(IModel displayModel, String propertyExpression) {
@@ -55,4 +57,8 @@ public abstract class LinkPropertyColumn extends AbstractColumn {
 	}
 
 	protected abstract void onClick(Object rowModelObject);
+	
+	public Component getFilter(String componentId, FilterForm form) {
+		return null;
+	}
 }

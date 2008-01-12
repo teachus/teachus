@@ -19,10 +19,14 @@ package dk.teachus.frontend.pages.persons;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.TeachUsSession;
@@ -81,11 +85,33 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 			protected void onClick(Object rowModelObject) {
 				P person = (P) rowModelObject;
 				getRequestCycle().setResponsePage(getPersonPage(person.getId()));
-			}					
+			}
+			
+			public Component getFilter(String componentId, FilterForm form) {
+				return new TextFilter(componentId, new PropertyModel(form.getModel(), "name"), form);
+			}
 		});
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username", "username")); //$NON-NLS-1$ //$NON-NLS-2$
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email", "email")); //$NON-NLS-1$ //$NON-NLS-2$
-		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber", "phoneNumber")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.username")), "username", "username") { //$NON-NLS-1$ //$NON-NLS-2$
+			private static final long serialVersionUID = 1L;
+			
+			public Component getFilter(String componentId, FilterForm form) {
+				return new TextFilter(componentId, new PropertyModel(form.getModel(), "username"), form);
+			}
+		}); 
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.email")), "email", "email") { //$NON-NLS-1$ //$NON-NLS-2$
+			private static final long serialVersionUID = 1L;
+			
+			public Component getFilter(String componentId, FilterForm form) {
+				return new TextFilter(componentId, new PropertyModel(form.getModel(), "email"), form);
+			}
+		});
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "phoneNumber", "phoneNumber") { //$NON-NLS-1$ //$NON-NLS-2$
+			private static final long serialVersionUID = 1L;
+			
+			public Component getFilter(String componentId, FilterForm form) {
+				return new TextFilter(componentId, new PropertyModel(form.getModel(), "phoneNumber"), form);
+			}
+		});
 		if (functions != null) {
 			columns.add(new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)); //$NON-NLS-1$
 		}
@@ -101,7 +127,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		
 		PersonsDataProvider dataProvider = new PersonsDataProvider(personsModel);
 		
-		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), dataProvider)); //$NON-NLS-1$
+		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), dataProvider, dataProvider)); //$NON-NLS-1$
 	}
 
 	protected abstract List<P> getPersons();

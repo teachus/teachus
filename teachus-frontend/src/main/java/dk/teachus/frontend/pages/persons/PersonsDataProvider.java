@@ -1,13 +1,14 @@
 package dk.teachus.frontend.pages.persons;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.IFilterStateLocator;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Person;
+import dk.teachus.backend.domain.impl.PersonImpl;
 import dk.teachus.frontend.components.list.StringComparator;
-import dk.teachus.frontend.components.list.TeachUsSortableDataProvider;
+import dk.teachus.frontend.components.list.StringFilter;
+import dk.teachus.frontend.components.list.TeachUsFilteredSortableDataProvider;
 
-public class PersonsDataProvider extends TeachUsSortableDataProvider<Person> implements IFilterStateLocator {
+public class PersonsDataProvider extends TeachUsFilteredSortableDataProvider<Person> {
 	private static final long serialVersionUID = 1L;
 	
 	public PersonsDataProvider(IModel personsModel) {
@@ -20,16 +21,19 @@ public class PersonsDataProvider extends TeachUsSortableDataProvider<Person> imp
 		addComparator("phoneNumber", stringComparator);
 		
 		setSort("name", true);
-	}
-
-	public Object getFilterState() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		StringFilter stringFilter = new StringFilter();
+		addFilter("name", stringFilter);
+		addFilter("username", stringFilter);
+		addFilter("email", stringFilter);
+		addFilter("phoneNumber", stringFilter);
 	}
 	
-	public void setFilterState(Object state) {
-		// TODO Auto-generated method stub
-		
+	@Override
+	protected Person createStateObject() {
+		return new PersonImpl() {
+			private static final long serialVersionUID = 1L;
+		};
 	}
 	
 }

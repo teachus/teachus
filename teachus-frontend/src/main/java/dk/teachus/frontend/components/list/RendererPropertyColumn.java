@@ -16,7 +16,9 @@
  */
 package dk.teachus.frontend.components.list;
 
-import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
+import org.apache.wicket.Component;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
@@ -24,7 +26,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import dk.teachus.frontend.components.RenderingLabel;
 
-public class RendererPropertyColumn extends AbstractColumn {
+public class RendererPropertyColumn extends FilteredAbstractColumn {
 	private static final long serialVersionUID = 1L;
 	
 	private IChoiceRenderer renderer;
@@ -52,5 +54,9 @@ public class RendererPropertyColumn extends AbstractColumn {
 		RenderingLabel renderingLabel = new RenderingLabel(componentId, new PropertyModel(rowModel, propertyExpressions), renderer);
 		renderingLabel.setRenderBodyOnly(true);
 		cellItem.add(renderingLabel);
+	}
+	
+	public Component getFilter(String componentId, FilterForm form) {
+		return null;
 	}
 }
