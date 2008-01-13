@@ -118,7 +118,7 @@ public class VelocityNotificationBean implements NotificationBean {
 		
 				// Sender and recipient
 				message.setSender(teacher);
-				message.addRecipient(teacher);
+				message.setRecipient(teacher);
 				
 				// The locale
 				Locale locale = teacher.getLocale();
@@ -182,7 +182,7 @@ public class VelocityNotificationBean implements NotificationBean {
 		
 				// Sender and recipient
 				message.setSender(pupil.getTeacher());
-				message.addRecipient(pupil);
+				message.setRecipient(pupil);
 				
 				// The locale
 				Locale locale = pupil.getTeacher().getLocale();

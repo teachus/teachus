@@ -87,18 +87,11 @@ CREATE TABLE
 	subject VARCHAR(255), 
 	body TEXT, 
 	sender BIGINT, 
+	recipient BIGINT, 
 	sent TINYINT(1), 
 	sent_date DATETIME,
 	mail_type VARCHAR(255),
 	primary key (id)
-) type=InnoDB;
-
-CREATE TABLE
-	message_recipient 
-(
-	message_id BIGINT NOT NULL, 
-	person_id BIGINT NOT NULL, 
-	primary key (message_id, person_id)
 ) type=InnoDB;
 
 ALTER TABLE 
@@ -134,16 +127,8 @@ ALTER TABLE
 ALTER TABLE
 	message 
 		ADD INDEX FK38EB0007E0E4002A (sender), 
-		ADD CONSTRAINT FK38EB0007E0E4002A FOREIGN KEY (sender) REFERENCES person (id);
+		ADD CONSTRAINT FK38EB0007E0E4002A FOREIGN KEY (sender) REFERENCES person (id)
+		ADD INDEX IDX_MESSAGE_RECIPIENT (recipient), 
+		ADD CONSTRAINT FK_MESSAGE_RECIPIENT_PERSON FOREIGN KEY (recipient) REFERENCES person (id);
 
-ALTER TABLE 
-	message_recipient 
-		ADD INDEX FK398E4FE149BE803A (person_id), 
-		ADD CONSTRAINT FK398E4FE149BE803A FOREIGN KEY (person_id) REFERENCES person (id);
-
-ALTER TABLE 
-	message_recipient 
-		ADD INDEX FK398E4FE1CAFD62F8 (message_id), 
-		ADD CONSTRAINT FK398E4FE1CAFD62F8 FOREIGN KEY (message_id) REFERENCES message (id);
-
-INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.45');
+INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.46');

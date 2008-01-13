@@ -22,6 +22,9 @@ public abstract class AbstractHibernateObject implements Serializable {
 	private Long id;
 	private int version;
 
+	public AbstractHibernateObject() {
+	}
+	
 	public int getVersion() {
 		return version;
 	}
@@ -37,4 +40,13 @@ public abstract class AbstractHibernateObject implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	protected AbstractHibernateObject(AbstractHibernateObject o) {
+		if (o.id != null) {
+			this.id = new Long(o.id);
+		}
+		
+		this.version = o.version;
+	}
+	
 }

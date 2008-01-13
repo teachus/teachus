@@ -34,16 +34,13 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 		
 		// Count the number of mails before
 		int firstMessageCount = countRowsInTable(TABLE_MESSAGE);
-		int firstMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		
 		// Execute the new bookings bean
 		notificationBean.sendTeacherNotificationMail();
 		
 		// The number of messages shouldn't have changed
 		int secondMessageCount = countRowsInTable(TABLE_MESSAGE);
-		int secondMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		assertEquals(firstMessageCount, secondMessageCount);
-		assertEquals(firstMessageRecCount, secondMessageRecCount);
 		
 		// Create a new booking
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
@@ -53,9 +50,7 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 
 		// Now the message count should be one larger
 		int thirdMessageCount = countRowsInTable(TABLE_MESSAGE);
-		int thirdMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		assertEquals(secondMessageCount+1, thirdMessageCount);
-		assertEquals(secondMessageRecCount+1, thirdMessageRecCount);
 		
 	}
 	
@@ -79,16 +74,13 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 		
 		// Count the number of mails before
 		int firstMessageCount = countRowsInTable(TABLE_MESSAGE);
-		int firstMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		
 		// Execute the new bookings bean
 		notificationBean.sendPupilNotificationMail();
 		
 		// The number of messages shouldn't have changed
 		int secondMessageCount = countRowsInTable(TABLE_MESSAGE);
-		int secondMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		assertEquals(firstMessageCount, secondMessageCount);
-		assertEquals(firstMessageRecCount, secondMessageRecCount);
 		
 		// Create some bookings
 		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
@@ -101,9 +93,7 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 
 		// Now the message count should be one larger
 		int thirdMessageCount = countRowsInTable(TABLE_MESSAGE);
-		int thirdMessageRecCount = countRowsInTable(TABLE_MESSAGE_RECIPIENT);
 		assertEquals(secondMessageCount+3, thirdMessageCount);
-		assertEquals(secondMessageRecCount+3, thirdMessageRecCount);
 	}
 	
 	public void testSetSentPupilNotificationFlag() {

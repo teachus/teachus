@@ -138,7 +138,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 				// Create mail message
 				Message message = new MailMessage();
 				message.setSender(pupil.getTeacher());
-				message.addRecipient(pupil);
+				message.setRecipient(pupil);
 				
 				String subject = TeachUsSession.get().getString("NewPasswordMail.subject");
 				message.setSubject(subject);

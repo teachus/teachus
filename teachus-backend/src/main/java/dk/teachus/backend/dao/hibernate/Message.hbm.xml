@@ -26,10 +26,7 @@
         
         <many-to-one name="sender" class="PersonImpl" fetch="join" />
         
-        <set name="recipients" table="message_recipient">
-        	<key column="message_id" />
-        	<many-to-many column="person_id" class="PersonImpl" fetch="join" />
-        </set>       	
+        <many-to-one name="recipient" class="PersonImpl" fetch="join" />
         
         <!-- SUBCLASSES -->
         <subclass name="MailMessage" discriminator-value="MAIL">         	

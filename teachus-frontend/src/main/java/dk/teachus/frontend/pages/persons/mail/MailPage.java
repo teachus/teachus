@@ -17,6 +17,7 @@
 package dk.teachus.frontend.pages.persons.mail;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.PropertyModel;
@@ -39,21 +40,22 @@ import dk.teachus.frontend.pages.persons.PupilsPage;
 public class MailPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
+	private Set<Person> recipients = new HashSet<Person>();
+	
 	public MailPage() {
 		super(UserLevel.TEACHER, true);
 		
-		final Message message = new MailMessage();
-		message.setSender(TeachUsSession.get().getPerson());
-		message.setRecipients(new HashSet<Person>());
+		final Message messageTemplate = new MailMessage();
+		messageTemplate.setSender(TeachUsSession.get().getPerson());
 		
 		FormPanel mailForm = new FormPanel("mailForm"); //$NON-NLS-1$
 		add(mailForm);
 		
-		mailForm.addElement(new SelectPupilsElement(TeachUsSession.get().getString("MailPage.recipients"), new PropertyModel(message, "recipients"), true)); //$NON-NLS-1$ //$NON-NLS-2$
+		mailForm.addElement(new SelectPupilsElement(TeachUsSession.get().getString("MailPage.recipients"), new PropertyModel(this, "recipients"), true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		mailForm.addElement(new TextFieldElement(TeachUsSession.get().getString("MailPage.subject"), new PropertyModel(message, "subject"), true, 50)); //$NON-NLS-1$ //$NON-NLS-2$
+		mailForm.addElement(new TextFieldElement(TeachUsSession.get().getString("MailPage.subject"), new PropertyModel(messageTemplate, "subject"), true, 50)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		TextAreaElement body = new TextAreaElement(TeachUsSession.get().getString("MailPage.message"), new PropertyModel(message, "body"), true); //$NON-NLS-1$ //$NON-NLS-2$
+		TextAreaElement body = new TextAreaElement(TeachUsSession.get().getString("MailPage.message"), new PropertyModel(messageTemplate, "body"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		mailForm.addElement(body);
 		
 		mailForm.addElement(new ButtonPanelElement(TeachUsSession.get().getString("MailPage.sendMail")) { //$NON-NLS-1$
@@ -67,7 +69,13 @@ public class MailPage extends AuthenticatedBasePage {
 			@Override
 			protected void onSave(AjaxRequestTarget target) {
 				MessageDAO messageDAO = TeachUsApplication.get().getMessageDAO();
-				messageDAO.save(message);
+				
+				for (Person recipient : recipients) {
+					Message message = messageTemplate.copy();
+					message.setRecipient(recipient);
+					
+					messageDAO.save(message);
+				}
 
 				getRequestCycle().setResponsePage(PupilsPage.class);				
 			}
@@ -82,6 +90,14 @@ public class MailPage extends AuthenticatedBasePage {
 	@Override
 	protected String getPageLabel() {
 		return TeachUsSession.get().getString("MailPage.sendMail"); //$NON-NLS-1$
+	}
+
+	public Set<Person> getRecipients() {
+		return recipients;
+	}
+
+	public void setRecipients(Set<Person> recipients) {
+		this.recipients = recipients;
 	}
 	
 }

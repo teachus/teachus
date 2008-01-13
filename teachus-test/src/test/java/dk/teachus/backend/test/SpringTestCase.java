@@ -53,7 +53,6 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	protected static final String TABLE_PERSON = "person";
 	protected static final String TABLE_TEACHER_ATTRIBUTE = "teacher_attribute";
 	protected static final String TABLE_MESSAGE = "message";
-	protected static final String TABLE_MESSAGE_RECIPIENT = "message_recipient";
 	private static boolean useMysql = false;
 	
 	static {

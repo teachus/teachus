@@ -18,7 +18,6 @@ package dk.teachus.backend.domain;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 public interface Message extends Serializable {
 	
@@ -36,14 +35,15 @@ public interface Message extends Serializable {
 	Person getSender();
 	void setSender(Person sender);
 	
-	Set<Person> getRecipients();
-	void setRecipients(Set<Person> recipients);
-	void addRecipient(Person recipient);
+	Person getRecipient();
+	void setRecipient(Person recipient);
 		
 	String getSubject();
 	void setSubject(String subject);
 	
 	String getBody();
 	void setBody(String body);
+
+	Message copy();
 	
 }

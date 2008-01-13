@@ -17,8 +17,6 @@
 package dk.teachus.backend.domain.impl;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.Person;
@@ -29,9 +27,12 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 	private String subject;
 	private String body;
 	private Person sender;
-	private Set<Person> recipients;
+	private Person recipient;
 	private boolean sent;
 	private Date sentDate;
+	
+	public AbstractMessage() {
+	}
 	
 	public String getBody() {
 		return body;
@@ -41,8 +42,8 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 		return createDate;
 	}
 	
-	public Set<Person> getRecipients() {
-		return recipients;
+	public Person getRecipient() {
+		return recipient;
 	}
 	
 	public Person getSender() {
@@ -68,19 +69,11 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
-	
-	public void setRecipients(Set<Person> recipients) {
-		this.recipients = recipients;
+
+	public void setRecipient(Person recipient) {
+		this.recipient = recipient;
 	}
-	
-	public void addRecipient(Person recipient) {
-		if (recipients == null) {
-			recipients = new HashSet<Person>();
-		}
-		
-		recipients.add(recipient);
-	}
-	
+
 	public void setSender(Person sender) {
 		this.sender = sender;
 	}
@@ -96,4 +89,31 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
+	
+	protected AbstractMessage(AbstractMessage m) {
+		super((AbstractHibernateObject) m);
+		
+		if (m.body != null) {
+			this.body = m.body.intern();
+		}
+		
+		if (m.createDate != null) {
+			this.createDate = new Date(m.createDate.getTime());
+		}
+		
+		// We don't make a copy of the sender and recipient object.
+		this.recipient = m.recipient;
+		this.sender = m.sender;
+		
+		this.sent = m.sent;
+		
+		if (m.sentDate != null) {
+			this.sentDate = new Date(m.sentDate.getTime());
+		}
+		
+		if (m.subject != null) {
+			this.subject = m.subject.intern();
+		}
+	}
+	
 }

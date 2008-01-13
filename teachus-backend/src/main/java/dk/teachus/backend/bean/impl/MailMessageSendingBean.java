@@ -58,25 +58,24 @@ public class MailMessageSendingBean {
 					
 					MailMessage mailMessage = (MailMessage) message;					
 
-					for (Person recipientPerson : mailMessage.getRecipients()) {
-						Person senderPerson = mailMessage.getSender();
-						
-						InternetAddress sender = new InternetAddress(senderPerson.getEmail(), mailMessage.getSender().getName());
-						InternetAddress recipient = new InternetAddress(recipientPerson.getEmail(), recipientPerson.getName());
-						String subject = mailMessage.getSubject();
-						
-						String body = mailMessage.getBody();
-						body = body.replace("${recipient.name}", recipientPerson.getName());
-						body = body.replace("${recipient.email}", recipientPerson.getEmail());
-						body = body.replace("${sender.name}", senderPerson.getName());
-						body = body.replace("${sender.email}", senderPerson.getEmail());
-						
-						if (log.isDebugEnabled()) {
-							log.debug("Sending mail to: "+recipient);
-						}
-						
-						mailBean.sendMail(sender, recipient, subject, body, mailMessage.getType());
+					Person recipientPerson = mailMessage.getRecipient();
+					Person senderPerson = mailMessage.getSender();
+					
+					InternetAddress sender = new InternetAddress(senderPerson.getEmail(), mailMessage.getSender().getName());
+					InternetAddress recipient = new InternetAddress(recipientPerson.getEmail(), recipientPerson.getName());
+					String subject = mailMessage.getSubject();
+					
+					String body = mailMessage.getBody();
+					body = body.replace("${recipient.name}", recipientPerson.getName());
+					body = body.replace("${recipient.email}", recipientPerson.getEmail());
+					body = body.replace("${sender.name}", senderPerson.getName());
+					body = body.replace("${sender.email}", senderPerson.getEmail());
+					
+					if (log.isDebugEnabled()) {
+						log.debug("Sending mail to: "+recipient);
 					}
+					
+					mailBean.sendMail(sender, recipient, subject, body, mailMessage.getType());
 					
 					message.setSent(true);
 					message.setSentDate(new Date());

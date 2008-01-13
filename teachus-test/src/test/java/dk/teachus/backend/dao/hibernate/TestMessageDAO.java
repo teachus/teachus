@@ -17,7 +17,7 @@ public class TestMessageDAO extends SpringTestCase {
 		mail.setSubject("Test subject");
 		mail.setBody("Test body");
 		mail.setSender(getPersonDAO().getPerson(4L));
-		mail.addRecipient(getPersonDAO().getPerson(5L));
+		mail.setRecipient(getPersonDAO().getPerson(5L));
 		
 		MessageDAO messageDAO = getMessageDAO();
 		messageDAO.save(mail);
@@ -33,8 +33,8 @@ public class TestMessageDAO extends SpringTestCase {
 		assertEquals(mail.getSubject(), checkMail.getSubject());
 		assertEquals(Type.PLAIN, checkMail.getType());
 		
-		assertEquals(1, checkMail.getRecipients().size());
-		Person recipient = checkMail.getRecipients().iterator().next();
+		assertNotNull(checkMail.getRecipient());
+		Person recipient = checkMail.getRecipient();
 		assertEquals(new Long(5), recipient.getId());
 		
 	}

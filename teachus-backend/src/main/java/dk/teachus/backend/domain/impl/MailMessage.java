@@ -16,6 +16,7 @@
  */
 package dk.teachus.backend.domain.impl;
 
+
 public class MailMessage extends AbstractMessage {
 	private static final long serialVersionUID = 1L;
 
@@ -26,12 +27,25 @@ public class MailMessage extends AbstractMessage {
 	
 	private Type type = Type.PLAIN;
 
+	public MailMessage() {
+	}
+	
 	public Type getType() {
 		return type;
 	}
 
 	public void setType(Type type) {
 		this.type = type;
+	}
+	
+	public MailMessage copy() {
+		return new MailMessage(this);
+	}
+	
+	private MailMessage(MailMessage m) {
+		super((AbstractMessage) m);
+		
+		this.type = m.type;
 	}
 	
 }
