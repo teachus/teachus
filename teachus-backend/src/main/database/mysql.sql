@@ -88,8 +88,8 @@ CREATE TABLE
 	body TEXT, 
 	sender BIGINT, 
 	recipient BIGINT, 
-	sent TINYINT(1), 
-	sent_date DATETIME,
+	state VARCHAR(255), 
+	processing_date DATETIME,
 	mail_type VARCHAR(255),
 	primary key (id)
 ) type=InnoDB;
@@ -127,7 +127,7 @@ ALTER TABLE
 ALTER TABLE
 	message 
 		ADD INDEX FK38EB0007E0E4002A (sender), 
-		ADD CONSTRAINT FK38EB0007E0E4002A FOREIGN KEY (sender) REFERENCES person (id)
+		ADD CONSTRAINT FK38EB0007E0E4002A FOREIGN KEY (sender) REFERENCES person (id),
 		ADD INDEX IDX_MESSAGE_RECIPIENT (recipient), 
 		ADD CONSTRAINT FK_MESSAGE_RECIPIENT_PERSON FOREIGN KEY (recipient) REFERENCES person (id);
 

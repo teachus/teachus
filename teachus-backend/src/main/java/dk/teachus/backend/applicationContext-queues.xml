@@ -46,7 +46,7 @@
 	
 	<bean id="mailMessageSendingTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail" ref="mailMessageSendingJob" />
-		<property name="startDelay" value="120000" />
+		<property name="startDelay" value="10000" />
 		<!-- run every minute -->
 		<property name="repeatInterval" value="60000" />
 	</bean>

@@ -19,6 +19,7 @@ package dk.teachus.backend.domain.impl;
 import java.util.Date;
 
 import dk.teachus.backend.domain.Message;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 
 public abstract class AbstractMessage extends AbstractHibernateObject implements Message {
@@ -28,66 +29,10 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 	private String body;
 	private Person sender;
 	private Person recipient;
-	private boolean sent;
-	private Date sentDate;
+	private MessageState state;
+	private Date processingDate;
 	
 	public AbstractMessage() {
-	}
-	
-	public String getBody() {
-		return body;
-	}
-	
-	public Date getCreateDate() {
-		return createDate;
-	}
-	
-	public Person getRecipient() {
-		return recipient;
-	}
-	
-	public Person getSender() {
-		return sender;
-	}
-	
-	public Date getSentDate() {
-		return sentDate;
-	}
-	
-	public String getSubject() {
-		return subject;
-	}
-	
-	public boolean isSent() {
-		return sent;
-	}
-	
-	public void setBody(String body) {
-		this.body = body;
-	}
-	
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public void setRecipient(Person recipient) {
-		this.recipient = recipient;
-	}
-
-	public void setSender(Person sender) {
-		this.sender = sender;
-	}
-	
-	public void setSent(boolean sent) {
-		this.sent = sent;
-	}
-	
-	public void setSentDate(Date sentDate) {
-		this.sentDate = sentDate;
-	}
-	
-	public void setSubject(String subject) {
-		this.subject = subject;
 	}
 	
 	protected AbstractMessage(AbstractMessage m) {
@@ -105,15 +50,71 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 		this.recipient = m.recipient;
 		this.sender = m.sender;
 		
-		this.sent = m.sent;
+		this.state = m.state;
 		
-		if (m.sentDate != null) {
-			this.sentDate = new Date(m.sentDate.getTime());
+		if (m.processingDate != null) {
+			this.processingDate = new Date(m.processingDate.getTime());
 		}
 		
 		if (m.subject != null) {
 			this.subject = m.subject.intern();
 		}
+	}
+	
+	public String getBody() {
+		return body;
+	}
+	
+	public Date getCreateDate() {
+		return createDate;
+	}
+	
+	public Date getProcessingDate() {
+		return processingDate;
+	}
+	
+	public Person getRecipient() {
+		return recipient;
+	}
+	
+	public Person getSender() {
+		return sender;
+	}
+	
+	public MessageState getState() {
+		return state;
+	}
+	
+	public String getSubject() {
+		return subject;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
+	public void setProcessingDate(Date processingDate) {
+		this.processingDate = processingDate;
+	}
+
+	public void setRecipient(Person recipient) {
+		this.recipient = recipient;
+	}
+
+	public void setSender(Person sender) {
+		this.sender = sender;
+	}
+	
+	public void setState(MessageState state) {
+		this.state = state;
+	}
+	
+	public void setSubject(String subject) {
+		this.subject = subject;
 	}
 	
 }

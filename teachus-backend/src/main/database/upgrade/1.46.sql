@@ -1,3 +1,34 @@
+-- ---------------------------------------------------------------------------
+-- CONVERT SENT AND SENT_DATE TO MESSAGE_STATE AND PROCESSING_DATE
+-- ---------------------------------------------------------------------------
+
+ALTER TABLE
+	message
+		ADD COLUMN state VARCHAR(255) AFTER sent,
+		CHANGE sent_date processing_date DATETIME;
+
+UPDATE
+	message
+SET
+	state = 'SENT'
+WHERE
+	sent = 1;
+
+UPDATE
+	message
+SET
+	state = 'FINAL'
+WHERE
+	sent = 0;
+
+ALTER TABLE
+	message
+		DROP COLUMN sent;
+
+-- ---------------------------------------------------------------------------
+-- MERGE MESSAGE AND MESSAGE_RECIPIENT TABLES
+-- ---------------------------------------------------------------------------
+
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 
 ALTER TABLE 
@@ -51,6 +82,9 @@ DROP TABLE
 	message_recipient;
 
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+
+
+
 
 -- Upgrade version
 UPDATE

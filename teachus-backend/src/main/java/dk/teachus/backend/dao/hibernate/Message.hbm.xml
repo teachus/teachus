@@ -16,9 +16,9 @@
         
         <property name="createDate" column="create_date" type="timestamp" />
 			
-		<property name="sent" column="sent" type="dk.teachus.backend.dao.hibernate.BooleanType" />        
+		<property name="state" column="state" type="dk.teachus.backend.dao.hibernate.MessageStateUserType" />        
         
-        <property name="sentDate" column="sent_date" type="timestamp" />
+        <property name="processingDate" column="processing_date" type="timestamp" />
         
         <property name="subject" length="255" />
         

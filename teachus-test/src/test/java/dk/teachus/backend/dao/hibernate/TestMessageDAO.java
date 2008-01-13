@@ -39,4 +39,14 @@ public class TestMessageDAO extends SpringTestCase {
 		
 	}
 	
+	public void testGetUnsentMessages() {
+		List<Message> unsentMessages = getMessageDAO().getUnsentMessages();
+		assertEquals(0, unsentMessages.size());
+	}
+	
+	public void testGetMessages() {
+		List<Message> messages = getMessageDAO().getMessages(getTeacher());
+		assertEquals(22, messages.size());
+	}
+	
 }

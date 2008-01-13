@@ -26,9 +26,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import dk.teachus.backend.MailException;
+import dk.teachus.backend.RecipientErrorMailException;
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.domain.Message;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.impl.MailMessage;
 
@@ -75,19 +77,27 @@ public class MailMessageSendingBean {
 						log.debug("Sending mail to: "+recipient);
 					}
 					
-					mailBean.sendMail(sender, recipient, subject, body, mailMessage.getType());
-					
-					message.setSent(true);
-					message.setSentDate(new Date());
-					messageDAO.save(message);
-					
-					if (log.isDebugEnabled()) {
-						log.debug("Message succesfully sent: "+message.getId());
+					try {
+						mailBean.sendMail(sender, recipient, subject, body, mailMessage.getType());
+						message.setState(MessageState.SENT);
+						
+						if (log.isDebugEnabled()) {
+							log.debug("Message succesfully sent: "+message.getId());
+						}
+					} catch (RecipientErrorMailException e) {
+						message.setState(MessageState.ERROR_SENDING_INVALID_RECIPIENT);
+						
+						log.warn("Couldn't send the message because of an invalid recipient", e);
+					}catch (MailException e) {
+						message.setState(MessageState.ERROR_SENDING_UNKNOWN);
+						
+						log.warn("Message couln't be send due to unknown error", e);
 					}
+					
+					message.setProcessingDate(new Date());
+					messageDAO.save(message);
 				} catch (UnsupportedEncodingException e) {
 					throw new RuntimeException(e);
-				} catch (MailException e) {
-					log.error("Couldn't send the mail with message id: "+message.getId(), e);
 				}
 			}
 		}

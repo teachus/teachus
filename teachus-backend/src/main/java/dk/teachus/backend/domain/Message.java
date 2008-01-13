@@ -26,11 +26,11 @@ public interface Message extends Serializable {
 	Date getCreateDate();
 	void setCreateDate(Date createDate);
 	
-	boolean isSent();
-	void setSent(boolean sent);
+	MessageState getState();
+	void setState(MessageState state);
 	
-	Date getSentDate();
-	void setSentDate(Date sentDate);
+	Date getProcessingDate();
+	void setProcessingDate(Date processingDate);
 	
 	Person getSender();
 	void setSender(Person sender);

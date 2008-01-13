@@ -33,6 +33,7 @@ import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Message;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
@@ -139,6 +140,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 				Message message = new MailMessage();
 				message.setSender(pupil.getTeacher());
 				message.setRecipient(pupil);
+				message.setState(MessageState.FINAL);
 				
 				String subject = TeachUsSession.get().getString("NewPasswordMail.subject");
 				message.setSubject(subject);

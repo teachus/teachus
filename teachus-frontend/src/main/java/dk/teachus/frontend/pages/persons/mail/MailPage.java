@@ -24,6 +24,7 @@ import org.apache.wicket.model.PropertyModel;
 
 import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.domain.Message;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.frontend.TeachUsApplication;
@@ -46,6 +47,7 @@ public class MailPage extends AuthenticatedBasePage {
 		super(UserLevel.TEACHER, true);
 		
 		final Message messageTemplate = new MailMessage();
+		messageTemplate.setState(MessageState.FINAL);
 		messageTemplate.setSender(TeachUsSession.get().getPerson());
 		
 		FormPanel mailForm = new FormPanel("mailForm"); //$NON-NLS-1$

@@ -4,7 +4,6 @@
     period*,
     booking*,
     message*,
-    message_recipient*,
     teacher_attribute*)>
 
 <!ELEMENT application_configuration EMPTY>
@@ -76,8 +75,9 @@
     subject CDATA #IMPLIED
     body CDATA #IMPLIED
     sender CDATA #IMPLIED
-    sent CDATA #IMPLIED
-    sent_date CDATA #IMPLIED
+    recipient CDATA #IMPLIED
+    state CDATA #IMPLIED
+    processing_date CDATA #IMPLIED
     mail_type CDATA #IMPLIED
 >
 

@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.domain.Message;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.impl.AbstractMessage;
 
@@ -46,7 +47,7 @@ public class HibernateMessageDAO extends HibernateDaoSupport implements MessageD
 	@Transactional(readOnly=true)
 	public List<Message> getUnsentMessages() {
 		DetachedCriteria c = DetachedCriteria.forClass(AbstractMessage.class);
-		c.add(Restrictions.eq("sent", false));
+		c.add(Restrictions.eq("state", MessageState.FINAL));
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}

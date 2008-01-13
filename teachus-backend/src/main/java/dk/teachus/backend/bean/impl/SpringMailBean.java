@@ -16,6 +16,8 @@
  */
 package dk.teachus.backend.bean.impl;
 
+import java.util.Map;
+
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -24,7 +26,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
+import com.sun.mail.smtp.SMTPAddressFailedException;
+
 import dk.teachus.backend.MailException;
+import dk.teachus.backend.RecipientErrorMailException;
 import dk.teachus.backend.bean.MailBean;
 import dk.teachus.backend.domain.impl.MailMessage.Type;
 
@@ -58,6 +63,18 @@ public class SpringMailBean implements MailBean {
 				}
 			});
 		} catch (MailSendException e) {
+			Map<?,?> failedMessages = e.getFailedMessages();
+			
+			if (failedMessages != null) {
+				Object object = failedMessages.values().iterator().next();
+				if (object != null) {
+					Exception mailException = (Exception) object;
+					if (mailException.getCause() instanceof SMTPAddressFailedException) {
+						throw new RecipientErrorMailException(e);
+					}
+				}
+			}
+			
 			throw new MailException(e);
 		}
 	}
