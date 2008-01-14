@@ -59,10 +59,10 @@ SET
 INSERT INTO
 	message
 (
-	message_type, create_date, subject, body, sender, recipient, sent, sent_date, mail_type
+	message_type, create_date, subject, body, sender, recipient, processing_date, mail_type
 )
 SELECT
-	message_type, create_date, subject, body, sender, mr.person_id, sent, sent_date, mail_type
+	message_type, create_date, subject, body, sender, mr.person_id, processing_date, mail_type
 FROM
 	message AS m
 	INNER JOIN
