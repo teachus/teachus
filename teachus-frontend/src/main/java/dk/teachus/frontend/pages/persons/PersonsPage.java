@@ -41,36 +41,20 @@ import dk.teachus.frontend.components.list.RendererPropertyColumn;
 import dk.teachus.frontend.components.list.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
-import dk.teachus.frontend.pages.persons.mail.MailPage;
 
 public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
 	protected PersonsPage(UserLevel userLevel) {
 		super(userLevel);
 		
 		// Toolbar
-		List<ToolbarItemInterface> items = new ArrayList<ToolbarItemInterface>();
-		items.add(new ToolbarItem(getNewPersonLabel()) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onEvent() {
-				getRequestCycle().setResponsePage(getPersonPage(null));
-			}			
-		});		
-		items.add(new ToolbarItem(TeachUsSession.get().getString("General.mail")) { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void onEvent() {
-				getRequestCycle().setResponsePage(MailPage.class);
-			}			
-		});
+		final List<ToolbarItemInterface> items = new ArrayList<ToolbarItemInterface>();
+		fillToolbar(items);
 		add(new Toolbar("toolbar", items) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public boolean isVisible() {
-				return showNewPersonLink();
+				return items.isEmpty() == false;
 			}
 		});
 		
@@ -128,6 +112,19 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		PersonsDataProvider dataProvider = new PersonsDataProvider(personsModel);
 		
 		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), dataProvider, dataProvider)); //$NON-NLS-1$
+	}
+
+	protected void fillToolbar(List<ToolbarItemInterface> items) {
+		if (showNewPersonLink()) {
+			items.add(new ToolbarItem(getNewPersonLabel()) {
+				private static final long serialVersionUID = 1L;
+	
+				@Override
+				public void onEvent() {
+					getRequestCycle().setResponsePage(getPersonPage(null));
+				}			
+			});		
+		}
 	}
 
 	protected abstract List<P> getPersons();

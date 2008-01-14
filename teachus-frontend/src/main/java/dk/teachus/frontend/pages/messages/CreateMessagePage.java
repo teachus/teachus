@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.pages.persons.mail;
+package dk.teachus.frontend.pages.messages;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,12 +38,12 @@ import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 
-public class MailPage extends AuthenticatedBasePage {
+public class CreateMessagePage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
 	private Set<Person> recipients = new HashSet<Person>();
 	
-	public MailPage() {
+	public CreateMessagePage() {
 		super(UserLevel.TEACHER, true);
 		
 		final Message messageTemplate = new MailMessage();
@@ -53,14 +53,14 @@ public class MailPage extends AuthenticatedBasePage {
 		FormPanel mailForm = new FormPanel("mailForm"); //$NON-NLS-1$
 		add(mailForm);
 		
-		mailForm.addElement(new SelectPupilsElement(TeachUsSession.get().getString("MailPage.recipients"), new PropertyModel(this, "recipients"), true)); //$NON-NLS-1$ //$NON-NLS-2$
+		mailForm.addElement(new SelectPupilsElement(TeachUsSession.get().getString("Messages.recipients"), new PropertyModel(this, "recipients"), true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		mailForm.addElement(new TextFieldElement(TeachUsSession.get().getString("MailPage.subject"), new PropertyModel(messageTemplate, "subject"), true, 50)); //$NON-NLS-1$ //$NON-NLS-2$
+		mailForm.addElement(new TextFieldElement(TeachUsSession.get().getString("Messages.subject"), new PropertyModel(messageTemplate, "subject"), true, 50)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		TextAreaElement body = new TextAreaElement(TeachUsSession.get().getString("MailPage.message"), new PropertyModel(messageTemplate, "body"), true); //$NON-NLS-1$ //$NON-NLS-2$
+		TextAreaElement body = new TextAreaElement(TeachUsSession.get().getString("Messages.message"), new PropertyModel(messageTemplate, "body"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		mailForm.addElement(body);
 		
-		mailForm.addElement(new ButtonPanelElement(TeachUsSession.get().getString("MailPage.sendMail")) { //$NON-NLS-1$
+		mailForm.addElement(new ButtonPanelElement(TeachUsSession.get().getString("Messages.sendMail")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -79,19 +79,19 @@ public class MailPage extends AuthenticatedBasePage {
 					messageDAO.save(message);
 				}
 
-				getRequestCycle().setResponsePage(PupilsPage.class);				
+				getRequestCycle().setResponsePage(SentMessagesPage.class);				
 			}
 		});
 	}
 	
 	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
-		return AuthenticatedPageCategory.PUPILS;
+		return AuthenticatedPageCategory.MESSAGES;
 	}
 	
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("MailPage.sendMail"); //$NON-NLS-1$
+		return TeachUsSession.get().getString("Messages.sendMail"); //$NON-NLS-1$
 	}
 
 	public Set<Person> getRecipients() {

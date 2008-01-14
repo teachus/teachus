@@ -3,17 +3,17 @@ package dk.teachus.frontend.components.list;
 public class StringFilter implements IFilter<String> {
 	private static final long serialVersionUID = 1L;
 
-	public boolean include(String o1, String o2) {
+	public boolean include(String objectProperty, String stateProperty) {
 		boolean include = false;
 		
-		if (o1 == null) {
-			o1 = "";
+		if (objectProperty == null) {
+			objectProperty = "";
 		}
-		if (o2 == null) {
-			o2 = "";
+		if (stateProperty == null) {
+			stateProperty = "";
 		}
 		
-		if (o1.toLowerCase().contains(o2.toLowerCase())) {
+		if (objectProperty.toLowerCase().contains(stateProperty.toLowerCase())) {
 			include = true;
 		}
 		

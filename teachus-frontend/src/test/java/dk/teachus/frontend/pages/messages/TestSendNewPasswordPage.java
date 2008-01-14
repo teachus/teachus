@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.pages.persons;
+package dk.teachus.frontend.pages.messages;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.ITestPageSource;
@@ -23,6 +23,7 @@ import org.jmock.Expectations;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
+import dk.teachus.frontend.pages.messages.SendNewPasswordPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestSendNewPasswordPage extends WicketTestCase {

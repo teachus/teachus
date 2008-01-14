@@ -65,7 +65,7 @@ public class SpringMailBean implements MailBean {
 		} catch (MailSendException e) {
 			Map<?,?> failedMessages = e.getFailedMessages();
 			
-			if (failedMessages != null) {
+			if (failedMessages != null && failedMessages.isEmpty() == false) {
 				Object object = failedMessages.values().iterator().next();
 				if (object != null) {
 					Exception mailException = (Exception) object;

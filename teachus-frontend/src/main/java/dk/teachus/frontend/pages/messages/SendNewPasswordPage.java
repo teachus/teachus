@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.pages.persons;
+package dk.teachus.frontend.pages.messages;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -48,6 +48,7 @@ import dk.teachus.frontend.components.form.TextAreaElement;
 import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
+import dk.teachus.frontend.pages.persons.PupilsPage;
 
 public class SendNewPasswordPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -142,12 +143,12 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 				message.setRecipient(pupil);
 				message.setState(MessageState.FINAL);
 				
-				String subject = TeachUsSession.get().getString("NewPasswordMail.subject");
+				String subject = TeachUsSession.get().getString("NewPasswordMail.subject"); //$NON-NLS-1$
 				message.setSubject(subject);
 				
-				String body = TeachUsSession.get().getString("NewPasswordMail.body");
-				body = body.replace("${username}", pupil.getUsername());
-				body = body.replace("${password}", getPassword1());
+				String body = TeachUsSession.get().getString("NewPasswordMail.body"); //$NON-NLS-1$
+				body = body.replace("${username}", pupil.getUsername()); //$NON-NLS-1$
+				body = body.replace("${password}", getPassword1()); //$NON-NLS-1$
 				String serverUrl = TeachUsApplication.get().getConfiguration().getConfiguration(ApplicationConfiguration.SERVER_URL);
 				
 				/*
@@ -156,27 +157,27 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 				 * warn the administrator by adding an entry to the log.
 				 */
 				if (Strings.isEmpty(serverUrl)) {
-					log.error("No server url is set for the system. It's very important that you set it.");
+					log.error("No server url is set for the system. It's very important that you set it."); //$NON-NLS-1$
 					
 					WebRequest request = (WebRequest) getRequest();
 					HttpServletRequest httpServletRequest = request.getHttpServletRequest();
 					
 					StringBuilder b = new StringBuilder();
-					b.append(httpServletRequest.getScheme()).append("://");
+					b.append(httpServletRequest.getScheme()).append("://"); //$NON-NLS-1$
 					b.append(httpServletRequest.getServerName());
 					if (httpServletRequest.getServerPort() != 80 && httpServletRequest.getServerPort() != 443) {
-						b.append(":").append(httpServletRequest.getServerPort());
+						b.append(":").append(httpServletRequest.getServerPort()); //$NON-NLS-1$
 					}
 					
 					serverUrl = b.toString();
 				}
 				
-				body = body.replace("${server}", serverUrl);
+				body = body.replace("${server}", serverUrl); //$NON-NLS-1$
 				String im = getIntroMessage();
 				if (Strings.isEmpty(im) == false) {
-					im += "\n\n";
+					im += "\n\n"; //$NON-NLS-1$
 				}
-				body = body.replace("${introMessage}", im);
+				body = body.replace("${introMessage}", im); //$NON-NLS-1$
 				message.setBody(body);
 				
 				messageDAO.save(message);
@@ -188,7 +189,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 
 	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
-		return AuthenticatedPageCategory.PUPILS;
+		return AuthenticatedPageCategory.MESSAGES;
 	}
 
 	@Override

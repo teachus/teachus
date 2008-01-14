@@ -4,6 +4,6 @@ import java.io.Serializable;
 
 public interface IFilter<T> extends Serializable {
 
-	boolean include(T o1, T o2);
+	boolean include(T objectProperty, T stateProperty);
 	
 }

@@ -30,6 +30,7 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.list.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
+import dk.teachus.frontend.pages.messages.SendNewPasswordPage;
 
 public class PupilsPage extends PersonsPage<Pupil> {
 	private static final long serialVersionUID = 1L;

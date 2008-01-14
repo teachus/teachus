@@ -17,14 +17,21 @@
 package dk.teachus.frontend.components.form;
 
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
+
+import dk.teachus.frontend.components.RenderingLabel;
 
 public class ReadOnlyElement extends FormElement {
 	private static final long serialVersionUID = 1L;
 	
-	public ReadOnlyElement(String label, IModel inputModel) {		
+	public ReadOnlyElement(String label, IModel inputModel) {
+		this(label, inputModel, null);
+	}
+	
+	public ReadOnlyElement(String label, IModel inputModel, IChoiceRenderer renderer) {		
 		add(new Label("label", label));
-		add(new Label("readOnly", inputModel));
+		add(new RenderingLabel("readOnly", inputModel, renderer));
 	}
 
 }

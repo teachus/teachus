@@ -28,6 +28,7 @@ import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
+import dk.teachus.frontend.pages.messages.SentMessagesPage;
 import dk.teachus.frontend.pages.periods.PeriodsPage;
 import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilPage;
@@ -44,6 +45,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		ADMINS,
 		TEACHERS,
 		PUPILS,
+		MESSAGES,
 		AGENDA,
 		SETTINGS,
 		GLOBAL_CONFIGURATION,
@@ -89,6 +91,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		if (UserLevel.ADMIN != teachUsSession.getUserLevel()) {
 			if (UserLevel.TEACHER.authorized(teachUsSession.getUserLevel())) {
 				menuItemsList.add(new MenuItem(PupilsPage.class, teachUsSession.getString("General.pupils"), AuthenticatedPageCategory.PUPILS)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItem(SentMessagesPage.class, teachUsSession.getString("General.messages"), AuthenticatedPageCategory.MESSAGES)); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(TeacherSettingsPage.class, teachUsSession.getString("General.settings"), AuthenticatedPageCategory.SETTINGS)); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(PeriodsPage.class, teachUsSession.getString("General.periods"), AuthenticatedPageCategory.PERIODS)); //$NON-NLS-1$
 				menuItemsList.add(new MenuItem(AgendaPage.class, teachUsSession.getString("General.agenda"), AuthenticatedPageCategory.AGENDA)); //$NON-NLS-1$

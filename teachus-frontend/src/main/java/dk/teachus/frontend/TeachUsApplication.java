@@ -60,6 +60,8 @@ import dk.teachus.frontend.pages.SignOutPage;
 import dk.teachus.frontend.pages.SignedOutPage;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
+import dk.teachus.frontend.pages.messages.CreateMessagePage;
+import dk.teachus.frontend.pages.messages.SentMessagesPage;
 import dk.teachus.frontend.pages.periods.PeriodsPage;
 import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
@@ -123,89 +125,91 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
-		mount(new IndexedParamUrlCodingStrategy("/stats/incomepermonth", IncomePerMonthPage.class));
-		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class));
+		mount(new IndexedParamUrlCodingStrategy("/stats/incomepermonth", IncomePerMonthPage.class)); //$NON-NLS-1$
+		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class)); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/globalsettings", ApplicationConfigurationPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/messages", SentMessagesPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/messages/create", CreateMessagePage.class); //$NON-NLS-1$
 	}
 
 	private void mountResources() {
-		mountSharedResource("/images/screenshots/2.jpg", Resources.SCREENSHOT_2.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/2_thumb.jpg", Resources.SCREENSHOT_2_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/4.jpg", Resources.SCREENSHOT_4.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/4_thumb.jpg", Resources.SCREENSHOT_4_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/7.jpg", Resources.SCREENSHOT_7.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/7_thumb.jpg", Resources.SCREENSHOT_7_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/8.jpg", Resources.SCREENSHOT_8.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/8_thumb.jpg", Resources.SCREENSHOT_8_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/9.jpg", Resources.SCREENSHOT_9.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/9_thumb.jpg", Resources.SCREENSHOT_9_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/10.jpg", Resources.SCREENSHOT_10.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/10_thumb.jpg", Resources.SCREENSHOT_10_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/11.jpg", Resources.SCREENSHOT_11.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/11_thumb.jpg", Resources.SCREENSHOT_11_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/12.jpg", Resources.SCREENSHOT_12.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/12_thumb.jpg", Resources.SCREENSHOT_12_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/13.jpg", Resources.SCREENSHOT_13.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/13_thumb.jpg", Resources.SCREENSHOT_13_THUMB.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/14.jpg", Resources.SCREENSHOT_14.getSharedResourceKey());
-		mountSharedResource("/images/screenshots/14_thumb.jpg", Resources.SCREENSHOT_14_THUMB.getSharedResourceKey());
+		mountSharedResource("/images/screenshots/2.jpg", Resources.SCREENSHOT_2.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/2_thumb.jpg", Resources.SCREENSHOT_2_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/4.jpg", Resources.SCREENSHOT_4.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/4_thumb.jpg", Resources.SCREENSHOT_4_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/7.jpg", Resources.SCREENSHOT_7.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/7_thumb.jpg", Resources.SCREENSHOT_7_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/8.jpg", Resources.SCREENSHOT_8.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/8_thumb.jpg", Resources.SCREENSHOT_8_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/9.jpg", Resources.SCREENSHOT_9.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/9_thumb.jpg", Resources.SCREENSHOT_9_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/10.jpg", Resources.SCREENSHOT_10.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/10_thumb.jpg", Resources.SCREENSHOT_10_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/11.jpg", Resources.SCREENSHOT_11.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/11_thumb.jpg", Resources.SCREENSHOT_11_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/12.jpg", Resources.SCREENSHOT_12.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/12_thumb.jpg", Resources.SCREENSHOT_12_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/13.jpg", Resources.SCREENSHOT_13.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/13_thumb.jpg", Resources.SCREENSHOT_13_THUMB.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/14.jpg", Resources.SCREENSHOT_14.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/screenshots/14_thumb.jpg", Resources.SCREENSHOT_14_THUMB.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/images/available.png", Resources.AVAILABLE.getSharedResourceKey());
-		mountSharedResource("/images/available_hover.png", Resources.AVAILABLE_HOVER.getSharedResourceKey());
-		mountSharedResource("/images/booked.png", Resources.BOOKED.getSharedResourceKey());
-		mountSharedResource("/images/booked_hover.png", Resources.BOOKED_HOVER.getSharedResourceKey());
-		mountSharedResource("/images/left.png", Resources.LEFT.getSharedResourceKey());
-		mountSharedResource("/images/right.png", Resources.RIGHT.getSharedResourceKey());
-		mountSharedResource("/images/occupied.png", Resources.OCCUPIED.getSharedResourceKey());
-		mountSharedResource("/images/paid.png", Resources.PAID.getSharedResourceKey());
-		mountSharedResource("/images/unpaid.png", Resources.UNPAID.getSharedResourceKey());
-		mountSharedResource("/images/toolbar.png", Resources.TOOLBAR.getSharedResourceKey());
-		mountSharedResource("/images/list_header_back.png", Resources.LIST_HEADER.getSharedResourceKey());
-		mountSharedResource("/images/empty.gif", Resources.EMPTY.getSharedResourceKey());
+		mountSharedResource("/images/available.png", Resources.AVAILABLE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/available_hover.png", Resources.AVAILABLE_HOVER.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/booked.png", Resources.BOOKED.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/booked_hover.png", Resources.BOOKED_HOVER.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/left.png", Resources.LEFT.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/right.png", Resources.RIGHT.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/occupied.png", Resources.OCCUPIED.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/paid.png", Resources.PAID.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/unpaid.png", Resources.UNPAID.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/toolbar.png", Resources.TOOLBAR.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/list_header_back.png", Resources.LIST_HEADER.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/empty.gif", Resources.EMPTY.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/images/bodybg.jpg", Resources.ANDREAS09_BODYBG.getSharedResourceKey());
-		mountSharedResource("/images/footerbg.jpg", Resources.ANDREAS09_FOOTERBG.getSharedResourceKey());
-		mountSharedResource("/images/menuhover.jpg", Resources.ANDREAS09_MENUHOVER.getSharedResourceKey());
+		mountSharedResource("/images/bodybg.jpg", Resources.ANDREAS09_BODYBG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/footerbg.jpg", Resources.ANDREAS09_FOOTERBG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/menuhover.jpg", Resources.ANDREAS09_MENUHOVER.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/images/bodybg-red.jpg", Resources.ANDREAS09_BODYBG_RED.getSharedResourceKey());
-		mountSharedResource("/images/menuhover-red.jpg", Resources.ANDREAS09_MENUHOVER_RED.getSharedResourceKey());
-		mountSharedResource("/images/bodybg-black.jpg", Resources.ANDREAS09_BODYBG_BLACK.getSharedResourceKey());
-		mountSharedResource("/images/menuhover-black.jpg", Resources.ANDREAS09_MENUHOVER_BLACK.getSharedResourceKey());
-		mountSharedResource("/images/bodybg-green.jpg", Resources.ANDREAS09_BODYBG_GREEN.getSharedResourceKey());
-		mountSharedResource("/images/menuhover-green.jpg", Resources.ANDREAS09_MENUHOVER_GREEN.getSharedResourceKey());
-		mountSharedResource("/images/bodybg-orange.jpg", Resources.ANDREAS09_BODYBG_ORANGE.getSharedResourceKey());
-		mountSharedResource("/images/menuhover-orange.jpg", Resources.ANDREAS09_MENUHOVER_ORANGE.getSharedResourceKey());
-		mountSharedResource("/images/bodybg-purple.jpg", Resources.ANDREAS09_BODYBG_PURPLE.getSharedResourceKey());
-		mountSharedResource("/images/menuhover-purple.jpg", Resources.ANDREAS09_MENUHOVER_PURPLE.getSharedResourceKey());
+		mountSharedResource("/images/bodybg-red.jpg", Resources.ANDREAS09_BODYBG_RED.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/menuhover-red.jpg", Resources.ANDREAS09_MENUHOVER_RED.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/bodybg-black.jpg", Resources.ANDREAS09_BODYBG_BLACK.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/menuhover-black.jpg", Resources.ANDREAS09_MENUHOVER_BLACK.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/bodybg-green.jpg", Resources.ANDREAS09_BODYBG_GREEN.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/menuhover-green.jpg", Resources.ANDREAS09_MENUHOVER_GREEN.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/bodybg-orange.jpg", Resources.ANDREAS09_BODYBG_ORANGE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/menuhover-orange.jpg", Resources.ANDREAS09_MENUHOVER_ORANGE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/bodybg-purple.jpg", Resources.ANDREAS09_BODYBG_PURPLE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/menuhover-purple.jpg", Resources.ANDREAS09_MENUHOVER_PURPLE.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/images/list_header_back_red.png", Resources.LIST_HEADER_RED.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_red.png", Resources.TOOLBAR_RED.getSharedResourceKey());
-		mountSharedResource("/images/list_header_back_orange.png", Resources.LIST_HEADER_ORANGE.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_orange.png", Resources.TOOLBAR_ORANGE.getSharedResourceKey());
-		mountSharedResource("/images/list_header_back_black.png", Resources.LIST_HEADER_BLACK.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_black.png", Resources.TOOLBAR_BLACK.getSharedResourceKey());
-		mountSharedResource("/images/list_header_back_green.png", Resources.LIST_HEADER_GREEN.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_green.png", Resources.TOOLBAR_GREEN.getSharedResourceKey());
-		mountSharedResource("/images/list_header_back_purple.png", Resources.LIST_HEADER_PURPLE.getSharedResourceKey());
-		mountSharedResource("/images/toolbar_purple.png", Resources.TOOLBAR_PURPLE.getSharedResourceKey());
+		mountSharedResource("/images/list_header_back_red.png", Resources.LIST_HEADER_RED.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/toolbar_red.png", Resources.TOOLBAR_RED.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/list_header_back_orange.png", Resources.LIST_HEADER_ORANGE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/toolbar_orange.png", Resources.TOOLBAR_ORANGE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/list_header_back_black.png", Resources.LIST_HEADER_BLACK.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/toolbar_black.png", Resources.TOOLBAR_BLACK.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/list_header_back_green.png", Resources.LIST_HEADER_GREEN.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/toolbar_green.png", Resources.TOOLBAR_GREEN.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/list_header_back_purple.png", Resources.LIST_HEADER_PURPLE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/toolbar_purple.png", Resources.TOOLBAR_PURPLE.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/images/loading.gif", JFreeChartImage.LOADING_INDICATOR.getSharedResourceKey());
-		mountSharedResource("/images/loading_dots.gif", Resources.DOT_INDICATOR.getSharedResourceKey());
+		mountSharedResource("/images/loading.gif", JFreeChartImage.LOADING_INDICATOR.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/loading_dots.gif", Resources.DOT_INDICATOR.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/images/asc.png", Resources.ASC.getSharedResourceKey());
-		mountSharedResource("/images/desc.png", Resources.DESC.getSharedResourceKey());
+		mountSharedResource("/images/asc.png", Resources.ASC.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/desc.png", Resources.DESC.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey());
-		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey());
-		mountSharedResource("/css/print.css", Resources.CSS_PRINT.getSharedResourceKey());
+		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/print.css", Resources.CSS_PRINT.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey());
-		mountSharedResource("/js/wicket-event.js", new JavascriptResourceReference(WicketEventReference.class, "wicket-event.js").getSharedResourceKey());
-		mountSharedResource("/js/jquery.js", JQueryBehavior.JS_JQUERY.getSharedResourceKey());
-		mountSharedResource("/js/iutil.js", ImageBox.JS_IUTIL_1_2.getSharedResourceKey());
-		mountSharedResource("/js/imagebox.js", ImageBox.JS_IMAGEBOX_1_2.getSharedResourceKey());
+		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
+		mountSharedResource("/js/wicket-event.js", new JavascriptResourceReference(WicketEventReference.class, "wicket-event.js").getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
+		mountSharedResource("/js/jquery.js", JQueryBehavior.JS_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/js/iutil.js", ImageBox.JS_IUTIL_1_2.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/js/imagebox.js", ImageBox.JS_IMAGEBOX_1_2.getSharedResourceKey()); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {
@@ -221,15 +225,15 @@ public class TeachUsApplication extends WebApplication {
 	}
 	
 	public StatisticsDAO getStatisticsDAO() {
-		return (StatisticsDAO) getApplicationContext().getBean("statisticsDao");
+		return (StatisticsDAO) getApplicationContext().getBean("statisticsDao"); //$NON-NLS-1$
 	}
 	
 	protected ApplicationDAO getApplicationDAO() {
-		return (ApplicationDAO) getApplicationContext().getBean("applicationDao");
+		return (ApplicationDAO) getApplicationContext().getBean("applicationDao"); //$NON-NLS-1$
 	}
 	
 	public MessageDAO getMessageDAO() {
-		return (MessageDAO) getApplicationContext().getBean("messageDao");
+		return (MessageDAO) getApplicationContext().getBean("messageDao"); //$NON-NLS-1$
 	}
 	
 	protected ApplicationContext getApplicationContext() {
