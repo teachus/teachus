@@ -149,6 +149,16 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		
 		List<Integer> yearsWithPaidBookings = bookingDAO.getYearsWithBookings(getPerson());
 		
+		// If the latest booking is not in the selected year, then select the latest year with bookings
+		if (yearsWithPaidBookings.size() > 0 && yearsWithPaidBookings.contains(year) == false) {
+			year = 0;
+			for (Integer y : yearsWithPaidBookings) {
+				if (y > year) {
+					year = y;
+				}
+			}
+		}
+		
 		Form form = new Form("form"); //$NON-NLS-1$
 		add(form);
 		final IModel yearModel = new Model(year);
