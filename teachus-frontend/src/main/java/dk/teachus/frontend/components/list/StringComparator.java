@@ -3,6 +3,9 @@ package dk.teachus.frontend.components.list;
 import java.io.Serializable;
 import java.util.Comparator;
 
+/**
+ * Case insensitive string comparator
+ */
 public class StringComparator implements Comparator<String>, Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -10,7 +13,7 @@ public class StringComparator implements Comparator<String>, Serializable {
 		int compare = 0;
 		
 		if (o1 != null && o2 != null) {
-			compare = o1.compareTo(o2);
+			compare = o1.toLowerCase().compareTo(o2.toLowerCase());
 		} else if (o1 != null) {
 			compare = -1;
 		} else if (o2 != null) {
