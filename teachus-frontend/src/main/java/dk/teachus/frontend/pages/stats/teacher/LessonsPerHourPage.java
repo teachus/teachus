@@ -25,7 +25,6 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.apache.wicket.PageParameters;
-import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
@@ -59,10 +58,6 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();		
 		
 		final List<Integer> yearsWithPaidBookings = bookingDAO.getYearsWithBookings(getPerson());
-		
-		if (yearsWithPaidBookings.contains(year) == false) {
-			throw new RestartResponseAtInterceptPageException(LessonsPerHourPage.class);
-		}
 		
 		createFilterForm(year, yearsWithPaidBookings);
 		
