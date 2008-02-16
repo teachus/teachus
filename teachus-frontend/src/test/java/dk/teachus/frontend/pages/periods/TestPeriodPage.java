@@ -16,10 +16,14 @@
  */
 package dk.teachus.frontend.pages.periods;
 
+import java.util.Date;
+
 import org.apache.wicket.Page;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
 
+import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.impl.PeriodImpl;
@@ -79,6 +83,51 @@ public class TestPeriodPage extends WicketTestCase {
 		tester.assertRenderedPage(PeriodPage.class);
 		
 		tester.assertContains(period.getName());
+	}
+	
+	public void testFormSubmit() {
+		final TeachUsWicketTester tester = createTester();
+		final Period period = createPeriod();
+		
+		checking(new Expectations() {{
+			PersonDAO personDAO = createPersonDAO();
+			
+			one(personDAO).getPerson(2L);
+			will(returnValue(createTeacher(2L)));
+			
+			tester.setPersonDAO(personDAO);
+			
+			
+			BookingDAO bookingDAO = createBookingDAO();
+			
+			one(bookingDAO).getLastBookingDate(period);
+			will(returnValue(new Date()));
+			
+			tester.setBookingDAO(bookingDAO);
+		}});
+		
+		
+		tester.startPage(new ITestPageSource() {
+			private static final long serialVersionUID = 1L;
+
+			public Page getTestPage() {
+				return new PeriodPage(period);
+			}
+		});
+		
+		tester.debugComponentTrees();
+		
+		FormTester formTester = tester.newFormTester("form:form", false);
+		
+		formTester.setValue("form:form:elements:11:element:input:inputField", "");
+		
+		// Test that submitting an empty form works
+		formTester.submit("elements:13:element:saveButton");
+		
+		// We should still be on the period page because of validation errors
+		tester.assertRenderedPage(PeriodPage.class);
+		
+		tester.dumpPage();
 	}
 	
 }

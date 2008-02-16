@@ -183,6 +183,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 		// Price
 		final DecimalFieldElement priceElement = new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel(period, "price"), 6); //$NON-NLS-1$ //$NON-NLS-2$
 		priceElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		priceElement.setDefaultNullValue(0.0);
 		form.addElement(priceElement);
 		
 		// Lesson duration
@@ -207,6 +208,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 		final IntegerFieldElement repeatEveryWeekElement = new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), //$NON-NLS-1$
 				new PropertyModel(period, "repeatEveryWeek")); //$NON-NLS-1$
 		repeatEveryWeekElement.setReadOnly(period.getStatus() != Status.DRAFT);
+//		repeatEveryWeekElement.setDefaultNullValue(1);
 		form.addElement(repeatEveryWeekElement);
 		
 		// Status

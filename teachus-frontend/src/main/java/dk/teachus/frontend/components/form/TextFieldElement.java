@@ -25,6 +25,7 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.IValidator;
 
 public class TextFieldElement extends AbstractValidationInputElement {
@@ -79,6 +80,12 @@ public class TextFieldElement extends AbstractValidationInputElement {
 			public boolean isEnabled() {
 				return isReadOnly() == false;
 			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public IConverter getConverter(Class type) {
+				return getComponentConverter(type);
+			}
 		};
 		if (size > -1) {
 			textField.add(new SimpleAttributeModifier("size", ""+size));
@@ -99,6 +106,10 @@ public class TextFieldElement extends AbstractValidationInputElement {
 	@Override
 	protected String getValidationEvent() {
 		return "onchange";
+	}
+	
+	protected IConverter getComponentConverter(Class<?> type) {
+		return getApplication().getConverterLocator().getConverter(type);
 	}
 	
 }

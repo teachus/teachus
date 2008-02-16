@@ -16,12 +16,37 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.util.Locale;
+
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.convert.converters.DoubleConverter;
 
 public class DecimalFieldElement extends TextFieldElement {
 	private static final long serialVersionUID = 1L;
+	
+	private class DecimalConverter implements IConverter {
+		private static final long serialVersionUID = 1L;
+
+		public Object convertToObject(String value, Locale locale) {
+			Double doubleValue = (Double) DoubleConverter.INSTANCE.convertToObject(value, locale);
+			
+			if (doubleValue == null) {
+				doubleValue = getDefaultNullValue();
+			}
+			
+			return doubleValue;
+		}
+
+		public String convertToString(Object value, Locale locale) {
+			return DoubleConverter.INSTANCE.convertToString(value, locale);
+		}
+		
+	}
+	
+	private Double defaultNullValue;
 
 	public DecimalFieldElement(String label, IModel inputModel) {
 		super(label, inputModel);
@@ -44,6 +69,19 @@ public class DecimalFieldElement extends TextFieldElement {
 		TextField textField = super.getNewInputComponent(wicketId, feedbackPanel);
 		textField.setType(Double.class);
 		return textField;
+	}
+	
+	@Override
+	protected IConverter getComponentConverter(Class<?> type) {
+		return new DecimalConverter();
+	}
+	
+	public Double getDefaultNullValue() {
+		return defaultNullValue;
+	}
+	
+	public void setDefaultNullValue(Double defaultNullValue) {
+		this.defaultNullValue = defaultNullValue;
 	}
 	
 }

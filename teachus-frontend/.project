@@ -2,8 +2,8 @@
   <name>teachus-frontend</name>
   <comment>Scheduling system for private teachers.</comment>
   <projects>
-    <project>teachus-ws</project>
     <project>teachus-backend</project>
+    <project>teachus-ws</project>
   </projects>
   <buildSpec>
     <buildCommand>

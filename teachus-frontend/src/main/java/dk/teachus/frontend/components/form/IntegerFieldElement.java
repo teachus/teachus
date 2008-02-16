@@ -16,12 +16,37 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.util.Locale;
+
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.util.convert.IConverter;
+import org.apache.wicket.util.convert.converters.IntegerConverter;
 
 public class IntegerFieldElement extends TextFieldElement {
 	private static final long serialVersionUID = 1L;
+	
+	private class LocalIntegerConverter implements IConverter {
+		private static final long serialVersionUID = 1L;
+
+		public Object convertToObject(String value, Locale locale) {
+			Integer intValue = (Integer) IntegerConverter.INSTANCE.convertToObject(value, locale);
+			
+			if (intValue == null) {
+				intValue = getDefaultNullValue();
+			}
+			
+			return intValue;
+		}
+
+		public String convertToString(Object value, Locale locale) {
+			return IntegerConverter.INSTANCE.convertToString(value, locale);
+		}
+		
+	}
+	
+	private Integer defaultNullValue;
 	
 	public IntegerFieldElement(String label, IModel inputModel) {
 		super(label, inputModel);
@@ -44,6 +69,19 @@ public class IntegerFieldElement extends TextFieldElement {
 		TextField textField = super.getNewInputComponent(wicketId, feedbackPanel);
 		textField.setType(Integer.class);
 		return textField;
+	}
+	
+	@Override
+	protected IConverter getComponentConverter(Class<?> type) {
+		return new LocalIntegerConverter();
+	}
+	
+	public void setDefaultNullValue(Integer defaultNullValue) {
+		this.defaultNullValue = defaultNullValue;
+	}
+	
+	public Integer getDefaultNullValue() {
+		return defaultNullValue;
 	}
 	
 }
