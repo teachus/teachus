@@ -33,6 +33,7 @@ import dk.teachus.backend.bean.VelocityBean;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.dao.PersonDAO;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
@@ -155,6 +156,7 @@ public class VelocityNotificationBean implements NotificationBean {
 				// Text
 				message.setBody(template);
 				message.setType(Type.HTML);
+				message.setState(MessageState.FINAL);
 				
 				messageDAO.save(message);
 			}
@@ -222,6 +224,7 @@ public class VelocityNotificationBean implements NotificationBean {
 				// Text
 				message.setBody(template);
 				message.setType(Type.HTML);
+				message.setState(MessageState.FINAL);
 				
 				messageDAO.save(message);
 			}

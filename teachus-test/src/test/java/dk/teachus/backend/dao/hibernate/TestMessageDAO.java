@@ -4,6 +4,7 @@ import java.util.List;
 
 import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.domain.Message;
+import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.backend.domain.impl.MailMessage.Type;
@@ -18,6 +19,7 @@ public class TestMessageDAO extends SpringTestCase {
 		mail.setBody("Test body");
 		mail.setSender(getPersonDAO().getPerson(4L));
 		mail.setRecipient(getPersonDAO().getPerson(5L));
+		mail.setState(MessageState.FINAL);
 		
 		MessageDAO messageDAO = getMessageDAO();
 		messageDAO.save(mail);

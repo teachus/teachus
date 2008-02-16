@@ -53,6 +53,10 @@ public class HibernateMessageDAO extends HibernateDaoSupport implements MessageD
 	}
 
 	public void save(Message message) {
+		if (message.getState() == null) {
+			throw new IllegalStateException("There must be a state when saving.");
+		}
+		
 		if (message.getId() == null) {
 			message.setCreateDate(new Date());
 		}
@@ -60,5 +64,4 @@ public class HibernateMessageDAO extends HibernateDaoSupport implements MessageD
 		getHibernateTemplate().saveOrUpdate(message);
 		getHibernateTemplate().flush();
 	}
-	
 }
