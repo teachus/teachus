@@ -5,7 +5,7 @@
 	<groupId>dk.teachus</groupId>
 	<artifactId>teachus-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.47</version>
+	<version>1.48-SNAPSHOT</version>
 	<name>TeachUs Parent</name>
 	<description>Scheduling system for private teachers.</description>
 
