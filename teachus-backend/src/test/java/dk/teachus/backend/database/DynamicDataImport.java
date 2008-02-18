@@ -303,9 +303,9 @@ public abstract class DynamicDataImport {
 			String unixName = name
 					.toLowerCase()
 					.replace(" ", "_")
-					.replace("ü", "u")
-					.replace("å", "aa")
-					.replace("ø", "o");
+					.replace("\u00FC", "u")
+					.replace("\u00E5", "aa")
+					.replace("\u00F8", "o");
 			unixName += postfixUnix;
 			
 			Pupil pupil = new PupilImpl();

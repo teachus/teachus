@@ -19,4 +19,7 @@ package dk.teachus.backend.domain;
 public interface Pupil extends Person {
 	Teacher getTeacher();
 	void setTeacher(Teacher teacher);
+	
+	String getNotes();
+	void setNotes(String notes);
 }

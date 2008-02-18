@@ -41,6 +41,7 @@
         
         <subclass name="PupilImpl" discriminator-value="PUPIL">
         	<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
+        	<property name="notes" length="100000" />
         </subclass>
     </class>
 

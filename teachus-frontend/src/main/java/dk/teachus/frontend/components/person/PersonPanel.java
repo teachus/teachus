@@ -46,6 +46,7 @@ import dk.teachus.frontend.components.form.FormPanel;
 import dk.teachus.frontend.components.form.IntegerFieldElement;
 import dk.teachus.frontend.components.form.PasswordFieldElement;
 import dk.teachus.frontend.components.form.ReadOnlyElement;
+import dk.teachus.frontend.components.form.TextAreaElement;
 import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.models.PersonModel;
@@ -164,6 +165,10 @@ public abstract class PersonPanel extends Panel {
 			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(personModel, "teacher.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
+		if (isNotesVisible()) {
+			formPanel.addElement(new TextAreaElement("Notes", new PropertyModel(personModel, "notes")));
+		}
+		
 		// Buttons
 		formPanel.addElement(new ButtonPanelElement() {
 			private static final long serialVersionUID = 1L;
@@ -214,6 +219,10 @@ public abstract class PersonPanel extends Panel {
 	
 	protected boolean isPasswordVisible() {
 		return true;
+	}
+	
+	protected boolean isNotesVisible() {
+		return false;
 	}
 	
 	protected void onSave(Person person) {

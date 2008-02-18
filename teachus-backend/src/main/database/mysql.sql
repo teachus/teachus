@@ -63,6 +63,7 @@ CREATE TABLE
 	active TINYINT(1), 
 	currency VARCHAR(10),
 	teacher_id BIGINT, 
+	notes MEDIUMTEXT,
 	primary key (id)
 ) type=InnoDB;
 

@@ -24,6 +24,7 @@ public class PupilImpl extends PersonImpl implements Pupil {
 	private static final long serialVersionUID = 1L;
 	
 	private Teacher teacher;
+	private String notes;
 
 	public Teacher getTeacher() {
 		return teacher;
@@ -31,6 +32,15 @@ public class PupilImpl extends PersonImpl implements Pupil {
 
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
-	}	
+	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 	
 }
+ 
