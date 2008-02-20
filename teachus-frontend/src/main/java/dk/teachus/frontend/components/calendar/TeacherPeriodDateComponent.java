@@ -19,7 +19,10 @@ package dk.teachus.frontend.components.calendar;
 import java.util.Date;
 
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.behavior.AttributeAppender;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
@@ -31,6 +34,7 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
+import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 
 public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
@@ -83,6 +87,28 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 					getRequestCycle().setResponsePage(new PupilCalendarPage(date, pupil));
 				}				
 			};
+			displayLink.add(new JQueryCluetipBehavior());
+			
+			StringBuilder tooltip = new StringBuilder();
+			tooltip.append(pupil.getName());
+			if (pupil.getPhoneNumber() != null) {
+				tooltip.append("|");
+				tooltip.append("Phone").append(": ").append(pupil.getPhoneNumber());
+			}
+			if (pupil.getEmail() != null) {
+				tooltip.append("|");
+				tooltip.append("Email").append(": ").append(pupil.getEmail());
+			}
+			if (pupil.getNotes() != null) {
+				tooltip.append("|");
+				String notes = pupil.getNotes();
+				notes = notes.replace("\r\n", "\n");
+				notes = notes.replace("\r", "\n");
+				notes = notes.replace("\n", "| ");
+				tooltip.append("Notes").append(": ").append(notes);
+			}
+			displayLink.add(new SimpleAttributeModifier("title", tooltip));
+			displayLink.add(new AttributeAppender("class", true, new Model("tooltip"), " "));
 		}
 		
 		return displayLink;
@@ -92,4 +118,5 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 	protected BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings) {
 		return new TeacherPeriodDateComponent(id, teacher, period, date, bookings);
 	}
+	
 }

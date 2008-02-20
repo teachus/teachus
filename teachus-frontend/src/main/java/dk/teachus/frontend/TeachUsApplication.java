@@ -27,10 +27,9 @@ import org.apache.wicket.Page;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
-import org.apache.wicket.ajax.AbstractDefaultAjaxBehavior;
+import org.apache.wicket.ajax.WicketAjaxReference;
 import org.apache.wicket.markup.html.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.markup.html.WicketEventReference;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import org.apache.wicket.settings.IExceptionSettings;
@@ -50,6 +49,8 @@ import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.imagebox.ImageBox;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
+import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
+import dk.teachus.frontend.components.jquery.dimensions.JQueryDimensionsBehavior;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
 import dk.teachus.frontend.pages.InfoPage;
@@ -202,12 +203,19 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/desc.png", Resources.DESC.getSharedResourceKey()); //$NON-NLS-1$
 		
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/andreas09_black.css", Resources.CSS_ANDREAS09_BLACK.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/andreas09_green.css", Resources.CSS_ANDREAS09_GREEN.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/andreas09_orange.css", Resources.CSS_ANDREAS09_ORANGE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/andreas09_purple.css", Resources.CSS_ANDREAS09_PURPLE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/andreas09_red.css", Resources.CSS_ANDREAS09_RED.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/print.css", Resources.CSS_PRINT.getSharedResourceKey()); //$NON-NLS-1$
 		
-		mountSharedResource("/js/wicket-ajax.js", new JavascriptResourceReference(AbstractDefaultAjaxBehavior.class, "wicket-ajax.js").getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
-		mountSharedResource("/js/wicket-event.js", new JavascriptResourceReference(WicketEventReference.class, "wicket-event.js").getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
+		mountSharedResource("/js/wicket-ajax.js", WicketAjaxReference.INSTANCE.getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
+		mountSharedResource("/js/wicket-event.js", WicketEventReference.INSTANCE.getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
 		mountSharedResource("/js/jquery.js", JQueryBehavior.JS_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/js/jquery-dimensions.js", JQueryDimensionsBehavior.JS_DIM_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/js/jquery-cluetip.js", JQueryCluetipBehavior.JS_CLUETIP_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/js/iutil.js", ImageBox.JS_IUTIL_1_2.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/js/imagebox.js", ImageBox.JS_IMAGEBOX_1_2.getSharedResourceKey()); //$NON-NLS-1$
 	}

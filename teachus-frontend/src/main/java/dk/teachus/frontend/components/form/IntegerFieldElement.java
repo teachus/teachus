@@ -41,7 +41,11 @@ public class IntegerFieldElement extends TextFieldElement {
 		}
 
 		public String convertToString(Object value, Locale locale) {
-			return IntegerConverter.INSTANCE.convertToString(value, locale);
+			if (value instanceof String) {
+				return (String) value;
+			} else {
+				return IntegerConverter.INSTANCE.convertToString(value, locale);
+			}
 		}
 		
 	}

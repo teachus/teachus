@@ -328,3 +328,24 @@ table.border th {
 	font-weight: bold;
 	color: white;
 }
+
+/* CLUE TIP */
+#cluetip-outer {
+	border: 2px solid black;
+	background-color: #F5F5F5;
+	text-align: left;
+}
+
+#cluetip-outer h3 {
+	margin: 0;
+	font-size: 1em;
+	border-bottom: 1px solid black;
+	background-color: #EEEEEE;
+	padding: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+#cluetip-inner {
+	padding: 10px;
+}
