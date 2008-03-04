@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
@@ -34,11 +35,12 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.Toolbar;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
+import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.FunctionsColumn;
+import dk.teachus.frontend.components.list.ImageFunctionItem;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
-import dk.teachus.frontend.components.list.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
@@ -139,9 +141,13 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		return null;
 	}
 	
-	public abstract class PersonFunctionItem extends FunctionItem {
-		public PersonFunctionItem(String label) {
-			super(label);
+	public abstract class PersonFunctionItem extends ImageFunctionItem {
+		public PersonFunctionItem(ResourceReference imageReference) {
+			super(imageReference);
+		}
+
+		public PersonFunctionItem(ResourceReference imageReference, String title) {
+			super(imageReference, title);
 		}
 
 		@SuppressWarnings("unchecked") //$NON-NLS-1$

@@ -24,7 +24,8 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.list.FunctionsColumn.FunctionItem;
+import dk.teachus.frontend.components.list.FunctionItem;
+import dk.teachus.frontend.components.list.LabelFunctionItem;
 import dk.teachus.frontend.models.TeacherModel;
 
 public class TeachersPage extends PersonsPage<Teacher> {
@@ -70,7 +71,7 @@ public class TeachersPage extends PersonsPage<Teacher> {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 		
 		// Activate/Inactivate
-		functions.add(new FunctionItem() {
+		functions.add(new LabelFunctionItem() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -98,7 +99,7 @@ public class TeachersPage extends PersonsPage<Teacher> {
 		});
 		
 		// Delete
-		functions.add(new FunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
+		functions.add(new LabelFunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -121,7 +122,7 @@ public class TeachersPage extends PersonsPage<Teacher> {
 		});
 		
 		// Login
-		functions.add(new FunctionItem("Login") {
+		functions.add(new LabelFunctionItem("Login") {
 			private static final long serialVersionUID = 1L;
 
 			@Override

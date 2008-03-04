@@ -19,10 +19,8 @@ package dk.teachus.frontend.components.calendar;
 import java.util.Date;
 
 import org.apache.wicket.MarkupContainer;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.Model;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
@@ -108,7 +106,6 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 				tooltip.append("Notes").append(": ").append(notes);
 			}
 			displayLink.add(new SimpleAttributeModifier("title", tooltip));
-			displayLink.add(new AttributeAppender("class", true, new Model("tooltip"), " "));
 		}
 		
 		return displayLink;

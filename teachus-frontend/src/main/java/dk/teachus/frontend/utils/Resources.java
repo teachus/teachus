@@ -69,6 +69,10 @@ public abstract class Resources {
 	public static final ResourceReference ASC = new ResourceReference(TeachUsApplication.class, "resources/img/asc.png"); //$NON-NLS-1$;
 	public static final ResourceReference DESC = new ResourceReference(TeachUsApplication.class, "resources/img/desc.png"); //$NON-NLS-1$;
 	
+	public static final ResourceReference ICON_CALENDAR = new ResourceReference(TeachUsApplication.class, "resources/img/calendar.png"); //$NON-NLS-1$;
+	public static final ResourceReference ICON_EMAIL_NEW_PASSWORD = new ResourceReference(TeachUsApplication.class, "resources/img/email_new_password.png"); //$NON-NLS-1$;
+	public static final ResourceReference ICON_DELETE = new ResourceReference(TeachUsApplication.class, "resources/img/delete.png"); //$NON-NLS-1$;
+	
 	/*
 	 * CSS and JS
 	 */

@@ -35,11 +35,12 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.Toolbar;
 import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
+import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.FunctionsColumn;
+import dk.teachus.frontend.components.list.LabelFunctionItem;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
-import dk.teachus.frontend.components.list.FunctionsColumn.FunctionItem;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
@@ -76,7 +77,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		final WeekDayChoiceRenderer weekDayChoiceRenderer = new WeekDayChoiceRenderer(Format.SHORT);
 		
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
-		functions.add(new FunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
+		functions.add(new LabelFunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override

@@ -16,16 +16,16 @@
  */
 package dk.teachus.frontend.components.list;
 
-import java.io.Serializable;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.frontend.components.ConfirmClickBehavior;
@@ -33,31 +33,6 @@ import dk.teachus.frontend.components.ConfirmClickBehavior;
 public class FunctionsColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;
 
-	public static abstract class FunctionItem implements Serializable {
-		private String label;
-		
-		public FunctionItem() {
-		}
-		
-		public FunctionItem(String label) {
-			this.label = label;
-		}
-
-		public String getLabel(Object object) {
-			return label;
-		}
-
-		public abstract void onEvent(Object object);
-		
-		public String getClickConfirmText(Object object) {
-			return null;
-		}
-		
-		public boolean isEnabled(Object object) {
-			return true;
-		}
-	}
-	
 	private List<FunctionItem> functions;
 	
 	public FunctionsColumn(IModel displayModel, List<FunctionItem> functions) {
@@ -102,8 +77,16 @@ public class FunctionsColumn extends AbstractColumn {
 			
 			String clickConfirmText = function.getClickConfirmText(object);
 			link.add(new ConfirmClickBehavior(clickConfirmText));
-			
-			link.add(new Label("label", function.getLabel(object)).setRenderBodyOnly(true));
+			link.add(new AttributeModifier("title", true, new AbstractReadOnlyModel() {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public Object getObject() {
+					return function.getTitle();
+				}
+			}));
+
+			link.add(function.createLabelComponent("label", object));
 			
 			links.add(link);
 		}
