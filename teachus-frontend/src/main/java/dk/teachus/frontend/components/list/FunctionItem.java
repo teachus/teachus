@@ -19,6 +19,7 @@ package dk.teachus.frontend.components.list;
 import java.io.Serializable;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.link.Link;
 
 public abstract class FunctionItem implements Serializable {
 	private String title;
@@ -45,4 +46,9 @@ public abstract class FunctionItem implements Serializable {
 	public String getTitle() {
 		return title;
 	}
+
+	public void modifyLink(Link link) {
+		// Do nothing er default
+	}
+	
 }

@@ -43,6 +43,20 @@ margin-bottom:10px;
 	padding-bottom: 10px;
 }
 
+.signin .inputText {
+	padding-top: 4px;
+	padding-bottom: 4px;
+	padding-left: 24px;
+}
+
+.signin .username {
+	background: white url(../images/username.png) no-repeat 2px center;	
+}
+
+.signin .password {
+	background: white url(../images/password.png) no-repeat 2px center;	
+}
+
 /* FORM */
 
 .form {
@@ -259,6 +273,10 @@ table.border th {
 
 .list td a {
 	text-decoration: underline;
+}
+
+.list td a.imglink {
+	text-decoration: none;
 }
 
 .list .functions a {

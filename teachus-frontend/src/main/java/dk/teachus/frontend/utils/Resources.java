@@ -73,6 +73,9 @@ public abstract class Resources {
 	public static final ResourceReference ICON_EMAIL_NEW_PASSWORD = new ResourceReference(TeachUsApplication.class, "resources/img/email_new_password.png"); //$NON-NLS-1$;
 	public static final ResourceReference ICON_DELETE = new ResourceReference(TeachUsApplication.class, "resources/img/delete.png"); //$NON-NLS-1$;
 	
+	public static final ResourceReference ICON_USERNAME = new ResourceReference(TeachUsApplication.class, "resources/img/username.png"); //$NON-NLS-1$;
+	public static final ResourceReference ICON_PASSWORD = new ResourceReference(TeachUsApplication.class, "resources/img/password.png"); //$NON-NLS-1$;
+	
 	/*
 	 * CSS and JS
 	 */

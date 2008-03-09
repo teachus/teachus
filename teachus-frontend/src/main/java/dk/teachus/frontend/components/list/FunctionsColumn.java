@@ -85,6 +85,7 @@ public class FunctionsColumn extends AbstractColumn {
 					return function.getTitle();
 				}
 			}));
+			function.modifyLink(link);
 
 			link.add(function.createLabelComponent("label", object));
 			

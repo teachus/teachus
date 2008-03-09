@@ -169,6 +169,11 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/toolbar.png", Resources.TOOLBAR.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/list_header_back.png", Resources.LIST_HEADER.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/empty.gif", Resources.EMPTY.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/calendar.png", Resources.ICON_CALENDAR.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/email_new_password.png", Resources.ICON_EMAIL_NEW_PASSWORD.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/delete.png", Resources.ICON_DELETE.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/username.png", Resources.ICON_USERNAME.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/password.png", Resources.ICON_PASSWORD.getSharedResourceKey()); //$NON-NLS-1$
 		
 		mountSharedResource("/images/bodybg.jpg", Resources.ANDREAS09_BODYBG.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/footerbg.jpg", Resources.ANDREAS09_FOOTERBG.getSharedResourceKey()); //$NON-NLS-1$
