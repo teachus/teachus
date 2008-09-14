@@ -46,7 +46,8 @@ import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 
 public abstract class SpringTestCase extends AbstractAnnotationAwareTransactionalTests implements Serializable {
-
+	private static final long serialVersionUID = 1L;
+	
 	protected static final String TABLE_APPLICATION_CONFIGURATION = "application_configuration";
 	protected static final String TABLE_BOOKING = "booking";
 	protected static final String TABLE_PERIOD = "period";

@@ -79,7 +79,7 @@ public class TestPeriodsPage extends WicketSpringTestCase {
 
 	private Link getDeleteLink(WicketTester tester, String periodName) {
 		Item periodRow = getPeriodRow(tester, periodName);		
-		Link link = (Link) tester.getComponentFromLastRenderedPage(periodRow.getPageRelativePath()+":cells:8:cell:link:1");
+		Link link = (Link) tester.getComponentFromLastRenderedPage(periodRow.getPageRelativePath()+":cells:8:cell:items:0:item:link");
 		return link;
 	}
 

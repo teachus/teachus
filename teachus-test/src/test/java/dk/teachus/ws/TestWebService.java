@@ -30,7 +30,7 @@ public class TestWebService extends TestCase {
 	
 	@Override
 	protected void setUp() throws Exception {
-		server = new Server(18080);
+		server = new Server(18180);
 		server.addHandler(new WebAppContext("src/test/ws", "/"));
 		server.start();
 	}
@@ -42,7 +42,7 @@ public class TestWebService extends TestCase {
 	}
 	
 	public void testFinanceServiceComesUp() throws Exception {
-		GetMethod getWsdl = new GetMethod("http://localhost:18080/services/finance?wsdl");
+		GetMethod getWsdl = new GetMethod("http://localhost:18180/services/finance?wsdl");
 		
 		int status = new HttpClient().executeMethod(getWsdl);
 		
