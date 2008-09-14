@@ -45,6 +45,8 @@ import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePage {
+	private static final long serialVersionUID = 1L;
+
 	protected PersonsPage(UserLevel userLevel) {
 		super(userLevel);
 		
@@ -142,6 +144,8 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 	}
 	
 	public abstract class PersonFunctionItem extends ImageFunctionItem {
+		private static final long serialVersionUID = 1L;
+
 		public PersonFunctionItem(ResourceReference imageReference) {
 			super(imageReference);
 		}

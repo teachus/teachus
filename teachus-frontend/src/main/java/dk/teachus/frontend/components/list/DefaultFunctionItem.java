@@ -16,13 +16,44 @@
  */
 package dk.teachus.frontend.components.list;
 
-import java.io.Serializable;
-
 import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 
-public interface FunctionItem extends Serializable {
+public abstract class DefaultFunctionItem implements FunctionItem {
+	private static final long serialVersionUID = 1L;
 	
-	Component createComponent(String wicketId, IModel rowModel);
+	private String title;
+	
+	public DefaultFunctionItem() {
+	}
+
+	public DefaultFunctionItem(String title) {
+		this.title = title;
+	}
+
+	public abstract void onEvent(Object object);
+	
+	public abstract Component createLabelComponent(String wicketId, Object object);
+	
+	public Component createComponent(String wicketId, IModel rowModel) {
+		return new DefaultFunctionPanel(wicketId, this, rowModel);
+	}
+	
+	public String getClickConfirmText(Object object) {
+		return null;
+	}
+	
+	public boolean isEnabled(Object object) {
+		return true;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void modifyLink(Link link) {
+		// Do nothing per default
+	}
 	
 }

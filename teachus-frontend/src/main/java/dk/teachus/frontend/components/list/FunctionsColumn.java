@@ -18,17 +18,11 @@ package dk.teachus.frontend.components.list;
 
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
-import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.RepeatingView;
-import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-
-import dk.teachus.frontend.components.ConfirmClickBehavior;
 
 public class FunctionsColumn extends AbstractColumn {
 	private static final long serialVersionUID = 1L;
@@ -47,50 +41,49 @@ public class FunctionsColumn extends AbstractColumn {
 		return component;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-		final Object object = rowModel.getObject();
-		
+	public void populateItem(Item cellItem, String componentId, IModel rowModel) {		
 		cellItem.add(new SimpleAttributeModifier("class", "functions"));
 		
-		LinkPropertyColumnPanel linkPropertyColumnPanel = new LinkPropertyColumnPanel(componentId);
-		linkPropertyColumnPanel.setRenderBodyOnly(true);
-		cellItem.add(linkPropertyColumnPanel);
+		cellItem.add(new FunctionColumnPanel(componentId, functions, rowModel));
 		
-		RepeatingView links = new RepeatingView("link");
-		linkPropertyColumnPanel.add(links);
-		
-		for (final FunctionItem function : functions) {
-			Link link = new Link(links.newChildId()) {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public void onClick() {
-					function.onEvent(object);
-				}
-				
-				@Override
-				public boolean isEnabled() {
-					return function.isEnabled(object);
-				}
-			};
-			
-			String clickConfirmText = function.getClickConfirmText(object);
-			link.add(new ConfirmClickBehavior(clickConfirmText));
-			link.add(new AttributeModifier("title", true, new AbstractReadOnlyModel() {
-				private static final long serialVersionUID = 1L;
-
-				@Override
-				public Object getObject() {
-					return function.getTitle();
-				}
-			}));
-			function.modifyLink(link);
-
-			link.add(function.createLabelComponent("label", object));
-			
-			links.add(link);
-		}
+//		LinkPropertyColumnPanel linkPropertyColumnPanel = new LinkPropertyColumnPanel(componentId);
+//		linkPropertyColumnPanel.setRenderBodyOnly(true);
+//		cellItem.add(linkPropertyColumnPanel);
+//		
+//		RepeatingView links = new RepeatingView("link");
+//		linkPropertyColumnPanel.add(links);
+//		
+//		for (final FunctionItem function : functions) {
+//			Link link = new Link(links.newChildId()) {
+//				private static final long serialVersionUID = 1L;
+//
+//				@Override
+//				public void onClick() {
+//					function.onEvent(object);
+//				}
+//				
+//				@Override
+//				public boolean isEnabled() {
+//					return function.isEnabled(object);
+//				}
+//			};
+//			
+//			String clickConfirmText = function.getClickConfirmText(object);
+//			link.add(new ConfirmClickBehavior(clickConfirmText));
+//			link.add(new AttributeModifier("title", true, new AbstractReadOnlyModel() {
+//				private static final long serialVersionUID = 1L;
+//
+//				@Override
+//				public Object getObject() {
+//					return function.getTitle();
+//				}
+//			}));
+//			function.modifyLink(link);
+//
+//			link.add(function.createLabelComponent("label", object));
+//			
+//			links.add(link);
+//		}
 	}
 
 }

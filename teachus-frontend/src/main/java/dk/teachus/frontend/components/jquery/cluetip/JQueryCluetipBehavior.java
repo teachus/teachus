@@ -13,6 +13,25 @@ public class JQueryCluetipBehavior extends JQueryDimensionsBehavior {
 	private static final long serialVersionUID = 1L;
 	
 	public static final ResourceReference JS_CLUETIP_JQUERY = new JavascriptResourceReference(JQueryCluetipBehavior.class, "jquery.cluetip-0.9.6.min.js"); //$NON-NLS-1$
+
+	public static enum Style {
+		STANDARD,
+		NO_HEADER
+	}
+	
+	private final Style style;
+	
+	public JQueryCluetipBehavior() {
+		this(null);
+	}
+	
+	public JQueryCluetipBehavior(Style style) {
+		if (style == null) {
+			style = Style.STANDARD;
+		}
+		
+		this.style = style;		
+	}
 	
 	@Override
 	public void onRenderHead(IHeaderResponse response) {
@@ -21,14 +40,21 @@ public class JQueryCluetipBehavior extends JQueryDimensionsBehavior {
 		response.renderJavascriptReference(JS_CLUETIP_JQUERY);
 		
 		StringBuilder tipConf = new StringBuilder();
-		tipConf.append("$('.tooltip').cluetip({splitTitle: '|'})");
+		tipConf.append("$('.tooltip").append(style.name()).append("').cluetip({");
+		if (style == Style.STANDARD) {
+			tipConf.append("splitTitle: '|'");
+		} else {
+			tipConf.append("splitTitle: '|',");
+			tipConf.append("showTitle: false");
+		}
+		tipConf.append("})");
 		
 		response.renderOnDomReadyJavascript(tipConf.toString());
 	}
 	
 	@Override
 	public void bind(Component component) {
-		component.add(new AttributeAppender("class", true, new Model("tooltip"), " "));
+		component.add(new AttributeAppender("class", true, new Model("tooltip"+style.name()), " "));
 	}
 	
 }

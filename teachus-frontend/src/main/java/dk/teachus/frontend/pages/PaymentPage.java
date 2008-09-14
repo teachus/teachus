@@ -16,14 +16,13 @@
  */
 package dk.teachus.frontend.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.PropertyColumn;
-import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
@@ -35,13 +34,15 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.PaidPanel;
+import dk.teachus.frontend.components.list.FunctionsColumn;
+import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
+import dk.teachus.frontend.functions.CancelPubilBookingFunction;
+import dk.teachus.frontend.functions.PaidFunction;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
-import dk.teachus.frontend.utils.YesNoRenderer;
 
 public class PaymentPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -52,27 +53,28 @@ public class PaymentPage extends AuthenticatedBasePage {
 		init();
 	}
 	
-	private void init() {
-		IColumn paidColumn;
-		Model paidHeader = new Model(TeachUsSession.get().getString("General.paid")); //$NON-NLS-1$
-		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
-			paidColumn = new AbstractColumn(paidHeader) {
-				private static final long serialVersionUID = 1L;
+	private void init() {		
+		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 
-				public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-					cellItem.add(new PaidPanel(componentId, rowModel));
-				}
-			};
-		} else {
-			paidColumn = new RendererPropertyColumn(paidHeader, "paid", new YesNoRenderer()); //$NON-NLS-1$ 
+		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
+			functions.add(new PaidFunction());
 		}
+		
+		functions.add(new CancelPubilBookingFunction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onBookingCancelled() {
+				getRequestCycle().setResponsePage(PaymentPage.class);
+			}
+		});
 		
 		IColumn[] columns = new IColumn[] {
 				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				paidColumn
+				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)
 		};
 		
 		IModel bookingsModel = new LoadableDetachableModel() {

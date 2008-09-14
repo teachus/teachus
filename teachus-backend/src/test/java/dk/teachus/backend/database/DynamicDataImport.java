@@ -16,13 +16,17 @@
  */
 package dk.teachus.backend.database;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
@@ -44,6 +48,7 @@ import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AdminImpl;
+import dk.teachus.backend.domain.impl.ApplicationConfigurationEntry;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
@@ -68,6 +73,8 @@ public abstract class DynamicDataImport {
 
 		deleteExistingData(sessionFactory);
 		
+		createVersion(sessionFactory);
+		
 		createAdmin(sessionFactory);
 		
 		int numberOfTeachers = 1;
@@ -89,6 +96,35 @@ public abstract class DynamicDataImport {
 		}
 		
 		System.exit(0);
+	}
+	
+	private static void createVersion(SessionFactory sessionFactory) {
+		// Parse the pom file to get the version
+		File file = new File("pom.xml");
+		
+		if (file.exists()) {
+			try {
+				String pomContent = FileUtils.readFileToString(file, "UTF-8");
+				
+				Pattern pattern = Pattern.compile(".*?\\<version\\>([^\\<]+)\\<\\/version>.*", Pattern.MULTILINE | Pattern.DOTALL);
+				Matcher matcher = pattern.matcher(pomContent);
+				if (matcher.matches()) {
+					String version = matcher.group(1);
+					version = version.replace("-SNAPSHOT", "");
+					
+					Session session = sessionFactory.openSession();
+					session.beginTransaction();
+					
+					ApplicationConfigurationEntry entry = new ApplicationConfigurationEntry("VERSION", version);
+					session.save(entry);
+					
+					session.getTransaction().commit();
+					session.close();
+				}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	private static void createTeacherAttribute(SessionFactory sessionFactory, Teacher teacher) {
@@ -352,6 +388,7 @@ public abstract class DynamicDataImport {
 	private static void deleteExistingData(SessionFactory sessionFactory) {
 		executeSql(sessionFactory, "UPDATE person SET teacher_id = NULL");
 
+		executeSql(sessionFactory, "TRUNCATE application_configuration");
 		executeSql(sessionFactory, "TRUNCATE booking");
 		executeSql(sessionFactory, "TRUNCATE period");
 		executeSql(sessionFactory, "TRUNCATE teacher_attribute");

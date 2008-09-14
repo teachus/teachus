@@ -3,7 +3,9 @@ package dk.teachus.frontend.components.list;
 import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.basic.Label;
 
-public abstract class LabelFunctionItem extends FunctionItem {
+public abstract class LabelFunctionItem extends DefaultFunctionItem {
+	private static final long serialVersionUID = 1L;
+	
 	private String label; 
 	
 	public LabelFunctionItem() {

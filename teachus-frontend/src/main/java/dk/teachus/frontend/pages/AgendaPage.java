@@ -16,6 +16,9 @@
  */
 package dk.teachus.frontend.pages;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -27,9 +30,12 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.list.FunctionsColumn;
+import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
+import dk.teachus.frontend.functions.CancelPubilBookingFunction;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
@@ -44,6 +50,16 @@ public class AgendaPage extends AuthenticatedBasePage {
 		
 		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 				
+		List<FunctionItem> functions = new ArrayList<FunctionItem>();
+		functions.add(new CancelPubilBookingFunction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void onBookingCancelled() {
+				getRequestCycle().setResponsePage(AgendaPage.class);
+			}
+		});
+		
 		IColumn[] columns = new IColumn[] {
 				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name") {
 					private static final long serialVersionUID = 1L;
@@ -57,7 +73,8 @@ public class AgendaPage extends AuthenticatedBasePage {
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()),
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()),
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "pupil.phoneNumber", "pupil.phoneNumber"),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer())
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()),
+				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)
 		};
 		
 		IModel bookingsModel = new LoadableDetachableModel() {
