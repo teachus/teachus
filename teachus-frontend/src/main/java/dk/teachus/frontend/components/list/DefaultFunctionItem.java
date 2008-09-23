@@ -48,7 +48,7 @@ public abstract class DefaultFunctionItem implements FunctionItem {
 		return true;
 	}
 	
-	public String getTitle() {
+	public String getTitle(Object rowObject) {
 		return title;
 	}
 

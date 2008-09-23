@@ -69,7 +69,7 @@ public abstract class DynamicDataImport {
 		SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 
 		DateMidnight startDate = new DateMidnight().minusYears(3).withMonthOfYear(1).withDayOfMonth(10);
-		DateMidnight endDate = new DateMidnight().plusYears(1).withMonthOfYear(12).withDayOfMonth(31);
+		DateMidnight endDate = new DateMidnight().withMonthOfYear(12).withDayOfMonth(31);
 
 		deleteExistingData(sessionFactory);
 		

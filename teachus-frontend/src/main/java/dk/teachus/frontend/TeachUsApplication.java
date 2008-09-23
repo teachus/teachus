@@ -51,6 +51,7 @@ import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 import dk.teachus.frontend.components.jquery.dimensions.JQueryDimensionsBehavior;
+import dk.teachus.frontend.ical.IcalPage;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
 import dk.teachus.frontend.pages.InfoPage;
@@ -133,6 +134,8 @@ public class TeachUsApplication extends WebApplication {
 		mountBookmarkablePage("/globalsettings", ApplicationConfigurationPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/messages", SentMessagesPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/messages/create", CreateMessagePage.class); //$NON-NLS-1$
+		
+		mount(new IndexedParamUrlCodingStrategy("/ical", IcalPage.class)); //$NON-NLS-1$
 	}
 
 	private void mountResources() {

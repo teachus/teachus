@@ -48,6 +48,6 @@ public class ConfirmClickBehavior extends AbstractBehavior {
 	
 	@Override
 	public boolean isEnabled(Component component) {
-		return Strings.isEmpty(confirmScript) == false;
+		return component.isEnabled() && Strings.isEmpty(confirmScript) == false;
 	}
 }

@@ -61,6 +61,18 @@ public class TeachUsSession extends WebSession {
 
 		person = personDAO.authenticatePerson(username, password);
 
+		setLocale();
+	}
+	
+	public void signInWithPrivateKey(String username, String privateKey) {
+		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+		
+		person = personDAO.authenticatePersonWithPrivateKey(username, privateKey);
+
+		setLocale();
+	}
+
+	private void setLocale() {
 		if (person != null) {
 			if (person.getLocale() != null) {
 				setLocale(person.getLocale());

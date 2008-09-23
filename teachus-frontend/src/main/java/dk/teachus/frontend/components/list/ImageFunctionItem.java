@@ -29,7 +29,7 @@ public abstract class ImageFunctionItem extends DefaultFunctionItem {
 	}
 	
 	@Override
-	public void modifyLink(Link link) {
+	public void modifyLink(final Link link) {
 		link.add(new AttributeAppender("class", true, new Model("imglink"), " "));
 		
 		link.add(new JQueryCluetipBehavior(Style.NO_HEADER) {
@@ -37,14 +37,14 @@ public abstract class ImageFunctionItem extends DefaultFunctionItem {
 			
 			@Override
 			public boolean isEnabled(Component component) {
-				return getTitle() != null;
+				return link.isEnabled() && getTitle(null) != null;
 			}
 		});
 	}
 	
 	@Override
-	public String getTitle() {
-		return "|"+super.getTitle();
+	public String getTitle(Object rowObject) {
+		return "|"+super.getTitle(rowObject);
 	}
 	
 }

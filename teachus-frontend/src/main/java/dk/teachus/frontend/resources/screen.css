@@ -279,6 +279,11 @@ table.border th {
 	text-decoration: none;
 }
 
+.list td span.imglink em img {
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+} 
+
 .list .functions a {
 	margin-right: 10px;
 }

@@ -61,6 +61,39 @@ public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO
 		Person person = null;
 		if (persons.size() == 1) {
 			person = persons.get(0);
+			
+			// Pupils, which are associated with a teacher, which is inactivated should not be allowed to log in
+			if (person instanceof Pupil) {
+				Pupil pupil = (Pupil) person;
+				if (pupil.getTeacher().isActive() == false) {
+					person = null;
+				}
+			}
+		}
+		
+		return person;
+	}
+
+	@Transactional(readOnly=true)
+	public Person authenticatePersonWithPrivateKey(String username, String privateKey) {
+		Person person = null;
+		
+		Person p = usernameExists(username);
+		
+		if (p != null) {
+			if (p.isActive()) {
+				if (p.getPassword().equals(privateKey)) {
+					person = p;
+				}
+			}
+		}
+		
+		// Pupils, which are associated with a teacher, which is inactivated should not be allowed to log in
+		if (person instanceof Pupil) {
+			Pupil pupil = (Pupil) person;
+			if (pupil.getTeacher().isActive() == false) {
+				person = null;
+			}
 		}
 		
 		return person;

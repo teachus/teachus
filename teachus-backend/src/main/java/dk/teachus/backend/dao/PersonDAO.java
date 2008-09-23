@@ -31,6 +31,8 @@ public interface PersonDAO extends Serializable {
 
 	Person authenticatePerson(String username, String password);
 
+	Person authenticatePersonWithPrivateKey(String username, String privateKey);
+
 	<P extends Person> List<P> getPersons(Class<P> personClass);
 
 	List<Pupil> getPupils(Teacher teacher);

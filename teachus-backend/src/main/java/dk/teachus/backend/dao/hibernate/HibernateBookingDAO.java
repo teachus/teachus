@@ -367,6 +367,28 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		
 		return new BookingsImpl(filteredBookings);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public Bookings getBookings(Pupil pupil, DateMidnight fromDate, DateMidnight toDate) {
+		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
+		
+		DateTime start = new DateTime(fromDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+		DateTime end = new DateTime(toDate).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
+		
+		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
+		c.add(Restrictions.eq("pupil", pupil));
+		c.add(Restrictions.between("date", start.toDate(), end.toDate()));
+		c.add(Restrictions.eq("active", true));
+		
+		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		
+		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
+		List<Booking> filteredBookings = filterBookings(bookings);
+		
+		return new BookingsImpl(filteredBookings);
+	}
 	
 	@Transactional(readOnly=true)
 	public Booking getBooking(Long id) {
