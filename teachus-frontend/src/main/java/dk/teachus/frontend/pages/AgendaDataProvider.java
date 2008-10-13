@@ -15,11 +15,11 @@ public class AgendaDataProvider extends TeachUsSortableDataProvider<PupilBooking
 		super(listModel);
 		
 		addComparator("pupil.name", new StringComparator());
-		addComparator("date", new DateComparator());
+		addComparator("date.date", new DateComparator());
 		addComparator("pupil.phoneNumber", new StringComparator());
 		addComparator("period.price", new DoubleComparator());
 		
-		setSort("date", true);
+		setSort("date.date", true);
 	}
 	
 }

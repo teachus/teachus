@@ -28,6 +28,7 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
 
@@ -73,6 +74,6 @@ public interface BookingDAO extends Serializable {
 
 	int getBookingCount(Period period);
 
-	Date getLastBookingDate(Period period);
+	TeachUsDate getLastBookingDate(Period period);
 	
 }

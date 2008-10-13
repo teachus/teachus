@@ -49,12 +49,15 @@ import dk.teachus.frontend.components.form.ReadOnlyElement;
 import dk.teachus.frontend.components.form.TextAreaElement;
 import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.components.form.FormPanel.FormValidator;
+import dk.teachus.frontend.ical.IcalUrlModel;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.persons.PersonsPage;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 import dk.teachus.frontend.utils.ThemeChoiceRenderer;
 
 public abstract class PersonPanel extends Panel {
+	private static final long serialVersionUID = 1L;
+	
 	protected String password1;
 	protected String password2;
 
@@ -165,6 +168,13 @@ public abstract class PersonPanel extends Panel {
 			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(personModel, "teacher.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
+		// iCalendar URL
+		formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("Ical.label"), new IcalUrlModel(personModel)));
+		
+		// Additional elements
+		appendElements(formPanel);
+		
+		// Notes
 		if (isNotesVisible()) {
 			formPanel.addElement(new TextAreaElement("Notes", new PropertyModel(personModel, "notes")));
 		}
@@ -226,6 +236,9 @@ public abstract class PersonPanel extends Panel {
 	}
 	
 	protected void onSave(Person person) {
+	}
+	
+	protected void appendElements(FormPanel formPanel) {
 	}
 	
 }

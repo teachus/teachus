@@ -34,6 +34,7 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
+import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.CalendarPanel;
@@ -78,12 +79,14 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
+			Teacher teacher = createTeacher(2L);
+			
 			PersonDAO personDAO = createPersonDAO();
 			PeriodDAO periodDAO = createPeriodDAO();
 			BookingDAO bookingDAO = createBookingDAO();
 			
 			one(personDAO).getPerson(2L);
-			will(returnValue(createTeacher(2L)));
+			will(returnValue(teacher));
 			
 			List<Period> periods = new ArrayList<Period>();
 			Period period = createPeriod(1L);
@@ -99,6 +102,9 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			
 			one(bookingDAO).createTeacherBookingObject();
 			will(returnValue(new TeacherBookingImpl()));
+			
+			exactly(2).of(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
+			will(returnValue(null));
 			
 			one(bookingDAO).book(with(a(Booking.class)));
 			

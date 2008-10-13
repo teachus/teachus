@@ -190,7 +190,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		List<PupilBooking> futureBookings = new ArrayList<PupilBooking>();
 		DateTime now = new DateTime();
 		for (PupilBooking booking : allUnPaidBookings) {
-			if (now.isAfter(new DateTime(booking.getDate()))) {
+			if (now.isAfter(booking.getDate().getDateTime())) {
 				unPaidBookings.add(booking);
 			} else {
 				futureBookings.add(booking);
@@ -264,7 +264,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 	private PaintedDefaultCategoryDataset createCategoryDataset(List<PupilBooking> bookings, Comparable<?> dataSetLabel, Paint paint) {
 		Map<Integer, Double> months = new HashMap<Integer, Double>();
 		for (PupilBooking booking : bookings) {
-			int month = new DateMidnight(booking.getDate()).getMonthOfYear();
+			int month = booking.getDate().getDateMidnight().getMonthOfYear();
 			double price = booking.getPeriod().getPrice();
 			if (months.containsKey(month)) {
 				months.put(month, months.get(month) + price);
@@ -294,7 +294,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 	private MonthIncome getMonthIncome(List<MonthIncome> data, PupilBooking booking) {
 		MonthIncome monthIncome = null;
 		for (MonthIncome income : data) {
-			if (income.getMonth() == new DateMidnight(booking.getDate()).getMonthOfYear()) {
+			if (income.getMonth() == booking.getDate().getDateMidnight().getMonthOfYear()) {
 				monthIncome = income;
 				break;
 			}
@@ -302,7 +302,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		
 		if (monthIncome == null) {
 			monthIncome = new MonthIncome();
-			monthIncome.setMonth(new DateMidnight(booking.getDate()).getMonthOfYear());
+			monthIncome.setMonth(booking.getDate().getDateMidnight().getMonthOfYear());
 			data.add(monthIncome);
 		}
 		return monthIncome;

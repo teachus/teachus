@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.sql.DataSource;
 
@@ -39,6 +40,7 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
@@ -68,6 +70,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	}
 	
 	protected Long createPupilBooking(long periodId, long pupilId, DateTime dateTime, Date createDate) {
+		return createPupilBooking(periodId, pupilId, new TeachUsDate(dateTime, TimeZone.getDefault()), new TeachUsDate(createDate, TimeZone.getDefault()));
+	}
+	
+	protected Long createPupilBooking(long periodId, long pupilId, TeachUsDate date, TeachUsDate createDate) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();
@@ -85,7 +91,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		pupilBooking.setPaid(false);
 		pupilBooking.setNotificationSent(false);
 		pupilBooking.setCreateDate(createDate);
-		pupilBooking.setDate(dateTime.toDate());
+		pupilBooking.setDate(date);
 		
 		bookingDAO.book(pupilBooking);
 		endTransaction();
@@ -105,8 +111,8 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		endTransaction();
 		
 		TeacherBooking teacherBooking = bookingDAO.createTeacherBookingObject();
-		teacherBooking.setCreateDate(new DateTime().minusHours(3).toDate());
-		teacherBooking.setDate(date.toDate());
+		teacherBooking.setCreateDate(new TeachUsDate(new DateTime().minusHours(3).toDate(), TimeZone.getDefault()));
+		teacherBooking.setDate(new TeachUsDate(date));
 		teacherBooking.setPeriod(period);
 		teacherBooking.setTeacher(teacher);
 		

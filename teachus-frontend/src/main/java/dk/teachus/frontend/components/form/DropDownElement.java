@@ -16,11 +16,16 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -31,6 +36,32 @@ import org.apache.wicket.validation.IValidator;
 
 public class DropDownElement extends AbstractChoiceElement {
 	private static final long serialVersionUID = 1L;
+	
+	public static DropDownElement createTimeZoneElement(String label, IModel inputModel, boolean required) {
+		List<TimeZone> choices = new ArrayList<TimeZone>();
+		
+		for (String timeZoneId : TimeZone.getAvailableIDs()) {
+			TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+			choices.add(timeZone);
+		}
+		
+		Collections.sort(choices, new Comparator<TimeZone>() {
+			public int compare(TimeZone o1, TimeZone o2) {
+				return o1.getID().compareTo(o2.getID());
+			}
+		});
+		
+		IChoiceRenderer choiceRenderer = new ChoiceRenderer() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Object getDisplayValue(Object object) {
+				TimeZone timeZone = (TimeZone) object;
+				return timeZone.getID();
+			}
+		};
+		return new DropDownElement(label, inputModel, choices, choiceRenderer, required);
+	}
 	
 	private DropDownChoice dropDownChoice;
 	

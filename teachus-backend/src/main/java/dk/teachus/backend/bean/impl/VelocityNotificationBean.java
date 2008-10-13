@@ -125,12 +125,12 @@ public class VelocityNotificationBean implements NotificationBean {
 				Locale locale = teacher.getLocale();
 				
 				// Build up bookingslist and format date
-				List<VelocityNotificationBean.FormattedPupilBooking> pupilBookingList = new ArrayList<VelocityNotificationBean.FormattedPupilBooking>();
+				List<FormattedPupilBooking> pupilBookingList = new ArrayList<FormattedPupilBooking>();
 				for (PupilBooking pupilBooking : pupilBookings) {
-					VelocityNotificationBean.FormattedPupilBooking formattedPupilBooking = new VelocityNotificationBean.FormattedPupilBooking();
+					FormattedPupilBooking formattedPupilBooking = new FormattedPupilBooking();
 					formattedPupilBooking.setPupilBooking(pupilBooking);
 					SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);
-					formattedPupilBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate()));
+					formattedPupilBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate().getDate()));
 					pupilBookingList.add(formattedPupilBooking);
 				}
 				
@@ -195,7 +195,7 @@ public class VelocityNotificationBean implements NotificationBean {
 					FormattedBooking formattedBooking = new FormattedBooking();
 					formattedBooking.setLocation(pupilBooking.getPeriod().getLocation());
 					SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);
-					formattedBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate()));
+					formattedBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate().getDate()));
 					bookingList.add(formattedBooking);
 				}
 				

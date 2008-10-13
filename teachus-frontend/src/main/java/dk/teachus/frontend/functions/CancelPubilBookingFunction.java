@@ -28,7 +28,7 @@ public abstract class CancelPubilBookingFunction extends ImageFunctionItem {
 		while(matcher.find()) {
 			String allDate = matcher.group(1);
 			String dateFormat = matcher.group(2);
-			String date = new SimpleDateFormat(dateFormat).format(booking.getDate());
+			String date = new SimpleDateFormat(dateFormat).format(booking.getDate().getDate());
 			confirmText = confirmText.replace(allDate, date);
 		}
 		return confirmText;

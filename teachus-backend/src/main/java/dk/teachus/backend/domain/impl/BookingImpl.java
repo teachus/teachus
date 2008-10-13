@@ -16,10 +16,9 @@
  */
 package dk.teachus.backend.domain.impl;
 
-import java.util.Date;
-
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 
 public abstract class BookingImpl extends AbstractHibernateObject implements Booking {
@@ -29,19 +28,19 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 	
 	private Period period;
 
-	private Date date;
+	private TeachUsDate date;
 
-	private Date createDate;
+	private TeachUsDate createDate;
 	
-	private Date updateDate;
+	private TeachUsDate updateDate;
 
 	private Teacher teacher;
 
-	public Date getCreateDate() {
+	public TeachUsDate getCreateDate() {
 		return createDate;
 	}
 
-	public Date getDate() {
+	public TeachUsDate getDate() {
 		return date;
 	}
 
@@ -53,7 +52,7 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 		return teacher;
 	}
 
-	public Date getUpdateDate() {
+	public TeachUsDate getUpdateDate() {
 		return updateDate;
 	}
 
@@ -65,11 +64,11 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 		this.active = active;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(TeachUsDate createDate) {
 		this.createDate = createDate;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(TeachUsDate date) {
 		this.date = date;
 	}
 
@@ -81,7 +80,7 @@ public abstract class BookingImpl extends AbstractHibernateObject implements Boo
 		this.teacher = teacher;
 	}
 
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(TeachUsDate updateDate) {
 		this.updateDate = updateDate;
 	}
 

@@ -70,8 +70,8 @@ public class AgendaPage extends AuthenticatedBasePage {
 						getRequestCycle().setResponsePage(new PupilPage(new PupilModel(booking.getPupil().getId())));
 					}
 				},
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()),
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date.date", "date.date", new DateChoiceRenderer()),
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date.date", new TimeChoiceRenderer()),
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "pupil.phoneNumber", "pupil.phoneNumber"),
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()),
 				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)
@@ -83,7 +83,8 @@ public class AgendaPage extends AuthenticatedBasePage {
 			@Override
 			protected Object load() {
 				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-				return bookingDAO.getFutureBookingsForTeacher(teacher);
+				List<PupilBooking> bookings = bookingDAO.getFutureBookingsForTeacher(teacher);
+				return bookings;
 			}
 			
 		};

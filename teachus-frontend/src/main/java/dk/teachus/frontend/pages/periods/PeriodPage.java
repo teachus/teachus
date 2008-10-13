@@ -44,6 +44,7 @@ import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
@@ -134,12 +135,12 @@ public class PeriodPage extends AuthenticatedBasePage {
 						// Check if the end date conflicts with some bookings
 						if (period.getId() != null) {
 							BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-							Date lastBookingDate = bookingDAO.getLastBookingDate(period);
+							TeachUsDate lastBookingDate = bookingDAO.getLastBookingDate(period);
 							if (lastBookingDate != null) {
-								if (date.before(lastBookingDate)) {
+								if (date.before(lastBookingDate.getDate())) {
 									ValidationError validationError = new ValidationError();
 									String bookingConflictMessage = TeachUsSession.get().getString("PeriodPage.endDateBookingConflict");
-									bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(new DateTime(lastBookingDate)));
+									bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(lastBookingDate.getDateTime()));
 									validationError.setMessage(bookingConflictMessage); //$NON-NLS-1$
 									validatable.error(validationError);
 								}

@@ -22,19 +22,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Request;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.WicketAjaxReference;
 import org.apache.wicket.markup.html.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.io.IObjectStreamFactory;
 import org.apache.wicket.util.lang.Objects;
+import org.apache.wicket.util.string.Strings;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -78,6 +85,8 @@ import dk.teachus.frontend.pages.stats.teacher.LessonsPerHourPage;
 import dk.teachus.frontend.utils.Resources;
 
 public class TeachUsApplication extends WebApplication {
+	
+	private static final Log log = LogFactory.getLog(TeachUsApplication.class);
 	
 	private ApplicationConfiguration configuration;
 	
@@ -285,6 +294,34 @@ public class TeachUsApplication extends WebApplication {
 	
 	public String getVersion() {
 		return getConfiguration().getConfiguration(ApplicationConfiguration.VERSION);
+	}
+	
+	public String getServerUrl() {
+		String serverUrl = getConfiguration().getConfiguration(ApplicationConfiguration.SERVER_URL);
+		
+		/*
+		 * If the server URL is empty, then the administrator have misconfigured the system (forgot to set the
+		 * server URL in the settings). We will get the server URL from the current server, but we will also
+		 * warn the administrator by adding an entry to the log.
+		 */
+		if (Strings.isEmpty(serverUrl)) {
+			log.error("No server url is set for the system. It's very important that you set it."); //$NON-NLS-1$
+			
+			RequestCycle cycle = RequestCycle.get();
+			WebRequest request = (WebRequest) cycle.getRequest();
+			HttpServletRequest httpServletRequest = request.getHttpServletRequest();
+			
+			StringBuilder b = new StringBuilder();
+			b.append(httpServletRequest.getScheme()).append("://"); //$NON-NLS-1$
+			b.append(httpServletRequest.getServerName());
+			if (httpServletRequest.getServerPort() != 80 && httpServletRequest.getServerPort() != 443) {
+				b.append(":").append(httpServletRequest.getServerPort()); //$NON-NLS-1$
+			}
+			
+			serverUrl = b.toString();
+		}
+		
+		return serverUrl;
 	}
 
 	public Theme getDefaultTheme() {

@@ -19,6 +19,8 @@ package dk.teachus.frontend.pages.settings;
 import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
+import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestTeacherSettingsPage extends WicketTestCase {
@@ -28,10 +30,15 @@ public class TestTeacherSettingsPage extends WicketTestCase {
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
+			Teacher teacher = createTeacher();
+			
 			PersonDAO personDAO = createPersonDAO();
 			
 			exactly(2).of(personDAO).getPerson(2L);
-			will(returnValue(createTeacher()));
+			will(returnValue(teacher));
+			
+			one(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
+			will(returnValue(null));
 			
 			tester.setPersonDAO(personDAO);
 		}});

@@ -34,6 +34,7 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
+import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.BlockingAjaxLink;
 import dk.teachus.frontend.utils.Resources;
 
@@ -193,8 +194,9 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 				if (localBooking == null) {
 					localBooking = createNewBookingObject(bookingDAO);
 					
-					localBooking.setDate(time.toDate());
+					localBooking.setDate(TeachUsSession.get().createNewDate(time));
 					localBooking.setPeriod(period);
+					localBooking.setCreateDate(TeachUsSession.get().createNewDate(new DateTime()));
 
 					bookingDAO.book(localBooking);
 					

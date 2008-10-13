@@ -18,11 +18,20 @@
         
         <many-to-one name="period" column="period_id" class="PeriodImpl" cascade="none" fetch="join" />
         
-		<property name="date" column="date" type="timestamp" />
+        <component name="date">
+        	<property name="date" column="date" type="timestamp" />
+			<property name="timeZone" column="date_tz" type="timezone" />
+        </component>
 		
-		<property name="createDate" column="create_date" type="timestamp" />
+        <component name="createDate">
+        	<property name="date" column="create_date" type="timestamp" />
+			<property name="timeZone" column="create_date_tz" type="timezone" />
+        </component>
 		
-		<property name="updateDate" column="update_date" type="timestamp" />
+        <component name="updateDate">
+        	<property name="date" column="update_date" type="timestamp" />
+			<property name="timeZone" column="update_date_tz" type="timezone" />
+        </component>
 	
 		<many-to-one name="teacher" column="teacher_id" class="TeacherImpl" cascade="none" fetch="join" />
 		

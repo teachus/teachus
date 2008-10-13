@@ -16,16 +16,16 @@
  */
 package dk.teachus.frontend.pages.periods;
 
-import java.util.Date;
-
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -101,7 +101,7 @@ public class TestPeriodPage extends WicketTestCase {
 			BookingDAO bookingDAO = createBookingDAO();
 			
 			one(bookingDAO).getLastBookingDate(period);
-			will(returnValue(new Date()));
+			will(returnValue(new TeachUsDate(new DateTime())));
 			
 			tester.setBookingDAO(bookingDAO);
 		}});

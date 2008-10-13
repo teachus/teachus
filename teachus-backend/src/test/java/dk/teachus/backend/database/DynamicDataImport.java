@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +44,7 @@ import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Theme;
@@ -205,8 +207,8 @@ public abstract class DynamicDataImport {
 						
 						// Create booking
 						PupilBooking booking = new PupilBookingImpl();
-						booking.setCreateDate(new Date());
-						booking.setDate(bookTime.toDate());
+						booking.setCreateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
+						booking.setDate(new TeachUsDate(bookTime, TimeZone.getDefault()));
 						booking.setPeriod(period);
 						booking.setTeacher(teacher);
 						booking.setPupil(pupil);

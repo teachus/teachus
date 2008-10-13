@@ -23,6 +23,7 @@ public interface ApplicationConfiguration extends Serializable {
 
 	public static final String SERVER_URL = "SERVER_URL";
 	public static final String VERSION = "VERSION";
+	public static final String DEFAULT_TIMEZONE = "DEFAULT_TIMEZONE";
 	
 	void setConfiguration(String configurationKey, String configurationValue);
 	

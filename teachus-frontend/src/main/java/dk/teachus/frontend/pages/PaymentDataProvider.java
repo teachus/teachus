@@ -15,10 +15,10 @@ public class PaymentDataProvider extends TeachUsSortableDataProvider<PupilBookin
 		super(listModel);
 		
 		addComparator("pupil.name", new StringComparator());
-		addComparator("date", new DateComparator());
+		addComparator("date.date", new DateComparator());
 		addComparator("period.price", new DoubleComparator());
 		
-		setSort("date", true);
+		setSort("date.date", true);
 	}
 	
 }

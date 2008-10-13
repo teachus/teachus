@@ -16,7 +16,8 @@ import org.apache.wicket.util.lang.Objects;
 import org.apache.wicket.util.lang.PropertyResolver;
 
 public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvider {
-	
+	private static final long serialVersionUID = 1L;
+
 	private class DelegatedComparator implements Comparator<O> {
 		private final SortParam sortParam;
 		

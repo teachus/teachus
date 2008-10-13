@@ -23,6 +23,7 @@ import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
 
 public abstract class AbstractValidationInputElement extends AbstractInputElement implements ValidationProducer {
+	private static final long serialVersionUID = 1L;
 
 	public AbstractValidationInputElement(String label) {
 		super(label);

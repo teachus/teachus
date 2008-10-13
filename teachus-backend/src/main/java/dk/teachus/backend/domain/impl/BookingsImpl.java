@@ -37,7 +37,7 @@ public class BookingsImpl implements Bookings {
 		Booking booking = null;
 		
 		for (Booking foundBooking : bookings) {
-			DateTime dt1 = new DateTime(foundBooking.getDate());
+			DateTime dt1 = foundBooking.getDate().getDateTime();
 			DateTime dt2 = time;
 			
 			if (dt1.toDateMidnight().equals(dt2.toDateMidnight())) {
@@ -64,7 +64,7 @@ public class BookingsImpl implements Bookings {
 			
 			for (Booking booking : bookings) {
 				if (booking.getPeriod().getId().equals(period.getId())) {
-					if (period.conflicts(new DateTime(booking.getDate()), time)) {
+					if (period.conflicts(booking.getDate().getDateTime(), time)) {
 						conflicts = true;
 						break;
 					}

@@ -19,6 +19,7 @@ package dk.teachus.frontend.test;
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
@@ -42,6 +43,7 @@ import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AdminImpl;
@@ -57,6 +59,8 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.pages.LazyInitProxy;
 
 public abstract class WicketTestCase extends MockObjectTestCase implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	public static class TestTeachUsApplication extends TeachUsApplication {		
 		private TeachUsWicketTester tester;
 		
@@ -280,6 +284,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		admin.setEmail("admin@teachus.dk");
 		admin.setName("Mock Admin");
 		admin.setUsername("admin");
+		admin.setPassword("FEDCBA654321");
 		return admin;
 	}
 	
@@ -295,6 +300,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		teacher.setEmail("teacher@teachus.dk");
 		teacher.setName("Mock Teacher");
 		teacher.setUsername("teacher");
+		teacher.setPassword("AFSF64523673946FJRGE23464");
 		return teacher;
 	}
 	
@@ -314,6 +320,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		pupil.setName("Mock Pupil");
 		pupil.setTeacher(teacher);
 		pupil.setUsername("pupil");
+		pupil.setPassword("ABCDEF123456");
 		return pupil;
 	}
 	
@@ -363,8 +370,8 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 		PupilBookingImpl booking = new PupilBookingImpl();
 		booking.setId(pupilBookingId);
 		booking.setActive(true);
-		booking.setCreateDate(new Date());
-		booking.setDate(dateTime.toDate());
+		booking.setCreateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
+		booking.setDate(new TeachUsDate(dateTime, TimeZone.getDefault()));
 		booking.setPupil(pupil);
 		booking.setTeacher(pupil.getTeacher());
 		booking.setPeriod(period);

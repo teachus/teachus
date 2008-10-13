@@ -16,8 +16,6 @@
  */
 package dk.teachus.frontend.components.calendar;
 
-import java.util.Date;
-
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.Link;
@@ -30,6 +28,7 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
@@ -75,14 +74,14 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 		if (booking instanceof PupilBooking) {
 			PupilBooking pupilBooking = (PupilBooking) booking;
 			final Pupil pupil = pupilBooking.getPupil();
-			final Date date = pupilBooking.getDate();
+			final TeachUsDate date = pupilBooking.getDate();
 			
 			displayLink = new Link(linkId) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onClick() {
-					getRequestCycle().setResponsePage(new PupilCalendarPage(date, pupil));
+					getRequestCycle().setResponsePage(new PupilCalendarPage(date.getDate(), pupil));
 				}				
 			};
 			displayLink.add(new JQueryCluetipBehavior());

@@ -20,6 +20,8 @@
         
         <!-- SUBCLASSES -->
         <subclass name="WelcomeIntroductionTeacherAttribute" discriminator-value="WELCOME_INTRODUCTION" />
+        
+        <subclass name="TimeZoneAttribute" discriminator-value="TIMEZONE" />
     </class>
 
 </hibernate-mapping>

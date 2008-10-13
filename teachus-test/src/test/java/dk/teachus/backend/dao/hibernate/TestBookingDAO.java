@@ -65,12 +65,23 @@ public class TestBookingDAO extends SpringTestCase {
 	}
 	
 	public void testBook_createDate() {
-		Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), null);
+		{
+			Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), null);
+			
+			Booking booking = getBookingDAO().getBooking(bookingId);
+			endTransaction();
+			
+			assertNull(booking.getCreateDate());
+		}
 		
-		Booking booking = getBookingDAO().getBooking(bookingId);
-		endTransaction();
-		
-		assertNotNull(booking.getCreateDate());
+		{
+			Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new Date());
+			
+			Booking booking = getBookingDAO().getBooking(bookingId);
+			endTransaction();
+			
+			assertNotNull(booking.getCreateDate());
+		}
 	}
 	
 	public void testGetUnsentBookings() {
@@ -223,7 +234,7 @@ public class TestBookingDAO extends SpringTestCase {
 		assertEquals(6, bookings.getBookingList().size());
 		
 		for (Booking booking : bookings.getBookingList()) {
-			DateTime date = new DateTime(booking.getDate());
+			DateTime date = booking.getDate().getDateTime();
 			assertTrue(fromDate.isBefore(date));
 			assertTrue(toDate.isAfter(date));
 			

@@ -71,8 +71,8 @@ public class PaymentPage extends AuthenticatedBasePage {
 		
 		IColumn[] columns = new IColumn[] {
 				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date.date", "date.date", new DateChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
+				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date.date", new TimeChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
 				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)
 		};

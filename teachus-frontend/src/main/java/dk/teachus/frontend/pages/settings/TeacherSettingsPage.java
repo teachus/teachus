@@ -16,7 +16,7 @@
  */
 package dk.teachus.frontend.pages.settings;
 
-import dk.teachus.backend.domain.Person;
+import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.person.TeacherPanel;
 import dk.teachus.frontend.models.TeacherModel;
@@ -29,8 +29,8 @@ public class TeacherSettingsPage extends AbstractSettingsPage {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void onSave(Person person) {
-				TeachUsSession.get().signIn(person.getUsername(), person.getPassword());
+			protected void onSave(Teacher teacher) {
+				TeachUsSession.get().signIn(teacher.getUsername(), teacher.getPassword());
 			}
 		});
 	}

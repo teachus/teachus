@@ -17,7 +17,6 @@
 package dk.teachus.backend.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public interface Booking extends Serializable {
 	Long getId();
@@ -28,14 +27,14 @@ public interface Booking extends Serializable {
 	Period getPeriod();
 	void setPeriod(Period period);
 	
-	Date getDate();
-	void setDate(Date date);
+	TeachUsDate getDate();
+	void setDate(TeachUsDate date);
 	
-	Date getCreateDate();
-	void setCreateDate(Date createDate);
+	TeachUsDate getCreateDate();
+	void setCreateDate(TeachUsDate createDate);
 	
-	Date getUpdateDate();
-	void setUpdateDate(Date updateDate);
+	TeachUsDate getUpdateDate();
+	void setUpdateDate(TeachUsDate updateDate);
 	
 	Teacher getTeacher();
 	void setTeacher(Teacher teacher);
