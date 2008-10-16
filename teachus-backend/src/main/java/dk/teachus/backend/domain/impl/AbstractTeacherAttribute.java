@@ -20,6 +20,8 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 
 public abstract class AbstractTeacherAttribute extends AbstractHibernateObject implements TeacherAttribute {
+	private static final long serialVersionUID = 1L;
+
 	private Teacher teacher;
 
 	private String value;

@@ -35,7 +35,6 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.StringValidator;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
@@ -83,8 +82,8 @@ public class PeriodPage extends AuthenticatedBasePage {
 			
 			final Object object = nestedModel.getObject();
 			if (object != null) {
-				final Date date = (Date) object;
-				returnObject = new DateTime(date).getMinuteOfDay();
+				final TeachUsDate date = (TeachUsDate) object;
+				returnObject = date.getMinuteOfDay();
 			}
 			
 			return returnObject;
@@ -117,12 +116,12 @@ public class PeriodPage extends AuthenticatedBasePage {
 		form.addElement(nameElement);
 		
 		// Begin date
-		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate")); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate.date")); //$NON-NLS-1$ //$NON-NLS-2$
 		beginDateElement.setReadOnly(period.getStatus() != Status.DRAFT);
 		form.addElement(beginDateElement);
 		
 		// End date
-		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate")); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate.date")); //$NON-NLS-1$ //$NON-NLS-2$
 		endDateElement.add(new IValidator() {
 			private static final long serialVersionUID = 1L;
 			
@@ -277,7 +276,7 @@ public class PeriodPage extends AuthenticatedBasePage {
 		periodList.add(period);
 		periods.setPeriods(periodList);
 		
-		DateMidnight beginDate = new DateMidnight(period.getBeginDate());
+		TeachUsDate beginDate = period.getBeginDate();
 		final int weekDayCount = period.getWeekDays().size();
 		final List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
 		if (dates.size() < weekDayCount) {
@@ -290,28 +289,28 @@ public class PeriodPage extends AuthenticatedBasePage {
 			final WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
 			weekDays.add(weekDay);
 			
-			final DateMidnight date = new DateMidnight(datePeriod.getDate());
+			TeachUsDate date = datePeriod.getDate();
 			
 			weekDay.add(new PeriodDateComponent("weekDay", period, date) { //$NON-NLS-1$
 				private static final long serialVersionUID = 1L;
 				
 				@Override
-				protected int getRowSpanForTimeContent(final Period period, final DateTime time) {
+				protected int getRowSpanForTimeContent(final Period period, final TeachUsDate time) {
 					return 0;
 				}
 				
 				@Override
-				protected Component getTimeContent(final String wicketId, final Period period, final DateTime time, final MarkupContainer contentContainer) {
+				protected Component getTimeContent(final String wicketId, final Period period, final TeachUsDate time, final MarkupContainer contentContainer) {
 					return null;
 				}
 				
 				@Override
-				protected boolean shouldDisplayTimeContent(final Period period, final DateTime time) {
+				protected boolean shouldDisplayTimeContent(final Period period, final TeachUsDate time) {
 					return false;
 				}
 				
 				@Override
-				protected boolean shouldHideEmptyContent(final Period period, final DateTime time) {
+				protected boolean shouldHideEmptyContent(final Period period, final TeachUsDate time) {
 					return false;
 				}
 				

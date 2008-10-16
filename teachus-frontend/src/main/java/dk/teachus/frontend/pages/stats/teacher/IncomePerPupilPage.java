@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -36,6 +35,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
@@ -48,15 +48,15 @@ import dk.teachus.frontend.utils.PercentChoiceRenderer;
 public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 	private static final long serialVersionUID = 1L;
 
-	private Date startDate;
+	private TeachUsDate startDate;
 	
-	private Date endDate;
+	private TeachUsDate endDate;
 	
 	public IncomePerPupilPage() {
 		this(null, null);
 	}
 	
-	public IncomePerPupilPage(Date startDate, Date endDate) {
+	public IncomePerPupilPage(TeachUsDate startDate, TeachUsDate endDate) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		
@@ -131,19 +131,19 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 		return TeachUsSession.get().getString("General.incomePerPupil"); //$NON-NLS-1$
 	}
 
-	public Date getEndDate() {
+	public TeachUsDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(TeachUsDate endDate) {
 		this.endDate = endDate;
 	}
 
-	public Date getStartDate() {
+	public TeachUsDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(TeachUsDate startDate) {
 		this.startDate = startDate;
 	}
 

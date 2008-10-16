@@ -44,6 +44,8 @@ import dk.teachus.frontend.components.form.DefaultFocusBehavior;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 
 public abstract class UnAuthenticatedBasePage extends BasePage {
+	private static final long serialVersionUID = 1L;
+	
 	public static final String USERNAME_PATH = "signInForm:username";
 	public static final String PASSWORD_PATH = "signInForm:password";
 	public static final String REMEMBER_PATH = "signInForm:remember";

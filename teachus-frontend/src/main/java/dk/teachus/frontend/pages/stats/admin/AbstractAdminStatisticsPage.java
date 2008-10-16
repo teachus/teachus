@@ -27,6 +27,7 @@ import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.pages.stats.AbstractStatisticsPage;
 
 public abstract class AbstractAdminStatisticsPage extends AbstractStatisticsPage<Admin> {
+	private static final long serialVersionUID = 1L;
 
 	public AbstractAdminStatisticsPage() {
 		super(UserLevel.ADMIN);

@@ -36,8 +36,9 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.utils.Resources;
 
-public abstract class BasePage extends WebPage {	
-	
+public abstract class BasePage extends WebPage {
+	private static final long serialVersionUID = 1L;
+
 	public static interface PageCategory {
 	}
 

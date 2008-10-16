@@ -18,6 +18,7 @@ package dk.teachus.backend.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -25,6 +26,7 @@ import org.joda.time.DateTimeConstants;
 
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodImpl;
@@ -36,16 +38,18 @@ public class TestPeriodDAO extends SpringTestCase {
 	private static final long serialVersionUID = 1L;
 
 	public void testSave() {
+		TimeZone timeZone = TimeZone.getDefault();
+		
 		// Get teacher
 		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
 		endTransaction();
 		
 		Period period = new PeriodImpl();
 		period.setStatus(Status.FINAL);
-		period.setBeginDate(new DateMidnight().minusMonths(4).toDate());
-		period.setEndDate(new DateMidnight().plusMonths(6).toDate());
-		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
-		period.setEndTime(new DateTime().withTime(17, 0, 0, 0).toDate());
+		period.setBeginDate(new TeachUsDate(new DateMidnight(), timeZone).minusMonths(4));
+		period.setEndDate(new TeachUsDate(new DateMidnight(), timeZone).plusMonths(6));
+		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
+		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(17, 0, 0, 0));
 		period.setLocation("Home");
 		period.setName("Tue / Thu @ home");
 		period.addWeekDay(WeekDay.TUESDAY);
@@ -63,6 +67,8 @@ public class TestPeriodDAO extends SpringTestCase {
 	}
 	
 	public void testGetPeriods() {
+		TimeZone timeZone = TimeZone.getDefault();
+		
 		// Add a new teacher
 		Teacher teacher = new TeacherImpl();
 		teacher.setActive(true);
@@ -76,10 +82,10 @@ public class TestPeriodDAO extends SpringTestCase {
 		// Add some periods
 		Period period = new PeriodImpl();
 		period.setStatus(Status.FINAL);
-		period.setBeginDate(new DateMidnight().minusMonths(4).toDate());
-		period.setEndDate(new DateMidnight().plusMonths(6).toDate());
-		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
-		period.setEndTime(new DateTime().withTime(17, 0, 0, 0).toDate());
+		period.setBeginDate(new TeachUsDate(new DateMidnight(), timeZone).minusMonths(4));
+		period.setEndDate(new TeachUsDate(new DateMidnight(), timeZone).plusMonths(6));
+		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
+		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(17, 0, 0, 0));
 		period.setLocation("Home");
 		period.setName("Tue / Thu @ home");
 		period.addWeekDay(WeekDay.TUESDAY);
@@ -106,6 +112,8 @@ public class TestPeriodDAO extends SpringTestCase {
 	}
 	
 	public void testGetPeriods_onlyActive() {
+		TimeZone timeZone = TimeZone.getDefault();
+		
 		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
 		endTransaction();
 		
@@ -117,9 +125,9 @@ public class TestPeriodDAO extends SpringTestCase {
 		// Add a period and delete it
 		Period period = new PeriodImpl();
 		period.setName("Empty period");
-		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
-		period.setEndTime(new DateTime().withTime(18, 0, 0, 0).toDate());
-		period.setEndDate(new DateMidnight(2005, 12, 15).toDate());
+		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
+		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(18, 0, 0, 0));
+		period.setEndDate(new TeachUsDate(2005, 12, 15, timeZone));
 		period.setLocation("Private");
 		period.setPrice(300);
 		period.setStatus(Status.FINAL);
@@ -228,13 +236,15 @@ public class TestPeriodDAO extends SpringTestCase {
 		}
 	}
 	
-	public void testDeletePeriod_noActiveBookings() {		
+	public void testDeletePeriod_noActiveBookings() {
+		TimeZone timeZone = TimeZone.getDefault();
+		
 		// Create period which has a deleted booking
 		Period period = new PeriodImpl();
 		period.setName("Empty period with deleted booking");
-		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
-		period.setEndTime(new DateTime().withTime(18, 0, 0, 0).toDate());
-		period.setEndDate(new DateMidnight(2005, 12, 15).toDate());
+		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
+		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(18, 0, 0, 0));
+		period.setEndDate(new TeachUsDate(2005, 12, 15, timeZone));
 		period.setLocation("Private");
 		period.setPrice(300);
 		period.setStatus(Status.FINAL);

@@ -19,6 +19,8 @@ package dk.teachus.backend.domain.impl;
 import java.io.Serializable;
 
 public abstract class AbstractHibernateObject implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private Long id;
 	private int version;
 

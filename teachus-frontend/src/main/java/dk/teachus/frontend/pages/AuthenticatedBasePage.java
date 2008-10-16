@@ -40,7 +40,8 @@ import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 
 public abstract class AuthenticatedBasePage extends BasePage {
-	
+	private static final long serialVersionUID = 1L;
+
 	public static enum AuthenticatedPageCategory implements PageCategory {
 		ADMINS,
 		TEACHERS,

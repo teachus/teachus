@@ -35,11 +35,19 @@ public class ApplicationConfigurationModel implements IModel {
 	}
 
 	public Object getObject() {
-		return TeachUsApplication.get().getConfiguration().getConfiguration(configurationKey);
+		return convertConfigurationValue(TeachUsApplication.get().getConfiguration().getConfiguration(configurationKey));
+	}
+	
+	protected Object convertConfigurationValue(String configurationValue) {
+		return configurationValue;
 	}
 
 	public void setObject(Object object) {
-		TeachUsApplication.get().getConfiguration().setConfiguration(configurationKey, String.valueOf(object));
+		TeachUsApplication.get().getConfiguration().setConfiguration(configurationKey, convertModelValue(object));
+	}
+	
+	protected String convertModelValue(Object modelValue) {
+		return String.valueOf(modelValue);
 	}
 
 	public void detach() {

@@ -100,6 +100,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	}
 	
 	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date) {
+		return createTeacherBooking(periodId, teacherId, new TeachUsDate(date, TimeZone.getDefault()));
+	}
+	
+	protected Long createTeacherBooking(long periodId, long teacherId, TeachUsDate date) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();
@@ -112,7 +116,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		
 		TeacherBooking teacherBooking = bookingDAO.createTeacherBookingObject();
 		teacherBooking.setCreateDate(new TeachUsDate(new DateTime().minusHours(3).toDate(), TimeZone.getDefault()));
-		teacherBooking.setDate(new TeachUsDate(date));
+		teacherBooking.setDate(date);
 		teacherBooking.setPeriod(period);
 		teacherBooking.setTeacher(teacher);
 		

@@ -19,7 +19,6 @@ package dk.teachus.frontend.pages.stats.teacher;
 import java.awt.Paint;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -38,6 +37,7 @@ import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.BarChartResource;
@@ -61,8 +61,8 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		
 		createFilterForm(year, yearsWithPaidBookings);
 		
-		Date fromDate = new DateMidnight().withYear(year).withMonthOfYear(1).withDayOfMonth(1).toDate();
-		Date toDate = new DateMidnight().withYear(year).withMonthOfYear(12).withDayOfMonth(31).toDate();
+		TeachUsDate fromDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(1).withDayOfMonth(1);
+		TeachUsDate toDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(12).withDayOfMonth(31);
 		
 		// Paid
 		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(getPerson(), fromDate, toDate);
@@ -73,9 +73,9 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		// Extract the unpaid bookings which is before now
 		List<PupilBooking> unPaidBookings = new ArrayList<PupilBooking>();
 		List<PupilBooking> futureBookings = new ArrayList<PupilBooking>();
-		DateTime now = new DateTime();
+		TeachUsDate now = TeachUsSession.get().createNewDate(new DateTime());
 		for (PupilBooking booking : allUnPaidBookings) {
-			if (now.isAfter(new DateTime(booking.getDate()))) {
+			if (now.isAfter(booking.getDate())) {
 				unPaidBookings.add(booking);
 			} else {
 				futureBookings.add(booking);
@@ -138,7 +138,7 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		SortedMap<Integer, Integer> lessonsPerHour = new TreeMap<Integer, Integer>();
 		
 		for (PupilBooking booking : bookings) {
-			int hour = new DateTime(booking.getDate()).getHourOfDay();
+			int hour = booking.getDate().getHourOfDay();
 			if (lessonsPerHour.get(hour) != null) {
 				lessonsPerHour.put(hour, lessonsPerHour.get(hour)+1);
 			} else {

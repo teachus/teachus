@@ -29,6 +29,7 @@ import dk.teachus.frontend.components.jfreechart.PaintedDefaultCategoryDataset;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public abstract class AbstractStatisticsPage<P extends Person> extends AuthenticatedBasePage {
+	private static final long serialVersionUID = 1L;
 	
 	protected static final Color COLOR_BLUE = new Color(25, 25, 204);
 	protected static final Color COLOR_RED = Color.RED;

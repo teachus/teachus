@@ -16,7 +16,6 @@
  */
 package dk.teachus.frontend.components.calendar;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
@@ -25,6 +24,7 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 
@@ -33,7 +33,7 @@ public class PupilPeriodDateComponent extends BookingPeriodDateComponent {
 	
 	private Pupil pupil;
 
-	public PupilPeriodDateComponent(String id, Pupil pupil, Period period, DateMidnight date, Bookings bookings) {
+	public PupilPeriodDateComponent(String id, Pupil pupil, Period period, TeachUsDate date, Bookings bookings) {
 		super(id, period, date, bookings);
 		
 		this.pupil = pupil;
@@ -64,13 +64,13 @@ public class PupilPeriodDateComponent extends BookingPeriodDateComponent {
 	}
 
 	@Override
-	protected boolean mayChangeBooking(Period period, DateTime bookingStartTime) {
+	protected boolean mayChangeBooking(Period period, TeachUsDate bookingStartTime) {
 		boolean mayChangeBooking = false;
 
 		if (TeachUsSession.get().getUserLevel() == UserLevel.TEACHER) {
 			mayChangeBooking = true;
 		} else {
-			DateTime today = new DateTime().withTime(23, 59, 59, 999);
+			TeachUsDate today = new TeachUsDate(new DateTime(), bookingStartTime.getTimeZone()).withTime(23, 59, 59, 999);
 			mayChangeBooking = bookingStartTime.isAfter(today);
 		}
 
@@ -78,7 +78,7 @@ public class PupilPeriodDateComponent extends BookingPeriodDateComponent {
 	}
 	
 	@Override
-	protected BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings) {
+	protected BookingPeriodDateComponent createNewInstance(String id, Period period, TeachUsDate date, Bookings bookings) {
 		return new PupilPeriodDateComponent(id, pupil, period, date, bookings);
 	}
 

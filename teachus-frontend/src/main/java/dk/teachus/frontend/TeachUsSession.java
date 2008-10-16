@@ -31,6 +31,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.PersonDAO;
@@ -166,6 +167,10 @@ public class TeachUsSession extends WebSession {
 		} catch (MissingResourceException e) {
 			return '!' + key + '!';
 		}
+	}
+
+	public TeachUsDate createNewDate(DateMidnight dateMidnight) {
+		return createNewDate(dateMidnight.toDateTime());
 	}
 	
 	public TeachUsDate createNewDate(DateTime dateTime) {

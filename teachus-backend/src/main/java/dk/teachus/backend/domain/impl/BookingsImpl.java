@@ -18,11 +18,10 @@ package dk.teachus.backend.domain.impl;
 
 import java.util.List;
 
-import org.joda.time.DateTime;
-
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.TeachUsDate;
 
 public class BookingsImpl implements Bookings {
 	private static final long serialVersionUID = 1L;
@@ -33,14 +32,14 @@ public class BookingsImpl implements Bookings {
 		bookings = pupilBookings;
 	}
 
-	public Booking getBooking(DateTime time) {
+	public Booking getBooking(TeachUsDate time) {
 		Booking booking = null;
 		
 		for (Booking foundBooking : bookings) {
-			DateTime dt1 = foundBooking.getDate().getDateTime();
-			DateTime dt2 = time;
+			TeachUsDate dt1 = foundBooking.getDate();
+			TeachUsDate dt2 = time;
 			
-			if (dt1.toDateMidnight().equals(dt2.toDateMidnight())) {
+			if (dt1.getDateMidnight().equals(dt2.getDateMidnight())) {
 				if (dt1.getHourOfDay() == dt2.getHourOfDay()
 						&& dt1.getMinuteOfHour() == dt2.getMinuteOfHour()) {
 					booking = foundBooking;
@@ -56,7 +55,7 @@ public class BookingsImpl implements Bookings {
 		return bookings;
 	}
 	
-	public boolean mayBook(Period period, DateTime time) {
+	public boolean mayBook(Period period, TeachUsDate time) {
 		boolean mayBook = false;
 		
 		{
@@ -64,7 +63,7 @@ public class BookingsImpl implements Bookings {
 			
 			for (Booking booking : bookings) {
 				if (booking.getPeriod().getId().equals(period.getId())) {
-					if (period.conflicts(booking.getDate().getDateTime(), time)) {
+					if (period.conflicts(booking.getDate(), time)) {
 						conflicts = true;
 						break;
 					}
@@ -77,7 +76,7 @@ public class BookingsImpl implements Bookings {
 		return mayBook;
 	}
 	
-	public boolean isBeforeBooking(Period period, DateTime time) {
+	public boolean isBeforeBooking(Period period, TeachUsDate time) {
 		boolean beforeBooking = false;
 		
 		{
@@ -85,7 +84,7 @@ public class BookingsImpl implements Bookings {
 			
 			for (Booking booking : bookings) {
 				if (booking.getPeriod().getId().equals(period.getId())) {
-					if (period.inLesson(new DateTime(booking.getDate()), time)) {
+					if (period.inLesson(booking.getDate(), time)) {
 						inLesson = true;
 						break;
 					}

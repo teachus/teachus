@@ -19,8 +19,6 @@ package dk.teachus.frontend.components.calendar;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.link.Link;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Booking;
@@ -39,7 +37,7 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 
 	private Teacher teacher;
 
-	public TeacherPeriodDateComponent(String id, Teacher teacher, Period period, DateMidnight date, Bookings bookings) {
+	public TeacherPeriodDateComponent(String id, Teacher teacher, Period period, TeachUsDate date, Bookings bookings) {
 		super(id, period, date, bookings);
 		
 		this.teacher = teacher;
@@ -63,7 +61,7 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 	}
 
 	@Override
-	protected boolean mayChangeBooking(Period period, DateTime bookingStartTime) {
+	protected boolean mayChangeBooking(Period period, TeachUsDate bookingStartTime) {
 		return true;
 	}
 	
@@ -81,7 +79,7 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 
 				@Override
 				public void onClick() {
-					getRequestCycle().setResponsePage(new PupilCalendarPage(date.getDate(), pupil));
+					getRequestCycle().setResponsePage(new PupilCalendarPage(date, pupil));
 				}				
 			};
 			displayLink.add(new JQueryCluetipBehavior());
@@ -111,7 +109,7 @@ public class TeacherPeriodDateComponent extends BookingPeriodDateComponent {
 	}
 	
 	@Override
-	protected BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings) {
+	protected BookingPeriodDateComponent createNewInstance(String id, Period period, TeachUsDate date, Bookings bookings) {
 		return new TeacherPeriodDateComponent(id, teacher, period, date, bookings);
 	}
 	

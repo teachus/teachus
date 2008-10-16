@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
@@ -33,12 +32,15 @@ import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.BlockingAjaxLink;
 import dk.teachus.frontend.utils.Resources;
 
 public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
+	private static final long serialVersionUID = 1L;
+	
 	private static final String LINK_ID = "link";
 	private static final String DISPLAYLINK_ID = "displayLink";
 	private static final String LABEL_ID = "label";
@@ -46,7 +48,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	
 	private Bookings bookings;
 	
-	public BookingPeriodDateComponent(String id, final Period period, DateMidnight date, Bookings bookings) {
+	public BookingPeriodDateComponent(String id, final Period period, TeachUsDate date, Bookings bookings) {
 		super(id, period, date);
 		
 		setOutputMarkupId(true);
@@ -55,7 +57,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	}
 
 	@Override
-	protected final Component getTimeContent(String wicketId, final Period period, final DateTime time, final MarkupContainer contentContainer) {
+	protected final Component getTimeContent(String wicketId, final Period period, final TeachUsDate time, final MarkupContainer contentContainer) {
 		final Booking booking = bookings.getBooking(time);
 		
 		BookingPeriodDateComponentPanel bookingPanel = new BookingPeriodDateComponentPanel(wicketId);
@@ -124,7 +126,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	}
 	
 	@Override
-	protected boolean shouldDisplayTimeContent(Period period, DateTime time) {
+	protected boolean shouldDisplayTimeContent(Period period, TeachUsDate time) {
 		boolean shouldDisplayTimeContent = false;
 		
 		if (period.mayBook(time)) {
@@ -141,7 +143,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	}
 	
 	@Override
-	protected int getRowSpanForTimeContent(Period period, DateTime time) {
+	protected int getRowSpanForTimeContent(Period period, TeachUsDate time) {
 		int rowSpan = 1;
 		
 		if (bookings.getBooking(time) != null) {
@@ -152,7 +154,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	}
 	
 	@Override
-	protected boolean shouldHideEmptyContent(Period period, DateTime time) {
+	protected boolean shouldHideEmptyContent(Period period, TeachUsDate time) {
 		return bookings.isBeforeBooking(period, time) == false;
 	}
 
@@ -180,7 +182,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 		return new Label(LABEL_ID, "&nbsp;").setEscapeModelStrings(false).setRenderBodyOnly(true);
 	}
 
-	private Component createLink(final Period period, final DateTime time, final Booking booking) {
+	private Component createLink(final Period period, final TeachUsDate time, final Booking booking) {
 		Component link;
 		link = new BlockingAjaxLink(LINK_ID) { 
 			private static final long serialVersionUID = 1L;
@@ -194,7 +196,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 				if (localBooking == null) {
 					localBooking = createNewBookingObject(bookingDAO);
 					
-					localBooking.setDate(TeachUsSession.get().createNewDate(time));
+					localBooking.setDate(time);
 					localBooking.setPeriod(period);
 					localBooking.setCreateDate(TeachUsSession.get().createNewDate(new DateTime()));
 
@@ -226,13 +228,13 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 
 	protected abstract boolean isChangeable(Booking booking);
 	
-	protected abstract boolean mayChangeBooking(Period period, DateTime bookingStartTime);
+	protected abstract boolean mayChangeBooking(Period period, TeachUsDate bookingStartTime);
 	
 	protected abstract boolean shouldDisplayStringInsteadOfOccupiedIcon();
 	
 	protected abstract Booking createNewBookingObject(BookingDAO bookingDAO);
 	
-	protected abstract BookingPeriodDateComponent createNewInstance(String id, Period period, DateMidnight date, Bookings bookings);
+	protected abstract BookingPeriodDateComponent createNewInstance(String id, Period period, TeachUsDate date, Bookings bookings);
 	
 	protected MarkupContainer getBookingDisplayStringLink(String linkId, Booking booking) {
 		return null;

@@ -81,6 +81,8 @@ public class Toolbar extends Panel {
 	}
 	
 	private abstract static class AbstractToolbarItem implements ToolbarItemInterface {
+		private static final long serialVersionUID = 1L;
+		
 		private String label;
 		
 		public AbstractToolbarItem(String label) {
@@ -99,6 +101,8 @@ public class Toolbar extends Panel {
 	}
 	
 	public abstract static class ToolbarItem extends AbstractToolbarItem {
+		private static final long serialVersionUID = 1L;
+		
 		private boolean current;
 		
 		public ToolbarItem(String label) {

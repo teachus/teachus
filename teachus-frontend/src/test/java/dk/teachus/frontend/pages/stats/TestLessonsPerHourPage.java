@@ -1,19 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package dk.teachus.frontend.pages.stats;
 
 import java.util.ArrayList;
@@ -29,12 +13,12 @@ import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
-import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
+import dk.teachus.frontend.pages.stats.teacher.LessonsPerHourPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
-public class TestIncomePerMonthPage extends WicketTestCase {
+public class TestLessonsPerHourPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
-
+	
 	public void testRender() {
 		final TeachUsWicketTester tester = createTester();
 		
@@ -46,7 +30,7 @@ public class TestIncomePerMonthPage extends WicketTestCase {
 			Teacher teacher = createTeacher();
 			will(returnValue(teacher));
 			
-			exactly(2).of(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
+			exactly(3).of(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
 			will(returnValue(null));
 			
 			List<Integer> years = new ArrayList<Integer>();
@@ -78,9 +62,9 @@ public class TestIncomePerMonthPage extends WicketTestCase {
 			tester.setBookingDAO(bookingDAO);
 		}});
 		
-		tester.startPage(IncomePerMonthPage.class);
+		tester.startPage(LessonsPerHourPage.class);
 		
-		tester.assertRenderedPage(IncomePerMonthPage.class);
+		tester.assertRenderedPage(LessonsPerHourPage.class);
 	}
 	
 }

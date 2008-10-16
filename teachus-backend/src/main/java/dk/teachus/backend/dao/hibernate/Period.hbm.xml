@@ -14,11 +14,23 @@
 		
 		<property name="name" length="100" />
         
-		<property name="beginDate" column="begin_date" type="date" />
-		<property name="endDate" column="end_date" type="date" />
+        <component name="beginDate">
+        	<property name="date" column="begin_date" type="timestamp" />
+			<property name="timeZone" column="begin_date_tz" type="timezone" />
+        </component>
+        <component name="endDate">
+        	<property name="date" column="end_date" type="timestamp" />
+			<property name="timeZone" column="end_date_tz" type="timezone" />
+        </component>
 				
-		<property name="startTime" column="start_time" type="time" />		
-		<property name="endTime" column="end_time" type="time" />
+		<component name="startTime">
+        	<property name="date" column="start_time" type="time" />
+			<property name="timeZone" column="start_time_tz" type="timezone" />
+        </component>
+        <component name="endTime">
+        	<property name="date" column="end_time" type="time" />
+			<property name="timeZone" column="end_time_tz" type="timezone" />
+        </component>
 		
 		<property name="weekDays" column="week_days" type="dk.teachus.backend.dao.hibernate.WeekDaysUserType" />
         

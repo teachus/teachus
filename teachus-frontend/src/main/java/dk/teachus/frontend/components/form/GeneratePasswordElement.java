@@ -24,7 +24,8 @@ import org.joda.time.DateTime;
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class GeneratePasswordElement extends FormElement {
-	
+	private static final long serialVersionUID = 1L;
+
 	public GeneratePasswordElement() {
 		this(""); //$NON-NLS-1$
 	}

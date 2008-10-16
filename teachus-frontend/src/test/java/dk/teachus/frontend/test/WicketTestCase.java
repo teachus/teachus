@@ -31,7 +31,6 @@ import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
@@ -329,21 +328,23 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected Period createPeriod(Long periodId) {
-		DateMidnight beginDate = new DateMidnight(2007, 1, 1);
-		DateMidnight endDate = new DateMidnight(2007, 12, 31);
-		DateTime startTime = new DateTime().withTime(10, 0, 0, 0);
-		DateTime endTime = new DateTime().withTime(18, 0, 0, 0);
+		TimeZone timeZone = TimeZone.getDefault();
+		
+		TeachUsDate beginDate = new TeachUsDate(2007, 1, 1, timeZone);
+		TeachUsDate endDate = new TeachUsDate(2007, 12, 31, timeZone);
+		TeachUsDate startTime = new TeachUsDate(new DateMidnight(), timeZone).withTime(10, 0, 0, 0);
+		TeachUsDate endTime = new TeachUsDate(new DateMidnight(), timeZone).withTime(18, 0, 0, 0);
 		return createPeriod(periodId, createTeacher(), beginDate, endDate, startTime, endTime);
 	}
 	
-	protected Period createPeriod(Long periodId, Teacher teacher, DateMidnight beginDate, DateMidnight endDate, DateTime startTime, DateTime endTime) {
+	protected Period createPeriod(Long periodId, Teacher teacher, TeachUsDate beginDate, TeachUsDate endDate, TeachUsDate startTime, TeachUsDate endTime) {
 		PeriodImpl period = new PeriodImpl();
 		period.setId(periodId);
 		period.setStatus(Status.FINAL);
-		period.setBeginDate(beginDate.toDate());
-		period.setEndDate(endDate.toDate());
-		period.setStartTime(startTime.toDate());
-		period.setEndTime(endTime.toDate());
+		period.setBeginDate(beginDate);
+		period.setEndDate(endDate);
+		period.setStartTime(startTime);
+		period.setEndTime(endTime);
 		period.setName("Mock period");
 		period.setPrice(200);
 		period.setTeacher(teacher);
@@ -358,20 +359,20 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected PupilBooking createPupilBooking(Long pupilBookingId) {
-		DateTime dateTime = new DateTime(2007, 4, 20, 13, 0, 0, 0);
+		TeachUsDate dateTime = new TeachUsDate(2007, 4, 20, 13, 0, 0, TimeZone.getDefault());
 		return createPupilBooking(pupilBookingId, dateTime);
 	}
 	
-	protected PupilBooking createPupilBooking(Long pupilBookingId, DateTime dateTime) {
+	protected PupilBooking createPupilBooking(Long pupilBookingId, TeachUsDate dateTime) {
 		return createPupilBooking(pupilBookingId, createPupil(), createPeriod(), dateTime);
 	}
 	
-	protected PupilBooking createPupilBooking(Long pupilBookingId, Pupil pupil, Period period, DateTime dateTime) {
+	protected PupilBooking createPupilBooking(Long pupilBookingId, Pupil pupil, Period period, TeachUsDate dateTime) {
 		PupilBookingImpl booking = new PupilBookingImpl();
 		booking.setId(pupilBookingId);
 		booking.setActive(true);
 		booking.setCreateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
-		booking.setDate(new TeachUsDate(dateTime, TimeZone.getDefault()));
+		booking.setDate(dateTime);
 		booking.setPupil(pupil);
 		booking.setTeacher(pupil.getTeacher());
 		booking.setPeriod(period);

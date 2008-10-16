@@ -30,8 +30,8 @@ public class PeriodComparator implements Comparator<Period> {
 		
 		if (o1 != null && o2 != null) {
 			if (o1.getStartTime() != null && o2.getStartTime() != null) {
-				DateTime startTime1 = convertAndReset(o1.getStartTime());
-				DateTime startTime2 = convertAndReset(o2.getStartTime());
+				DateTime startTime1 = convertAndReset(o1.getStartTime().getDate());
+				DateTime startTime2 = convertAndReset(o2.getStartTime().getDate());
 				compare = startTime1.compareTo(startTime2);
 			} else if (o1.getStartTime() != null) {
 				compare = -1;

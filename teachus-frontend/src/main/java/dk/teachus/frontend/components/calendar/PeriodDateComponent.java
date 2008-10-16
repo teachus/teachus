@@ -27,22 +27,23 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.string.Strings;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.components.RenderingLabel;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.Formatters;
 import dk.teachus.frontend.utils.Resources;
 
 public abstract class PeriodDateComponent extends Panel {
+	private static final long serialVersionUID = 1L;
+	
 	private boolean attached = false;
 	protected Period period;
-	protected DateMidnight date;
+	protected TeachUsDate date;
 	
-	public PeriodDateComponent(String id, final Period period, DateMidnight date) {
+	public PeriodDateComponent(String id, final Period period, TeachUsDate date) {
 		super(id);
 		
 		this.period = period;
@@ -61,7 +62,7 @@ public abstract class PeriodDateComponent extends Panel {
 					
 			// Header
 			{
-				add(new Label("weekday", Formatters.getFormatWeekDay().print(date))); //$NON-NLS-1$
+				add(new Label("weekday", Formatters.getFormatWeekDay().print(date.getDateTime()))); //$NON-NLS-1$
 				add(new RenderingLabel("price", new Model(period.getPrice()), new CurrencyChoiceRenderer())); //$NON-NLS-1$
 				add(new Label("location", period.getLocation()) {
 					private static final long serialVersionUID = 1L;
@@ -71,7 +72,7 @@ public abstract class PeriodDateComponent extends Panel {
 						return Strings.isEmpty(period.getLocation()) == false;
 					}
 				});
-				add(new Label("date", Formatters.getFormatShortPrettyDate().print(date))); //$NON-NLS-1$
+				add(new Label("date", Formatters.getFormatShortPrettyDate().print(date.getDateTime()))); //$NON-NLS-1$
 				add(new Label("duration", new Model(period.getLessonDuration())));
 			}
 			
@@ -80,8 +81,8 @@ public abstract class PeriodDateComponent extends Panel {
 				RepeatingView rows = new RepeatingView("rows"); //$NON-NLS-1$
 				add(rows);
 				
-				DateTime time = new DateTime(period.getStartTime()).withDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
-				DateTime end = new DateTime(period.getEndTime()).withDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+				TeachUsDate time = period.getStartTime().withDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
+				TeachUsDate end = period.getEndTime().withDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth());
 	
 				DateTimeFormatter timeFormat = Formatters.getFormatTime();
 				
@@ -89,7 +90,7 @@ public abstract class PeriodDateComponent extends Panel {
 					final WebMarkupContainer row = new WebMarkupContainer(rows.newChildId());
 					rows.add(row);
 					
-					row.add(new Label("hour", timeFormat.print(time))); //$NON-NLS-1$
+					row.add(new Label("hour", timeFormat.print(time.getDateTime()))); //$NON-NLS-1$
 									
 					WebMarkupContainer contentContainer = new WebMarkupContainer("contentContainer");
 					contentContainer.setOutputMarkupId(true);
@@ -123,12 +124,12 @@ public abstract class PeriodDateComponent extends Panel {
 		}
 	}
 	
-	protected abstract Component getTimeContent(String wicketId, Period period, DateTime time, MarkupContainer contentContainer);
+	protected abstract Component getTimeContent(String wicketId, Period period, TeachUsDate time, MarkupContainer contentContainer);
 	
-	protected abstract boolean shouldDisplayTimeContent(Period period, DateTime time);
+	protected abstract boolean shouldDisplayTimeContent(Period period, TeachUsDate time);
 	
-	protected abstract int getRowSpanForTimeContent(Period period, DateTime time);
+	protected abstract int getRowSpanForTimeContent(Period period, TeachUsDate time);
 	
-	protected abstract boolean shouldHideEmptyContent(Period period, DateTime time);
+	protected abstract boolean shouldHideEmptyContent(Period period, TeachUsDate time);
 
 }

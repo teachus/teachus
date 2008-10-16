@@ -27,6 +27,7 @@ import org.joda.time.DateTimeConstants;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.TeachUsDate;
 
 public class PeriodsImpl implements Periods {
 	private static final long serialVersionUID = 1L;
@@ -45,7 +46,7 @@ public class PeriodsImpl implements Periods {
 		periods.add(period);
 	}
 	
-	public boolean hasDate(DateMidnight date) {
+	public boolean hasDate(TeachUsDate date) {
 		boolean hasDate = false;
 		
 		for (Period period : getValidPeriods()) {
@@ -58,7 +59,7 @@ public class PeriodsImpl implements Periods {
 		return hasDate;
 	}
 	
-	public boolean containsDate(DateMidnight date) {
+	public boolean containsDate(TeachUsDate date) {
 		boolean contains = false;
 		
 		for (Period period : getValidPeriods()) {
@@ -71,16 +72,18 @@ public class PeriodsImpl implements Periods {
 		return contains;
 	}
 	
-	public boolean hasPeriodBefore(DateMidnight date) {
+	public boolean hasPeriodBefore(TeachUsDate date) {
 		boolean hasPeriodBefore = false;
 		
+		DateMidnight dateMidnight = date.getDateMidnight();
+		
 		for (Period period : getValidPeriods()) {
-			if (period.getBeginDate() == null) {
+			DateMidnight beginDate = period.getBeginDate().getDateMidnight();
+			if (beginDate == null) {
 				hasPeriodBefore = true;
 				break;
 			} else {
-				DateMidnight beginDate = new DateMidnight(period.getBeginDate());
-				if (beginDate.isBefore(date) || beginDate.isEqual(date)) {
+				if (beginDate.isBefore(dateMidnight) || beginDate.equals(dateMidnight)) {
 					hasPeriodBefore = true;
 					break;
 				}
@@ -90,16 +93,18 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodBefore;
 	}
 	
-	public boolean hasPeriodAfter(DateMidnight date) {
+	public boolean hasPeriodAfter(TeachUsDate date) {
 		boolean hasPeriodAfter = false;
+		
+		DateMidnight dateMidnight = date.getDateMidnight();
 		
 		for (Period period : getValidPeriods()) {
 			if (period.getEndDate() == null) {
 				hasPeriodAfter = true;
 				break;
 			} else {
-				DateMidnight endDate = new DateMidnight(period.getEndDate());
-				if (endDate.isAfter(date) || endDate.isEqual(date)) {
+				DateMidnight endDate = period.getEndDate().getDateMidnight();
+				if (endDate.isAfter(dateMidnight) || endDate.isEqual(dateMidnight)) {
 					hasPeriodAfter = true;
 					break;
 				}
@@ -109,9 +114,9 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodAfter;
 	}
 	
-	public List<DatePeriod> generateDatesForWeek(DateMidnight startDate) {
+	public List<DatePeriod> generateDatesForWeek(TeachUsDate startDate) {
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
-		DateMidnight sd = new DateMidnight(startDate).withDayOfWeek(DateTimeConstants.MONDAY);
+		TeachUsDate sd = startDate.withDayOfWeek(DateTimeConstants.MONDAY);
 		int week = sd.getWeekOfWeekyear();
 		
 		while(week == sd.getWeekOfWeekyear()) {			
@@ -119,10 +124,10 @@ public class PeriodsImpl implements Periods {
 			for (Period period : getValidPeriods()) {
 				// Check if this period can handle the date at all
 				if (period.dateIntervalContains(sd)) {				
-					DateMidnight date = period.generateDate(sd);
+					TeachUsDate date = period.generateDate(sd);
 					if (date != null) {
 						if (datePeriod == null) {
-							datePeriod = new DatePeriodImpl(date.toDate());
+							datePeriod = new DatePeriodImpl(date);
 							dates.add(datePeriod);
 						}
 						
@@ -143,11 +148,11 @@ public class PeriodsImpl implements Periods {
 		return dates;
 	}
 	
-	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays) {
+	public List<DatePeriod> generateDates(TeachUsDate weekDate, int numberOfDays) {
 		return generateDates(weekDate, numberOfDays, false);
 	}
 
-	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays, boolean explicitNumberOfDays) {
+	public List<DatePeriod> generateDates(TeachUsDate weekDate, int numberOfDays, boolean explicitNumberOfDays) {
 		weekDate = weekDate.withDayOfWeek(DateTimeConstants.MONDAY);
 		
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
@@ -172,7 +177,7 @@ public class PeriodsImpl implements Periods {
 		return dates;
 	}
 	
-	public int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays) {
+	public int numberOfWeeksBack(TeachUsDate lastDate, int numberOfDays) {
 		int numberOfWeeks = 0;
 		
 		int dates = 0;

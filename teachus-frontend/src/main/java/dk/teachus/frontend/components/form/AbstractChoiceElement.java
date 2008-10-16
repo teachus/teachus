@@ -22,6 +22,8 @@ import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
 public abstract class AbstractChoiceElement extends AbstractValidationInputElement {
+	private static final long serialVersionUID = 1L;
+	
 	protected IModel inputModel;
 	protected List<?> choices;
 	protected IChoiceRenderer choiceRenderer;

@@ -16,11 +16,7 @@
  */
 package dk.teachus.backend.domain;
 
-import java.util.Date;
 import java.util.List;
-
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
@@ -36,13 +32,13 @@ public interface Period {
 	
 	String getName();
 	
-	Date getEndDate();
+	TeachUsDate getEndDate();
 
-	Date getEndTime();
+	TeachUsDate getEndTime();
 
-	Date getBeginDate();
+	TeachUsDate getBeginDate();
 
-	Date getStartTime();
+	TeachUsDate getStartTime();
 
 	List<WeekDay> getWeekDays();
 	
@@ -69,13 +65,13 @@ public interface Period {
 	
 	void setName(String name);
 
-	void setEndDate(Date endDate);
+	void setEndDate(TeachUsDate endDate);
 
-	void setEndTime(Date endTime);
+	void setEndTime(TeachUsDate endTime);
 
-	void setBeginDate(Date startDate);
+	void setBeginDate(TeachUsDate startDate);
 
-	void setStartTime(Date startTime);
+	void setStartTime(TeachUsDate startTime);
 	
 	void setTeacher(Teacher teacher);
 	
@@ -96,21 +92,21 @@ public interface Period {
 	 */
 	void addWeekDay(WeekDay weekDay);
 
-	boolean hasWeekDay(DateMidnight date);
+	boolean hasWeekDay(TeachUsDate date);
 
-	boolean dateIntervalContains(DateMidnight date);
+	boolean dateIntervalContains(TeachUsDate date);
 
-	boolean hasDate(DateMidnight date);
+	boolean hasDate(TeachUsDate date);
 
-	DateMidnight generateDate(DateMidnight startDate);
+	TeachUsDate generateDate(TeachUsDate startDate);
 	
-	boolean isTimeValid(DateTime time);
+	boolean isTimeValid(TeachUsDate time);
 
-	boolean mayBook(DateTime time);
+	boolean mayBook(TeachUsDate time);
 
-	boolean conflicts(DateTime bookedTime, DateTime time);
+	boolean conflicts(TeachUsDate bookedTime, TeachUsDate time);
 
-	boolean inLesson(DateTime bookedTime, DateTime time);
+	boolean inLesson(TeachUsDate bookedTime, TeachUsDate time);
 	
 	boolean isValid();
 	

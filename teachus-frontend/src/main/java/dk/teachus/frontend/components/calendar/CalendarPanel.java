@@ -17,7 +17,6 @@
 package dk.teachus.frontend.components.calendar;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.behavior.SimpleAttributeModifier;
@@ -32,13 +31,13 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.format.DateTimeFormatter;
 
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.utils.Formatters;
 import dk.teachus.frontend.utils.Resources;
@@ -46,7 +45,7 @@ import dk.teachus.frontend.utils.Resources;
 public abstract class CalendarPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	
-	public CalendarPanel(String wicketId, DateMidnight pageDate, final Periods periods) {
+	public CalendarPanel(String wicketId, TeachUsDate pageDate, final Periods periods) {
 		super(wicketId);
 		
 		// Status message
@@ -82,26 +81,26 @@ public abstract class CalendarPanel extends Panel {
 			// Disable navigation form for now
 			navigationForm.setVisible(false);
 			
-			final NavigationModel navigationModel = new NavigationModel(pageDate.toDate());
+			final NavigationModel navigationModel = new NavigationModel(pageDate);
 			navigationForm.add(new DateField("date", new PropertyModel(navigationModel, "date"))); //$NON-NLS-1$ //$NON-NLS-2$
 			navigationForm.add(new Button("goto", new Model(TeachUsSession.get().getString("CalendarPanel.goTo"))) { //$NON-NLS-1$ //$NON-NLS-2$
 				private static final long serialVersionUID = 1L;
 
 				@Override
 				public void onSubmit() {
-					navigationDateSelected(new DateMidnight(navigationModel.getDate()));
+					navigationDateSelected(navigationModel.getDate());
 				}
 			});
 			
 			
 			// Calendar
-			DateMidnight weekDate = pageDate.withDayOfWeek(DateTimeConstants.MONDAY);
-			final DateMidnight firstWeekDate = weekDate;
+			TeachUsDate weekDate = pageDate.withDayOfWeek(DateTimeConstants.MONDAY);
+			final TeachUsDate firstWeekDate = weekDate;
 			List<DatePeriod> dates = periods.generateDates(weekDate, 7);
 			
 			// Get the biggest date of the generates dates
 			for (DatePeriod period : dates) {
-				DateMidnight periodDate = new DateMidnight(period.getDate());
+				TeachUsDate periodDate = period.getDate();
 				if (weekDate.isBefore(periodDate)) {
 					weekDate = periodDate;
 				}
@@ -125,10 +124,9 @@ public abstract class CalendarPanel extends Panel {
 			int numberOfWeeks = calculateNumberOfWeeks(dates);
 
 			for (DatePeriod datePeriod : dates) {
-				Date date = datePeriod.getDate();
-				DateMidnight dm = new DateMidnight(date);
+				TeachUsDate date = datePeriod.getDate();
 				
-				if (dm.getWeekOfWeekyear() != w) {
+				if (date.getWeekOfWeekyear() != w) {
 					localWeekNumber++;
 					
 					if (weekHeader != null) {
@@ -142,13 +140,13 @@ public abstract class CalendarPanel extends Panel {
 					}
 					weeks.add(week);
 					
-					weekHeader = new Label("weekHeader", formatWeekOfYear.print(dm)); //$NON-NLS-1$
+					weekHeader = new Label("weekHeader", formatWeekOfYear.print(date.getDateMidnight())); //$NON-NLS-1$
 					week.add(weekHeader);
 					
 					days = new RepeatingView("days"); //$NON-NLS-1$
 					week.add(days);
 					
-					w = dm.getWeekOfWeekyear();
+					w = date.getWeekOfWeekyear();
 				}
 				
 				WebMarkupContainer day = new WebMarkupContainer(days.newChildId());
@@ -190,34 +188,33 @@ public abstract class CalendarPanel extends Panel {
 		int numberOfWeeks = 0;
 		
 		for (DatePeriod datePeriod : dates) {
-			Date date = datePeriod.getDate();
-			DateMidnight dm = new DateMidnight(date);
-			if (dm.getWeekOfWeekyear() != w) {
-				w = dm.getWeekOfWeekyear();
+			TeachUsDate date = datePeriod.getDate();
+			if (date.getWeekOfWeekyear() != w) {
+				w = date.getWeekOfWeekyear();
 				numberOfWeeks++;
 			}
 		}
 		return numberOfWeeks;
 	}
 
-	protected abstract Link createBackLink(String wicketId, DateMidnight previousWeekDate, int numberOfWeeks);
+	protected abstract Link createBackLink(String wicketId, TeachUsDate previousWeekDate, int numberOfWeeks);
 	
-	protected abstract Link createForwardLink(String wicketId, DateMidnight nextWeekDate);
+	protected abstract Link createForwardLink(String wicketId, TeachUsDate nextWeekDate);
 	
-	protected abstract PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date);
+	protected abstract PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, TeachUsDate date);
 	
-	protected abstract void navigationDateSelected(DateMidnight date);
+	protected abstract void navigationDateSelected(TeachUsDate date);
 	
-	protected void onIntervalDetermined(List<DatePeriod> dates, DateMidnight firstDate, DateMidnight lastDate) {
+	protected void onIntervalDetermined(List<DatePeriod> dates, TeachUsDate firstDate, TeachUsDate lastDate) {
 	}
 	
 	private void fireIntervalDetermined(List<DatePeriod> dates) {
 		// Find the minimum and maximum date
-		DateMidnight firstDate = null;
-		DateMidnight lastDate = null;
+		TeachUsDate firstDate = null;
+		TeachUsDate lastDate = null;
 		
 		for (DatePeriod datePeriod : dates) {
-			DateMidnight date = new DateMidnight(datePeriod.getDate());
+			TeachUsDate date = datePeriod.getDate();
 			
 			if (firstDate == null) {
 				firstDate = date;
@@ -242,17 +239,17 @@ public abstract class CalendarPanel extends Panel {
 	private static class NavigationModel implements Serializable {
 		private static final long serialVersionUID = 1L;
 
-		private Date date;
+		private TeachUsDate date;
 
-		public NavigationModel(Date date) {
+		public NavigationModel(TeachUsDate date) {
 			this.date = date;
 		}
 
-		public Date getDate() {
+		public TeachUsDate getDate() {
 			return date;
 		}
 
-		public void setDate(Date date) {
+		public void setDate(TeachUsDate date) {
 			this.date = date;
 		}
 	}

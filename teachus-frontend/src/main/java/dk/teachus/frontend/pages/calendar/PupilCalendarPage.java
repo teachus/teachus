@@ -16,11 +16,10 @@
  */
 package dk.teachus.frontend.pages.calendar;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.markup.html.link.Link;
-import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
 import dk.teachus.backend.dao.BookingDAO;
@@ -30,6 +29,7 @@ import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.Pupil;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -50,10 +50,10 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	}
 	
 	public PupilCalendarPage(Pupil pupil) {
-		this(new Date(), pupil);
+		this(TeachUsSession.get().createNewDate(new DateTime()), pupil);
 	}
 	
-	public PupilCalendarPage(Date pageDate, Pupil pupil) {
+	public PupilCalendarPage(TeachUsDate pageDate, Pupil pupil) {
 		super(UserLevel.PUPIL);
 		
 		if (pupil == null) {
@@ -63,11 +63,11 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 		this.pupil = pupil;
 				
 		DateTimeFormatter formatIsoDate = Formatters.getFormatIsoDate();
-		initializePupilCalendar(new DateMidnight(pageDate), formatIsoDate, pupil);
+		initializePupilCalendar(pageDate, formatIsoDate, pupil);
 	}
 	
 
-	private void initializePupilCalendar(DateMidnight pageDate, DateTimeFormatter formatIsoDate, final Pupil pupil) {		
+	private void initializePupilCalendar(TeachUsDate pageDate, DateTimeFormatter formatIsoDate, final Pupil pupil) {		
 		PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
 		
 		final Periods periods = periodDAO.getPeriods(pupil.getTeacher());
@@ -77,13 +77,13 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 			private Bookings bookings;
 
 			@Override
-			protected Link createBackLink(String wicketId, final DateMidnight previousWeekDate, final int numberOfWeeks) {
+			protected Link createBackLink(String wicketId, final TeachUsDate previousWeekDate, final int numberOfWeeks) {
 				return new Link(wicketId) {
 					private static final long serialVersionUID = 1L;
 		
 					@Override
 					public void onClick() {
-						getRequestCycle().setResponsePage(new PupilCalendarPage(previousWeekDate.toDate(), pupil));
+						getRequestCycle().setResponsePage(new PupilCalendarPage(previousWeekDate, pupil));
 					}
 					
 					@Override
@@ -94,32 +94,31 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 			}
 
 			@Override
-			protected Link createForwardLink(String wicketId, final DateMidnight nextWeekDate) {
+			protected Link createForwardLink(String wicketId, final TeachUsDate nextWeekDate) {
 				return new Link(wicketId) {
 					private static final long serialVersionUID = 1L;
 		
 					@Override
 					public void onClick() {
-						getRequestCycle().setResponsePage(new PupilCalendarPage(nextWeekDate.toDate(), pupil));
+						getRequestCycle().setResponsePage(new PupilCalendarPage(nextWeekDate, pupil));
 					}			
 				};
 			}
 			
 			@Override
-			protected void onIntervalDetermined(List<DatePeriod> dates, DateMidnight firstDate, DateMidnight lastDate) {
+			protected void onIntervalDetermined(List<DatePeriod> dates, TeachUsDate firstDate, TeachUsDate lastDate) {
 				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 				bookings = bookingDAO.getBookings(pupil.getTeacher(), firstDate, lastDate);
 			}
 
 			@Override
-			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date) {
-				DateMidnight dateMidnight = new DateMidnight(date);
-				return new PupilPeriodDateComponent("period", pupil, period, dateMidnight, bookings); //$NON-NLS-1$
+			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, TeachUsDate date) {
+				return new PupilPeriodDateComponent("period", pupil, period, date, bookings); //$NON-NLS-1$
 			}
 			
 			@Override
-			protected void navigationDateSelected(DateMidnight date) {
-				getRequestCycle().setResponsePage(new PupilCalendarPage(date.toDate(), pupil));
+			protected void navigationDateSelected(TeachUsDate date) {
+				getRequestCycle().setResponsePage(new PupilCalendarPage(date, pupil));
 			}
 		});
 	}

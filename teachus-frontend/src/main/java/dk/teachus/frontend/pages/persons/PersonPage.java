@@ -22,7 +22,9 @@ import dk.teachus.frontend.components.person.PersonPanel;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
-public abstract class PersonPage<P extends PersonModel<? extends Person>> extends AuthenticatedBasePage {	
+public abstract class PersonPage<P extends PersonModel<? extends Person>> extends AuthenticatedBasePage {
+	private static final long serialVersionUID = 1L;
+	
 	private P personModel;
 	
 	public PersonPage(UserLevel userLevel, final P personModel) {

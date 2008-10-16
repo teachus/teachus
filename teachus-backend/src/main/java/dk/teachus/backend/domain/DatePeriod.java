@@ -16,16 +16,15 @@
  */
 package dk.teachus.backend.domain;
 
-import java.util.Date;
 import java.util.List;
 
 
 public interface DatePeriod {
 
-	public abstract Date getDate();
+	TeachUsDate getDate();
 
-	public abstract List<Period> getPeriods();
+	List<Period> getPeriods();
 
-	public abstract void addPeriod(Period period);
+	void addPeriod(Period period);
 
 }

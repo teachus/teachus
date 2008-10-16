@@ -21,6 +21,7 @@ import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 
 public abstract class BlockingAjaxLink extends AjaxFallbackLink {
+	private static final long serialVersionUID = 1L;
 
 	public BlockingAjaxLink(String id) {
 		super(id);		

@@ -22,6 +22,8 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
 
 public abstract class PersonImpl extends AbstractHibernateObject implements Person {
+	private static final long serialVersionUID = 1L;
+
 	private String name;
 
 	private String username;

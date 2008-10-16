@@ -17,6 +17,7 @@
 package dk.teachus.ws.service.impl;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import org.joda.time.DateMidnight;
 
@@ -24,6 +25,7 @@ import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.ws.service.FinanceService;
 
@@ -47,9 +49,9 @@ public class FinanceServiceImpl extends AbstractService implements FinanceServic
 		
 		Teacher teacher = (Teacher) person;
 		
-		DateMidnight startDate = new DateMidnight().withYear(year).withMonthOfYear(month).withDayOfMonth(1);
-		DateMidnight endDate = new DateMidnight().withYear(year).withMonthOfYear(month+1).withDayOfMonth(1);
-		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(teacher, startDate.toDate(), endDate.toDate());
+		TeachUsDate startDate = new TeachUsDate(new DateMidnight(), TimeZone.getDefault()).withYear(year).withMonthOfYear(month).withDayOfMonth(1);
+		TeachUsDate endDate = new TeachUsDate(new DateMidnight(), TimeZone.getDefault()).withYear(year).withMonthOfYear(month+1).withDayOfMonth(1);
+		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(teacher, startDate, endDate);
 		
 		for (PupilBooking booking : paidBookings) {
 			amount += booking.getPeriod().getPrice();

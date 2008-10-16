@@ -23,6 +23,7 @@ import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 
 public abstract class AbstractMessage extends AbstractHibernateObject implements Message {
+	private static final long serialVersionUID = 1L;
 	
 	private Date createDate;
 	private String subject;

@@ -16,8 +16,8 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.joda.time.DateTime;
 
@@ -25,6 +25,7 @@ import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Period.Status;
@@ -81,6 +82,8 @@ public class TestPersonDAO extends SpringTestCase {
 	}
 	
 	public void testDeleteTeacher() {
+		TimeZone timeZone = TimeZone.getDefault();
+		
 		int teachersBefore = getPersonDAO().getPersons(Teacher.class).size();
 		int pupilsBefore = getPersonDAO().getPersons(Pupil.class).size();
 		
@@ -99,9 +102,9 @@ public class TestPersonDAO extends SpringTestCase {
 		Period period = new PeriodImpl();
 		period.setTeacher(teacher);
 		period.setStatus(Status.FINAL);
-		period.setBeginDate(new Date());
-		period.setStartTime(new DateTime().withTime(10, 0, 0, 0).toDate());
-		period.setEndTime(new DateTime().withTime(16, 0, 0, 0).toDate());
+		period.setBeginDate(new TeachUsDate(new DateTime(), timeZone));
+		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
+		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(16, 0, 0, 0));
 		period.addWeekDay(WeekDay.FRIDAY);
 		period.setName("Test period");
 		getPeriodDAO().save(period);

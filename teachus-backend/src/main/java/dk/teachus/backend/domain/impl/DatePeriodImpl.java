@@ -19,25 +19,25 @@ package dk.teachus.backend.domain.impl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.utils.PeriodComparator;
 
 public class DatePeriodImpl implements Serializable, DatePeriod {
 	private static final long serialVersionUID = 1L;
 
-	private Date date;
+	private TeachUsDate date;
 
 	private List<Period> periods;
 
-	public DatePeriodImpl(Date date) {
+	public DatePeriodImpl(TeachUsDate date) {
 		this.date = date;
 	}
 
-	public Date getDate() {
+	public TeachUsDate getDate() {
 		return date;
 	}
 

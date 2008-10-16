@@ -16,7 +16,6 @@
  */
 package dk.teachus.frontend.pages.calendar;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.Application;
@@ -30,6 +29,7 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -45,10 +45,10 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 	private Teacher teacher;
 	
 	public TeacherCalendarPage() {
-		this(new DateMidnight());
+		this(TeachUsSession.get().createNewDate(new DateMidnight()));
 	}
 	
-	public TeacherCalendarPage(DateMidnight pageDate) {
+	public TeacherCalendarPage(TeachUsDate pageDate) {
 		super(UserLevel.TEACHER, true);
 		
 		if (TeachUsSession.get().getUserLevel() != UserLevel.TEACHER) {
@@ -66,7 +66,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 			private Bookings bookings;
 
 			@Override
-			protected Link createBackLink(String wicketId, final DateMidnight previousWeekDate, final int numberOfWeeks) {
+			protected Link createBackLink(String wicketId, final TeachUsDate previousWeekDate, final int numberOfWeeks) {
 				return new Link(wicketId) {
 					private static final long serialVersionUID = 1L;
 		
@@ -83,7 +83,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 			}
 
 			@Override
-			protected Link createForwardLink(String wicketId, final DateMidnight nextWeekDate) {
+			protected Link createForwardLink(String wicketId, final TeachUsDate nextWeekDate) {
 				return new Link(wicketId) {
 					private static final long serialVersionUID = 1L;
 		
@@ -95,20 +95,18 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 			}
 			
 			@Override
-			protected void onIntervalDetermined(List<DatePeriod> dates, DateMidnight firstDate, DateMidnight lastDate) {
+			protected void onIntervalDetermined(List<DatePeriod> dates, TeachUsDate firstDate, TeachUsDate lastDate) {
 				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 				bookings = bookingDAO.getBookings(teacher, firstDate, lastDate);
 			}
 
 			@Override
-			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, Date date) {
-				DateMidnight dateMidnight = new DateMidnight(date);
-				
-				return new TeacherPeriodDateComponent(wicketId, teacher, period, dateMidnight, bookings);
+			protected PeriodDateComponent createPeriodDateComponent(String wicketId, Period period, TeachUsDate date) {
+				return new TeacherPeriodDateComponent(wicketId, teacher, period, date, bookings);
 			}
 			
 			@Override
-			protected void navigationDateSelected(DateMidnight date) {
+			protected void navigationDateSelected(TeachUsDate date) {
 				getRequestCycle().setResponsePage(new TeacherCalendarPage(date));
 			}
 			

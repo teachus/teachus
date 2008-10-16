@@ -27,6 +27,7 @@ import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public abstract class AbstractSettingsPage extends AuthenticatedBasePage {
+	private static final long serialVersionUID = 1L;
 
 	public AbstractSettingsPage() {
 		super(UserLevel.TEACHER, true);

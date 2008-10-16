@@ -18,12 +18,11 @@ package dk.teachus.frontend.pages.calendar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
@@ -32,6 +31,7 @@ import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
@@ -104,9 +104,11 @@ public class TestPupilCalendarPage extends WicketTestCase {
 	}
 	
 	public void testPupilBooked() {
+		TimeZone timeZone = TimeZone.getDefault();
+		
 		final TeachUsWicketTester tester = createTester();
 					
-		final DateTime dateTime = new DateTime(2007, 6, 11, 11, 0, 0, 0);
+		final TeachUsDate dateTime = new TeachUsDate(2007, 6, 11, 11, 0, 0, timeZone);
 		
 		final Pupil pupil = createPupil(6L);
 		
@@ -132,7 +134,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			bookings.add(createPupilBooking(1L, createPupil(7L), period, dateTime.plusHours(2)));
 			Bookings bookingsImpl = new BookingsImpl(bookings);
 			
-			one(bookingDAO).getBookings(with(a(Teacher.class)), with(a(DateMidnight.class)), with(a(DateMidnight.class)));
+			one(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
 			will(returnValue(bookingsImpl));
 			
 			tester.setPersonDAO(personDAO);
@@ -145,7 +147,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new PupilCalendarPage(dateTime.toDate(), pupil);
+				return new PupilCalendarPage(dateTime, pupil);
 			}			
 		});
 		

@@ -27,6 +27,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 
 public abstract class WicketSpringTestCase extends SpringTestCase {
+	private static final long serialVersionUID = 1L;
 
 	private class TestTeachUsApplication extends TeachUsApplication {
 		private Long personId;

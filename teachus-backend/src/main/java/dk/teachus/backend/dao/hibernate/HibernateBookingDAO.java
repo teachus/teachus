@@ -28,7 +28,6 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
@@ -62,7 +61,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 			throw new IllegalArgumentException("Can only book in active periods");
 		}
 		
-		if (period.hasDate(date.getDateMidnight()) == false) {
+		if (period.hasDate(date) == false) {
 			throw new IllegalArgumentException("The period can not be booked on this date");
 		}
 		
@@ -270,7 +269,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getPaidBookings(Teacher teacher, Date startDate, Date endDate) {
+	public List<PupilBooking> getPaidBookings(Teacher teacher, TeachUsDate startDate, TeachUsDate endDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
@@ -284,11 +283,11 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.add(Restrictions.eq("active", true));
 		
 		if (startDate != null && endDate != null) {
-			c.add(Restrictions.between("date.date", startDate, endDate));
+			c.add(Restrictions.between("date.date", startDate.getDate(), endDate.getDate()));
 		} else if (startDate != null) {
-			c.add(Restrictions.gt("date.date", startDate));
+			c.add(Restrictions.gt("date.date", startDate.getDate()));
 		} else if (endDate != null) {
-			c.add(Restrictions.lt("date.date", endDate));
+			c.add(Restrictions.lt("date.date", endDate.getDate()));
 		}
 		
 		c.addOrder(Order.asc("date.date"));
@@ -298,7 +297,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getUnPaidBookings(Teacher teacher, Date startDate, Date endDate) {
+	public List<PupilBooking> getUnPaidBookings(Teacher teacher, TeachUsDate startDate, TeachUsDate endDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
@@ -312,11 +311,11 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.add(Restrictions.eq("active", true));
 		
 		if (startDate != null && endDate != null) {
-			c.add(Restrictions.between("date.date", startDate, endDate));
+			c.add(Restrictions.between("date.date", startDate.getDate(), endDate.getDate()));
 		} else if (startDate != null) {
-			c.add(Restrictions.gt("date.date", startDate));
+			c.add(Restrictions.gt("date.date", startDate.getDate()));
 		} else if (endDate != null) {
-			c.add(Restrictions.lt("date.date", endDate));
+			c.add(Restrictions.lt("date.date", endDate.getDate()));
 		}
 		
 		c.addOrder(Order.asc("date.date"));
@@ -348,16 +347,16 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate) {
+	public Bookings getBookings(Teacher teacher, TeachUsDate fromDate, TeachUsDate toDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		
-		DateTime start = new DateTime(fromDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
-		DateTime end = new DateTime(toDate).withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
+		TeachUsDate start = fromDate.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+		TeachUsDate end = toDate.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
 		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("teacher", teacher));
-		c.add(Restrictions.between("date.date", start.toDate(), end.toDate()));
+		c.add(Restrictions.between("date.date", start.getDate(), end.getDate()));
 		c.add(Restrictions.eq("active", true));
 		
 		c.setResultTransformer(new DistinctRootEntityResultTransformer());
@@ -370,7 +369,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public Bookings getBookings(Pupil pupil, DateMidnight fromDate, DateMidnight toDate) {
+	public Bookings getBookings(Pupil pupil, TeachUsDate fromDate, TeachUsDate toDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		
 		DateTime start = new DateTime(fromDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);

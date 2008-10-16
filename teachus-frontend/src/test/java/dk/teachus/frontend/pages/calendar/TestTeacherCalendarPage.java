@@ -18,11 +18,11 @@ package dk.teachus.frontend.pages.calendar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
-import org.joda.time.DateMidnight;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
@@ -30,6 +30,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
@@ -97,13 +98,13 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)));
 			will(returnValue(periodsImpl));
 			
-			exactly(2).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(DateMidnight.class)), with(a(DateMidnight.class)));
+			exactly(2).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			one(bookingDAO).createTeacherBookingObject();
 			will(returnValue(new TeacherBookingImpl()));
 			
-			exactly(2).of(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
+			one(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
 			will(returnValue(null));
 			
 			one(bookingDAO).book(with(a(Booking.class)));
@@ -117,7 +118,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new DateMidnight(2007, 5, 9));
+				return new TeacherCalendarPage(new TeachUsDate(2007, 5, 9, TimeZone.getDefault()));
 			}			
 		});
 		
@@ -135,7 +136,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new DateMidnight(2007, 5, 9));
+				return new TeacherCalendarPage(new TeachUsDate(2007, 5, 9, TimeZone.getDefault()));
 			}			
 		});
 		
@@ -143,9 +144,12 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 	}
 	
 	public void testNavigation() {
+		final TimeZone timeZone = TimeZone.getDefault();
+		
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
+			
 			PersonDAO personDAO = createPersonDAO();
 			PeriodDAO periodDAO = createPeriodDAO();
 			BookingDAO bookingDAO = createBookingDAO();
@@ -160,10 +164,10 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)));
 			will(returnValue(periods));
 			
-			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 11, 5), new DateMidnight(2007, 11, 16));
+			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 16, timeZone));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
-			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 10, 22), new DateMidnight(2007, 11, 2));
+			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 10, 22, timeZone), new TeachUsDate(2007, 11, 2, timeZone));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setPersonDAO(personDAO);
@@ -175,7 +179,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new DateMidnight(2007, 11, 7));
+				return new TeacherCalendarPage(new TeachUsDate(2007, 11, 7, timeZone));
 			}
 		});
 		
@@ -187,6 +191,8 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 	}
 	
 	public void testNavigation_fullWeek() {
+		final TimeZone timeZone = TimeZone.getDefault();
+		
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
@@ -208,10 +214,10 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)));
 			will(returnValue(periods));
 			
-			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 11, 5), new DateMidnight(2007, 11, 11));
+			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
-			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 10, 29), new DateMidnight(2007, 11, 4));
+			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 10, 29, timeZone), new TeachUsDate(2007, 11, 4, timeZone));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setPersonDAO(personDAO);
@@ -223,7 +229,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new DateMidnight(2007, 11, 7));
+				return new TeacherCalendarPage(new TeachUsDate(2007, 11, 7, timeZone));
 			}
 		});
 		

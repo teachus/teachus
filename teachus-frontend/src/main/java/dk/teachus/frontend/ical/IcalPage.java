@@ -11,7 +11,6 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.string.Strings;
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -46,8 +45,10 @@ public class IcalPage extends Page {
 		final RequestCycle cycle = getRequestCycle();
 		final WebResponse response = (WebResponse) cycle.getResponse();
 		
-		if (TeachUsSession.get().isAuthenticated()) {
-			Person person = TeachUsSession.get().getPerson();
+		TeachUsSession teachUsSession = TeachUsSession.get();
+		
+		if (teachUsSession.isAuthenticated()) {
+			Person person = teachUsSession.getPerson();
 			
 			// Create response
 			StringBuilder b = new StringBuilder();
@@ -59,11 +60,11 @@ public class IcalPage extends Page {
 			// Calendar name
 			String calendarName = "";
 			if (person instanceof Teacher) {
-				calendarName = TeachUsSession.get().getString("Ical.teacherCalendarName");
+				calendarName = teachUsSession.getString("Ical.teacherCalendarName");
 				calendarName = calendarName.replace("{teacherName}", person.getName());
 			} else if (person instanceof Pupil) {
 				Pupil pupil = (Pupil) person;
-				calendarName = TeachUsSession.get().getString("Ical.pupilCalendarName");
+				calendarName = teachUsSession.getString("Ical.pupilCalendarName");
 				calendarName = calendarName.replace("{teacherName}", pupil.getTeacher().getName());
 			}
 			b.append("X-WR-CALNAME:").append(calendarName).append(CRLF);
@@ -73,7 +74,7 @@ public class IcalPage extends Page {
 			List<PupilBooking> pupilBookings = new ArrayList<PupilBooking>();
 			if (person instanceof Pupil) {
 				Pupil pupil = (Pupil) person;
-				Bookings bookings = bookingDAO.getBookings(pupil, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
+				Bookings bookings = bookingDAO.getBookings(pupil, teachUsSession.createNewDate(new DateTime()).minusWeeks(1), teachUsSession.createNewDate(new DateTime()).plusYears(1));
 				List<Booking> bookingList = bookings.getBookingList();
 				for (Booking booking : bookingList) {
 					if (booking instanceof PupilBooking && booking.isActive()) {
@@ -83,7 +84,7 @@ public class IcalPage extends Page {
 				}
 			} else if (person instanceof Teacher) {
 				Teacher teacher = (Teacher) person;
-				Bookings bookings = bookingDAO.getBookings(teacher, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
+				Bookings bookings = bookingDAO.getBookings(teacher, teachUsSession.createNewDate(new DateTime()).minusWeeks(1), teachUsSession.createNewDate(new DateTime()).plusYears(1));
 				List<Booking> bookingList = bookings.getBookingList();
 				for (Booking booking : bookingList) {
 					if (booking instanceof PupilBooking && booking.isActive()) {
@@ -129,10 +130,10 @@ public class IcalPage extends Page {
 				b.append("SUMMARY:");
 				String summary = "";
 				if (person instanceof Teacher) {
-					summary = TeachUsSession.get().getString("Ical.teacherSummary");
+					summary = teachUsSession.getString("Ical.teacherSummary");
 					summary = summary.replace("{pupilName}", pupilBooking.getPupil().getName());
 				} else if (person instanceof Pupil) {
-					summary = TeachUsSession.get().getString("Ical.pupilSummary");
+					summary = teachUsSession.getString("Ical.pupilSummary");
 					summary = summary.replace("{teacherName}", pupilBooking.getTeacher().getName());
 				}
 				b.append(summary);

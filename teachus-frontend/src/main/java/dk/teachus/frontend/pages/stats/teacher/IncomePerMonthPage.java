@@ -19,7 +19,6 @@ package dk.teachus.frontend.pages.stats.teacher;
 import java.awt.Paint;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,7 @@ import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.BarChartResource;
@@ -177,8 +177,8 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		form.add(years);
 		
 			
-		Date fromDate = new DateMidnight().withYear(year).withMonthOfYear(1).withDayOfMonth(1).toDate();
-		Date toDate = new DateMidnight().withYear(year).withMonthOfYear(12).withDayOfMonth(31).toDate();
+		TeachUsDate fromDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(1).withDayOfMonth(1);
+		TeachUsDate toDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(12).withDayOfMonth(31);
 		
 		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(getPerson(), fromDate, toDate);
 		

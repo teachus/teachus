@@ -26,6 +26,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
 public abstract class LinkPropertyColumn extends FilteredAbstractColumn {
+	private static final long serialVersionUID = 1L;
+	
 	private String propertyExpression;
 	
 	public LinkPropertyColumn(IModel displayModel, String propertyExpression) {

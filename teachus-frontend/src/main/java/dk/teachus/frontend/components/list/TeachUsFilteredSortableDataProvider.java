@@ -9,7 +9,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.PropertyResolver;
 
 public abstract class TeachUsFilteredSortableDataProvider<O> extends TeachUsSortableDataProvider<O> implements TeachUsFilter {
-
+	private static final long serialVersionUID = 1L;
+	
 	private O stateObject;
 	private Map<String, IFilter<?>> filters;
 	
