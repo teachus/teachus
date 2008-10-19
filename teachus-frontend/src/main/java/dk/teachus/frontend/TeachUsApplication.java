@@ -78,6 +78,7 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.ApplicationConfigurationPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.settings.WelcomeMailSettingsPage;
+import dk.teachus.frontend.pages.stats.admin.TeachersLogPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
@@ -139,6 +140,7 @@ public class TeachUsApplication extends WebApplication {
 		mount(new IndexedParamUrlCodingStrategy("/stats/incomepermonth", IncomePerMonthPage.class)); //$NON-NLS-1$
 		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class)); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/stats/teacherslog", TeachersLogPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/info", InfoPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/globalsettings", ApplicationConfigurationPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/messages", SentMessagesPage.class); //$NON-NLS-1$

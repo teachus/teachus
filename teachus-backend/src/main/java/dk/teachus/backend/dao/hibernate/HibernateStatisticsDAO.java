@@ -18,13 +18,20 @@ package dk.teachus.backend.dao.hibernate;
 
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.DistinctRootEntityResultTransformer;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import dk.teachus.backend.dao.StatisticsDAO;
+import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.TeacherStatistics;
 import dk.teachus.backend.domain.Period.Status;
+import dk.teachus.backend.domain.impl.PupilBookingImpl;
 
 @Transactional(propagation=Propagation.REQUIRED)
 public class HibernateStatisticsDAO extends HibernateDaoSupport implements StatisticsDAO {
@@ -49,6 +56,25 @@ public class HibernateStatisticsDAO extends HibernateDaoSupport implements Stati
 		hql.append("t.id ");
 				
 		return getHibernateTemplate().find(hql.toString(), Status.FINAL);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
+	public List<PupilBooking> getAllBookings(TeachUsDate fromDate, TeachUsDate toDate) {
+		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
+		c.createCriteria("pupil").add(Restrictions.eq("active", true));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
+		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
+		Disjunction disjunction = Restrictions.disjunction();
+		disjunction.add(Restrictions.and(Restrictions.ge("createDate.date", fromDate.getDate()), Restrictions.le("createDate.date", toDate.getDate())));
+		disjunction.add(Restrictions.and(Restrictions.ge("updateDate.date", fromDate.getDate()), Restrictions.le("updateDate.date", toDate.getDate())));
+		c.add(disjunction);
+		
+		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		
+		List<PupilBooking> bookings = getHibernateTemplate().findByCriteria(c);
+		
+		return bookings; 
 	}
 	
 }

@@ -172,8 +172,16 @@ public class TeachUsSession extends WebSession {
 	public TeachUsDate createNewDate(DateMidnight dateMidnight) {
 		return createNewDate(dateMidnight.toDateTime());
 	}
-	
+
 	public TeachUsDate createNewDate(DateTime dateTime) {
+		return createNewDate(dateTime, person);
+	}
+	
+	public TeachUsDate createNewDate(DateMidnight dateMidnight, Person person) {
+		return createNewDate(dateMidnight.toDateTime(), person);
+	}
+	
+	public TeachUsDate createNewDate(DateTime dateTime, Person person) {
 		TeachUsDate date = new TeachUsDate(dateTime);
 		
 		TimeZone timeZone = null;

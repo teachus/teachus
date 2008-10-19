@@ -372,3 +372,13 @@ table.border th {
 #cluetip-inner {
 	padding: 10px;
 }
+
+.log .date {
+	margin-bottom: 1em;
+}
+
+.log .dateHeader {
+	font-size: 1.2em;
+	color: gray;
+	font-weight: bold;
+}

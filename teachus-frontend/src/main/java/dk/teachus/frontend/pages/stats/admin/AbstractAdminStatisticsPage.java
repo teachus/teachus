@@ -38,6 +38,7 @@ public abstract class AbstractAdminStatisticsPage extends AbstractStatisticsPage
 		List<ToolbarItemInterface> items = new ArrayList<ToolbarItemInterface>();
 		
 		items.add(new Toolbar.BookmarkableToolbarItem(TeachUsSession.get().getString("General.teachersSummary"), TeachersSummaryPage.class)); //$NON-NLS-1$
+		items.add(new Toolbar.BookmarkableToolbarItem(TeachUsSession.get().getString("General.teachersLog"), TeachersLogPage.class)); //$NON-NLS-1$
 		
 		return items;
 	}

@@ -10,6 +10,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.PeriodType;
 
 public class TeachUsDate implements Serializable, Comparable<TeachUsDate> {
 	private static final long serialVersionUID = 1L;
@@ -210,6 +212,16 @@ public class TeachUsDate implements Serializable, Comparable<TeachUsDate> {
 
 	public int getYear() {
 		return dateTime != null ? dateTime.getYear() : -1;
+	}
+
+	public int intervalMinutes(TeachUsDate date) {
+		int intervalMinutes = 0;
+		
+		if (dateTime != null && date.getDateTime() != null) {
+			intervalMinutes = new Duration(dateTime, date.getDateTime()).toPeriod(PeriodType.minutes()).getMinutes();
+		}
+		
+		return intervalMinutes;
 	}
 	
 	@Override
