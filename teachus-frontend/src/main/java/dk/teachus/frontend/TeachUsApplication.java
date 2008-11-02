@@ -37,6 +37,7 @@ import org.apache.wicket.markup.html.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.request.target.coding.HybridUrlCodingStrategy;
 import org.apache.wicket.request.target.coding.IndexedParamUrlCodingStrategy;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.io.IObjectStreamFactory;
@@ -126,17 +127,17 @@ public class TeachUsApplication extends WebApplication {
 	private void mountPages() {
 		mountBookmarkablePage("/signout", SignOutPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/signedout", SignedOutPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/calendar", PupilCalendarPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/calendar/teacher", TeacherCalendarPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/pupils", PupilsPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/teachers", TeachersPage.class); //$NON-NLS-1$
+		mount(new HybridUrlCodingStrategy("/calendar", PupilCalendarPage.class));
+		mount(new HybridUrlCodingStrategy("/calendar/teacher", TeacherCalendarPage.class));
+		mount(new HybridUrlCodingStrategy("/pupils", PupilsPage.class));
+		mount(new HybridUrlCodingStrategy("/teachers", TeachersPage.class));
 		mountBookmarkablePage("/settings/profile", TeacherSettingsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/settings/welcomemail", WelcomeMailSettingsPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/admins", AdminsPage.class); //$NON-NLS-1$
+		mount(new HybridUrlCodingStrategy("/admins", AdminsPage.class));
 		mountBookmarkablePage("/periods", PeriodsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/payment", PaymentPage.class); //$NON-NLS-1$
-		mountBookmarkablePage("/stats/incomeperpupil", IncomePerPupilPage.class); //$NON-NLS-1$
+		mount(new HybridUrlCodingStrategy("/stats/incomeperpupil", IncomePerPupilPage.class));
 		mount(new IndexedParamUrlCodingStrategy("/stats/incomepermonth", IncomePerMonthPage.class)); //$NON-NLS-1$
 		mount(new IndexedParamUrlCodingStrategy("/stats/lessonsperhour", LessonsPerHourPage.class)); //$NON-NLS-1$
 		mountBookmarkablePage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$

@@ -28,9 +28,10 @@ import org.apache.wicket.extensions.yui.calendar.DateField;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.jfree.data.general.DefaultPieDataset;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Pupil;
@@ -53,21 +54,21 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 	private TeachUsDate endDate;
 	
 	public IncomePerPupilPage() {
-		this(null, null);
+		this(TeachUsSession.get().createNewDate((DateTime) null), TeachUsSession.get().createNewDate((DateTime) null));
 	}
 	
 	public IncomePerPupilPage(TeachUsDate startDate, TeachUsDate endDate) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		
-		Form form = new Form("form", new CompoundPropertyModel(this)); //$NON-NLS-1$
+		Form form = new Form("form"); //$NON-NLS-1$
 		add(form);
 		
 		form.add(new Label("startDateLabel", TeachUsSession.get().getString("General.startDate"))); //$NON-NLS-1$ //$NON-NLS-2$
-		form.add(new DateField("startDate")); //$NON-NLS-1$
+		form.add(new DateField("startDate", new PropertyModel(this, "startDate.date"))); //$NON-NLS-1$
 		
 		form.add(new Label("endDateLabel", TeachUsSession.get().getString("General.endDate"))); //$NON-NLS-1$ //$NON-NLS-2$
-		form.add(new DateField("endDate")); //$NON-NLS-1$
+		form.add(new DateField("endDate", new PropertyModel(this, "endDate.date"))); //$NON-NLS-1$
 		
 		form.add(new Button("execute", new Model(TeachUsSession.get().getString("IncomePerPupilPage.execute"))) { //$NON-NLS-1$ //$NON-NLS-2$
 			private static final long serialVersionUID = 1L;
@@ -85,7 +86,7 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 		add(new Label("pctDistribution", TeachUsSession.get().getString("IncomePerPupilPage.percentageDistribution"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		List<PupilBooking> bookings = bookingDAO.getPaidBookings(getPerson(), startDate, endDate);
+		List<PupilBooking> bookings = bookingDAO.getPaidBookings(getPerson(), startDate.getDate() != null ? startDate : null, endDate.getDate() != null ? endDate : null);
 		
 		// Build the dataset
 		List<PupilSummary> sumList = new ArrayList<PupilSummary>();
