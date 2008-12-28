@@ -93,7 +93,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 		public void setObject(final Object object) {
 			if (object != null) {
 				final Integer minutesOfDay = (Integer) object;
-				nestedModel.setObject(new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay).toDate());
+				DateTime date = new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay);
+				TeachUsDate tud = TeachUsSession.get().createNewDate(date);
+				nestedModel.setObject(tud);
 			}
 		}
 		
@@ -277,6 +279,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 		periods.setPeriods(periodList);
 		
 		TeachUsDate beginDate = period.getBeginDate();
+		if (beginDate == null) {
+			beginDate = TeachUsSession.get().createNewDate(new DateTime());
+		}
 		final int weekDayCount = period.getWeekDays().size();
 		final List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
 		if (dates.size() < weekDayCount) {
