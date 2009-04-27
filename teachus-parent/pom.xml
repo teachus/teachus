@@ -285,8 +285,9 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:http://svn.teachus.dk/trunk</connection>
-		<developerConnection>scm:svn:http://svn.teachus.dk/trunk</developerConnection>
+		<connection>scm:git:git://github.com/frankbille/teachus.git</connection>
+		<developerConnection>scm:git:git@github.com:frankbille/teachus.git</developerConnection>
+		<url>http://github.com/frankbille/teachus/tree/master</url>
 	</scm>
 	
 	<developers>
