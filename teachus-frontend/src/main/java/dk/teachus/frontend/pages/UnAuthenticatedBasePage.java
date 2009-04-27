@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.wicket.Application;
+import org.apache.wicket.RequestCycle;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -37,6 +40,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.protocol.http.WebRequest;
+import org.apache.wicket.protocol.http.WebRequestCycle;
 
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -46,9 +51,9 @@ import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 public abstract class UnAuthenticatedBasePage extends BasePage {
 	private static final long serialVersionUID = 1L;
 	
-	public static final String USERNAME_PATH = "signInForm:username";
-	public static final String PASSWORD_PATH = "signInForm:password";
-	public static final String REMEMBER_PATH = "signInForm:remember";
+	public static final String USERNAME_PATH = "signInForm.username";
+	public static final String PASSWORD_PATH = "signInForm.password";
+	public static final String REMEMBER_PATH = "signInForm.remember";
 	
 	public static enum UnAuthenticatedPageCategory implements PageCategory {
 		INFO
@@ -104,6 +109,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		add(new FeedbackPanel("feedback"));
 		
 		user = new User();
+		
 		final Form signInForm = new Form("signInForm", new CompoundPropertyModel(user)) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
@@ -147,6 +153,16 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		signInForm.add(new FormComponentLabel("rememberLabel", remember).add(new Label("rememberLabel", TeachUsSession.get().getString("General.remember")).setRenderBodyOnly(true)));
 		
 		signInForm.add(new Button("signIn", new Model("Log ind")));
+				
+		// See if we should load from cookies
+		WebRequestCycle requestCycle = (WebRequestCycle) RequestCycle.get();
+		WebRequest request = requestCycle.getWebRequest();
+		Cookie cookie = request.getCookie(USERNAME_PATH);
+		if (cookie != null) {
+			user.setRemember(true);
+			username.setPersistent(true);
+			password.setPersistent(true);
+		}
 	}
 		
 	private void signin() {		

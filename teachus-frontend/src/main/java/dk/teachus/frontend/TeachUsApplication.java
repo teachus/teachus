@@ -33,6 +33,7 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.ajax.WicketAjaxReference;
+import org.apache.wicket.authorization.strategies.CompoundAuthorizationStrategy;
 import org.apache.wicket.markup.html.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -97,7 +98,10 @@ public class TeachUsApplication extends WebApplication {
 		Objects.setObjectStreamFactory(new IObjectStreamFactory.DefaultObjectStreamFactory());
 		
 		// Settings
-		getSecuritySettings().setAuthorizationStrategy(new TeachUsAuthentication());
+		CompoundAuthorizationStrategy authorizationStrategy = new CompoundAuthorizationStrategy();
+		authorizationStrategy.add(new TeachUsCookieAuthentication());
+		authorizationStrategy.add(new TeachUsAuthentication());
+		getSecuritySettings().setAuthorizationStrategy(authorizationStrategy);
 		getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
 		getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
 		getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
