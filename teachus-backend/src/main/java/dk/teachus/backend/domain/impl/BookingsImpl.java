@@ -28,22 +28,24 @@ public class BookingsImpl implements Bookings {
 
 	private List<Booking> bookings;
 	
-	public BookingsImpl(List<Booking> pupilBookings) {
-		bookings = pupilBookings;
+	public BookingsImpl(List<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
-	public Booking getBooking(TeachUsDate time) {
+	public Booking getBooking(Period period, TeachUsDate time) {
 		Booking booking = null;
 		
 		for (Booking foundBooking : bookings) {
-			TeachUsDate dt1 = foundBooking.getDate();
-			TeachUsDate dt2 = time;
-			
-			if (dt1.getDateMidnight().equals(dt2.getDateMidnight())) {
-				if (dt1.getHourOfDay() == dt2.getHourOfDay()
-						&& dt1.getMinuteOfHour() == dt2.getMinuteOfHour()) {
-					booking = foundBooking;
-					break;
+			if (foundBooking.getPeriod().getId().equals(period.getId())) {
+				TeachUsDate dt1 = foundBooking.getDate();
+				TeachUsDate dt2 = time;
+				
+				if (dt1.getDateMidnight().equals(dt2.getDateMidnight())) {
+					if (dt1.getHourOfDay() == dt2.getHourOfDay()
+							&& dt1.getMinuteOfHour() == dt2.getMinuteOfHour()) {
+						booking = foundBooking;
+						break;
+					}
 				}
 			}
 		}

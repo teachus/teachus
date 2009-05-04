@@ -22,7 +22,7 @@ import java.util.List;
 
 public interface Bookings extends Serializable {
 
-	Booking getBooking(TeachUsDate time);
+	Booking getBooking(Period period, TeachUsDate time);
 
 	List<Booking> getBookingList();
 

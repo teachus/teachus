@@ -58,7 +58,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 
 	@Override
 	protected final Component getTimeContent(String wicketId, final Period period, final TeachUsDate time, final MarkupContainer contentContainer) {
-		final Booking booking = bookings.getBooking(time);
+		final Booking booking = bookings.getBooking(period, time);
 		
 		BookingPeriodDateComponentPanel bookingPanel = new BookingPeriodDateComponentPanel(wicketId);
 		
@@ -130,7 +130,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 		boolean shouldDisplayTimeContent = false;
 		
 		if (period.mayBook(time)) {
-			if (bookings.getBooking(time) == null) {
+			if (bookings.getBooking(period, time) == null) {
 				if (bookings.mayBook(period, time)) {
 					shouldDisplayTimeContent = true;
 				}
@@ -146,7 +146,7 @@ public abstract class BookingPeriodDateComponent extends PeriodDateComponent {
 	protected int getRowSpanForTimeContent(Period period, TeachUsDate time) {
 		int rowSpan = 1;
 		
-		if (bookings.getBooking(time) != null) {
+		if (bookings.getBooking(period, time) != null) {
 			rowSpan = period.getLessonDuration() / period.getIntervalBetweenLessonStart();
 		}
 		
