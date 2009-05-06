@@ -2,13 +2,12 @@ package dk.teachus.tools;
 
 import java.io.File;
 
+import dk.teachus.tools.actions.GitCommandScmClient;
 import dk.teachus.tools.actions.ReleaseAction;
 import dk.teachus.tools.actions.ScmClient;
-import dk.teachus.tools.actions.SubversionScmClient;
 import dk.teachus.tools.config.Configuration;
+import dk.teachus.tools.config.GitNode;
 import dk.teachus.tools.config.MavenNode;
-import dk.teachus.tools.config.SubversionReleaseNode;
-import dk.teachus.tools.config.SubversionTrunkNode;
 import dk.teachus.tools.config.WorkingDirectoryNode;
 
 public class Release {
@@ -19,16 +18,14 @@ public class Release {
 		Configuration configuration = new Configuration();
 		configuration.add(new MavenNode());
 		configuration.add(new WorkingDirectoryNode());
-		configuration.add(new SubversionReleaseNode());
-		configuration.add(new SubversionTrunkNode());
+		configuration.add(new GitNode());
 		configuration.initialize(preferenceFile);
 		
 		MavenNode maven = configuration.getNode(MavenNode.class);
 		WorkingDirectoryNode workingDirectory = configuration.getNode(WorkingDirectoryNode.class);
-		SubversionReleaseNode subversionRelease = configuration.getNode(SubversionReleaseNode.class);
-		SubversionTrunkNode subversionTrunk = configuration.getNode(SubversionTrunkNode.class);
-		
-		ScmClient scmClient = new SubversionScmClient(subversionTrunk, subversionRelease);
+		GitNode git = configuration.getNode(GitNode.class);
+
+		ScmClient scmClient = new GitCommandScmClient(git.getRemoteGitUrl(), git.getCommitterName(), git.getCommitterEmail());
 		
 		Workflow workflow = new Workflow();
 		

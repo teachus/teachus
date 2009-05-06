@@ -1,4 +1,4 @@
 #!/bin/sh
 
-svn up
+git pull
 mvn clean compile exec:java -Dexec.mainClass="dk.teachus.tools.Release"
