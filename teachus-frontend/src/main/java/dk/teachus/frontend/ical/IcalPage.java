@@ -97,7 +97,7 @@ public class IcalPage extends Page {
 			for (PupilBooking pupilBooking : pupilBookings) {
 				b.append("BEGIN:VEVENT").append(CRLF);
 				
-				DateTime startTime = new DateTime(pupilBooking.getDate());
+				DateTime startTime = pupilBooking.getDate().getDateTime();
 				startTime = startTime.withZone(DateTimeZone.UTC);
 				
 				// UID
