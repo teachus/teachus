@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Git client using local commands
  */
 public class GitCommandScmClient implements ScmClient {
+	private static final Log log = LogFactory.getLog(GitCommandScmClient.class);
 
 	private String remoteGitRepository;
 	private String committerName;
@@ -68,7 +71,9 @@ public class GitCommandScmClient implements ScmClient {
 			for (String param : params) {
 				gitCommand[i++] = param;
 			}
-			System.out.println("Executing git command: '"+Arrays.toString(gitCommand)+"'");
+			if (log.isDebugEnabled()) {
+				log.debug("Executing git command: '"+Arrays.toString(gitCommand)+"'");
+			}
 			
 			Process process = Runtime.getRuntime().exec(gitCommand, null, projectDirectory);
 			if (process.waitFor() != 0) {
