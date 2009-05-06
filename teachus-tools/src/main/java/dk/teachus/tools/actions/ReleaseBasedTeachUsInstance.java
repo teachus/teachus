@@ -5,23 +5,22 @@ import java.io.File;
 import dk.teachus.tools.config.AbstractDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SshNode;
-import dk.teachus.tools.config.SubversionReleaseNode;
 
 public abstract class ReleaseBasedTeachUsInstance extends AbstractTeachUsInstance {
 
-	private final SubversionReleaseNode subversion;
+	private final ScmClient scmClient;
 
 	private UpgradeDatabaseAction upgradeDatabase;
 
 	public ReleaseBasedTeachUsInstance(MavenNode maven, File workingDirectory,
-			AbstractDeploymentNode deployment, SshNode databaseHost, String version, SubversionReleaseNode subversion) throws Exception {
+			AbstractDeploymentNode deployment, SshNode databaseHost, String version, ScmClient scmClient) throws Exception {
 		super(maven, workingDirectory, deployment, databaseHost, version);
-		this.subversion = subversion;
+		this.scmClient = scmClient;
 	}
 	
 	@Override
-	protected AbstractSubversionCheckoutAction getCheckoutAction() {
-		return new SubversionCheckoutReleaseAction(subversion, version, projectDirectory);
+	protected ScmCheckoutAction getCheckoutAction() {
+		return new ScmCheckoutAction(scmClient, version, projectDirectory);
 	}
 	
 	@Override

@@ -19,9 +19,11 @@ public class ModifyPomVersionAction implements Action {
 
 	private File projectDirectory;
 	private String version;
+	private ScmClient scmClient;
 	
-	public ModifyPomVersionAction(File projectDirectory) {
+	public ModifyPomVersionAction(File projectDirectory, ScmClient scmClient) {
 		this.projectDirectory = projectDirectory;
+		this.scmClient = scmClient;
 	}
 	
 	public void init() throws Exception {
@@ -45,14 +47,14 @@ public class ModifyPomVersionAction implements Action {
 		modifyModulePom("teachus-test/pom.xml");
 		modifyModulePom("teachus-ws/pom.xml");
 		
-		SubversionCommitAction subversionCommit = new SubversionCommitAction("Upgrading to "+version, 
+		ScmCommitAction scmCommit = new ScmCommitAction(scmClient, projectDirectory, "Upgrading to "+version, 
 				getFiles(
 				"teachus-parent/pom.xml",
 				"teachus-backend/pom.xml",
 				"teachus-frontend/pom.xml",
 				"teachus-ws/pom.xml",
 				"teachus-test/pom.xml"));
-		subversionCommit.execute();
+		scmCommit.execute();
 	}
 	
 	public void check() throws Exception {		

@@ -7,14 +7,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import dk.teachus.tools.config.MavenNode;
-import dk.teachus.tools.config.SubversionReleaseNode;
-import dk.teachus.tools.config.SubversionTrunkNode;
 import dk.teachus.tools.config.WorkingDirectoryNode;
 
 public class ReleaseAction implements Action {
 	private static final Log log = LogFactory.getLog(ReleaseAction.class);
 	
-	private SubversionCheckoutTrunkAction checkoutTrunk;
+	private ScmCheckoutAction checkoutAction;
 
 	private MavenPackageAction mavenPackage;
 
@@ -24,21 +22,18 @@ public class ReleaseAction implements Action {
 
 	private ModifyPomVersionAction modifyPomVersion;
 
-	private SubversionCopyAction subversionCopy;
+	private ScmTagAction tagAction;
 
 	private final MavenNode maven;
 
 	private final WorkingDirectoryNode workingDirectory;
 
-	private final SubversionReleaseNode subversionRelease;
+	private final ScmClient scmClient;
 
-	private final SubversionTrunkNode subversionTrunk;
-
-	public ReleaseAction(MavenNode maven, WorkingDirectoryNode workingDirectory, SubversionReleaseNode subversionRelease, SubversionTrunkNode subversionTrunk) throws Exception {
+	public ReleaseAction(MavenNode maven, WorkingDirectoryNode workingDirectory, ScmClient scmClient) throws Exception {
 		this.maven = maven;
 		this.workingDirectory = workingDirectory;
-		this.subversionRelease = subversionRelease;
-		this.subversionTrunk = subversionTrunk;
+		this.scmClient = scmClient;
 	}
 	
 	public void init() throws Exception {
@@ -46,15 +41,15 @@ public class ReleaseAction implements Action {
 		projectDirectory = File.createTempFile("teachus", "", workingDirectory.getWorkingDirectoryFile());
 		projectDirectory.delete();
 		projectDirectory.mkdir();
-		checkoutTrunk = new SubversionCheckoutTrunkAction(projectDirectory, subversionTrunk);
+		checkoutAction = new ScmCheckoutAction(scmClient, projectDirectory);
 		mavenPackage = new MavenPackageAction(maven, projectDirectory);
 		determineVersion = new DetermineVersionAction(projectDirectory);
-		modifyPomVersion = new ModifyPomVersionAction(projectDirectory);
-		subversionCopy = new SubversionCopyAction(subversionRelease, subversionTrunk);
+		modifyPomVersion = new ModifyPomVersionAction(projectDirectory, scmClient);
+		tagAction = new ScmTagAction(scmClient, projectDirectory);
 	}
 
 	public void execute() throws Exception {
-		checkoutTrunk.execute();
+		checkoutAction.execute();
 		
 		// Run the tests to see if the quality is high enough to release
 		mavenPackage.execute();
@@ -67,8 +62,8 @@ public class ReleaseAction implements Action {
 		modifyPomVersion.setVersion(version);
 		modifyPomVersion.execute();
 		
-		subversionCopy.setVersion(version);
-		subversionCopy.execute();
+		tagAction.setVersion(version);
+		tagAction.execute();
 		
 		modifyPomVersion.setVersion(newVersion);
 		modifyPomVersion.execute();
@@ -77,20 +72,20 @@ public class ReleaseAction implements Action {
 	}
 	
 	public void check() throws Exception {
-		checkoutTrunk.check();
+		checkoutAction.check();
 		mavenPackage.check();
 		determineVersion.check();
 		modifyPomVersion.check();
-		subversionCopy.check();
+		tagAction.check();
 		modifyPomVersion.check();
 	}
 
 	public void cleanup() throws Exception {
-		checkoutTrunk.cleanup();
+		checkoutAction.cleanup();
 		mavenPackage.cleanup();
 		determineVersion.cleanup();
 		modifyPomVersion.cleanup();
-		subversionCopy.cleanup();
+		tagAction.cleanup();
 		modifyPomVersion.cleanup();		
 		
 		log.info("Deleting temporary project directory");

@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 
 import dk.teachus.tools.actions.DemoTeachUsInstance;
 import dk.teachus.tools.actions.MainTeachUsInstance;
+import dk.teachus.tools.actions.ScmClient;
+import dk.teachus.tools.actions.SubversionScmClient;
 import dk.teachus.tools.actions.UpgradeTeachUsInstancesAction;
 import dk.teachus.tools.config.Configuration;
 import dk.teachus.tools.config.DemoDeploymentNode;
@@ -43,14 +45,16 @@ public class FullUpgrade {
 		WorkingDirectoryNode workingDirectoryNode = configuration.getNode(WorkingDirectoryNode.class);
 		File workingDirectory = workingDirectoryNode.getWorkingDirectoryFile();
 
+		ScmClient scmClient = new SubversionScmClient(subversion);
+		
 		/*
 		 * Build up workflow
 		 */
 		Workflow workflow = new Workflow();
 		
 		UpgradeTeachUsInstancesAction upgradeTeachUsInstances = new UpgradeTeachUsInstancesAction(tomcat);
-		upgradeTeachUsInstances.addTeachUsInstance(new MainTeachUsInstance(maven, workingDirectory, mainDeployment, tomcat.getHost(), version, subversion));
-		upgradeTeachUsInstances.addTeachUsInstance(new DemoTeachUsInstance(maven, workingDirectory, demoDeployment, tomcat.getHost(), version, subversion));
+		upgradeTeachUsInstances.addTeachUsInstance(new MainTeachUsInstance(maven, workingDirectory, mainDeployment, tomcat.getHost(), version, scmClient));
+		upgradeTeachUsInstances.addTeachUsInstance(new DemoTeachUsInstance(maven, workingDirectory, demoDeployment, tomcat.getHost(), version, scmClient));
 		workflow.addAction(upgradeTeachUsInstances);
 	
 		/*

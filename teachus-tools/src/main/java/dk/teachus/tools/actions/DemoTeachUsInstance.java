@@ -5,7 +5,6 @@ import java.io.File;
 import dk.teachus.tools.config.DemoDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SshNode;
-import dk.teachus.tools.config.SubversionReleaseNode;
 
 public class DemoTeachUsInstance extends ReleaseBasedTeachUsInstance {
 
@@ -14,8 +13,8 @@ public class DemoTeachUsInstance extends ReleaseBasedTeachUsInstance {
 
 	public DemoTeachUsInstance(MavenNode maven, File workingDirectory,
 			DemoDeploymentNode deployment, SshNode databaseHost,
-			String version, SubversionReleaseNode subversion) throws Exception {
-		super(maven, workingDirectory, deployment, databaseHost, version, subversion);
+			String version, ScmClient scmClient) throws Exception {
+		super(maven, workingDirectory, deployment, databaseHost, version, scmClient);
 	}
 
 	public String getInstanceName() {

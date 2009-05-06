@@ -3,6 +3,8 @@ package dk.teachus.tools;
 import java.io.File;
 
 import dk.teachus.tools.actions.ReleaseAction;
+import dk.teachus.tools.actions.ScmClient;
+import dk.teachus.tools.actions.SubversionScmClient;
 import dk.teachus.tools.config.Configuration;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SubversionReleaseNode;
@@ -26,9 +28,11 @@ public class Release {
 		SubversionReleaseNode subversionRelease = configuration.getNode(SubversionReleaseNode.class);
 		SubversionTrunkNode subversionTrunk = configuration.getNode(SubversionTrunkNode.class);
 		
+		ScmClient scmClient = new SubversionScmClient(subversionTrunk, subversionRelease);
+		
 		Workflow workflow = new Workflow();
 		
-		workflow.addAction(new ReleaseAction(maven, workingDirectory, subversionRelease, subversionTrunk));
+		workflow.addAction(new ReleaseAction(maven, workingDirectory, scmClient));
 		
 		workflow.start();
 	}

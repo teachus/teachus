@@ -4,14 +4,13 @@ import java.io.File;
 
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SshNode;
-import dk.teachus.tools.config.SubversionTrunkNode;
 import dk.teachus.tools.config.TestDeploymentNode;
 
 public class TestTeachUsInstance extends AbstractTeachUsInstance {
 
 	private ConfigureMailBeanAction configureMailBean;
 	private LoadTestDataAction loadTestData;
-	private final SubversionTrunkNode subversion;
+	private final ScmClient scmClient;
 	private DropAllTablesAction dropAllTables;
 	private LoadSchemaAction loadSchema;
 	private GetVersionAction getVersion;
@@ -19,14 +18,14 @@ public class TestTeachUsInstance extends AbstractTeachUsInstance {
 
 	public TestTeachUsInstance(MavenNode maven, File workingDirectory,
 			TestDeploymentNode deployment, SshNode databaseHost,
-			SubversionTrunkNode subversion) throws Exception {
+			ScmClient scmClient) throws Exception {
 		super(maven, workingDirectory, deployment, databaseHost, null);
-		this.subversion = subversion;
+		this.scmClient = scmClient;
 	}
 
 	@Override
-	protected AbstractSubversionCheckoutAction getCheckoutAction() {
-		return new SubversionCheckoutTrunkAction(projectDirectory, subversion);
+	protected ScmCheckoutAction getCheckoutAction() {
+		return new ScmCheckoutAction(scmClient, projectDirectory);
 	}
 
 	public String getInstanceName() {

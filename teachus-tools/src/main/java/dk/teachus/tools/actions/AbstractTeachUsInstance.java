@@ -14,7 +14,7 @@ import dk.teachus.tools.config.SshNode;
 public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 	private static final Log log = LogFactory.getLog(AbstractTeachUsInstance.class);
 
-	private AbstractSubversionCheckoutAction subversionCheckout;
+	private ScmCheckoutAction scmCheckout;
 
 	protected File projectDirectory;
 
@@ -43,14 +43,14 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 	}
 	
 	public void check() throws Exception {
-		subversionCheckout.check();
+		scmCheckout.check();
 		configureDatabase.check();
 		configureSmtpServer.check();
 		mavenPackage.check();
 	}
 	
 	public void cleanup() throws Exception {
-		subversionCheckout.cleanup();
+		scmCheckout.cleanup();
 		configureDatabase.cleanup();
 		configureSmtpServer.cleanup();
 		mavenPackage.cleanup();
@@ -67,8 +67,8 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 		projectDirectory.delete();
 		projectDirectory.mkdir();
 		
-		subversionCheckout = getCheckoutAction();
-		subversionCheckout.init();
+		scmCheckout = getCheckoutAction();
+		scmCheckout.init();
 		configureDatabase = new ConfigureTeachUsDatabaseAction(projectDirectory, deployment.getDatabase());
 		configureDatabase.init();
 		configureSmtpServer = new ConfigureSmtpServerAction(projectDirectory, deployment.getSmtpServer());
@@ -78,7 +78,7 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 	}
 
 	public File prepareWarFile() throws Exception {
-		subversionCheckout.execute();
+		scmCheckout.execute();
 		
 		configureDatabase.execute();
 		
@@ -90,8 +90,8 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 		
 		return new File(projectDirectory, "teachus-frontend/target/teachus-frontend-"+version+".war");
 	}
-
-	protected abstract AbstractSubversionCheckoutAction getCheckoutAction();
+	
+	protected abstract ScmCheckoutAction getCheckoutAction();
 	
 	protected void beforePackage() throws Exception {
 	}
