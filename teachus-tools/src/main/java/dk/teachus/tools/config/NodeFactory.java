@@ -31,6 +31,8 @@ public abstract class NodeFactory {
 			node = new MavenNode();
 		} else if (name.equalsIgnoreCase("workingdirectory")) {
 			node = new WorkingDirectoryNode();
+		} else if (name.equalsIgnoreCase("git")) {
+			node = new GitNode();
 		}
 		
 		if (node != null) {
