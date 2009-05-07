@@ -78,12 +78,12 @@ public class PeriodsImpl implements Periods {
 		DateMidnight dateMidnight = date.getDateMidnight();
 		
 		for (Period period : getValidPeriods()) {
-			DateMidnight beginDate = period.getBeginDate().getDateMidnight();
+			TeachUsDate beginDate = period.getBeginDate();
 			if (beginDate == null) {
 				hasPeriodBefore = true;
 				break;
 			} else {
-				if (beginDate.isBefore(dateMidnight) || beginDate.equals(dateMidnight)) {
+				if (beginDate.getDateMidnight().isBefore(dateMidnight) || beginDate.getDateMidnight().equals(dateMidnight)) {
 					hasPeriodBefore = true;
 					break;
 				}

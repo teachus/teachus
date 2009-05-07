@@ -23,7 +23,9 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
@@ -271,6 +273,20 @@ public class TestPeriods extends TestCase {
 		
 		int numberOfWeeks = periods.numberOfWeeksBack(new TeachUsDate(2007, 5, 14, timeZone), 7);
 		assertEquals(11, numberOfWeeks);
+	}
+	
+	public void testHasPeriodBefore() {
+		Periods periods = new PeriodsImpl();
+		Period period = new PeriodImpl();
+		period.setStartTime(new TeachUsDate(2009, 5, 7, 10, 0, 0, TimeZone.getDefault()));
+		period.setEndTime(new TeachUsDate(2009, 5, 7, 18, 0, 0, TimeZone.getDefault()));
+		period.setName("Test with no begin date");
+		period.addWeekDay(WeekDay.MONDAY);
+		period.setStatus(Status.FINAL);
+		period.setTeacher(new TeacherImpl());
+		periods.addPeriod(period);
+		
+		assertTrue(periods.hasPeriodBefore(new TeachUsDate(new DateTime(2009, 5, 7, 11, 0, 0, 0))));
 	}
 	
 	private Period createBasicPeriod() {
