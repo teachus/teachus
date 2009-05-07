@@ -3,5 +3,6 @@ teachus-backend/target
 teachus-frontend/target
 teachus-test/target
 teachus-tools/target
+teachus-tools/execution.log
 teachus-ws/target
 teachus-parent/target
