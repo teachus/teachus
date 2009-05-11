@@ -2,6 +2,6 @@
 UPDATE
 	application_configuration 
 SET
-	`value`='1.52-SNAPSHOT'
+	`value`='1.52'
 WHERE
 	name='VERSION';
