@@ -23,6 +23,8 @@ public class ReleaseAction implements Action {
 	private ModifyPomVersionAction modifyPomVersion;
 
 	private ScmTagAction tagAction;
+	
+	private AddUpgradeSqlStubAction addUpgradeSqlStubAction;
 
 	private final MavenNode maven;
 
@@ -46,6 +48,7 @@ public class ReleaseAction implements Action {
 		determineVersion = new DetermineVersionAction(projectDirectory);
 		modifyPomVersion = new ModifyPomVersionAction(projectDirectory, scmClient);
 		tagAction = new ScmTagAction(scmClient, projectDirectory);
+		addUpgradeSqlStubAction = new AddUpgradeSqlStubAction(projectDirectory, scmClient);
 	}
 
 	public void execute() throws Exception {
@@ -68,6 +71,9 @@ public class ReleaseAction implements Action {
 		modifyPomVersion.setVersion(newVersion);
 		modifyPomVersion.execute();
 		
+		addUpgradeSqlStubAction.setVersion(newVersion);
+		addUpgradeSqlStubAction.execute();
+		
 		log.info("Finished");		
 	}
 	
@@ -78,6 +84,7 @@ public class ReleaseAction implements Action {
 		modifyPomVersion.check();
 		tagAction.check();
 		modifyPomVersion.check();
+		addUpgradeSqlStubAction.check();
 	}
 
 	public void cleanup() throws Exception {
@@ -86,7 +93,8 @@ public class ReleaseAction implements Action {
 		determineVersion.cleanup();
 		modifyPomVersion.cleanup();
 		tagAction.cleanup();
-		modifyPomVersion.cleanup();		
+		modifyPomVersion.cleanup();
+		addUpgradeSqlStubAction.cleanup();
 		
 		log.info("Deleting temporary project directory");
 		FileUtils.deleteDirectory(projectDirectory);
