@@ -37,6 +37,9 @@ public class AddUpgradeSqlStubAction implements Action {
 			throw new IllegalStateException("No version is set");
 		}
 		
+		// Remove snapshot from version
+		version = version.replace("-SNAPSHOT", "");
+		
 		String stubString = IOUtils.toString((AddUpgradeSqlStubAction.class.getResourceAsStream("DatabaseStub.sql")));
 		stubString = stubString.replace("{THEVERSION}", version);
 		
