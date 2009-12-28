@@ -80,12 +80,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jmock</groupId>
+			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.jmock</groupId>
+			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
 			<scope>test</scope>
 		</dependency>

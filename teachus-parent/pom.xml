@@ -233,13 +233,13 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.jmock</groupId>
+				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest-api</artifactId>
 				<version>1.0</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.jmock</groupId>
+				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest-library</artifactId>
 				<version>1.0</version>
 				<scope>test</scope>
