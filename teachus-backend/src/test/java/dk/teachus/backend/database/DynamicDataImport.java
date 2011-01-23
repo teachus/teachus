@@ -103,6 +103,8 @@ public abstract class DynamicDataImport {
 			verify(sessionFactory, teacher);
 		}
 		
+		log.info("Done");
+		
 		System.exit(0);
 	}
 	
