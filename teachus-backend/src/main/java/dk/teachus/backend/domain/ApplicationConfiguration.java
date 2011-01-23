@@ -30,6 +30,8 @@ public interface ApplicationConfiguration extends Serializable {
 	
 	void setConfigurationInteger(String configurationKey, int configurationValue);
 	
+	boolean hasConfiguration(String configurationKey);
+	
 	String getConfiguration(String configurationKey);
 	
 	int getConfigurationInteger(String configurationKey);

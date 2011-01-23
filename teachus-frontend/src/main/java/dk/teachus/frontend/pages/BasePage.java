@@ -20,6 +20,8 @@ import java.util.List;
 
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -31,6 +33,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.joda.time.DateMidnight;
 
+import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -90,6 +93,28 @@ public abstract class BasePage extends WebPage {
 			}
 			
 		}));
+		
+		/*
+		 * Google Analytics
+		 */
+		WebMarkupContainer googleAnalytics = new WebMarkupContainer("googleAnalytics") {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public boolean isVisible() {
+				return TeachUsApplication.get().getConfiguration().hasConfiguration(ApplicationConfiguration.GOOGLE_ANALYTICS_WEB_PROPERTY_ID);
+			}
+			
+			@Override
+			protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+				String content = markupStream.get().toCharSequence().toString();
+				
+				content = content.replace("UA-XXXXX-X", TeachUsApplication.get().getConfiguration().getConfiguration(ApplicationConfiguration.GOOGLE_ANALYTICS_WEB_PROPERTY_ID));
+				
+				replaceComponentTagBody(markupStream, openTag, content);
+			}
+		};
+		add(googleAnalytics);
 	}
 	
 	private void setTheme(Theme theme) {

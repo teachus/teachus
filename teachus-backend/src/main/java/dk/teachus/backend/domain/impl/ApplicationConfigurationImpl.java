@@ -32,6 +32,20 @@ public class ApplicationConfigurationImpl implements ApplicationConfiguration {
 	public ApplicationConfigurationImpl(List<ApplicationConfigurationEntry> entries) {
 		this.entries = entries;
 	}
+	
+	public boolean hasConfiguration(String configurationKey) {
+		boolean hasConfiguration = false;
+		
+		ApplicationConfigurationEntry foundEntry = findConfigurationEntry(configurationKey);
+		
+		if (foundEntry != null) {
+			if (foundEntry.getValue() != null) {
+				hasConfiguration = true;
+			}
+		}
+		
+		return hasConfiguration;
+	}
 
 	public String getConfiguration(String configurationKey) {
 		String configurationValue = null;
