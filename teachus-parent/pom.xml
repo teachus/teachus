@@ -279,11 +279,6 @@
 		</pluginManagement>
 	</build>
 
-	<ciManagement>
-		<system>teamcity</system>
-		<url>http://build.teachus.dk</url>
-	</ciManagement>
-
 	<scm>
 		<connection>scm:git:git://github.com/frankbille/teachus.git</connection>
 		<developerConnection>scm:git:git@github.com:frankbille/teachus.git</developerConnection>
@@ -302,7 +297,7 @@
 	<repositories>
 		<repository>
 			<id>frankbille</id>
-			<url>http://maven.frankbille.dk/</url>
+			<url>http://maven.frankbille.dk/nexus/content/groups/public</url>
 		</repository>
 	</repositories>	
 	
