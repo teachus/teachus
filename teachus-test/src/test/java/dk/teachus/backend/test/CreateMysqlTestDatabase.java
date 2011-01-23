@@ -21,18 +21,40 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.Resource;
 
 public class CreateMysqlTestDatabase {
 	
-	public CreateMysqlTestDatabase() {
+	public CreateMysqlTestDatabase(Resource property) {
 		// Create connection
 		Connection connection = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
 			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost/teachus_test?allowMultiQueries=true", "teachus_test", "test_teachus");
+			Properties properties = new Properties();
+			properties.load(property.getInputStream());
+			
+			String driverClass = properties.getProperty("db.driverClassName");
+			String jdbcUrl = properties.getProperty("db.url");
+			jdbcUrl += "?allowMultiQueries=true";
+			String jdbcUser = properties.getProperty("db.username");
+			String jdbcPass = properties.getProperty("db.password");
+			String jdbcHost = properties.getProperty("db.host");
+			String jdbcDatabase = properties.getProperty("db.database");
+			
+			Class.forName(driverClass);
+			
+			// Create database if not exists
+			connection = DriverManager.getConnection("jdbc:mysql://"+jdbcHost+"/mysql", jdbcUser, jdbcPass);
+			Statement statement = connection.createStatement();
+			statement.executeUpdate("CREATE DATABASE IF NOT EXISTS "+jdbcDatabase);
+			statement.close();
+			connection.close();
+			
+			// Connect to database
+			connection = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPass);
 
 			// Drop existing tables
 			dropTable(connection, "booking");
