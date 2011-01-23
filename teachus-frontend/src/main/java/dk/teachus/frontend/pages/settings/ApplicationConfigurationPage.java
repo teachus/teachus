@@ -50,6 +50,8 @@ public class ApplicationConfigurationPage extends AuthenticatedBasePage {
 		
 		form.addElement(new TextFieldElement(TeachUsSession.get().getString("ApplicationConfigurationPage.serverUrl"), new ApplicationConfigurationModel(ApplicationConfiguration.SERVER_URL), true, 40)); //$NON-NLS-1$
 		
+		form.addElement(new TextFieldElement(TeachUsSession.get().getString("ApplicationConfigurationPage.googleAnalyticsWebPropertyId"), new ApplicationConfigurationModel(ApplicationConfiguration.GOOGLE_ANALYTICS_WEB_PROPERTY_ID), false, 15)); //$NON-NLS-1$
+		
 		IModel timeZoneModel = new ApplicationConfigurationModel(ApplicationConfiguration.DEFAULT_TIMEZONE) {
 			private static final long serialVersionUID = 1L;
 			
@@ -63,7 +65,7 @@ public class ApplicationConfigurationPage extends AuthenticatedBasePage {
 				return modelValue instanceof TimeZone ? ((TimeZone) modelValue).getID() : null;
 			}
 		};
-		form.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), timeZoneModel, false));
+		form.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), timeZoneModel, false)); //$NON-NLS-1$
 		
 		form.addElement(new ButtonPanelElement() {
 			private static final long serialVersionUID = 1L;
