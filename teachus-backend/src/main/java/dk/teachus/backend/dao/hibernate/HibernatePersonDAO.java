@@ -54,7 +54,7 @@ public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO
 		c.add(Restrictions.eq("username", username));
 		c.add(Restrictions.eq("password", password));
 		c.add(Restrictions.eq("active", true));
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		List<Person> persons = getHibernateTemplate().findByCriteria(c);
 		
@@ -119,7 +119,7 @@ public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO
 			c.add(Restrictions.eq("active", true));
 		}
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 
 		return getHibernateTemplate().findByCriteria(c);
 	}
@@ -135,7 +135,7 @@ public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO
 
 		c.addOrder(Order.asc("name"));
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}

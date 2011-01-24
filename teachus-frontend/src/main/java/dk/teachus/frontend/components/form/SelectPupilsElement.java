@@ -16,6 +16,8 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.util.Collection;
+
 import org.apache.wicket.Component;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
@@ -24,18 +26,20 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.IValidator;
 
-public class SelectPupilsElement extends AbstractInputElement {
+import dk.teachus.backend.domain.Pupil;
+
+public class SelectPupilsElement extends AbstractInputElement<Collection<Pupil>> {
 	private static final long serialVersionUID = 1L;
-	private final IModel inputModel;
+	private final IModel<Collection<Pupil>> inputModel;
 	private SelectPupilsPanel selectPupilsPanel;
 	
-	public SelectPupilsElement(String label, IModel inputModel, boolean required) {
+	public SelectPupilsElement(String label, IModel<Collection<Pupil>> inputModel, boolean required) {
 		super(label, required);
 		this.inputModel = inputModel;
 	}
 
 	@Override
-	protected void addValidator(IValidator validator) {
+	protected void addValidator(IValidator<Collection<Pupil>> validator) {
 		selectPupilsPanel.getInputComponent().add(validator);
 	}
 	
@@ -44,7 +48,7 @@ public class SelectPupilsElement extends AbstractInputElement {
 		return new ComponentFeedbackMessageFilter(this);
 	}
 	
-	public FormComponent getFormComponent() {
+	public FormComponent<Collection<Pupil>> getFormComponent() {
 		return selectPupilsPanel.getInputComponent();
 	}
 	

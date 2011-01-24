@@ -79,7 +79,7 @@ public class HibernatePeriodDAO extends HibernateDaoSupport implements PeriodDAO
 			c.add(Restrictions.ne("status", Status.DELETED));
 		}
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		List<Period> result = getHibernateTemplate().findByCriteria(c);
 		

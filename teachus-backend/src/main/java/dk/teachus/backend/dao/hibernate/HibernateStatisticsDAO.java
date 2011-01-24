@@ -70,7 +70,7 @@ public class HibernateStatisticsDAO extends HibernateDaoSupport implements Stati
 		disjunction.add(Restrictions.and(Restrictions.ge("updateDate.date", fromDate.getDate()), Restrictions.le("updateDate.date", toDate.getDate())));
 		c.add(disjunction);
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		List<PupilBooking> bookings = getHibernateTemplate().findByCriteria(c);
 		

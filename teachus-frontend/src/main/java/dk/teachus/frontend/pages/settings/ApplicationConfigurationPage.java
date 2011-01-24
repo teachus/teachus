@@ -77,7 +77,7 @@ public class ApplicationConfigurationPage extends AuthenticatedBasePage {
 
 			@Override
 			protected void onSave(AjaxRequestTarget target) {
-				saveLabel.setModelObject(TeachUsSession.get().getString("ApplicationConfigurationPage.settingsSaved")); //$NON-NLS-1$
+				saveLabel.setDefaultModelObject(TeachUsSession.get().getString("ApplicationConfigurationPage.settingsSaved")); //$NON-NLS-1$
 				target.addComponent(saveLabel);
 			}			
 		});

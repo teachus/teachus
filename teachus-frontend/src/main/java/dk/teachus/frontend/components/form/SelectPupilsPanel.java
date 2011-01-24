@@ -16,6 +16,7 @@
  */
 package dk.teachus.frontend.components.form;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
@@ -41,12 +42,12 @@ import dk.teachus.frontend.TeachUsSession;
 public class SelectPupilsPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 	
-	private CheckGroup selectGroup;
+	private CheckGroup<Pupil> selectGroup;
 	
-	public SelectPupilsPanel(String id, IModel model) {
+	public SelectPupilsPanel(String id, IModel<Collection<Pupil>> model) {
 		super(id, model);
 
-		selectGroup = new CheckGroup("selectGroup", getModel());
+		selectGroup = new CheckGroup<Pupil>("selectGroup", getModel());
 		selectGroup.setRenderBodyOnly(false);
 		add(selectGroup);
 		
@@ -55,40 +56,45 @@ public class SelectPupilsPanel extends Panel {
 		selectGroup.add(new Label("name", TeachUsSession.get().getString("General.pupil")));
 		
 		// Check list model
-		IModel pupilsModel = new LoadableDetachableModel() {
+		IModel<List<Pupil>> pupilsModel = new LoadableDetachableModel<List<Pupil>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Object load() {
+			protected List<Pupil> load() {
 				List<Pupil> pupils = loadPupils();
 				return pupils;
 			}
 		};
 		
-		selectGroup.add(new ListView("pupils", pupilsModel) {
+		selectGroup.add(new ListView<Pupil>("pupils", pupilsModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem item) {
-				item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel() {
+			protected void populateItem(final ListItem<Pupil> item) {
+				item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
+					public String getObject() {
 						return (item.getIndex()+1) % 2 == 0 ? "even" : "odd";
 					}					
 				}));
 				
-				Check check = new Check("select", item.getModel());
+				Check<Pupil> check = new Check<Pupil>("select", item.getModel());
 				item.add(check);
 				FormComponentLabel label = new FormComponentLabel("label", check);
 				item.add(label);
-				label.add(new Label("name", new PropertyModel(item.getModel(), "name")).setRenderBodyOnly(true));
+				label.add(new Label("name", new PropertyModel<String>(item.getModel(), "name")).setRenderBodyOnly(true));
 			}
 		});
 	}
 	
-	public CheckGroup getInputComponent() {
+	@SuppressWarnings("unchecked")
+	public IModel<Collection<Pupil>> getModel() {
+		return (IModel<Collection<Pupil>>) getDefaultModel();
+	}
+	
+	public CheckGroup<Pupil> getInputComponent() {
 		return selectGroup;
 	}
 

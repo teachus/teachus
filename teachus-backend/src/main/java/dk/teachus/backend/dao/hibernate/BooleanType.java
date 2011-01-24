@@ -17,71 +17,55 @@
 package dk.teachus.backend.dao.hibernate;
 
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
 
-import org.hibernate.HibernateException;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.type.DiscriminatorType;
 import org.hibernate.type.PrimitiveType;
+import org.hibernate.type.descriptor.java.BooleanTypeDescriptor;
+import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
+import org.hibernate.type.descriptor.sql.TinyIntTypeDescriptor;
 
-public class BooleanType extends PrimitiveType implements DiscriminatorType {
-
-	/**
-	 * 
-	 */
+/**
+ * A type that maps between {@link java.sql.Types#TINYINT} and {@link Boolean}
+ */
+public class BooleanType
+		extends AbstractSingleColumnStandardBasicType<Boolean>
+		implements PrimitiveType<Boolean>, DiscriminatorType<Boolean> {
 	private static final long serialVersionUID = 1L;
+	
+	public static final BooleanType INSTANCE = new BooleanType();
 
-	@Override
-	public Class<Boolean> getPrimitiveClass() {
-		return boolean.class;
+	public BooleanType() {
+		this( TinyIntTypeDescriptor.INSTANCE, BooleanTypeDescriptor.INSTANCE );
 	}
 
-	@Override
-	public Serializable getDefaultValue() {
-		return Boolean.FALSE;
-	}
-
-	@Override
-	public Boolean get(ResultSet rs, String name) throws HibernateException,
-			SQLException {
-		return rs.getInt(name) == 1 ? Boolean.TRUE : Boolean.FALSE;
-	}
-
-	@Override
-	public void set(PreparedStatement st, Object value, int index)
-			throws HibernateException, SQLException {
-		Boolean bool = (Boolean) value;
-		
-		st.setInt( index, (bool.booleanValue() ? 1 : 0));
-	}
-
-	@Override
-	public int sqlType() {
-		return Types.TINYINT;
-	}
-
-	@Override
-	public Object fromStringValue(String xml) throws HibernateException {
-		return Boolean.valueOf(xml);
-	}
-
-	public String objectToSQLString(Object value, Dialect dialect)
-			throws Exception {
-		return ((Boolean) value) ? ""+1 : ""+0;
-	}
-
-	public Class<Boolean> getReturnedClass() {
-		return Boolean.class;
+	protected BooleanType(SqlTypeDescriptor sqlTypeDescriptor, BooleanTypeDescriptor javaTypeDescriptor) {
+		super( sqlTypeDescriptor, javaTypeDescriptor );
 	}
 
 	public String getName() {
 		return "boolean";
 	}
 
-	public Object stringToObject(String xml) throws Exception {
-		return fromStringValue(xml);
+	@Override
+	public String[] getRegistrationKeys() {
+		return new String[] { getName(), boolean.class.getName(), Boolean.class.getName() };
+	}
+
+	public Class getPrimitiveClass() {
+		return boolean.class;
+	}
+
+	public Serializable getDefaultValue() {
+		return Boolean.FALSE;
+	}
+
+	public Boolean stringToObject(String string) {
+		return fromString( string );
+	}
+
+	public String objectToSQLString(Boolean value, Dialect dialect) {
+		return dialect.toBooleanValueString( value.booleanValue() );
 	}
 }

@@ -87,11 +87,11 @@ public class TeacherPanel extends PersonPanel {
 	
 	@Override
 	protected void appendElements(FormPanel formPanel) {
-		IModel inputModel = new Model() {
+		IModel<TimeZone> inputModel = new Model<TimeZone>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public Object getObject() {
+			public TimeZone getObject() {
 				Teacher teacher = (Teacher) getModelObject();
 				
 				if (attribute == null && teacher.getId() != null) {
@@ -107,9 +107,8 @@ public class TeacherPanel extends PersonPanel {
 			}
 			
 			@Override
-			public void setObject(Object object) {
-				if (object != null) {
-					TimeZone timeZone = (TimeZone) object;
+			public void setObject(TimeZone timeZone) {
+				if (timeZone != null) {
 					attribute.setTimeZone(timeZone);
 				} else { 
 					attribute.setValue(null);
@@ -118,6 +117,10 @@ public class TeacherPanel extends PersonPanel {
 		};
 		
 		formPanel.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), inputModel, true));
+	}
+	
+	public Teacher getModelObject() {
+		return (Teacher) getDefaultModelObject();
 	}
 
 }

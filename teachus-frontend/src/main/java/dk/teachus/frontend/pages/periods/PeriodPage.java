@@ -42,11 +42,11 @@ import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.TeachUsDate;
-import dk.teachus.backend.domain.Period.Status;
-import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
+import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -67,22 +67,21 @@ import dk.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
 
 public class PeriodPage extends AuthenticatedBasePage {
-	private static class TimeModel extends Model {
+	private static class TimeModel extends Model<Integer> {
 		private static final long serialVersionUID = 1L;
 		
-		private final IModel nestedModel;
+		private final IModel<TeachUsDate> nestedModel;
 		
-		public TimeModel(final IModel nestedModel) {
+		public TimeModel(final IModel<TeachUsDate> nestedModel) {
 			this.nestedModel = nestedModel;
 		}
 		
 		@Override
-		public Object getObject() {
-			Object returnObject = null;
+		public Integer getObject() {
+			Integer returnObject = null;
 			
-			final Object object = nestedModel.getObject();
-			if (object != null) {
-				final TeachUsDate date = (TeachUsDate) object;
+			final TeachUsDate date = nestedModel.getObject();
+			if (date != null) {
 				returnObject = date.getMinuteOfDay();
 			}
 			
@@ -90,9 +89,8 @@ public class PeriodPage extends AuthenticatedBasePage {
 		}
 		
 		@Override
-		public void setObject(final Object object) {
-			if (object != null) {
-				final Integer minutesOfDay = (Integer) object;
+		public void setObject(final Integer minutesOfDay) {
+			if (minutesOfDay != null) {
 				DateTime date = new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay);
 				TeachUsDate tud = TeachUsSession.get().createNewDate(date);
 				nestedModel.setObject(tud);

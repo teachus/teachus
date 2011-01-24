@@ -60,7 +60,7 @@ public class TestPersonsPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(PupilsPage.class);
 		
-		DataGridView dataGridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:rows");
+		DataGridView dataGridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:body:rows");
 				
 		assertEquals(pupils.size(), dataGridView.size());
 	}
@@ -92,7 +92,7 @@ public class TestPersonsPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(TeachersPage.class);
 		
-		DataGridView dataGridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:rows");
+		DataGridView dataGridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:body:rows");
 				
 		assertEquals(teachers.size(), dataGridView.size());
 	}
@@ -122,7 +122,7 @@ public class TestPersonsPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(AdminsPage.class);
 		
-		DataGridView dataGridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:rows");
+		DataGridView dataGridView = (DataGridView) tester.getComponentFromLastRenderedPage("list:filterForm:table:body:rows");
 		
 		assertEquals(admins.size(), dataGridView.size());
 	}

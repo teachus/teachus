@@ -118,8 +118,7 @@ public class TestPeriodPage extends WicketTestCase {
 		tester.debugComponentTrees();
 		
 		FormTester formTester = tester.newFormTester("form:form", false);
-		
-		formTester.setValue("form:form:elements:11:element:input:inputField", "");
+		formTester.setValue("elements:11:element:input:inputField", "");
 		
 		// Test that submitting an empty form works
 		formTester.submit("elements:13:element:saveButton");

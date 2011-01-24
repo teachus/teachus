@@ -119,7 +119,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		
 		c.addOrder(Order.asc("date.date"));
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
@@ -359,7 +359,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.add(Restrictions.between("date.date", start.getDate(), end.getDate()));
 		c.add(Restrictions.eq("active", true));
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
 		List<Booking> filteredBookings = filterBookings(bookings);
@@ -381,7 +381,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.add(Restrictions.between("date.date", start.toDate(), end.toDate()));
 		c.add(Restrictions.eq("active", true));
 		
-		c.setResultTransformer(new DistinctRootEntityResultTransformer());
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
 		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
 		List<Booking> filteredBookings = filterBookings(bookings);

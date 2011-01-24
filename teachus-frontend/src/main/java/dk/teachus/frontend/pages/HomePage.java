@@ -34,7 +34,7 @@ public class HomePage extends Page {
 	public HomePage() {
 		Person person = TeachUsSession.get().getPerson();
 		
-		Class<?> page = null;
+		Class<? extends Page> page = null;
 		
 		if (person != null) {
 			if (person instanceof Admin) {

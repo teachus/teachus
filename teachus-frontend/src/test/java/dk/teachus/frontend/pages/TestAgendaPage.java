@@ -64,7 +64,7 @@ public class TestAgendaPage extends WicketTestCase {
 		tester.assertRenderedPage(AgendaPage.class);
 		
 		// Test clicking on one of the items
-		tester.clickLink("list:filterForm:table:rows:1:cells:1:cell:link");
+		tester.clickLink("list:filterForm:table:body:rows:1:cells:1:cell:link");
 		
 		tester.assertRenderedPage(PupilPage.class);
 	}

@@ -28,14 +28,14 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.validation.IValidator;
 
-public abstract class AbstractInputElement extends FormElement {
+public abstract class AbstractInputElement<T> extends FormElement {
 	private static final long serialVersionUID = 1L;
 	
 	private boolean readOnly;
 	private boolean attached = false;
 	protected boolean required;
 	protected String label;
-	private List<IValidator> validators = new ArrayList<IValidator>();
+	private List<IValidator<T>> validators = new ArrayList<IValidator<T>>();
 
 	protected FeedbackPanel feedbackPanel;
 
@@ -48,7 +48,7 @@ public abstract class AbstractInputElement extends FormElement {
 		this.label = label;
 	}
 	
-	public void add(IValidator validator) {
+	public void add(IValidator<T> validator) {
 		validators.add(validator);
 	}
 	
@@ -112,7 +112,7 @@ public abstract class AbstractInputElement extends FormElement {
 	
 	protected abstract IFeedbackMessageFilter getFeedbackMessageFilter();
 	
-	protected abstract void addValidator(IValidator validator);
+	protected abstract void addValidator(IValidator<T> validator);
 	
 	protected abstract FormComponent getFormComponent();
 
