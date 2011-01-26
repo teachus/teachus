@@ -24,7 +24,7 @@ import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 public class JQueryBehavior extends AbstractBehavior {
 	private static final long serialVersionUID = 1L;
 
-	public static final ResourceReference JS_JQUERY = new JavascriptResourceReference(JQueryBehavior.class, "jquery-1.2.3.min.js"); //$NON-NLS-1$
+	public static final ResourceReference JS_JQUERY = new JavascriptResourceReference(JQueryBehavior.class, "jquery-1.4.4.min.js"); //$NON-NLS-1$
 	
 	@Override
 	public final void renderHead(IHeaderResponse response) {

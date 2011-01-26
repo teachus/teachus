@@ -55,11 +55,10 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
-import dk.teachus.frontend.components.imagebox.ImageBox;
+import dk.teachus.frontend.components.fancybox.JQueryFancyboxBehavior;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
-import dk.teachus.frontend.components.jquery.dimensions.JQueryDimensionsBehavior;
 import dk.teachus.frontend.ical.IcalPage;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
@@ -226,6 +225,27 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/asc.png", Resources.ASC.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/desc.png", Resources.DESC.getSharedResourceKey()); //$NON-NLS-1$
 		
+		mountSharedResource("/images/fancybox/fancybox.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCYBOX_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/blank.gif", JQueryFancyboxBehavior.IMG_FANCYBOX_BLANK_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancybox-x.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCYBOX_X_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancybox-y.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCYBOX_Y_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-title-main.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_MAIN_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-title-over.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_OVER_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-title-left.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_LEFT_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-title-right.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_RIGHT_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-close.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_CLOSE_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-loading.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_LOADING_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-nav-left.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_NAV_LEFT_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-nav-right.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_NAV_RIGHT_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-e.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_E_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-n.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_N_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-ne.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_NE_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-nw.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_NW_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-s.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_S_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-se.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SE_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-sw.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SW_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/fancybox/fancy-shadow-w.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_W_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/andreas09_black.css", Resources.CSS_ANDREAS09_BLACK.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/andreas09_green.css", Resources.CSS_ANDREAS09_GREEN.getSharedResourceKey()); //$NON-NLS-1$
@@ -238,10 +258,8 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/js/wicket-ajax.js", WicketAjaxReference.INSTANCE.getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
 		mountSharedResource("/js/wicket-event.js", WicketEventReference.INSTANCE.getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
 		mountSharedResource("/js/jquery.js", JQueryBehavior.JS_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
-		mountSharedResource("/js/jquery-dimensions.js", JQueryDimensionsBehavior.JS_DIM_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/js/jquery-cluetip.js", JQueryCluetipBehavior.JS_CLUETIP_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
-		mountSharedResource("/js/iutil.js", ImageBox.JS_IUTIL_1_2.getSharedResourceKey()); //$NON-NLS-1$
-		mountSharedResource("/js/imagebox.js", ImageBox.JS_IMAGEBOX_1_2.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/js/fancybox.js", JQueryFancyboxBehavior.JS_FANCYBOX.getSharedResourceKey()); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {

@@ -7,12 +7,12 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.model.Model;
 
-import dk.teachus.frontend.components.jquery.dimensions.JQueryDimensionsBehavior;
+import dk.teachus.frontend.components.jquery.JQueryBehavior;
 
-public class JQueryCluetipBehavior extends JQueryDimensionsBehavior {
+public class JQueryCluetipBehavior extends JQueryBehavior {
 	private static final long serialVersionUID = 1L;
 	
-	public static final ResourceReference JS_CLUETIP_JQUERY = new JavascriptResourceReference(JQueryCluetipBehavior.class, "jquery.cluetip-0.9.6.min.js"); //$NON-NLS-1$
+	public static final ResourceReference JS_CLUETIP_JQUERY = new JavascriptResourceReference(JQueryCluetipBehavior.class, "jquery.cluetip-1.1pre.min.js"); //$NON-NLS-1$
 
 	public static enum Style {
 		STANDARD,
@@ -54,7 +54,7 @@ public class JQueryCluetipBehavior extends JQueryDimensionsBehavior {
 	
 	@Override
 	public void bind(Component component) {
-		component.add(new AttributeAppender("class", true, new Model("tooltip"+style.name()), " "));
+		component.add(new AttributeAppender("class", true, new Model<String>("tooltip"+style.name()), " "));
 	}
 	
 }

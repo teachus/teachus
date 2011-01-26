@@ -24,15 +24,15 @@ import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.imagebox.ImageBox;
-import dk.teachus.frontend.components.imagebox.ImageBox.ImageResource;
+import dk.teachus.frontend.components.fancybox.FancyBox;
+import dk.teachus.frontend.components.fancybox.FancyBox.ImageResource;
 import dk.teachus.frontend.utils.Resources;
 
 public class InfoPage extends UnAuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public InfoPage() {		
-		add(new MultiLineLabel("intro1", TeachUsSession.get().getString("InfoPage.intro1")));
+		add(new MultiLineLabel("intro1", TeachUsSession.get().getString("InfoPage.intro1"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		createFeatures();
 		
@@ -42,14 +42,14 @@ public class InfoPage extends UnAuthenticatedBasePage {
 	}
 
 	private void createOpenSourceDescription() {
-		add(new Label("openSourceHeader", TeachUsSession.get().getString("InfoPage.openSourceHeader")));
+		add(new Label("openSourceHeader", TeachUsSession.get().getString("InfoPage.openSourceHeader"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		List<String> openSource = new ArrayList<String>();
 		
-		openSource.add(TeachUsSession.get().getString("InfoPage.openSource1"));
-		openSource.add(TeachUsSession.get().getString("InfoPage.openSource2"));
+		openSource.add(TeachUsSession.get().getString("InfoPage.openSource1")); //$NON-NLS-1$
+		openSource.add(TeachUsSession.get().getString("InfoPage.openSource2")); //$NON-NLS-1$
 		
-		RepeatingView openSourceContainer = new RepeatingView("openSource");
+		RepeatingView openSourceContainer = new RepeatingView("openSource"); //$NON-NLS-1$
 		add(openSourceContainer);
 		
 		for (String feature : openSource) {
@@ -58,39 +58,39 @@ public class InfoPage extends UnAuthenticatedBasePage {
 	}
 
 	private void createScreenShots() {
-		add(new Label("screenshotsHeader", TeachUsSession.get().getString("InfoPage.screenshots")));
+		add(new Label("screenshotsHeader", TeachUsSession.get().getString("InfoPage.screenshots"))); //$NON-NLS-1$ //$NON-NLS-2$
 
 		List<ImageResource> images = new ArrayList<ImageResource>();
 		
-		images.add(new ImageResource(Resources.SCREENSHOT_11, Resources.SCREENSHOT_11_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_2, Resources.SCREENSHOT_2_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_13, Resources.SCREENSHOT_13_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_4, Resources.SCREENSHOT_4_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_10, Resources.SCREENSHOT_10_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_14, Resources.SCREENSHOT_14_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_12, Resources.SCREENSHOT_12_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_7, Resources.SCREENSHOT_7_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_8, Resources.SCREENSHOT_8_THUMB));
-		images.add(new ImageResource(Resources.SCREENSHOT_9, Resources.SCREENSHOT_9_THUMB));
+		images.add(new ImageResource(Resources.SCREENSHOT_11, Resources.SCREENSHOT_11_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle1"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_2, Resources.SCREENSHOT_2_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle2"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_13, Resources.SCREENSHOT_13_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle3"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_4, Resources.SCREENSHOT_4_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle4"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_10, Resources.SCREENSHOT_10_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle5"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_14, Resources.SCREENSHOT_14_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle6"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_12, Resources.SCREENSHOT_12_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle7"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_7, Resources.SCREENSHOT_7_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle8"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_8, Resources.SCREENSHOT_8_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle9"))); //$NON-NLS-1$
+		images.add(new ImageResource(Resources.SCREENSHOT_9, Resources.SCREENSHOT_9_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle10"))); //$NON-NLS-1$
 		
-		add(new ImageBox("screenshots", images));
+		add(new FancyBox("screenshots", images)); //$NON-NLS-1$
 	}
 
 	private void createFeatures() {
-		add(new Label("featuresHeader", TeachUsSession.get().getString("InfoPage.features")));
+		add(new Label("featuresHeader", TeachUsSession.get().getString("InfoPage.features"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		List<String> features = new ArrayList<String>();
 		
-		features.add(TeachUsSession.get().getString("InfoPage.feature1"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature2"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature3"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature4"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature5"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature6"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature7"));
-		features.add(TeachUsSession.get().getString("InfoPage.feature8"));
+		features.add(TeachUsSession.get().getString("InfoPage.feature1")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature2")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature3")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature4")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature5")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature6")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature7")); //$NON-NLS-1$
+		features.add(TeachUsSession.get().getString("InfoPage.feature8")); //$NON-NLS-1$
 		
-		RepeatingView featuresContainer = new RepeatingView("features");
+		RepeatingView featuresContainer = new RepeatingView("features"); //$NON-NLS-1$
 		add(featuresContainer);
 		
 		for (String feature : features) {
@@ -105,7 +105,7 @@ public class InfoPage extends UnAuthenticatedBasePage {
 
 	@Override
 	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.info");
+		return TeachUsSession.get().getString("General.info"); //$NON-NLS-1$
 	}
 
 }
