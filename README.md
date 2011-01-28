@@ -19,6 +19,7 @@ application build upon open source frameworks such as:
 [teachusdk]: http://www.teachus.dk
 [wicket]: http://wicket.apache.org
 [spring]: http://www.springsource.org
+[hibernate]: http://www.hibernate.org
 [joda]: http://joda-time.sourceforge.net
 [jquery]: http://jquery.com
 [mysql]: http://www.mysql.org
