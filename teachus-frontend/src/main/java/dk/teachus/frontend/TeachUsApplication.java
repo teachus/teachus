@@ -245,6 +245,15 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/fancybox/fancy-shadow-se.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SE_PNG.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/fancybox/fancy-shadow-sw.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SW_PNG.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/fancybox/fancy-shadow-w.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_W_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/arrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWDOWN_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/arrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWLEFT_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/arrowright.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWRIGHT_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/arrowup.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWUP_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/darrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWDOWN_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/darrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWLEFT_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/darrowright.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWRIGHT_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/darrowup.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWUP_GIF.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/images/cluetip/wait.gif", JQueryCluetipBehavior.IMG_CLUETIP_WAIT_GIF.getSharedResourceKey()); //$NON-NLS-1$
 		
 		mountSharedResource("/css/andreas09.css", Resources.CSS_ANDREAS09.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/andreas09_black.css", Resources.CSS_ANDREAS09_BLACK.getSharedResourceKey()); //$NON-NLS-1$
