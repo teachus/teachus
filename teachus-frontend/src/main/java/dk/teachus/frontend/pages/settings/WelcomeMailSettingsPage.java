@@ -24,7 +24,6 @@ import org.apache.wicket.model.PropertyModel;
 
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
-import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 
 public class WelcomeMailSettingsPage extends AbstractSettingsPage {
@@ -56,7 +55,7 @@ public class WelcomeMailSettingsPage extends AbstractSettingsPage {
 
 			@Override
 			public void onSubmit() {
-				TeachUsApplication.get().getPersonDAO().saveAttribute(attribute);
+				TeachUsSession.get().saveNewTeacherAttribute(attribute);
 				getRequestCycle().setResponsePage(TeacherSettingsPage.class);
 			}
 		});

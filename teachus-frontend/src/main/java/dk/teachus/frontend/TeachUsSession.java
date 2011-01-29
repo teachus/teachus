@@ -16,6 +16,7 @@
  */
 package dk.teachus.frontend;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
@@ -164,13 +165,7 @@ public class TeachUsSession extends WebSession {
 				// Add change listener
 				if (attributes != null) {
 					for (TeacherAttribute teacherAttribute : attributes) {
-						teacherAttribute.addValueChangeListener(new ValueChangeListener() {
-							private static final long serialVersionUID = 1L;
-							
-							public void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue) {
-								TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
-							}
-						});
+						addValueChangeListener(teacherAttribute);
 					}
 
 					teacherAttributes = Collections.unmodifiableList(attributes);
@@ -188,8 +183,12 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
-		List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
-		return getTeacherAttribute(attributes, attributeClass);
+		if (teacher != null && person != null && teacher.getId().equals(person.getId())) {
+			return getTeacherAttribute(attributeClass);
+		} else {
+			List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
+			return getTeacherAttribute(attributes, attributeClass);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -209,9 +208,26 @@ public class TeachUsSession extends WebSession {
 	}
 	
 	public void saveNewTeacherAttribute(TeacherAttribute teacherAttribute) {
-		TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
-		
-		teacherAttributes = null;
+		if (teacherAttribute != null && teacherAttribute.getId() == null) {
+			TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
+			
+			if (person instanceof Teacher) {
+				List<TeacherAttribute> newAttributes = new ArrayList<TeacherAttribute>(getTeacherAttributes());
+				newAttributes.add(teacherAttribute);
+				addValueChangeListener(teacherAttribute);
+				teacherAttributes = Collections.unmodifiableList(newAttributes);
+			}
+		}
+	}
+
+	private void addValueChangeListener(TeacherAttribute teacherAttribute) {
+		teacherAttribute.addValueChangeListener(new ValueChangeListener() {
+			private static final long serialVersionUID = 1L;
+			
+			public void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue) {
+				TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
+			}
+		});
 	}
 	
 	public UserLevel getUserLevel() {

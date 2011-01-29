@@ -21,13 +21,14 @@ import java.util.TimeZone;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 
-import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.NewCalendarNarrowTimesTeacherAttribute;
+import dk.teachus.backend.domain.impl.NewCalendarTeacherAttribute;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
-import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.form.CheckBoxElement;
 import dk.teachus.frontend.components.form.DropDownElement;
 import dk.teachus.frontend.components.form.FormPanel;
 import dk.teachus.frontend.models.TeacherModel;
@@ -35,7 +36,9 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 
 public class TeacherPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
-	private TimeZoneAttribute attribute;
+	private TimeZoneAttribute timeZoneAttribute;
+	private NewCalendarTeacherAttribute newCalendarAttribute;
+	private NewCalendarNarrowTimesTeacherAttribute newCalendarNarrowTimesAttribute;
 
 	public TeacherPanel(String id, TeacherModel teacherModel) {
 		super(id, teacherModel);
@@ -63,10 +66,13 @@ public class TeacherPanel extends PersonPanel {
 	protected final void onSave(Person person) {
 		Teacher teacher = (Teacher) person;
 		
-		attribute.setTeacher(teacher);
+		timeZoneAttribute.setTeacher(teacher);
+		newCalendarAttribute.setTeacher(teacher);
+		newCalendarNarrowTimesAttribute.setTeacher(teacher);
 		
-		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-		personDAO.saveAttribute(attribute);
+		TeachUsSession.get().saveNewTeacherAttribute(timeZoneAttribute);
+		TeachUsSession.get().saveNewTeacherAttribute(newCalendarAttribute);
+		TeachUsSession.get().saveNewTeacherAttribute(newCalendarNarrowTimesAttribute);
 		
 		onSave(teacher);
 	}
@@ -87,6 +93,9 @@ public class TeacherPanel extends PersonPanel {
 	
 	@Override
 	protected void appendElements(FormPanel formPanel) {
+		/*
+		 * TimeZone
+		 */
 		IModel<TimeZone> inputModel = new Model<TimeZone>() {
 			private static final long serialVersionUID = 1L;
 			
@@ -94,28 +103,94 @@ public class TeacherPanel extends PersonPanel {
 			public TimeZone getObject() {
 				Teacher teacher = (Teacher) getModelObject();
 				
-				if (attribute == null && teacher.getId() != null) {
-					attribute = TeachUsSession.get().getTeacherAttribute(TimeZoneAttribute.class, teacher);
+				if (timeZoneAttribute == null && teacher.getId() != null) {
+					timeZoneAttribute = TeachUsSession.get().getTeacherAttribute(TimeZoneAttribute.class, teacher);
 				}
 				
-				if (attribute == null) {
-					attribute = new TimeZoneAttribute();
+				if (timeZoneAttribute == null) {
+					timeZoneAttribute = new TimeZoneAttribute();
 				}
 				
-				return attribute.getTimeZone();
+				return timeZoneAttribute.getTimeZone();
 			}
 			
 			@Override
 			public void setObject(TimeZone timeZone) {
 				if (timeZone != null) {
-					attribute.setTimeZone(timeZone);
+					timeZoneAttribute.setTimeZone(timeZone);
 				} else { 
-					attribute.setValue(null);
+					timeZoneAttribute.setValue(null);
 				}
 			}
 		};
 		
 		formPanel.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), inputModel, true));
+		
+		/*
+		 * Use new calendar
+		 */
+		IModel<Boolean> newCalendarModel = new Model<Boolean>() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Boolean getObject() {
+				Teacher teacher = (Teacher) getModelObject();
+				
+				if (newCalendarAttribute == null && teacher.getId() != null) {
+					newCalendarAttribute = TeachUsSession.get().getTeacherAttribute(NewCalendarTeacherAttribute.class, teacher);
+				}
+				
+				if (newCalendarAttribute == null) {
+					newCalendarAttribute = new NewCalendarTeacherAttribute();
+				}
+				
+				return newCalendarAttribute.getBooleanValue();
+			}
+			
+			@Override
+			public void setObject(Boolean bool) {
+				if (bool != null) {
+					newCalendarAttribute.setBooleanValue(bool);
+				} else { 
+					newCalendarAttribute.setValue(null);
+				}
+			}
+		};
+		
+		formPanel.addElement(new CheckBoxElement("Use new calendar?", newCalendarModel));
+		
+		/*
+		 * In the new calendar, use narrow calendar time span (from start period to end period)
+		 */
+		IModel<Boolean> newCalendarNarrowTimesModel = new Model<Boolean>() {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			public Boolean getObject() {
+				Teacher teacher = (Teacher) getModelObject();
+				
+				if (newCalendarNarrowTimesAttribute == null && teacher.getId() != null) {
+					newCalendarNarrowTimesAttribute = TeachUsSession.get().getTeacherAttribute(NewCalendarNarrowTimesTeacherAttribute.class, teacher);
+				}
+				
+				if (newCalendarNarrowTimesAttribute == null) {
+					newCalendarNarrowTimesAttribute = new NewCalendarNarrowTimesTeacherAttribute();
+				}
+				
+				return newCalendarNarrowTimesAttribute.getBooleanValue();
+			}
+			
+			@Override
+			public void setObject(Boolean bool) {
+				if (bool != null) {
+					newCalendarNarrowTimesAttribute.setBooleanValue(bool);
+				} else { 
+					newCalendarNarrowTimesAttribute.setValue(null);
+				}
+			}
+		};
+		
+		formPanel.addElement(new CheckBoxElement("Only show periods in new calendar?", newCalendarNarrowTimesModel));
 	}
 	
 	public Teacher getModelObject() {

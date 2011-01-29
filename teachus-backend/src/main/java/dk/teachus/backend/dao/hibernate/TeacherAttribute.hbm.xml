@@ -22,6 +22,11 @@
         <subclass name="WelcomeIntroductionTeacherAttribute" discriminator-value="WELCOME_INTRODUCTION" />
         
         <subclass name="TimeZoneAttribute" discriminator-value="TIMEZONE" />
+        
+        <subclass name="NewCalendarTeacherAttribute" discriminator-value="NEWCALENDAR" />
+        
+        <subclass name="NewCalendarNarrowTimesTeacherAttribute" discriminator-value="NEWCALENDARNARROWTIMES" />
+        
     </class>
 
 </hibernate-mapping>
