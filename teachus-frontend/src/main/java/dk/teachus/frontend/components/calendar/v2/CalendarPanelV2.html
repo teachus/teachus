@@ -1,0 +1,54 @@
+<wicket:panel>
+<div class="calendarv2">
+	<div class="calendarnavigation">
+		<a wicket:id="previousWeek"><span wicket:id="label">Previous week</span></a>
+		-
+		<a wicket:id="thisWeek"><span wicket:id="label">This week</span></a>
+		-
+		<a wicket:id="nextWeek"><span wicket:id="label">Next week</span></a>
+	</div>
+	<div class="headertable">
+		<table>
+			<thead>
+				<tr>
+					<th class="timecol"></th>
+					<th class="header" wicket:id="headers"><span wicket:id="label"></span></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div class="bodytable">
+		<table>
+			<tbody>
+				<tr>
+					<td class="timecol" valign="top">
+						<div class="timelabel" wicket:id="times"><span wicket:id="label"></span></div>
+					</td>
+					<td class="dayv2" valign="top" wicket:id="days">
+						<!-- Lessons -->
+						<div class="daytimelessons">
+							<div class="daytimelesson" wicket:id="timeSlots">
+								<div class="daytimelessoncontent">
+									<div class="daytimelessoncontentinner">
+										<div wicket:id="timeLabel"></div>
+										<div wicket:id="timeSlotContent"></div>
+									</div>
+								</div>
+								<div wicket:id="dayTimeLessonDetails">Test</div>
+							</div>
+						</div>
+						
+						<div class="daytime" wicket:id="times"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<style type="text/css">
+	#contentalt {
+		padding: 0;
+	}
+</style>
+</wicket:panel>

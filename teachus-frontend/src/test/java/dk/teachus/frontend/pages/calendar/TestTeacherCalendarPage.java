@@ -52,10 +52,14 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			PeriodDAO periodDAO = createPeriodDAO();
 			
 			one(personDAO).getPerson(2L);
-			will(returnValue(createTeacher(2L)));
+			Teacher teacher = createTeacher(2L);
+			will(returnValue(teacher));
 			
 			one(periodDAO).getPeriods(with(a(Teacher.class)));
 			will(returnValue(new PeriodsImpl()));
+			
+			one(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			tester.setPersonDAO(personDAO);
 			tester.setPeriodDAO(periodDAO);
@@ -158,6 +162,9 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			Teacher teacher = createTeacher(2L);
 			will(returnValue(teacher));
 			
+			one(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
+			
 			Periods periods = new PeriodsImpl();
 			Period period = createPeriod();
 			periods.addPeriod(period);
@@ -203,6 +210,9 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			one(personDAO).getPerson(2L);
 			Teacher teacher = createTeacher(2L);
 			will(returnValue(teacher));
+			
+			one(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			Periods periods = new PeriodsImpl();
 			Period period = createPeriod();

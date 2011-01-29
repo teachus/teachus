@@ -17,3 +17,20 @@
 .list thead th {
 	background: #0f8fba url(/images/list_header_back_red.png) repeat-x 50% 50%;
 }
+
+.headertable th {
+	background: #7AE480 url(/images/list_header_back_red.png) repeat-x 50% 50%;
+}
+
+.headertable {
+	background: #0f8fba url(/images/list_header_back_red.png) repeat-x 50% 50%;
+}
+
+.timecol {
+	background-color: #E27376;
+	color: #FFF;
+}
+
+.timelabel {
+	border-top-color: #E27376;
+}

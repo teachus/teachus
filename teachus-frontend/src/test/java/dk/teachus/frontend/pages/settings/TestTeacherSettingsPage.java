@@ -16,10 +16,13 @@
  */
 package dk.teachus.frontend.pages.settings;
 
+import java.util.ArrayList;
+
 import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestTeacherSettingsPage extends WicketTestCase {
@@ -37,7 +40,7 @@ public class TestTeacherSettingsPage extends WicketTestCase {
 			will(returnValue(teacher));
 			
 			one(personDAO).getAttributes(teacher);
-			will(returnValue(null));
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			tester.setPersonDAO(personDAO);
 		}});

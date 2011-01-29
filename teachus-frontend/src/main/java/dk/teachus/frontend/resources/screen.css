@@ -353,7 +353,7 @@ table.border th {
 }
 
 /* CLUE TIP */
-#cluetip-outer {
+/*#cluetip-outer {
 	border: 2px solid black;
 	background-color: #F5F5F5;
 	text-align: left;
@@ -371,7 +371,7 @@ table.border th {
 
 #cluetip-inner {
 	padding: 10px;
-}
+}*/
 
 .log .date {
 	margin-bottom: 1em;
@@ -381,4 +381,157 @@ table.border th {
 	font-size: 1.2em;
 	color: gray;
 	font-weight: bold;
+}
+
+
+/*
+ * ****************************************************************************
+ *     CALENDAR v. 2
+ * ****************************************************************************
+ */
+.calendarnavigation {
+	text-align: right;
+	padding: 10px;
+}
+
+.headertable {
+	padding-right: 16px;
+	background: #0f8fba url(/images/list_header_back.png) repeat-x 50% 50%;
+}
+
+.headertable table {
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 0;
+}
+
+.headertable th {
+	text-align: center;
+	padding: 0;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background: #0f8fba url(/images/list_header_back.png) repeat-x 50% 50%;
+	color: white;
+}
+
+.bodytable {
+	height: 375px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.bodytable table {
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 0;
+	border-bottom: 1px solid #999;
+}
+
+.bodytable td {
+	padding: 0;
+}
+
+.timecol {
+	width: 62px;
+	background-color: #72C6E2;
+	font-size: 10px;
+	color: #333;
+}
+
+.timelabel {
+	border-top: 1px solid #72C6E2;
+	height: 24px;
+	text-align: right;
+}
+
+.timelabel span {
+	display: block;
+	padding-top: 2px;
+	padding-right: 2px;
+}
+
+.timehour {
+	border-top: 1px solid #999;
+}
+
+.timehour:first-child {
+	border: 0;
+}
+
+.dayv2 {
+	border-right: 1px solid #CCC;
+}
+
+.dayv2:last-child {
+	border-right: 0;
+}
+
+.daytime {
+	z-index: 5;
+	border-top: 1px dotted #CCC;
+	height: 24px;
+}
+
+.daytimehour {
+	border-top: 1px solid #CCC;
+}
+
+.daytime:nth-child(2) {
+	border: 0;
+}
+
+.daytimelessons {
+	position: relative;
+}
+
+.daytimelesson {
+	z-index: 10;
+	width: 100%;
+	position: absolute;
+}
+
+.daytimelesson .daytimelessoncontent {
+	margin-left: 3px;
+	margin-right: 3px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border: 1px solid #09C413;
+	background-color: #CBFFCD;
+	height: 100%;
+	overflow: hidden;
+	opacity: 0.7;
+}
+
+.daytimelesson .daytimelessoncontent:hover {
+	background-color: #A7E4AA;
+	cursor: pointer;
+	color: black;
+	opacity: 0.9;
+}
+
+.daytimelesson .daytimelessoncontent .daytimelessoncontentinner {
+	padding: 2px;
+	padding-left: 7px;
+	font-size: 9px;
+}
+
+.pupilBooked .daytimelessoncontent {
+	border: 1px solid #090FC4;
+	background-color: #CBCBFF;
+}
+
+.pupilBooked .daytimelessoncontent:hover {
+	background-color: #CBCBFF;
+	cursor: auto;
+	opacity: 0.7;
+}
+
+.booked .daytimelessoncontent {
+	border: 1px solid #C40909;
+	background-color: #FFCBCB;
+}
+
+.booked .daytimelessoncontent:hover {
+	background-color: #E4A7A7;
 }

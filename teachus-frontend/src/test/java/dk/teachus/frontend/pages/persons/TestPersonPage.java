@@ -16,6 +16,8 @@
  */
 package dk.teachus.frontend.pages.persons;
 
+import java.util.ArrayList;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
@@ -24,6 +26,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
@@ -137,8 +140,8 @@ public class TestPersonPage extends WicketTestCase {
 			one(personDAO).getPerson(teacher.getId());
 			will(returnValue(teacher));
 			
-			one(personDAO).getAttributes(teacher);
-			will(returnValue(null));
+			exactly(3).of(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 						
 			tester.setPersonDAO(personDAO);
 		}});
