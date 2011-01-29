@@ -11,6 +11,7 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
+import org.joda.time.LocalTime;
 import org.joda.time.PeriodType;
 
 public class TeachUsDate implements Serializable, Comparable<TeachUsDate> {
@@ -80,6 +81,10 @@ public class TeachUsDate implements Serializable, Comparable<TeachUsDate> {
 	
 	public DateMidnight getDateMidnight() {
 		return dateTime != null ? new DateMidnight(dateTime) : null;
+	}
+	
+	public LocalTime getLocalTime() {
+		return dateTime != null ? new LocalTime(dateTime) : null;
 	}
 	
 	public TimeZone getTimeZone() {
