@@ -22,14 +22,11 @@ import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
-import dk.teachus.frontend.pages.messages.SendNewPasswordPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestSendNewPasswordPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
 
-	@SuppressWarnings("unchecked")
 	public void testRender() {
 		final TeachUsWicketTester tester = createTester();
 		
@@ -43,7 +40,7 @@ public class TestSendNewPasswordPage extends WicketTestCase {
 			one(personDAO).getPerson(4L);
 			will(returnValue(createPupil(4L)));
 			
-			one(personDAO).getAttribute(with(a(WelcomeIntroductionTeacherAttribute.class.getClass())), with(a(Teacher.class)));
+			one(personDAO).getAttributes(with(a(Teacher.class)));
 			will(returnValue(null));
 			
 			tester.setPersonDAO(personDAO);

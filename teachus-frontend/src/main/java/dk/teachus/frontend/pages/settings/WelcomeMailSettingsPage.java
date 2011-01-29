@@ -37,7 +37,7 @@ public class WelcomeMailSettingsPage extends AbstractSettingsPage {
 	private void createIntroductionMailForm() {
 		Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 		
-		WelcomeIntroductionTeacherAttribute welcomeAttribute = TeachUsApplication.get().getPersonDAO().getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
+		WelcomeIntroductionTeacherAttribute welcomeAttribute = TeachUsSession.get().getTeacherAttribute(WelcomeIntroductionTeacherAttribute.class);
 		if (welcomeAttribute == null) {
 			welcomeAttribute = new WelcomeIntroductionTeacherAttribute();
 			welcomeAttribute.setTeacher(teacher);

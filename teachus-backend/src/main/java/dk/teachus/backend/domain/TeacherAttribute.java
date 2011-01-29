@@ -20,6 +20,10 @@ import java.io.Serializable;
 
 public interface TeacherAttribute extends Serializable {
 
+	public static interface ValueChangeListener extends Serializable {
+		void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue);
+	}
+	
 	Long getId();
 	
 	Teacher getTeacher();
@@ -27,5 +31,8 @@ public interface TeacherAttribute extends Serializable {
 	
 	String getValue();
 	void setValue(String value);
+	
+	void addValueChangeListener(ValueChangeListener valueChangeListener);
+	void removeValueChangeListener(ValueChangeListener valueChangeListener);
 	
 }

@@ -16,7 +16,9 @@
  */
 package dk.teachus.frontend;
 
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
@@ -41,6 +43,8 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.TeacherAttribute;
+import dk.teachus.backend.domain.TeacherAttribute.ValueChangeListener;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.pages.UnAuthenticatedBasePage;
 import dk.teachus.utils.ClassUtils;
@@ -51,6 +55,8 @@ public class TeachUsSession extends WebSession {
 	
 	protected Person person;
 	private Properties resourceBundle;
+	
+	private List<TeacherAttribute> teacherAttributes;
 	
 	public TeachUsSession(Request request) {
 		super(request);
@@ -143,6 +149,71 @@ public class TeachUsSession extends WebSession {
 		return person;
 	}
 	
+	public Teacher getTeacher() {
+		return (Teacher) person;
+	}
+	
+	public List<TeacherAttribute> getTeacherAttributes() {
+		if (person != null) {
+			if (person instanceof Teacher == false) {
+				throw new IllegalStateException("Can only get teacher attributes, when a teacher is logged in.");
+			}
+			
+			if (teacherAttributes == null) {
+				List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(getTeacher());
+				// Add change listener
+				if (attributes != null) {
+					for (TeacherAttribute teacherAttribute : attributes) {
+						teacherAttribute.addValueChangeListener(new ValueChangeListener() {
+							private static final long serialVersionUID = 1L;
+							
+							public void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue) {
+								TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
+							}
+						});
+					}
+
+					teacherAttributes = Collections.unmodifiableList(attributes);
+				}
+			}
+		}
+		
+		return teacherAttributes;
+	}
+	
+	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass) {
+		A foundAttribute = getTeacherAttribute(getTeacherAttributes(), attributeClass);
+		
+		return foundAttribute;
+	}
+
+	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
+		List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
+		return getTeacherAttribute(attributes, attributeClass);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <A extends TeacherAttribute> A getTeacherAttribute(List<TeacherAttribute> attributes, Class<A> attributeClass) {
+		A foundAttribute = null;
+		
+		if (attributes != null) {
+			for (TeacherAttribute teacherAttribute : attributes) {
+				if (attributeClass.isInstance(teacherAttribute)) {
+					foundAttribute = (A) teacherAttribute;
+					break;
+				}
+			}
+		}
+		
+		return foundAttribute;
+	}
+	
+	public void saveNewTeacherAttribute(TeacherAttribute teacherAttribute) {
+		TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
+		
+		teacherAttributes = null;
+	}
+	
 	public UserLevel getUserLevel() {
 		UserLevel userLevel = null;
 		
@@ -195,8 +266,7 @@ public class TeachUsSession extends WebSession {
 			}
 			
 			if (teacher != null) {
-				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-				TimeZoneAttribute timeZoneAttribute = personDAO.getAttribute(TimeZoneAttribute.class, teacher);
+				TimeZoneAttribute timeZoneAttribute = getTeacherAttribute(TimeZoneAttribute.class);;
 				
 				if (timeZoneAttribute != null) {
 					timeZone = timeZoneAttribute.getTimeZone();

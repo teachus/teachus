@@ -27,7 +27,6 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.models.AdminModel;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.models.TeacherModel;
@@ -138,9 +137,9 @@ public class TestPersonPage extends WicketTestCase {
 			one(personDAO).getPerson(teacher.getId());
 			will(returnValue(teacher));
 			
-			one(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
+			one(personDAO).getAttributes(teacher);
 			will(returnValue(null));
-			
+						
 			tester.setPersonDAO(personDAO);
 		}});
 		

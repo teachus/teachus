@@ -174,27 +174,6 @@ public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Transactional(readOnly=true)
-	public <A extends TeacherAttribute> A getAttribute(Class<A> attributeClass, Teacher teacher) {
-		DetachedCriteria c = DetachedCriteria.forClass(attributeClass);
-		
-		c.add(Restrictions.eq("teacher", teacher));
-		c.createCriteria("teacher").add(Restrictions.eq("active", true));
-		
-		List<A> attributes = getHibernateTemplate().findByCriteria(c);
-		
-		A attribute = null;
-		
-		if (attributes.size() == 1) {
-			attribute = attributes.get(0);
-		} else if (attributes.size() > 1) {
-			throw new IllegalStateException("Invalid state in database. Only one value per attribute per teacher");
-		}
-		
-		return attribute; 
-	}
 
 	@Transactional(readOnly=true)
 	public Person usernameExists(String username) {

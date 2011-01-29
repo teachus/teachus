@@ -23,18 +23,18 @@ import org.joda.time.DateTime;
 
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AbstractTeacherAttribute;
 import dk.teachus.backend.domain.impl.PeriodImpl;
+import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.test.SpringTestCase;
 
 public class TestPersonDAO extends SpringTestCase {
@@ -228,23 +228,6 @@ public class TestPersonDAO extends SpringTestCase {
 		endTransaction();
 		
 		assertEquals(0, attributes.size());
-	}
-	
-	public void testGetAttribute_inactiveTeacher() {
-		Teacher teacher = getTeacher();
-		
-		// Get the attribute to see that we can get it
-		TeacherAttribute attribute = getPersonDAO().getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
-		endTransaction();
-		
-		assertNotNull(attribute);
-		
-		teacher = inactivateTeacher();
-		
-		attribute = getPersonDAO().getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
-		endTransaction();
-		
-		assertNull(attribute);
 	}
 	
 	public void testChangeActiveState_admin() {

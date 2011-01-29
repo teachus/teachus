@@ -95,8 +95,7 @@ public class TeacherPanel extends PersonPanel {
 				Teacher teacher = (Teacher) getModelObject();
 				
 				if (attribute == null && teacher.getId() != null) {
-					PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-					attribute = personDAO.getAttribute(TimeZoneAttribute.class, teacher);
+					attribute = TeachUsSession.get().getTeacherAttribute(TimeZoneAttribute.class, teacher);
 				}
 				
 				if (attribute == null) {

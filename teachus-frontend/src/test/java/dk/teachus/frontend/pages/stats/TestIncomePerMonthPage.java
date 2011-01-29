@@ -28,7 +28,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -46,8 +46,8 @@ public class TestIncomePerMonthPage extends WicketTestCase {
 			Teacher teacher = createTeacher();
 			will(returnValue(teacher));
 			
-			exactly(2).of(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
-			will(returnValue(null));
+			one(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			List<Integer> years = new ArrayList<Integer>();
 			years.add(new DateMidnight().getYear());

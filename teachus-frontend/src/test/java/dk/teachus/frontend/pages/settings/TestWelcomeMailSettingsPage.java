@@ -20,7 +20,6 @@ import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestWelcomeMailSettingsPage extends WicketTestCase {
@@ -36,7 +35,7 @@ public class TestWelcomeMailSettingsPage extends WicketTestCase {
 			Teacher teacher = createTeacher();
 			will(returnValue(teacher));
 			
-			one(personDAO).getAttribute(WelcomeIntroductionTeacherAttribute.class, teacher);
+			one(personDAO).getAttributes(teacher);
 			will(returnValue(null));
 			
 			tester.setPersonDAO(personDAO);

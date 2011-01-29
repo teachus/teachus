@@ -36,10 +36,10 @@ import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.FormPanel;
+import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.components.form.GeneratePasswordElement;
 import dk.teachus.frontend.components.form.PasswordFieldElement;
 import dk.teachus.frontend.components.form.TextAreaElement;
-import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
@@ -61,8 +61,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		final PupilModel pupilModel = new PupilModel(pupilId);
 		
 		// Find intro message from teachers attributes
-		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-		WelcomeIntroductionTeacherAttribute welcomeIntroduction = personDAO.getAttribute(WelcomeIntroductionTeacherAttribute.class, pupilModel.getObject().getTeacher());
+		WelcomeIntroductionTeacherAttribute welcomeIntroduction = TeachUsSession.get().getTeacherAttribute(WelcomeIntroductionTeacherAttribute.class);
 		if (welcomeIntroduction != null) {
 			setIntroMessage(welcomeIntroduction.getValue());
 		}

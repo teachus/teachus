@@ -20,7 +20,6 @@ import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestTeacherSettingsPage extends WicketTestCase {
@@ -37,7 +36,7 @@ public class TestTeacherSettingsPage extends WicketTestCase {
 			exactly(2).of(personDAO).getPerson(2L);
 			will(returnValue(teacher));
 			
-			one(personDAO).getAttribute(TimeZoneAttribute.class, teacher);
+			one(personDAO).getAttributes(teacher);
 			will(returnValue(null));
 			
 			tester.setPersonDAO(personDAO);

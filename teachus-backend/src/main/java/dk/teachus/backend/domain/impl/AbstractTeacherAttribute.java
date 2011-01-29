@@ -16,12 +16,17 @@
  */
 package dk.teachus.backend.domain.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 
 public abstract class AbstractTeacherAttribute extends AbstractHibernateObject implements TeacherAttribute {
 	private static final long serialVersionUID = 1L;
 
+	private Set<ValueChangeListener> valueChangeListeners;
+	
 	private Teacher teacher;
 
 	private String value;
@@ -30,16 +35,41 @@ public abstract class AbstractTeacherAttribute extends AbstractHibernateObject i
 		return teacher;
 	}
 
-	public String getValue() {
-		return value;
-	}
-
 	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
 
+	public String getValue() {
+		return value;
+	}
+
 	public void setValue(String value) {
+		String oldValue = this.value;
 		this.value = value;
+		
+		fireValueChanged(oldValue, value);
+	}
+	
+	public Set<ValueChangeListener> getValueChangeListeners() {
+		if (valueChangeListeners == null) {
+			valueChangeListeners = new HashSet<ValueChangeListener>();
+		}
+		
+		return valueChangeListeners;
+	}
+	
+	public void addValueChangeListener(ValueChangeListener valueChangeListener) {
+		getValueChangeListeners().add(valueChangeListener);
+	}
+	
+	public void removeValueChangeListener(ValueChangeListener valueChangeListener) {
+		getValueChangeListeners().remove(valueChangeListener);
+	}
+	
+	protected void fireValueChanged(String oldValue, String newValue) {
+		for (ValueChangeListener valueChangeListener : getValueChangeListeners()) {
+			valueChangeListener.onValueChanged(this, oldValue, newValue);
+		}
 	}
 
 }

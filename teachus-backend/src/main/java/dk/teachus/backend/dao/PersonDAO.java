@@ -45,8 +45,6 @@ public interface PersonDAO extends Serializable {
 	
 	List<TeacherAttribute> getAttributes(Teacher teacher);
 
-	<A extends TeacherAttribute> A getAttribute(Class<A> attributeClass, Teacher teacher);
-
 	Person usernameExists(String username);
 	
 	void deleteTeacher(Teacher teacher);
