@@ -186,6 +186,10 @@ public class TeachUsDate implements Serializable, Comparable<TeachUsDate> {
 	public TeachUsDate withDate(int year, int monthOfYear, int dayOfMonth) {
 		return dateTime != null ? new TeachUsDate(dateTime.withDate(year, monthOfYear, dayOfMonth), timeZone) : this;
 	}
+
+	public TeachUsDate withDate(DateMidnight dateMidnight) {
+		return withDate(dateMidnight.getYear(), dateMidnight.getMonthOfYear(), dateMidnight.getDayOfMonth());
+	}
 	
 	public boolean isBefore(TeachUsDate date) {
 		return dateTime != null ? dateTime.isBefore(date.getDateTime()) : true;
