@@ -87,6 +87,10 @@ public class TeachUsDate implements Serializable, Comparable<TeachUsDate> {
 		return dateTime != null ? new LocalTime(dateTime) : null;
 	}
 	
+	public TeachUsDate toLocalTime(LocalTime localTime) {
+		return withTime(localTime.getHourOfDay(), localTime.getMinuteOfHour(), localTime.getSecondOfMinute(), localTime.getMillisOfSecond());
+	}
+	
 	public TimeZone getTimeZone() {
 		return dateTime != null ? dateTime.getZone().toTimeZone() : null;
 	}
