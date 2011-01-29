@@ -105,7 +105,7 @@ public class TeachUsApplication extends WebApplication {
 		getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
 		getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
 		
-		getResourceSettings().setStripJavascriptCommentsAndWhitespace(false);
+		getResourceSettings().setJavascriptCompressor(null);
 		
 		if (DEVELOPMENT.equals(getConfigurationType())) {
 			getRequestCycleSettings().addResponseFilter(new AjaxServerAndClientTimeFilter());
