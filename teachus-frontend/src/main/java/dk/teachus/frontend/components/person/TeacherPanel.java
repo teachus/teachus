@@ -124,7 +124,7 @@ public class TeacherPanel extends PersonPanel {
 			}
 		};
 		
-		formPanel.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), inputModel, true));
+		formPanel.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), inputModel, true)); //$NON-NLS-1$
 		
 		/*
 		 * Use new calendar
@@ -157,7 +157,7 @@ public class TeacherPanel extends PersonPanel {
 			}
 		};
 		
-		formPanel.addElement(new CheckBoxElement("Use new calendar?", newCalendarModel));
+		formPanel.addElement(new CheckBoxElement(TeachUsSession.get().getString("TeacherPanel.useNewCalendar"), newCalendarModel)); //$NON-NLS-1$
 		
 		/*
 		 * In the new calendar, use narrow calendar time span (from start period to end period)
@@ -190,7 +190,7 @@ public class TeacherPanel extends PersonPanel {
 			}
 		};
 		
-		formPanel.addElement(new CheckBoxElement("Only show periods in new calendar?", newCalendarNarrowTimesModel));
+		formPanel.addElement(new CheckBoxElement(TeachUsSession.get().getString("TeacherPanel.onlyShowPeriodsInNewCalendar"), newCalendarNarrowTimesModel)); //$NON-NLS-1$
 	}
 	
 	public Teacher getModelObject() {
