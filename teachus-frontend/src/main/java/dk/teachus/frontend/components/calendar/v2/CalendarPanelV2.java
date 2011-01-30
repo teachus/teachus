@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.behavior.HeaderContributor;
@@ -33,22 +34,25 @@ import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 
-public abstract class CalendarPanelV2 extends Panel {
+/**
+ * @param <T> TimeSlot payload
+ */
+public abstract class CalendarPanelV2<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
 	public static final ResourceReference JS_CALENDAR = new JavascriptResourceReference(CalendarPanelV2.class, "calendar.js"); //$NON-NLS-1$
-	
-	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern("HH:mm"); //$NON-NLS-1$
+
+	public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern("HH:mm"); //$NON-NLS-1$
 	private static final DateTimeFormatter HEADER_FORMAT = DateTimeFormat.forPattern("EE d/M"); //$NON-NLS-1$
 	
-	public static class TimeSlot implements Serializable {
+	public static class TimeSlot<T> implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private LocalTime startTime;
 		private LocalTime endTime;
-		private Object payload;
+		private T payload;
 		
-		public TimeSlot(LocalTime startTime, LocalTime endTime, Object payload) {
+		public TimeSlot(LocalTime startTime, LocalTime endTime, T payload) {
 			this.startTime = startTime;
 			this.endTime = endTime;
 			this.payload = payload;
@@ -62,7 +66,7 @@ public abstract class CalendarPanelV2 extends Panel {
 			return endTime;
 		}
 		
-		public Object getPayload() {
+		public T getPayload() {
 			return payload;
 		}
 	}
@@ -234,11 +238,11 @@ public abstract class CalendarPanelV2 extends Panel {
 				/*
 				 * Entries
 				 */
-				dayItem.add(new ListView<TimeSlot>("timeSlots", getTimeSlotModel(dayItem.getModelObject())) { //$NON-NLS-1$
+				dayItem.add(new ListView<TimeSlot<T>>("timeSlots", getTimeSlotModel(dayItem.getModelObject())) { //$NON-NLS-1$
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void populateItem(final ListItem<TimeSlot> timeSlotItem) {
+					protected void populateItem(final ListItem<TimeSlot<T>> timeSlotItem) {
 						timeSlotItem.setOutputMarkupId(true);
 						
 						final LocalTime startTime = timeSlotItem.getModelObject().getStartTime();
@@ -259,36 +263,50 @@ public abstract class CalendarPanelV2 extends Panel {
 						
 						timeSlotItem.add(new SimpleAttributeModifier("style", "left: 0; top: "+top+"px; height: "+height+"px;")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 						
-						// Find booking
-						
 						// Time slot content
-						final Label timeSlotContent = new Label("timeSlotContent", getTimeSlotContentModel(dayItem.getModelObject(), timeSlotItem.getModelObject(), timeSlotItem)); //$NON-NLS-1$
-						timeSlotContent.setOutputMarkupId(true);
-						timeSlotItem.add(timeSlotContent);
-						
-						// Time label
-						timeSlotItem.add(new Label("timeLabel", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
+						IModel<List<String>> timeSlotContentModel = new LoadableDetachableModel<List<String>>() {
 							private static final long serialVersionUID = 1L;
 
 							@Override
-							public String getObject() {
-								return TIME_FORMAT.print(startTime) + "-" + TIME_FORMAT.print(endTime) + " - "+Math.round(minutesEnd)+"m"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							protected List<String> load() {
+								return getTimeSlotContent(dayItem.getModelObject(), timeSlotItem.getModelObject(), timeSlotItem);
 							}
-						}));
+						};
+						
+						timeSlotItem.add(new ListView<String>("timeSlotContent", timeSlotContentModel) {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							protected void populateItem(ListItem<String> item) {
+								item.add(new Label("content", item.getModel()));
+								item.add(new AttributeModifier("title", true, item.getModel()));
+							}
+						});
 						
 						// Details
-						final WebMarkupContainer dayTimeLessonContent = new WebMarkupContainer("dayTimeLessonDetails"); //$NON-NLS-1$
-						dayTimeLessonContent.setOutputMarkupId(true);
-						dayTimeLessonContent.setVisible(false);
-						timeSlotItem.add(dayTimeLessonContent);
+						final Component dayTimeLessonDetails = createTimeSlotDetailsComponent("dayTimeLessonDetails", timeSlotItem.getModelObject());
+						dayTimeLessonDetails.setOutputMarkupId(true);
+						timeSlotItem.add(dayTimeLessonDetails);
 						timeSlotItem.add(new AttributeModifier("rel", true, new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
 							private static final long serialVersionUID = 1L;
 		
 							@Override
 							public String getObject() {
-								return "#"+dayTimeLessonContent.getMarkupId(); //$NON-NLS-1$
+								if (dayTimeLessonDetails.isVisible()) {
+									return "#"+dayTimeLessonDetails.getMarkupId(); //$NON-NLS-1$
+								} else {
+									return null;
+								}
 							}
 						}));
+						timeSlotItem.add(new CalendarTooltipBehavior() {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public boolean isEnabled(Component component) {
+								return dayTimeLessonDetails.isVisible();
+							}
+						});
 					}
 				});
 			}
@@ -301,6 +319,9 @@ public abstract class CalendarPanelV2 extends Panel {
 		if (getCalendarEndTime().getHourOfDay() == 0 && getCalendarEndTime().getMinuteOfHour() == 0) {
 			calEnd = calEnd.plusDays(1);
 		}
+		if (calEnd.getMinuteOfHour() > 0) {
+			calEnd = calEnd.plusHours(1).withMinuteOfHour(0);
+		}
 		return new org.joda.time.Period(calStart, calEnd, PeriodType.hours()).getHours();
 	}
 	
@@ -312,11 +333,15 @@ public abstract class CalendarPanelV2 extends Panel {
 		return new LocalTime(0, 0);
 	}
 	
-	protected abstract IModel<List<TimeSlot>> getTimeSlotModel(TeachUsDate date);
+	protected abstract IModel<List<TimeSlot<T>>> getTimeSlotModel(TeachUsDate date);
 	
-	protected abstract IModel<String> getTimeSlotContentModel(TeachUsDate date, TimeSlot timeSlot, ListItem<TimeSlot> timeSlotItem);
+	protected abstract List<String> getTimeSlotContent(TeachUsDate date, TimeSlot<T> timeSlot, ListItem<TimeSlot<T>> timeSlotItem);
 	
-	protected void modifyTimeSlotItem(ListItem<TimeSlot> timeSlotItem) {
+	protected void modifyTimeSlotItem(ListItem<TimeSlot<T>> timeSlotItem) {
+	}
+	
+	protected Component createTimeSlotDetailsComponent(String wicketId, TimeSlot<T> timeSlot) {
+		return new WebMarkupContainer(wicketId).setVisible(false);
 	}
 	
 	public TeachUsDate getModelObject() {

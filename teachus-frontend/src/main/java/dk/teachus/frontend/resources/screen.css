@@ -416,7 +416,7 @@ table.border th {
 
 .bodytable {
 	height: 375px;
-	overflow-y: auto;
+	overflow-y: scroll;
 	overflow-x: hidden;
 }
 
@@ -499,6 +499,7 @@ table.border th {
 	border: 1px solid #09C413;
 	background-color: #CBFFCD;
 	height: 100%;
+	white-space: nowrap;
 	overflow: hidden;
 	opacity: 0.7;
 }
@@ -522,9 +523,8 @@ table.border th {
 }
 
 .pupilBooked .daytimelessoncontent:hover {
-	background-color: #CBCBFF;
+	background-color: #A7A7E4;
 	cursor: auto;
-	opacity: 0.7;
 }
 
 .booked .daytimelessoncontent {
@@ -534,4 +534,27 @@ table.border th {
 
 .booked .daytimelessoncontent:hover {
 	background-color: #E4A7A7;
+}
+
+.cluetip-calendar {
+	border-radius: 1px;
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	text-align: left;
+}
+
+.clue-left-calendar .cluetip-arrows {
+  background-image: url(/images/cluetip/arrowright.gif);
+  left: 100%;
+  margin-right: -11px;
+}
+
+.clue-right-calendar .cluetip-arrows {
+  background-image: url(/images/cluetip/arrowleft.gif);
+}
+
+.cluetip-calendar .dayTimeLessonDetails {
+	font-size: 10px;
 }
