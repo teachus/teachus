@@ -55,6 +55,8 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		for (String feature : openSource) {
 			openSourceContainer.add(new MultiLineLabel(openSourceContainer.newChildId(), feature));
 		}
+		
+		add(new Label("sourceCode", TeachUsSession.get().getString("InfoPage.sourceCode"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private void createScreenShots() {
