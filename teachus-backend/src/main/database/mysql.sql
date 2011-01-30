@@ -2,7 +2,7 @@ CREATE TABLE
 	application_configuration
 (
 	name VARCHAR(255) NOT NULL, 
-	version INTEGER NOT NULL, 
+	version INTEGER NOT NULL DEFAULT 0, 
 	value MEDIUMTEXT, 
 	primary key (name)
 ) type=InnoDB;
@@ -12,7 +12,7 @@ CREATE TABLE
 (
 	id BIGINT NOT NULL auto_increment, 
 	booking_type VARCHAR(255) NOT NULL, 
-	version INTEGER NOT NULL, 
+	version INTEGER NOT NULL DEFAULT 0, 
 	active TINYINT(1),
 	period_id BIGINT, 
 	date DATETIME,
@@ -33,7 +33,7 @@ CREATE TABLE
 	period 
 (
 	id BIGINT NOT NULL auto_increment,
-	version INTEGER NOT NULL, 
+	version INTEGER NOT NULL DEFAULT 0, 
 	name VARCHAR(100), 
 	begin_date DATE, 
 	begin_date_tz VARCHAR(255),
@@ -59,7 +59,7 @@ CREATE TABLE
 (
 	id BIGINT NOT NULL auto_increment, 
 	person_type VARCHAR(255) NOT NULL, 
-	version INTEGER NOT NULL, 
+	version INTEGER NOT NULL DEFAULT 0, 
 	name VARCHAR(100), 
 	username VARCHAR(50) NOT NULL UNIQUE, 
 	password VARCHAR(40), 
@@ -79,7 +79,7 @@ CREATE TABLE
 (
 	id BIGINT NOT NULL auto_increment, 
 	attribute VARCHAR(255) NOT NULL, 
-	version INTEGER NOT NULL, 
+	version INTEGER NOT NULL DEFAULT 0, 
 	teacher_id BIGINT NOT NULL, 
 	value TEXT NOT NULL, 
 	primary key (id)
@@ -90,7 +90,7 @@ CREATE TABLE
 (
 	id bigint NOT NULL auto_increment, 
 	message_type VARCHAR(255) NOT NULL, 
-	version INTEGER NOT NULL, 
+	version INTEGER NOT NULL DEFAULT 0, 
 	create_date DATETIME,
 	subject VARCHAR(255), 
 	body TEXT, 
@@ -139,4 +139,4 @@ ALTER TABLE
 		ADD INDEX IDX_MESSAGE_RECIPIENT (recipient), 
 		ADD CONSTRAINT FK_MESSAGE_RECIPIENT_PERSON FOREIGN KEY (recipient) REFERENCES person (id);
 
-INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.49');
+INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.53');
