@@ -24,7 +24,7 @@ div.ui-cluetip {
   width: 43px;
   height: 11px;
   position: absolute;
-  background-image: url(${wait.gif});
+  background-image: url(/images/cluetip/wait.gif);
 }
 .cluetip-arrows {
   display: none;
@@ -82,15 +82,15 @@ div.ui-cluetip {
 /* default arrows */
 
 .clue-right-default .cluetip-arrows {
-  background-image: url(${darrowleft.gif});
+  background-image: url(/images/cluetip/darrowleft.gif);
 }
 .clue-left-default .cluetip-arrows {
-  background-image: url(${darrowright.gif});
+  background-image: url(/images/cluetip/darrowright.gif);
   left: 100%;
   margin-right: -11px;
 }
 .clue-top-default .cluetip-arrows {
-  background-image: url(${darrowdown.gif});
+  background-image: url(/images/cluetip/darrowdown.gif);
   top: 100%;
   left: 50%;
   margin-left: -11px;
@@ -98,7 +98,7 @@ div.ui-cluetip {
   width: 22px;  
 }  
 .clue-bottom-default .cluetip-arrows {
-  background-image: url(${darrowup.gif});
+  background-image: url(/images/cluetip/darrowup.gif);
   top: -11px;
   left: 50%;
   margin-left: -11px;
@@ -136,15 +136,15 @@ div.ui-cluetip {
 /* jtip arrows */
 
 .clue-right-jtip .cluetip-arrows {
-  background-image: url(${arrowleft.gif});
+  background-image: url(/images/cluetip/arrowleft.gif);
 }
 .clue-left-jtip .cluetip-arrows {
-  background-image: url(${arrowright.gif});
+  background-image: url(/images/cluetip/arrowright.gif);
   left: 100%;
   margin-right: -11px;
 }
 .clue-top-jtip .cluetip-arrows {
-  background-image: url(${arrowdown.gif});
+  background-image: url(/images/cluetip/arrowdown.gif);
   top: 100%;
   left: 50%;
   margin-left: -11px;
@@ -152,7 +152,7 @@ div.ui-cluetip {
   width: 22px;  
 }  
 .clue-bottom-jtip .cluetip-arrows {
-  background-image: url(${arrowup.gif});
+  background-image: url(/images/cluetip/arrowup.gif);
   top: -11px;
   left: 50%;
   margin-left: -11px;

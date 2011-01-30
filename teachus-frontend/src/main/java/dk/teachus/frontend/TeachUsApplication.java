@@ -246,6 +246,7 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/images/fancybox/fancy-shadow-se.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SE_PNG.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/fancybox/fancy-shadow-sw.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SW_PNG.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/fancybox/fancy-shadow-w.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_W_PNG.getSharedResourceKey()); //$NON-NLS-1$
+		
 		mountSharedResource("/images/cluetip/arrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWDOWN_GIF.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/cluetip/arrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWLEFT_GIF.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/images/cluetip/arrowright.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWRIGHT_GIF.getSharedResourceKey()); //$NON-NLS-1$
@@ -264,6 +265,7 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/css/andreas09_red.css", Resources.CSS_ANDREAS09_RED.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/screen.css", Resources.CSS_SCREEN.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/css/print.css", Resources.CSS_PRINT.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/css/jquery-cluetip.css", JQueryCluetipBehavior.CSS_CLUETIP_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
 		
 		mountSharedResource("/js/wicket-ajax.js", WicketAjaxReference.INSTANCE.getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$
 		mountSharedResource("/js/wicket-event.js", WicketEventReference.INSTANCE.getSharedResourceKey()); //$NON-NLS-1$ //$NON-NLS-2$

@@ -37,6 +37,7 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 import dk.teachus.frontend.utils.Resources;
 
 public abstract class BasePage extends WebPage {
@@ -48,10 +49,11 @@ public abstract class BasePage extends WebPage {
 	boolean attached = false;
 	
 	public BasePage() {
+		add(HeaderContributor.forCss(JQueryCluetipBehavior.CSS_CLUETIP_JQUERY));
 		add(HeaderContributor.forCss(Resources.CSS_ANDREAS09));
 		add(HeaderContributor.forCss(Resources.CSS_SCREEN));
 		add(HeaderContributor.forCss(Resources.CSS_PRINT, "print"));
-		
+			
 		Theme theme = getTheme();
 		
 		if (theme == null) {
