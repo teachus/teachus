@@ -139,4 +139,4 @@ ALTER TABLE
 		ADD INDEX IDX_MESSAGE_RECIPIENT (recipient), 
 		ADD CONSTRAINT FK_MESSAGE_RECIPIENT_PERSON FOREIGN KEY (recipient) REFERENCES person (id);
 
-INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.53');
+INSERT INTO application_configuration (name, value) VALUES ('VERSION', '1.54');
