@@ -6,4 +6,5 @@ teachus-tools/target
 teachus-tools/execution.log
 teachus-ws/target
 teachus-parent/target
-teachus-tools/.settings/org.maven.ide.eclipse.prefs
+teachus-tools/.settings/org.maven.ide.eclipse.prefs/.project
+/.project
