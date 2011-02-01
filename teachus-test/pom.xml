@@ -41,12 +41,6 @@
 			<type>jar</type>
 		</dependency>
 		<dependency>
-			<groupId>dk.teachus</groupId>
-			<artifactId>teachus-ws</artifactId>
-			<version>${project.version}</version>
-			<scope>test</scope>
-		</dependency>		
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>

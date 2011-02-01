@@ -19,7 +19,6 @@
 	<modules>
 		<module>../teachus-backend</module>
 		<module>../teachus-frontend</module>
-		<module>../teachus-ws</module>
 		<module>../teachus-test</module>
 	</modules>
 
@@ -29,12 +28,6 @@
 			<dependency>
 				<groupId>dk.teachus</groupId>
 				<artifactId>teachus-backend</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>dk.teachus</groupId>
-				<artifactId>teachus-ws</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -138,16 +131,6 @@
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>
 				<version>2.8.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.xfire</groupId>
-				<artifactId>xfire-ws-security</artifactId>
-				<version>1.2.6</version>
-			</dependency>
-			<dependency>
-				<groupId>org.codehaus.xfire</groupId>
-				<artifactId>xfire-spring</artifactId>
-				<version>1.2.6</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>

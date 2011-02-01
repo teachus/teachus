@@ -10,8 +10,6 @@
 		<param-value>
 			classpath:/dk/teachus/backend/applicationContext.xml
 			classpath:/dk/teachus/backend/applicationContext-queues.xml
-			classpath:/dk/teachus/ws/applicationContext.xml
-			classpath:/org/codehaus/xfire/spring/xfire.xml
 		</param-value>
 	</context-param>
 
@@ -43,19 +41,5 @@
 		<filter-name>teachus</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-	<!-- XFire web services servlet -->
-	<servlet>
-		<servlet-name>xfire</servlet-name>
-		<servlet-class>
-			org.springframework.web.servlet.DispatcherServlet
-		</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>xfire</servlet-name>
-		<url-pattern>/services/*</url-pattern>
-	</servlet-mapping>
 
 </web-app>
