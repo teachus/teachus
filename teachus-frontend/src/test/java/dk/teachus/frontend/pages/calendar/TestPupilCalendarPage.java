@@ -33,6 +33,7 @@ import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsSession;
@@ -53,6 +54,9 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			
 			one(personDAO).getPerson(2L);
 			will(returnValue(createTeacher(2L)));
+			
+			one(personDAO).getAttributes(with(a(Teacher.class)));
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			one(periodDAO).getPeriods(with(a(Teacher.class)));
 			will(returnValue(new PeriodsImpl()));
@@ -86,6 +90,9 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			
 			one(personDAO).getPerson(11L);
 			will(returnValue(createPupil(11L)));
+			
+			one(personDAO).getAttributes(with(a(Teacher.class)));
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			one(periodDAO).getPeriods(with(a(Teacher.class)));
 			will(returnValue(new PeriodsImpl()));

@@ -66,7 +66,7 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public boolean isAuthenticated() {
-		return person != null;
+		return getPerson() != null;
 	}
 	
 	public void signIn(String username, String password) {
@@ -86,11 +86,12 @@ public class TeachUsSession extends WebSession {
 	}
 
 	private void setLocale() {
-		if (person != null) {
-			if (person.getLocale() != null) {
-				setLocale(person.getLocale());
-			} else if (person instanceof Pupil) {
-				Pupil pupil = (Pupil) person;
+		Person p = getPerson();
+		if (p != null) {
+			if (p.getLocale() != null) {
+				setLocale(p.getLocale());
+			} else if (p instanceof Pupil) {
+				Pupil pupil = (Pupil) p;
 				setLocale(pupil.getTeacher().getLocale());
 			}
 		}
@@ -151,12 +152,13 @@ public class TeachUsSession extends WebSession {
 	}
 	
 	public Teacher getTeacher() {
-		return (Teacher) person;
+		return (Teacher) getPerson();
 	}
 	
 	public List<TeacherAttribute> getTeacherAttributes() {
-		if (person != null) {
-			if (person instanceof Teacher == false) {
+		Person p = getPerson();
+		if (p != null) {
+			if (p instanceof Teacher == false) {
 				throw new IllegalStateException("Can only get teacher attributes, when a teacher is logged in.");
 			}
 			
@@ -183,7 +185,8 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
-		if (teacher != null && person != null && teacher.getId().equals(person.getId())) {
+		Person p = getPerson();
+		if (teacher != null && p != null && teacher.getId().equals(p.getId())) {
 			return getTeacherAttribute(attributeClass);
 		} else {
 			List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
@@ -261,7 +264,7 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public TeachUsDate createNewDate(DateTime dateTime) {
-		return createNewDate(dateTime, person);
+		return createNewDate(dateTime, getPerson());
 	}
 	
 	public TeachUsDate createNewDate(DateMidnight dateMidnight, Person person) {
@@ -282,7 +285,7 @@ public class TeachUsSession extends WebSession {
 			}
 			
 			if (teacher != null) {
-				TimeZoneAttribute timeZoneAttribute = getTeacherAttribute(TimeZoneAttribute.class);;
+				TimeZoneAttribute timeZoneAttribute = getTeacherAttribute(TimeZoneAttribute.class, teacher);
 				
 				if (timeZoneAttribute != null) {
 					timeZone = timeZoneAttribute.getTimeZone();

@@ -25,6 +25,7 @@ import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -41,6 +42,9 @@ public class TestIncomePerPupilPage extends WicketTestCase {
 			one(personDAO).getPerson(2L);
 			Teacher teacher = createTeacher();
 			will(returnValue(teacher));
+			
+			one(personDAO).getAttributes(with(a(Teacher.class)));
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			List<PupilBooking> bookings = new ArrayList<PupilBooking>();
 			PupilBooking pupilBooking = createPupilBooking(1L);
