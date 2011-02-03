@@ -16,8 +16,19 @@
  */
 package dk.teachus.frontend.test;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.plus.jndi.Resource;
+import org.eclipse.jetty.plus.webapp.EnvConfiguration;
+import org.eclipse.jetty.plus.webapp.PlusConfiguration;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.FragmentConfiguration;
+import org.eclipse.jetty.webapp.JettyWebXmlConfiguration;
+import org.eclipse.jetty.webapp.MetaInfConfiguration;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.webapp.WebInfConfiguration;
+import org.eclipse.jetty.webapp.WebXmlConfiguration;
+
+import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
+
 
 public class JettyStarter {
 
@@ -27,9 +38,27 @@ public class JettyStarter {
 		
 		Server server = new Server(8080);
 		
-		server.addHandler(new WebAppContext("src/main/webapp", "/"));
+		WebAppContext webAppContext = new WebAppContext("src/main/webapp", "/");
+		webAppContext.setConfigurationClasses(new String[]{
+				WebInfConfiguration.class.getName(),
+				WebXmlConfiguration.class.getName(),
+				MetaInfConfiguration.class.getName(),
+				FragmentConfiguration.class.getName(),
+				EnvConfiguration.class.getName(),
+				PlusConfiguration.class.getName(),
+				JettyWebXmlConfiguration.class.getName()
+		});
+		
+		MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
+		dataSource.setUrl("jdbc:mysql://localhost/teachus");
+		dataSource.setUser("root");
+		dataSource.setPassword("root");
+		new Resource("jdbc/teachus", dataSource);
+		
+		server.setHandler(webAppContext);
 		
 		server.start();
+		server.join();
 	}
 	
 }

@@ -23,11 +23,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.hsqldb.jdbcDriver;
 import org.joda.time.DateTime;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.annotation.AbstractAnnotationAwareTransactionalTests;
+
+import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
@@ -132,10 +138,27 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		
 		configLocations.add("/dk/teachus/backend/applicationContext.xml");
 		
+		DataSource dataSource = null;
 		if (useMysql) {
+			MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
+			ds.setUrl("jdbc:mysql://localhost/teachus_test");
+			ds.setUser("teachus_build");
+			ds.setPassword("teachus_build");
+			dataSource = ds;
 			configLocations.add("/dk/teachus/backend/test/applicationContext-test-mysql.xml");
 		} else {
+			dataSource = new SimpleDriverDataSource(new jdbcDriver(), "jdbc:hsqldb:mem:teachus", "sa", "");
 			configLocations.add("/dk/teachus/backend/test/applicationContext-test-hsqldb.xml");
+		}
+		
+		SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
+		contextBuilder.bind("java:comp/env/jdbc/teachus", dataSource);
+		try {
+			contextBuilder.activate();
+		} catch (IllegalStateException e) {
+			throw new RuntimeException(e);
+		} catch (NamingException e) {
+			throw new RuntimeException(e);
 		}
 		
 		addConfigLocations(configLocations);

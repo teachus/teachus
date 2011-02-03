@@ -27,6 +27,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.naming.NamingException;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,32 +41,50 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
+
+import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Theme;
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationEntry;
 import dk.teachus.backend.domain.impl.PeriodImpl;
+import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.utils.DateUtils;
 
 public abstract class DynamicDataImport {
 	private static final Log log = LogFactory.getLog(DynamicDataImport.class);
 	
 	public static void main(String[] args) {
+		MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
+		ds.setUrl("jdbc:mysql://localhost/teachus");
+		ds.setUser("root");
+		ds.setPassword("root");
+		
+		SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
+		contextBuilder.bind("java:comp/env/jdbc/teachus", ds);
+		try {
+			contextBuilder.activate();
+		} catch (IllegalStateException e) {
+			throw new RuntimeException(e);
+		} catch (NamingException e) {
+			throw new RuntimeException(e);
+		}
+		
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
 				"/dk/teachus/backend/applicationContext.xml",
 				"/dk/teachus/backend/database/applicationContext-dynamicDataImport.xml"
