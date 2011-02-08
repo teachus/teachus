@@ -1,3 +1,12 @@
+-- Rename NewCalendarNarrowTimesTeacherAttribute to CalendarNarrowTimesTeacherAttribute
+UPDATE
+	teacher_attribute
+SET
+	attribute = 'CALENDARNARROWTIMES'
+WHERE
+	attribute = 'NEWCALENDARNARROWTIMES';
+
+
 -- Upgrade version
 UPDATE
 	application_configuration 

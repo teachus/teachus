@@ -24,7 +24,7 @@ import org.apache.wicket.model.Model;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.NewCalendarNarrowTimesTeacherAttribute;
+import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
 import dk.teachus.backend.domain.impl.NewCalendarTeacherAttribute;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.TeachUsSession;
@@ -38,7 +38,7 @@ public class TeacherPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
 	private TimeZoneAttribute timeZoneAttribute;
 	private NewCalendarTeacherAttribute newCalendarAttribute;
-	private NewCalendarNarrowTimesTeacherAttribute newCalendarNarrowTimesAttribute;
+	private CalendarNarrowTimesTeacherAttribute newCalendarNarrowTimesAttribute;
 
 	public TeacherPanel(String id, TeacherModel teacherModel) {
 		super(id, teacherModel);
@@ -170,11 +170,11 @@ public class TeacherPanel extends PersonPanel {
 				Teacher teacher = (Teacher) getModelObject();
 				
 				if (newCalendarNarrowTimesAttribute == null && teacher.getId() != null) {
-					newCalendarNarrowTimesAttribute = TeachUsSession.get().getTeacherAttribute(NewCalendarNarrowTimesTeacherAttribute.class, teacher);
+					newCalendarNarrowTimesAttribute = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class, teacher);
 				}
 				
 				if (newCalendarNarrowTimesAttribute == null) {
-					newCalendarNarrowTimesAttribute = new NewCalendarNarrowTimesTeacherAttribute();
+					newCalendarNarrowTimesAttribute = new CalendarNarrowTimesTeacherAttribute();
 				}
 				
 				return newCalendarNarrowTimesAttribute.getBooleanValue();

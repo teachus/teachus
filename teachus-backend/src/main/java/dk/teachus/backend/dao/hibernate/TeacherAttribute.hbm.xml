@@ -25,7 +25,7 @@
         
         <subclass name="NewCalendarTeacherAttribute" discriminator-value="NEWCALENDAR" />
         
-        <subclass name="NewCalendarNarrowTimesTeacherAttribute" discriminator-value="NEWCALENDARNARROWTIMES" />
+        <subclass name="CalendarNarrowTimesTeacherAttribute" discriminator-value="CALENDARNARROWTIMES" />
         
     </class>
 

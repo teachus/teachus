@@ -25,7 +25,7 @@ import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.TeacherBooking;
-import dk.teachus.backend.domain.impl.NewCalendarNarrowTimesTeacherAttribute;
+import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
@@ -88,7 +88,7 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 	protected LocalTime getCalendarStartTime() {
 		LocalTime calendarStartTime = super.getCalendarStartTime();
 
-		NewCalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(NewCalendarNarrowTimesTeacherAttribute.class);
+		CalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class);
 		if (narrowTimes != null && narrowTimes.getBooleanValue()) {
 			LocalTime earliestStart = new LocalTime(23, 59, 59, 999);
 			List<DatePeriod> periods = periodsModel.getObject();
@@ -111,7 +111,7 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 	protected LocalTime getCalendarEndTime() {
 		LocalTime calendarEndTime = super.getCalendarEndTime();
 
-		NewCalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(NewCalendarNarrowTimesTeacherAttribute.class);
+		CalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class);
 		if (narrowTimes != null && narrowTimes.getBooleanValue()) {
 			LocalTime latestEnd = new LocalTime(0, 0, 0, 0);
 			List<DatePeriod> periods = periodsModel.getObject();
