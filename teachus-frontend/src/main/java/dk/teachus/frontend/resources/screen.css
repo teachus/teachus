@@ -506,7 +506,6 @@ table.border th {
 
 .daytimelesson .daytimelessoncontent:hover {
 	background-color: #A7E4AA;
-	cursor: pointer;
 	color: black;
 	opacity: 0.9;
 }
@@ -524,7 +523,10 @@ table.border th {
 
 .pupilBooked .daytimelessoncontent:hover {
 	background-color: #A7A7E4;
-	cursor: auto;
+}
+
+.bookingLink .daytimelessoncontent:hover {
+	cursor: pointer;
 }
 
 .booked .daytimelessoncontent {

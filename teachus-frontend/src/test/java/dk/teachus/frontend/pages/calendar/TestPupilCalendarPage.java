@@ -37,7 +37,7 @@ import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.calendar.CalendarPanel;
+import dk.teachus.frontend.components.calendar.v2.PupilPeriodsCalendarPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestPupilCalendarPage extends WicketTestCase {
@@ -58,7 +58,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			one(personDAO).getAttributes(with(a(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)));
+			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(new PeriodsImpl()));
 			
 			tester.setPersonDAO(personDAO);
@@ -75,7 +75,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(PupilCalendarPage.class);
 		
-		tester.assertComponent("calendar", CalendarPanel.class);
+		tester.assertComponent("calendar", PupilPeriodsCalendarPanel.class);
 		
 		tester.assertContains(pupil.getName());
 	}
@@ -91,10 +91,10 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			one(personDAO).getPerson(11L);
 			will(returnValue(createPupil(11L)));
 			
-			one(personDAO).getAttributes(with(a(Teacher.class)));
+			exactly(198).of(personDAO).getAttributes(with(a(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)));
+			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(new PeriodsImpl()));
 			
 			tester.setPersonDAO(personDAO);
@@ -105,7 +105,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(PupilCalendarPage.class);
 		
-		tester.assertComponent("calendar", CalendarPanel.class);
+		tester.assertComponent("calendar", PupilPeriodsCalendarPanel.class);
 		
 		tester.assertContains(TeachUsSession.get().getPerson().getName());
 	}
@@ -133,8 +133,11 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			PeriodsImpl periodsImpl = new PeriodsImpl();
 			periodsImpl.setPeriods(periods);
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)));
+			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(periodsImpl));
+			
+			one(personDAO).getAttributes(with(a(Teacher.class)));
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			List<Booking> bookings = new ArrayList<Booking>();
 			bookings.add(createPupilBooking(1L, pupil, period, dateTime));
@@ -160,8 +163,6 @@ public class TestPupilCalendarPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(PupilCalendarPage.class);
 		
-		assertTimeSelected(tester, "calendar:calendar:weeks:1:days:1:periods:1:period:rows:2");
-		
-		assertTimeOccupied(tester, "calendar:calendar:weeks:1:days:1:periods:1:period:rows:4");
+		assertTimeOccupied(tester, "calendar:days:0:timeSlots:1");
 	}
 }

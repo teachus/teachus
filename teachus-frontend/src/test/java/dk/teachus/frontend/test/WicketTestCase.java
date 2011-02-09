@@ -25,7 +25,6 @@ import org.apache.wicket.Component;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.tester.WicketTester;
@@ -39,19 +38,19 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
+import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -258,7 +257,8 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected void assertTimeOccupied(TeachUsWicketTester tester, String componentPath) {
-		tester.assertComponent(componentPath+":contentContainer:content:icon", Image.class);
+		TagTester tagTester = getTagTesterForComponent(tester, componentPath);
+		assertTrue(tagTester.getAttributeContains("class", "pupilBooked"));
 	}
 	
 	protected void assertTimeSelected(TeachUsWicketTester tester, String componentPath) {

@@ -179,15 +179,25 @@ public class TeachUsSession extends WebSession {
 	}
 	
 	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass) {
-		A foundAttribute = getTeacherAttribute(getTeacherAttributes(), attributeClass);
+		Teacher teacher = null;
 		
-		return foundAttribute;
+		Person p = getPerson();
+		if (p instanceof Teacher) {
+			teacher = (Teacher) p;
+		} else if (p instanceof Pupil) {
+			Pupil pupil = (Pupil) p;
+			teacher = pupil.getTeacher();
+		} else {
+			throw new IllegalStateException("Can not find a teacher for the person of type: "+p);
+		}
+		
+		return getTeacherAttribute(attributeClass, teacher);
 	}
 
 	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
 		Person p = getPerson();
 		if (teacher != null && p != null && teacher.getId().equals(p.getId())) {
-			return getTeacherAttribute(attributeClass);
+			return getTeacherAttribute(getTeacherAttributes(), attributeClass);
 		} else {
 			List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
 			return getTeacherAttribute(attributes, attributeClass);

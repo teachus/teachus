@@ -30,7 +30,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.calendar.TeacherCalendarPanel;
-import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel;
+import dk.teachus.frontend.components.calendar.v2.TeacherPeriodsCalendarPanel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public class TeacherCalendarPage extends AuthenticatedBasePage {
@@ -53,7 +53,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 		
 		NewCalendarTeacherAttribute newCalendarTeacherAttribute = TeachUsSession.get().getTeacherAttribute(NewCalendarTeacherAttribute.class);
 		if (newCalendarTeacherAttribute != null && newCalendarTeacherAttribute.getBooleanValue()) {
-			add(new PeriodsCalendarPanel("calendar", new Model<TeachUsDate>(pageDate)));
+			add(new TeacherPeriodsCalendarPanel("calendar", new Model<TeachUsDate>(pageDate)));
 		} else {
 			PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
 			

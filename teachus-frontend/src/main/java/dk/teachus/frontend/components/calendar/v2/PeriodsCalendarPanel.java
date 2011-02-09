@@ -1,13 +1,13 @@
-	package dk.teachus.frontend.components.calendar.v2;
+package dk.teachus.frontend.components.calendar.v2;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
@@ -22,16 +22,15 @@ import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
-import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.TeachUsDate;
-import dk.teachus.backend.domain.TeacherBooking;
+import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
 import dk.teachus.frontend.utils.Formatters;
 
-public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotPayload> {
+abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotPayload> {
 	private static final long serialVersionUID = 1L;
 	
 	static class PeriodBookingTimeSlotPayload implements Serializable {
@@ -69,7 +68,7 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 
 			@Override
 			protected List<DatePeriod> load() {
-				Periods periods = TeachUsApplication.get().getPeriodDAO().getPeriods(TeachUsSession.get().getTeacher(), true);
+				Periods periods = TeachUsApplication.get().getPeriodDAO().getPeriods(getTeacher(), true);
 				return periods.generateDatesForWeek(PeriodsCalendarPanel.this.getModelObject());
 			}
 		};
@@ -79,7 +78,7 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 
 			@Override
 			protected Bookings load() {
-				return TeachUsApplication.get().getBookingDAO().getBookings(TeachUsSession.get().getTeacher(), getFromDate(), getToDate());
+				return TeachUsApplication.get().getBookingDAO().getBookings(getTeacher(), getFromDate(), getToDate());
 			}
 		};
 	}
@@ -192,70 +191,39 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 	}
 
 	@Override
-	protected List<String> getTimeSlotContent(final TeachUsDate date, final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, final ListItem<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlotItem) {
-		final IModel<TeachUsDate> timeModel = new LoadableDetachableModel<TeachUsDate>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected TeachUsDate load() {
-				return date.withTime(timeSlot.getStartTime());
-			}
-		};
-		
+	protected final List<String> getTimeSlotContent(final TeachUsDate date, final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, final ListItem<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlotItem) {
 		// Click action
 		timeSlotItem.add(new AjaxEventBehavior("onclick") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected void onEvent(AjaxRequestTarget target) {
-				PeriodBookingTimeSlotPayload payload = timeSlot.getPayload();
-				Booking booking = payload.getBooking();
-				if (booking != null) {
-					TeachUsApplication.get().getBookingDAO().deleteBooking(booking);
-					payload.setBooking(null);
-				} else {
-					TeacherBooking teacherBooking = TeachUsApplication.get().getBookingDAO().createTeacherBookingObject();
-					teacherBooking.setActive(true);
-					teacherBooking.setDate(timeModel.getObject());
-					teacherBooking.setPeriod(payload.getPeriod());
-					teacherBooking.setTeacher(TeachUsSession.get().getTeacher());
-					TeachUsApplication.get().getBookingDAO().book(teacherBooking);
-					payload.setBooking(teacherBooking);
-				}
+				onTimeSlotClicked(timeSlot, date.withTime(timeSlot.getStartTime()), target);
 				
 				target.addComponent(timeSlotItem);
 			}
 			
 			@Override
 			public boolean isEnabled(Component component) {
-				Booking booking = timeSlot.getPayload().getBooking();
-				if (booking != null) {
-					if (booking instanceof PupilBooking) {
-						return false;
-					}
-				}
-				
-				return true;
+				return isTimeSlotBookable(timeSlot);
 			}
 		});
 		
-		timeSlotItem.add(new AttributeAppender("class", true, new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
+		timeSlotItem.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getObject() {
-				Booking booking = timeSlot.getPayload().getBooking();
-				if (booking != null) {
-					if (booking instanceof PupilBooking) {
-						return "pupilBooked"; //$NON-NLS-1$
-					}
-					
-					return "booked"; //$NON-NLS-1$
-				}
-				
-				return null;
+				return getTimeSlotClass(timeSlot);
 			}
-		}, " ")); //$NON-NLS-1$
+		}) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected String newValue(String currentValue, String replacementValue) {
+				return "daytimelesson" + (replacementValue != null ? " "+replacementValue : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			}
+		});
 		
 		List<String> contentLines = new ArrayList<String>();
 		Period period = timeSlot.getPayload().getPeriod();
@@ -264,9 +232,9 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 		TeachUsDate startTime = date.withTime(timeSlot.getStartTime());
 		TeachUsDate endTime = date.withTime(timeSlot.getEndTime());
 		org.joda.time.Period minutesDuration = new org.joda.time.Period(startTime.getDateTime(), endTime.getDateTime(), PeriodType.minutes());
-		String timePriceLine = TIME_FORMAT.print(startTime.getDateTime()) + "-" + TIME_FORMAT.print(endTime.getDateTime()) + " - "+Math.round(minutesDuration.getMinutes())+"m";
+		String timePriceLine = TIME_FORMAT.print(startTime.getDateTime()) + "-" + TIME_FORMAT.print(endTime.getDateTime()) + " - "+Math.round(minutesDuration.getMinutes())+"m"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (period.getPrice() > 0) {
-			timePriceLine += " - "+Formatters.getFormatCurrency().format(period.getPrice());
+			timePriceLine += " - "+Formatters.getFormatCurrency().format(period.getPrice()); //$NON-NLS-1$
 		}
 		contentLines.add(timePriceLine);
 		
@@ -274,28 +242,28 @@ public class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotP
 		if (Strings.isEmpty(period.getLocation()) == false) {
 			contentLines.add(period.getLocation());
 		}
-		
-		Booking booking = timeSlot.getPayload().getBooking();
-		if (booking != null) {
-			if (booking instanceof PupilBooking) {
-				PupilBooking pupilBooking = (PupilBooking) booking;
-				contentLines.add(pupilBooking.getPupil().getName());
-			} else {
-				contentLines.add(TeachUsSession.get().getString("PeriodsCalendarPanel.booked")); //$NON-NLS-1$
-			}
-		}
+
+		appendToTimeSlotContent(contentLines, timeSlot);
 		
 		return contentLines;
 	}
 	
-	@Override
-	protected Component createTimeSlotDetailsComponent(String wicketId, TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
-		Booking booking = timeSlot.getPayload().getBooking();
-		if (booking instanceof PupilBooking) {
-			return new PeriodBookingTimeSlotDetails(wicketId, (PupilBooking) booking);
-		} else {
-			return super.createTimeSlotDetailsComponent(wicketId, timeSlot);
-		}
+	protected abstract Teacher getTeacher();
+	
+	protected abstract boolean isTimeSlotBookable(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot);
+	
+	protected void appendToTimeSlotContent(List<String> contentLines, TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
+	}
+	
+	/**
+	 * @param timeSlot
+	 * @return CSS class or classes (separated by space), which is added to the timeslot UI item for additional UI
+	 */
+	protected String getTimeSlotClass(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
+		return null;
+	}
+	
+	protected void onTimeSlotClicked(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, TeachUsDate date, AjaxRequestTarget target) {
 	}
 	
 }
