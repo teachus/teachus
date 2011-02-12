@@ -18,8 +18,6 @@ public abstract class AbstractTeachUsInstance<D extends AbstractDeploymentNode> 
 
 	protected File projectDirectory;
 
-	private ConfigureTeachUsDatabaseAction configureDatabase;
-
 	private ConfigureSmtpServerAction configureSmtpServer;
 
 	private MavenPackageAction mavenPackage;
@@ -44,14 +42,12 @@ public abstract class AbstractTeachUsInstance<D extends AbstractDeploymentNode> 
 	
 	public void check() throws Exception {
 		scmCheckout.check();
-		configureDatabase.check();
 		configureSmtpServer.check();
 		mavenPackage.check();
 	}
 	
 	public void cleanup() throws Exception {
 		scmCheckout.cleanup();
-		configureDatabase.cleanup();
 		configureSmtpServer.cleanup();
 		mavenPackage.cleanup();
 		
@@ -69,8 +65,6 @@ public abstract class AbstractTeachUsInstance<D extends AbstractDeploymentNode> 
 		
 		scmCheckout = getCheckoutAction();
 		scmCheckout.init();
-		configureDatabase = new ConfigureTeachUsDatabaseAction(projectDirectory, deployment.getDatabase());
-		configureDatabase.init();
 		configureSmtpServer = new ConfigureSmtpServerAction(projectDirectory, deployment.getSmtpServer());
 		configureSmtpServer.init();
 		mavenPackage = new MavenPackageAction(maven, projectDirectory, false);
@@ -79,8 +73,6 @@ public abstract class AbstractTeachUsInstance<D extends AbstractDeploymentNode> 
 
 	public File prepareWarFile() throws Exception {
 		scmCheckout.execute();
-		
-		configureDatabase.execute();
 		
 		configureSmtpServer.execute();
 		
