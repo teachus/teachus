@@ -40,7 +40,7 @@ public class UploadWarFileAction implements Action {
 		
 		// Upload war
 		if (log.isDebugEnabled()) {
-			log.debug("UPloading war file");
+			log.debug("Uploading war file");
 		}
 		scpAction.execute();
 	}
