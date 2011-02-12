@@ -66,6 +66,8 @@ public class GitCommandScmClient implements ScmClient {
 	}
 	
 	private void executeGitCommand(File projectDirectory, String[] params) {
+		StringBuilder error = new StringBuilder();
+		
 		try {
 			String gitCommand[] = new String[params.length + 1];
 			gitCommand[0] = "git";
@@ -82,14 +84,16 @@ public class GitCommandScmClient implements ScmClient {
 			BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 			String line = null;
 			while ((line = errorStream.readLine()) != null) {
-				System.out.println(line);
+				error.append(line).append("\n");
 			}
 			if (process.waitFor() != 0) {
 				throw new IOException("Git command didn't finish properly: "+process.exitValue());
 			}
 		} catch (IOException e) {
+			System.out.println(error);
 			throw new RuntimeException(e);
 		} catch (InterruptedException e) {
+			System.out.println(error);
 			throw new RuntimeException(e);
 		}
 	}
