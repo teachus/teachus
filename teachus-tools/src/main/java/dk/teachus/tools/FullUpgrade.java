@@ -5,13 +5,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import dk.teachus.tools.actions.DemoTeachUsInstance;
 import dk.teachus.tools.actions.GitCommandScmClient;
 import dk.teachus.tools.actions.MainTeachUsInstance;
 import dk.teachus.tools.actions.ScmClient;
 import dk.teachus.tools.actions.UpgradeTeachUsInstancesAction;
 import dk.teachus.tools.config.Configuration;
-import dk.teachus.tools.config.DemoDeploymentNode;
 import dk.teachus.tools.config.GitNode;
 import dk.teachus.tools.config.MainDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
@@ -31,7 +29,6 @@ public class FullUpgrade {
 		configuration.add(new GitNode());
 		configuration.add(new TomcatNode());
 		configuration.add(new MainDeploymentNode());
-		configuration.add(new DemoDeploymentNode());
 		configuration.initialize(preferenceFile);
 		
 		MavenNode maven = configuration.getNode(MavenNode.class);
@@ -40,7 +37,6 @@ public class FullUpgrade {
 		TomcatNode tomcat = configuration.getNode(TomcatNode.class);
 		
 		MainDeploymentNode mainDeployment = configuration.getNode(MainDeploymentNode.class);
-		DemoDeploymentNode demoDeployment = configuration.getNode(DemoDeploymentNode.class);
 		
 		WorkingDirectoryNode workingDirectoryNode = configuration.getNode(WorkingDirectoryNode.class);
 		File workingDirectory = workingDirectoryNode.getWorkingDirectoryFile();
@@ -54,7 +50,6 @@ public class FullUpgrade {
 		
 		UpgradeTeachUsInstancesAction upgradeTeachUsInstances = new UpgradeTeachUsInstancesAction(tomcat);
 		upgradeTeachUsInstances.addTeachUsInstance(new MainTeachUsInstance(maven, workingDirectory, mainDeployment, tomcat.getHost(), version, scmClient));
-		upgradeTeachUsInstances.addTeachUsInstance(new DemoTeachUsInstance(maven, workingDirectory, demoDeployment, tomcat.getHost(), version, scmClient));
 		workflow.addAction(upgradeTeachUsInstances);
 	
 		/*
