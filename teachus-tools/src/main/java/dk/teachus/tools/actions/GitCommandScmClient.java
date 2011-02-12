@@ -1,7 +1,9 @@
 package dk.teachus.tools.actions;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
@@ -76,6 +78,12 @@ public class GitCommandScmClient implements ScmClient {
 			}
 			
 			Process process = Runtime.getRuntime().exec(gitCommand, null, projectDirectory);
+			
+			BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+			String line = null;
+			while ((line = errorStream.readLine()) != null) {
+				System.out.println(line);
+			}
 			if (process.waitFor() != 0) {
 				throw new IOException("Git command didn't finish properly: "+process.exitValue());
 			}
