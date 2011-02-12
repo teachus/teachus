@@ -6,7 +6,7 @@ import dk.teachus.tools.config.MainDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SshNode;
 
-public class MainTeachUsInstance extends ReleaseBasedTeachUsInstance {
+public class MainTeachUsInstance extends ReleaseBasedTeachUsInstance<MainDeploymentNode> {
 
 	private BackupDatabaseAction backupDatabase;
 
@@ -25,7 +25,7 @@ public class MainTeachUsInstance extends ReleaseBasedTeachUsInstance {
 		super.init();
 
 		File backupFile = new File(workingDirectory, "backup.sql");
-		backupDatabase = new BackupDatabaseAction(databaseHost, deployment.getDatabase(), backupFile);
+		backupDatabase = new BackupDatabaseAction(databaseHost, deployment.getDatabase(), deployment.getBackupNode(), backupFile);
 		backupDatabase.init();
 	}
 	

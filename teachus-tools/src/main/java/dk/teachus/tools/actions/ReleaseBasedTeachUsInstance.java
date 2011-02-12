@@ -6,14 +6,14 @@ import dk.teachus.tools.config.AbstractDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SshNode;
 
-public abstract class ReleaseBasedTeachUsInstance extends AbstractTeachUsInstance {
+public abstract class ReleaseBasedTeachUsInstance<D extends AbstractDeploymentNode> extends AbstractTeachUsInstance<D> {
 
 	private final ScmClient scmClient;
 
 	private UpgradeDatabaseAction upgradeDatabase;
 
 	public ReleaseBasedTeachUsInstance(MavenNode maven, File workingDirectory,
-			AbstractDeploymentNode deployment, SshNode databaseHost, String version, ScmClient scmClient) throws Exception {
+			D deployment, SshNode databaseHost, String version, ScmClient scmClient) throws Exception {
 		super(maven, workingDirectory, deployment, databaseHost, version);
 		this.scmClient = scmClient;
 	}

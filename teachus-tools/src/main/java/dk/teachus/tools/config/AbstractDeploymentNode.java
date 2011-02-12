@@ -29,7 +29,11 @@ public abstract class AbstractDeploymentNode extends AbstractNode {
 			database.deserialize(findChild(element, "database"));
 			smtpServer = new SmtpServerNode();
 			smtpServer.deserialize(findChild(element, "smtp"));
+			onDeserialize(element);
 		}
+	}
+	
+	protected void onDeserialize(XMLElement element) {
 	}
 
 	public XMLElement serialize() {
@@ -37,12 +41,17 @@ public abstract class AbstractDeploymentNode extends AbstractNode {
 		element.setName(getName());
 		element.addChild(database.serialize());
 		element.addChild(smtpServer.serialize());
+		onSerialize(element);
 		return element;
+	}
+	
+	protected void onSerialize(XMLElement element) {
 	}
 	
 	public void requestValue() {
 		System.out.println("Database configuration for "+getName());
 		database.requestValue();
+		System.out.println("SMTP server for "+getName());
 		smtpServer.requestValue();
 	}
 	

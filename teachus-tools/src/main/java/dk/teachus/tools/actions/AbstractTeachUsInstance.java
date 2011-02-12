@@ -11,7 +11,7 @@ import dk.teachus.tools.config.AbstractDeploymentNode;
 import dk.teachus.tools.config.MavenNode;
 import dk.teachus.tools.config.SshNode;
 
-public abstract class AbstractTeachUsInstance implements TeachUsInstance {
+public abstract class AbstractTeachUsInstance<D extends AbstractDeploymentNode> implements TeachUsInstance {
 	private static final Log log = LogFactory.getLog(AbstractTeachUsInstance.class);
 
 	private ScmCheckoutAction scmCheckout;
@@ -26,7 +26,7 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 
 	protected final File workingDirectory;
 
-	protected final AbstractDeploymentNode deployment;
+	protected final D deployment;
 
 	protected final MavenNode maven;
 
@@ -34,7 +34,7 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 
 	protected final SshNode databaseHost;
 	
-	public AbstractTeachUsInstance(MavenNode maven, File workingDirectory, AbstractDeploymentNode deployment, SshNode databaseHost, String version) throws Exception {
+	public AbstractTeachUsInstance(MavenNode maven, File workingDirectory, D deployment, SshNode databaseHost, String version) throws Exception {
 		this.maven = maven;
 		this.workingDirectory = workingDirectory;
 		this.deployment = deployment;

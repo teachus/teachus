@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import dk.teachus.tools.config.DatabaseBackupNode;
 import dk.teachus.tools.config.DatabaseNode;
 import dk.teachus.tools.config.SshNode;
 
@@ -22,10 +23,12 @@ public class BackupDatabaseAction implements Action {
 	private SshTunnelAction dbTunnel;
 
 	private final SshNode tunnelHost;
+	private final DatabaseBackupNode backupNode;
 
-	public BackupDatabaseAction(SshNode tunnelHost, DatabaseNode database, File destination) {
+	public BackupDatabaseAction(SshNode tunnelHost, DatabaseNode database, DatabaseBackupNode backupNode, File destination) {
 		this.tunnelHost = tunnelHost;
 		this.database = database;
+		this.backupNode = backupNode;
 		this.destination = destination;
 		
 	}
@@ -41,7 +44,7 @@ public class BackupDatabaseAction implements Action {
 		FileWriter writer = new FileWriter(destination);
 		
 		List<String> command = new ArrayList<String>();
-		command.add("mysqldump");
+		command.add(backupNode.getMysqlDumpBinary());
 		command.add("-h");
 		command.add("127.0.0.1");
 		command.add("-P");
