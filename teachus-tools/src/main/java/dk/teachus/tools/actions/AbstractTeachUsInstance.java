@@ -73,7 +73,7 @@ public abstract class AbstractTeachUsInstance implements TeachUsInstance {
 		configureDatabase.init();
 		configureSmtpServer = new ConfigureSmtpServerAction(projectDirectory, deployment.getSmtpServer());
 		configureSmtpServer.init();
-		mavenPackage = new MavenPackageAction(maven, projectDirectory);
+		mavenPackage = new MavenPackageAction(maven, projectDirectory, false);
 		mavenPackage.init();
 	}
 
