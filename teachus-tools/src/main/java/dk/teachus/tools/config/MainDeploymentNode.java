@@ -4,7 +4,7 @@ import nanoxml.XMLElement;
 
 public class MainDeploymentNode extends AbstractDeploymentNode {
 
-	private DatabaseBackupNode backupNode;
+	private DatabaseBackupNode backupNode = new DatabaseBackupNode();
 	
 	public void setBackupNode(DatabaseBackupNode backupNode) {
 		this.backupNode = backupNode;
