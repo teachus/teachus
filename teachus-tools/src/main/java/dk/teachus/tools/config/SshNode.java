@@ -6,16 +6,16 @@ public class SshNode extends AbstractNode {
 	
 	private StringNode host;
 	private StringNode username;
-	private StringNode password;
+	private StringNode privateKeyPath;
 	
 	public SshNode() {
 		this(null, null, null);
 	}
 	
-	public SshNode(String host, String username, String password) {
+	public SshNode(String host, String username, String privateKeyPath) {
 		this.host = new StringNode("host", host);
 		this.username = new StringNode("username", username);
-		this.password = new StringNode("password", password);
+		this.privateKeyPath = new StringNode("privatekeypath", privateKeyPath);
 	}
 
 	public String getHost() {
@@ -34,12 +34,12 @@ public class SshNode extends AbstractNode {
 		this.username.setValue(username);
 	}
 	
-	public String getPassword() {
-		return password.getValue();
+	public String getPrivateKeyPath() {
+		return privateKeyPath.getValue();
 	}
 	
-	public void setPassword(String password) {
-		this.password.setValue(password);
+	public void setPrivateKeyPath(String privateKeyPath) {
+		this.privateKeyPath.setValue(privateKeyPath);
 	}
 
 	public void deserialize(XMLElement element) {
@@ -49,9 +49,9 @@ public class SshNode extends AbstractNode {
 
 			username = new StringNode();
 			username.deserialize(findChild(element, "username"));
-
-			password = new StringNode();
-			password.deserialize(findChild(element, "password"));
+			
+			privateKeyPath = new StringNode();
+			privateKeyPath.deserialize(findChild(element, "privatekeypath"));
 		}
 	}
 
@@ -60,14 +60,14 @@ public class SshNode extends AbstractNode {
 		element.setName("ssh");
 		element.addChild(host.serialize());
 		element.addChild(username.serialize());
-		element.addChild(password.serialize());
+		element.addChild(privateKeyPath.serialize());
 		return element;
 	}
 	
 	public void requestValue() {
 		getInputForString(host, "Host: ");
 		getInputForString(username, "Username: ");
-		getInputForString(password, "Password: ");
+		getInputForString(privateKeyPath, "Private key path: ");
 	}
 
 }

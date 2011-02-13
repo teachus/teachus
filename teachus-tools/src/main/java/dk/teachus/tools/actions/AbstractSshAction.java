@@ -68,8 +68,9 @@ abstract class AbstractSshAction implements Action {
 			jsch.setKnownHosts(knownHosts.getAbsolutePath());
 		}
 		
+		jsch.addIdentity(host.getPrivateKeyPath());
+		
 		session = jsch.getSession(host.getUsername(), host.getHost());
-		session.setPassword(host.getPassword());
 		session.connect();
 	}
 	
