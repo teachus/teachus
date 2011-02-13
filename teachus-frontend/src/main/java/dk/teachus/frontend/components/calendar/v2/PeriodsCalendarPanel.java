@@ -47,10 +47,10 @@ import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
 import dk.teachus.frontend.utils.Formatters;
 
-abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotPayload> {
+public abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotPayload> {
 	private static final long serialVersionUID = 1L;
 	
-	static class PeriodBookingTimeSlotPayload implements Serializable {
+	public static class PeriodBookingTimeSlotPayload implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
 		private Period period;
@@ -73,20 +73,44 @@ abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlo
 		}
 	}
 	
-	private IModel<List<DatePeriod>> periodsModel;
+	private class DefaultPeriodsModel extends LoadableDetachableModel<Periods> {
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		protected Periods load() {
+			return TeachUsApplication.get().getPeriodDAO().getPeriods(getTeacher(), true);
+		}
+	}
+	
+	private IModel<List<DatePeriod>> datePeriodsModel;
 
 	private IModel<Bookings> bookingsModel;
-	
+
 	public PeriodsCalendarPanel(String id, IModel<TeachUsDate> weekDateModel) {
+		this(id, weekDateModel, null);
+	}
+	
+	public PeriodsCalendarPanel(String id, IModel<TeachUsDate> weekDateModel, IModel<Periods> periodsModel) {
 		super(id, weekDateModel);
 		
-		periodsModel = new LoadableDetachableModel<List<DatePeriod>>() {
+		final IModel<Periods> thePeriodsModel;
+		if (periodsModel == null) {
+			thePeriodsModel = new DefaultPeriodsModel();
+		} else {
+			thePeriodsModel = periodsModel;
+		}
+		
+		this.datePeriodsModel = new LoadableDetachableModel<List<DatePeriod>>() {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			protected List<DatePeriod> load() {
-				Periods periods = TeachUsApplication.get().getPeriodDAO().getPeriods(getTeacher(), true);
+				Periods periods = thePeriodsModel.getObject();
 				return periods.generateDatesForWeek(PeriodsCalendarPanel.this.getModelObject());
+			}
+			
+			protected void onDetach() {
+				thePeriodsModel.detach();
 			}
 		};
 		
@@ -109,7 +133,7 @@ abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlo
 		CalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class);
 		if (narrowTimes != null && narrowTimes.getBooleanValue()) {
 			LocalTime earliestStart = new LocalTime(23, 59, 59, 999);
-			List<DatePeriod> periods = periodsModel.getObject();
+			List<DatePeriod> periods = datePeriodsModel.getObject();
 			for (DatePeriod datePeriod : periods) {
 				List<Period> periodList = datePeriod.getPeriods();
 				for (Period period : periodList) {
@@ -132,7 +156,7 @@ abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlo
 		CalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class);
 		if (narrowTimes != null && narrowTimes.getBooleanValue()) {
 			LocalTime latestEnd = new LocalTime(0, 0, 0, 0);
-			List<DatePeriod> periods = periodsModel.getObject();
+			List<DatePeriod> periods = datePeriodsModel.getObject();
 			for (DatePeriod datePeriod : periods) {
 				List<Period> periodList = datePeriod.getPeriods();
 				for (Period period : periodList) {
@@ -164,7 +188,7 @@ abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlo
 			@Override
 			public List<TimeSlot<PeriodBookingTimeSlotPayload>> getObject() {
 				List<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlots = new ArrayList<TimeSlot<PeriodBookingTimeSlotPayload>>();
-				List<DatePeriod> periods = periodsModel.getObject();
+				List<DatePeriod> periods = datePeriodsModel.getObject();
 				DatePeriod currentDatePeriod = null;
 				for (DatePeriod datePeriod : periods) {
 					if (datePeriod.getDate().getDateMidnight().equals(date.getDateMidnight())) {
@@ -203,7 +227,7 @@ abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlo
 			
 			@Override
 			public void detach() {
-				periodsModel.detach();
+				datePeriodsModel.detach();
 				bookingsModel.detach();
 			}
 		};

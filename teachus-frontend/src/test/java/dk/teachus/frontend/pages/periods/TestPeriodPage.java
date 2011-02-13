@@ -16,6 +16,9 @@
  */
 package dk.teachus.frontend.pages.periods;
 
+import java.util.ArrayList;
+import java.util.TimeZone;
+
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.ITestPageSource;
@@ -24,8 +27,12 @@ import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
+import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.TeachUsDate;
+import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.TeacherAttribute;
+import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -65,9 +72,20 @@ public class TestPeriodPage extends WicketTestCase {
 			PersonDAO personDAO = createPersonDAO();
 			
 			one(personDAO).getPerson(2L);
-			will(returnValue(createTeacher(2L)));
+			Teacher teacher = createTeacher(2L);
+			will(returnValue(teacher));
+			
+			one(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			tester.setPersonDAO(personDAO);
+			
+			BookingDAO bookingDAO = createBookingDAO();
+			
+			exactly(1).of(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 1, 1, TimeZone.getDefault()), new TeachUsDate(2007, 1, 7, TimeZone.getDefault()));
+			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
+			
+			tester.setBookingDAO(bookingDAO);
 		}});
 			
 		final Period period = createPeriod();
@@ -93,7 +111,11 @@ public class TestPeriodPage extends WicketTestCase {
 			PersonDAO personDAO = createPersonDAO();
 			
 			one(personDAO).getPerson(2L);
-			will(returnValue(createTeacher(2L)));
+			Teacher teacher = createTeacher(2L);
+			will(returnValue(teacher));
+			
+			one(personDAO).getAttributes(teacher);
+			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			tester.setPersonDAO(personDAO);
 			
@@ -102,6 +124,9 @@ public class TestPeriodPage extends WicketTestCase {
 			
 			one(bookingDAO).getLastBookingDate(period);
 			will(returnValue(new TeachUsDate(new DateTime())));
+			
+			exactly(2).of(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 1, 1, TimeZone.getDefault()), new TeachUsDate(2007, 1, 7, TimeZone.getDefault()));
+			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setBookingDAO(bookingDAO);
 		}});
@@ -115,8 +140,6 @@ public class TestPeriodPage extends WicketTestCase {
 			}
 		});
 		
-		tester.debugComponentTrees();
-		
 		FormTester formTester = tester.newFormTester("form:form", false);
 		formTester.setValue("elements:11:element:input:inputField", "");
 		
@@ -125,8 +148,6 @@ public class TestPeriodPage extends WicketTestCase {
 		
 		// We should still be on the period page because of validation errors
 		tester.assertRenderedPage(PeriodPage.class);
-		
-		tester.dumpPage();
 	}
 	
 }

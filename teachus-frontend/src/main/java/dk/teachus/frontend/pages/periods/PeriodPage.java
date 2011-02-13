@@ -21,14 +21,12 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.validation.IValidatable;
@@ -36,21 +34,20 @@ import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.StringValidator;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
-import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.TeachUsDate;
+import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.calendar.PeriodDateComponent;
+import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.CheckGroupElement;
 import dk.teachus.frontend.components.form.DateElement;
@@ -260,67 +257,120 @@ public class PeriodPage extends AuthenticatedBasePage {
 		if (period.getId() != null) {
 			add(generatePreview(period));
 		} else {
-			add(new WebComponent("preview").setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true).setVisible(false));
+			add(new WebComponent("calendar").setOutputMarkupId(true).setOutputMarkupPlaceholderTag(true).setVisible(false));
 		}
 	}
 	
 	private WebMarkupContainer generatePreview(final Period period) {
-		final WebMarkupContainer preview = new WebMarkupContainer("preview"); //$NON-NLS-1$
-		preview.setOutputMarkupId(true);
-		
-		final RepeatingView weekDays = new RepeatingView("weekDays"); //$NON-NLS-1$
-		preview.add(weekDays);
-		
-		final Periods periods = new PeriodsImpl();
-		final ArrayList<Period> periodList = new ArrayList<Period>();
-		periodList.add(period);
-		periods.setPeriods(periodList);
-		
-		TeachUsDate beginDate = period.getBeginDate();
-		if (beginDate == null) {
-			beginDate = TeachUsSession.get().createNewDate(new DateTime());
-		}
-		final int weekDayCount = period.getWeekDays().size();
-		final List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
-		if (dates.size() < weekDayCount) {
-			beginDate = beginDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
-			final int diff = weekDayCount - dates.size();
-			dates.addAll(periods.generateDates(beginDate, diff, true));
-		}
-		
-		for (final DatePeriod datePeriod : dates) {
-			final WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
-			weekDays.add(weekDay);
+		IModel<TeachUsDate> dateModel = new Model<TeachUsDate>() {
+			private static final long serialVersionUID = 1L;
+
+			private TeachUsDate date;
 			
-			TeachUsDate date = datePeriod.getDate();
+			{
+				TeachUsDate beginDate = period.getBeginDate();
+				if (beginDate == null) {
+					beginDate = TeachUsSession.get().createNewDate(new DateTime());
+				}
+				this.date = beginDate;
+			}
 			
-			weekDay.add(new PeriodDateComponent("weekDay", period, date) { //$NON-NLS-1$
-				private static final long serialVersionUID = 1L;
-				
-				@Override
-				protected int getRowSpanForTimeContent(final Period period, final TeachUsDate time) {
-					return 0;
-				}
-				
-				@Override
-				protected Component getTimeContent(final String wicketId, final Period period, final TeachUsDate time, final MarkupContainer contentContainer) {
-					return null;
-				}
-				
-				@Override
-				protected boolean shouldDisplayTimeContent(final Period period, final TeachUsDate time) {
-					return false;
-				}
-				
-				@Override
-				protected boolean shouldHideEmptyContent(final Period period, final TeachUsDate time) {
-					return false;
-				}
-				
-			});
-		}
+			@Override
+			public TeachUsDate getObject() {
+				return date;
+			}
+			
+			@Override
+			public void setObject(TeachUsDate date) {
+				this.date = date;
+			}
+		};
 		
-		return preview;
+		IModel<Periods> periodsModel = new LoadableDetachableModel<Periods>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected Periods load() {
+				final Periods periods = new PeriodsImpl();
+				final ArrayList<Period> periodList = new ArrayList<Period>();
+				periodList.add(period);
+				periods.setPeriods(periodList);
+				return periods;
+			}
+		};
+		
+		PeriodsCalendarPanel periodsCalendarPanel = new PeriodsCalendarPanel("calendar", dateModel, periodsModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected boolean isTimeSlotBookable(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
+				return false;
+			}
+			
+			@Override
+			protected Teacher getTeacher() {
+				return TeachUsSession.get().getTeacher();
+			}
+		};
+		periodsCalendarPanel.setOutputMarkupId(true);
+		return periodsCalendarPanel;
+		
+//		final WebMarkupContainer preview = new WebMarkupContainer("preview"); //$NON-NLS-1$
+//		preview.setOutputMarkupId(true);
+//		
+//		final RepeatingView weekDays = new RepeatingView("weekDays"); //$NON-NLS-1$
+//		preview.add(weekDays);
+//		
+//		final Periods periods = new PeriodsImpl();
+//		final ArrayList<Period> periodList = new ArrayList<Period>();
+//		periodList.add(period);
+//		periods.setPeriods(periodList);
+//		
+//		TeachUsDate beginDate = period.getBeginDate();
+//		if (beginDate == null) {
+//			beginDate = TeachUsSession.get().createNewDate(new DateTime());
+//		}
+//		final int weekDayCount = period.getWeekDays().size();
+//		final List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
+//		if (dates.size() < weekDayCount) {
+//			beginDate = beginDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
+//			final int diff = weekDayCount - dates.size();
+//			dates.addAll(periods.generateDates(beginDate, diff, true));
+//		}
+//		
+//		for (final DatePeriod datePeriod : dates) {
+//			final WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
+//			weekDays.add(weekDay);
+//			
+//			TeachUsDate date = datePeriod.getDate();
+//			
+//			weekDay.add(new PeriodDateComponent("weekDay", period, date) { //$NON-NLS-1$
+//				private static final long serialVersionUID = 1L;
+//				
+//				@Override
+//				protected int getRowSpanForTimeContent(final Period period, final TeachUsDate time) {
+//					return 0;
+//				}
+//				
+//				@Override
+//				protected Component getTimeContent(final String wicketId, final Period period, final TeachUsDate time, final MarkupContainer contentContainer) {
+//					return null;
+//				}
+//				
+//				@Override
+//				protected boolean shouldDisplayTimeContent(final Period period, final TeachUsDate time) {
+//					return false;
+//				}
+//				
+//				@Override
+//				protected boolean shouldHideEmptyContent(final Period period, final TeachUsDate time) {
+//					return false;
+//				}
+//				
+//			});
+//		}
+//		
+//		return preview;
 	}
 	
 	@Override
