@@ -33,6 +33,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalTime;
 import org.joda.time.PeriodType;
 
+import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.DatePeriod;
@@ -94,7 +95,9 @@ abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlo
 
 			@Override
 			protected Bookings load() {
-				return TeachUsApplication.get().getBookingDAO().getBookings(getTeacher(), getFromDate(), getToDate());
+				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				Bookings bookings = bookingDAO.getBookings(getTeacher(), getFromDate(), getToDate());
+				return bookings;
 			}
 		};
 	}

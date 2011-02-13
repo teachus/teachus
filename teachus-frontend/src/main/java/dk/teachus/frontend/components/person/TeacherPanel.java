@@ -25,7 +25,6 @@ import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
-import dk.teachus.backend.domain.impl.NewCalendarTeacherAttribute;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.form.CheckBoxElement;
@@ -37,8 +36,7 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 public class TeacherPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
 	private TimeZoneAttribute timeZoneAttribute;
-	private NewCalendarTeacherAttribute newCalendarAttribute;
-	private CalendarNarrowTimesTeacherAttribute newCalendarNarrowTimesAttribute;
+	private CalendarNarrowTimesTeacherAttribute calendarNarrowTimesAttribute;
 
 	public TeacherPanel(String id, TeacherModel teacherModel) {
 		super(id, teacherModel);
@@ -67,12 +65,10 @@ public class TeacherPanel extends PersonPanel {
 		Teacher teacher = (Teacher) person;
 		
 		timeZoneAttribute.setTeacher(teacher);
-		newCalendarAttribute.setTeacher(teacher);
-		newCalendarNarrowTimesAttribute.setTeacher(teacher);
+		calendarNarrowTimesAttribute.setTeacher(teacher);
 		
 		TeachUsSession.get().saveNewTeacherAttribute(timeZoneAttribute);
-		TeachUsSession.get().saveNewTeacherAttribute(newCalendarAttribute);
-		TeachUsSession.get().saveNewTeacherAttribute(newCalendarNarrowTimesAttribute);
+		TeachUsSession.get().saveNewTeacherAttribute(calendarNarrowTimesAttribute);
 		
 		onSave(teacher);
 	}
@@ -127,40 +123,7 @@ public class TeacherPanel extends PersonPanel {
 		formPanel.addElement(DropDownElement.createTimeZoneElement(TeachUsSession.get().getString("General.timeZone"), inputModel, true)); //$NON-NLS-1$
 		
 		/*
-		 * Use new calendar
-		 */
-		IModel<Boolean> newCalendarModel = new Model<Boolean>() {
-			private static final long serialVersionUID = 1L;
-			
-			@Override
-			public Boolean getObject() {
-				Teacher teacher = (Teacher) getModelObject();
-				
-				if (newCalendarAttribute == null && teacher.getId() != null) {
-					newCalendarAttribute = TeachUsSession.get().getTeacherAttribute(NewCalendarTeacherAttribute.class, teacher);
-				}
-				
-				if (newCalendarAttribute == null) {
-					newCalendarAttribute = new NewCalendarTeacherAttribute();
-				}
-				
-				return newCalendarAttribute.getBooleanValue();
-			}
-			
-			@Override
-			public void setObject(Boolean bool) {
-				if (bool != null) {
-					newCalendarAttribute.setBooleanValue(bool);
-				} else { 
-					newCalendarAttribute.setValue(null);
-				}
-			}
-		};
-		
-		formPanel.addElement(new CheckBoxElement(TeachUsSession.get().getString("TeacherPanel.useNewCalendar"), newCalendarModel)); //$NON-NLS-1$
-		
-		/*
-		 * In the new calendar, use narrow calendar time span (from start period to end period)
+		 * In the calendar, use narrow calendar time span (from start period to end period)
 		 */
 		IModel<Boolean> newCalendarNarrowTimesModel = new Model<Boolean>() {
 			private static final long serialVersionUID = 1L;
@@ -169,23 +132,23 @@ public class TeacherPanel extends PersonPanel {
 			public Boolean getObject() {
 				Teacher teacher = (Teacher) getModelObject();
 				
-				if (newCalendarNarrowTimesAttribute == null && teacher.getId() != null) {
-					newCalendarNarrowTimesAttribute = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class, teacher);
+				if (calendarNarrowTimesAttribute == null && teacher.getId() != null) {
+					calendarNarrowTimesAttribute = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class, teacher);
 				}
 				
-				if (newCalendarNarrowTimesAttribute == null) {
-					newCalendarNarrowTimesAttribute = new CalendarNarrowTimesTeacherAttribute();
+				if (calendarNarrowTimesAttribute == null) {
+					calendarNarrowTimesAttribute = new CalendarNarrowTimesTeacherAttribute();
 				}
 				
-				return newCalendarNarrowTimesAttribute.getBooleanValue();
+				return calendarNarrowTimesAttribute.getBooleanValue();
 			}
 			
 			@Override
 			public void setObject(Boolean bool) {
 				if (bool != null) {
-					newCalendarNarrowTimesAttribute.setBooleanValue(bool);
+					calendarNarrowTimesAttribute.setBooleanValue(bool);
 				} else { 
-					newCalendarNarrowTimesAttribute.setValue(null);
+					calendarNarrowTimesAttribute.setValue(null);
 				}
 			}
 		};

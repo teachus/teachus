@@ -252,8 +252,8 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected void assertTimeNotSelected(TeachUsWicketTester tester, String componentPath) {
-		TagTester tagTester = getTagTesterForComponent(tester, componentPath+":contentContainer:content:link");
-		assertNull("The time was booked", tagTester.getAttribute("class"));
+		TagTester tagTester = getTagTesterForComponent(tester, componentPath);
+		assertTrue("The time was booked", tagTester.getAttributeContains("class", "nobooking"));
 	}
 	
 	protected void assertTimeOccupied(TeachUsWicketTester tester, String componentPath) {
@@ -262,8 +262,9 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected void assertTimeSelected(TeachUsWicketTester tester, String componentPath) {
-		TagTester tagTester = getTagTesterForComponent(tester, componentPath+":contentContainer:content:link");
-		assertEquals("The time wasn't booked", "selected", tagTester.getAttribute("class"));
+		TagTester tagTester = getTagTesterForComponent(tester, componentPath);
+		System.out.println(tagTester.getAttribute("class"));
+		assertTrue("The time wasn't booked", tagTester.getAttributeContains("class", "booked"));
 	}
 
 	private TagTester getTagTesterForComponent(TeachUsWicketTester tester, String componentPath) {

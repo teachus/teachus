@@ -23,8 +23,6 @@
         
         <subclass name="TimeZoneAttribute" discriminator-value="TIMEZONE" />
         
-        <subclass name="NewCalendarTeacherAttribute" discriminator-value="NEWCALENDAR" />
-        
         <subclass name="CalendarNarrowTimesTeacherAttribute" discriminator-value="CALENDARNARROWTIMES" />
         
     </class>

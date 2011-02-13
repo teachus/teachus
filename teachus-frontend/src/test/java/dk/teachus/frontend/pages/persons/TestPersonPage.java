@@ -140,7 +140,7 @@ public class TestPersonPage extends WicketTestCase {
 			one(personDAO).getPerson(teacher.getId());
 			will(returnValue(teacher));
 			
-			exactly(3).of(personDAO).getAttributes(teacher);
+			exactly(2).of(personDAO).getAttributes(teacher);
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 						
 			tester.setPersonDAO(personDAO);

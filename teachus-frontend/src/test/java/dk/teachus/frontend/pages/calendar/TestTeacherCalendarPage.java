@@ -23,6 +23,7 @@ import java.util.TimeZone;
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
@@ -38,7 +39,7 @@ import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.calendar.CalendarPanel;
+import dk.teachus.frontend.components.calendar.v2.TeacherPeriodsCalendarPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestTeacherCalendarPage extends WicketTestCase {
@@ -55,7 +56,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			Teacher teacher = createTeacher(2L);
 			will(returnValue(teacher));
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)));
+			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(new PeriodsImpl()));
 			
 			one(personDAO).getAttributes(teacher);
@@ -75,7 +76,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(TeacherCalendarPage.class);
 		
-		tester.assertComponent("calendar", CalendarPanel.class);
+		tester.assertComponent("calendar", TeacherPeriodsCalendarPanel.class);
 		
 		tester.assertContains(TeachUsSession.get().getPerson().getName());
 	}
@@ -99,10 +100,10 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			PeriodsImpl periodsImpl = new PeriodsImpl();
 			periodsImpl.setPeriods(periods);
 			
-			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)));
+			exactly(3).of(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(periodsImpl));
 			
-			exactly(2).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
+			exactly(1).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			one(bookingDAO).createTeacherBookingObject();
@@ -112,6 +113,19 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			one(bookingDAO).book(with(a(Booking.class)));
+			
+			exactly(2).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
+			TeacherBookingImpl teacherBooking = new TeacherBookingImpl();
+			teacherBooking.setPeriod(period);
+			teacherBooking.setTeacher(teacher);
+			teacherBooking.setId(123567L);
+			teacherBooking.setActive(true);
+			teacherBooking.setCreateDate(new TeachUsDate(new DateTime()));
+			teacherBooking.setUpdateDate(new TeachUsDate(new DateTime()));
+			teacherBooking.setDate(new TeachUsDate(new DateTime(), TimeZone.getDefault()).withDate(2007, 5, 9).withTime(13, 0, 0, 0));
+			List<Booking> bookings = new ArrayList<Booking>();
+			bookings.add(teacherBooking);
+			will(returnValue(new BookingsImpl(bookings)));
 			
 			tester.setBookingDAO(bookingDAO);
 			tester.setPeriodDAO(periodDAO);
@@ -127,13 +141,13 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 		});
 		
 		tester.assertRenderedPage(TeacherCalendarPage.class);
-		
-		String timePath = "calendar:calendar:weeks:1:days:2:periods:1:period:rows:3";
+
+		String timePath = "calendar:days:2:timeSlots:3";
 		
 		assertTimeNotSelected(tester, timePath);
 
 		// Book time
-		tester.clickLink(timePath+":contentContainer:content:link");
+		tester.executeAjaxEvent(timePath, "onclick");
 		
 		// Show the page again to check that it is displaying
 		tester.startPage(new ITestPageSource() {
@@ -168,13 +182,13 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			Periods periods = new PeriodsImpl();
 			Period period = createPeriod();
 			periods.addPeriod(period);
-			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)));
+			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(periods));
 			
-			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 16, timeZone));
+			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
-			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 10, 22, timeZone), new TeachUsDate(2007, 11, 2, timeZone));
+			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 10, 29, timeZone), new TeachUsDate(2007, 11, 4, timeZone));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setPersonDAO(personDAO);
@@ -192,7 +206,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(TeacherCalendarPage.class);
 		
-		tester.clickLink("calendar:calendar:backLink");
+		tester.clickLink("calendar:previousWeek");
 
 		tester.assertRenderedPage(TeacherCalendarPage.class);
 	}
@@ -221,7 +235,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			period.addWeekDay(WeekDay.SATURDAY);
 			period.addWeekDay(WeekDay.SUNDAY);
 			periods.addPeriod(period);
-			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)));
+			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
 			will(returnValue(periods));
 			
 			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));
@@ -245,7 +259,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(TeacherCalendarPage.class);
 		
-		tester.clickLink("calendar:calendar:backLink");
+		tester.clickLink("calendar:previousWeek");
 
 		tester.assertRenderedPage(TeacherCalendarPage.class);
 	}

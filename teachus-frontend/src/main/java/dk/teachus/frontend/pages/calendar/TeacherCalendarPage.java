@@ -21,15 +21,10 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.model.Model;
 import org.joda.time.DateMidnight;
 
-import dk.teachus.backend.dao.PeriodDAO;
-import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.NewCalendarTeacherAttribute;
-import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.calendar.TeacherCalendarPanel;
 import dk.teachus.frontend.components.calendar.v2.TeacherPeriodsCalendarPanel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
@@ -51,16 +46,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 		
 		teacher = TeachUsSession.get().getTeacher();
 		
-		NewCalendarTeacherAttribute newCalendarTeacherAttribute = TeachUsSession.get().getTeacherAttribute(NewCalendarTeacherAttribute.class);
-		if (newCalendarTeacherAttribute != null && newCalendarTeacherAttribute.getBooleanValue()) {
-			add(new TeacherPeriodsCalendarPanel("calendar", new Model<TeachUsDate>(pageDate)));
-		} else {
-			PeriodDAO periodDAO = TeachUsApplication.get().getPeriodDAO();
-			
-			final Periods periods = periodDAO.getPeriods(teacher);
-			
-			add(new TeacherCalendarPanel("calendar", pageDate, periods));
-		}
+		add(new TeacherPeriodsCalendarPanel("calendar", new Model<TeachUsDate>(pageDate)));
 	}
 
 	@Override
