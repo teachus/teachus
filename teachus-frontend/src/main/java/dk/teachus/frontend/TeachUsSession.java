@@ -16,8 +16,6 @@
  */
 package dk.teachus.frontend;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +43,6 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
-import dk.teachus.backend.domain.TeacherAttribute.ValueChangeListener;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.pages.UnAuthenticatedBasePage;
 import dk.teachus.utils.ClassUtils;
@@ -57,7 +54,7 @@ public class TeachUsSession extends WebSession {
 	protected Person person;
 	private Properties resourceBundle;
 	
-	private List<TeacherAttribute> teacherAttributes;
+	private TeacherAttributes teacherAttributes = new TeacherAttributes();
 	
 	public TeachUsSession(Request request) {
 		super(request);
@@ -157,90 +154,23 @@ public class TeachUsSession extends WebSession {
 	
 	public List<TeacherAttribute> getTeacherAttributes() {
 		Person p = getPerson();
-		if (p != null) {
-			if (p instanceof Teacher == false) {
-				throw new IllegalStateException("Can only get teacher attributes, when a teacher is logged in.");
-			}
-			
-			if (teacherAttributes == null) {
-				List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(getTeacher());
-				// Add change listener
-				if (attributes != null) {
-					for (TeacherAttribute teacherAttribute : attributes) {
-						addValueChangeListener(teacherAttribute);
-					}
-
-					teacherAttributes = Collections.unmodifiableList(attributes);
-				}
-			}
-		}
-		
-		return teacherAttributes;
+		return teacherAttributes.getTeacherAttributes(p);
 	}
 	
 	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass) {
-		Teacher teacher = null;
-		
-		Person p = getPerson();
-		if (p instanceof Teacher) {
-			teacher = (Teacher) p;
-		} else if (p instanceof Pupil) {
-			Pupil pupil = (Pupil) p;
-			teacher = pupil.getTeacher();
-		} else {
-			throw new IllegalStateException("Can not find a teacher for the person of type: "+p);
-		}
-		
-		return getTeacherAttribute(attributeClass, teacher);
+		return teacherAttributes.getTeacherAttribute(attributeClass, getPerson());
 	}
 
 	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
-		Person p = getPerson();
-		if (teacher != null && p != null && teacher.getId().equals(p.getId())) {
-			return getTeacherAttribute(getTeacherAttributes(), attributeClass);
-		} else {
-			List<TeacherAttribute> attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
-			return getTeacherAttribute(attributes, attributeClass);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	private <A extends TeacherAttribute> A getTeacherAttribute(List<TeacherAttribute> attributes, Class<A> attributeClass) {
-		A foundAttribute = null;
-		
-		if (attributes != null) {
-			for (TeacherAttribute teacherAttribute : attributes) {
-				if (attributeClass.isInstance(teacherAttribute)) {
-					foundAttribute = (A) teacherAttribute;
-					break;
-				}
-			}
-		}
-		
-		return foundAttribute;
+		return teacherAttributes.getTeacherAttribute(attributeClass, teacher);
 	}
 	
 	public void saveNewTeacherAttribute(TeacherAttribute teacherAttribute) {
 		if (teacherAttribute != null && teacherAttribute.getId() == null) {
 			TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
 			
-			if (person instanceof Teacher) {
-				List<TeacherAttribute> newAttributes = new ArrayList<TeacherAttribute>(getTeacherAttributes());
-				newAttributes.add(teacherAttribute);
-				addValueChangeListener(teacherAttribute);
-				teacherAttributes = Collections.unmodifiableList(newAttributes);
-			}
+			teacherAttributes.refreshAttributes(teacherAttribute.getTeacher());
 		}
-	}
-
-	private void addValueChangeListener(TeacherAttribute teacherAttribute) {
-		teacherAttribute.addValueChangeListener(new ValueChangeListener() {
-			private static final long serialVersionUID = 1L;
-			
-			public void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue) {
-				TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
-			}
-		});
 	}
 	
 	public UserLevel getUserLevel() {

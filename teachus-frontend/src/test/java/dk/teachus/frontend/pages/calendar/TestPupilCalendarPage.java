@@ -91,7 +91,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			one(personDAO).getPerson(11L);
 			will(returnValue(createPupil(11L)));
 			
-			exactly(198).of(personDAO).getAttributes(with(a(Teacher.class)));
+			exactly(1).of(personDAO).getAttributes(with(a(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
