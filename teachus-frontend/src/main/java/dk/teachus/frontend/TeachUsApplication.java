@@ -55,7 +55,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
-import dk.teachus.frontend.components.calendar.CalendarPanelV2;
+import dk.teachus.frontend.components.calendar.CalendarPanel;
 import dk.teachus.frontend.components.fancybox.JQueryFancyboxBehavior;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
@@ -272,7 +272,7 @@ public class TeachUsApplication extends WebApplication {
 		mountSharedResource("/js/jquery.js", JQueryBehavior.JS_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/js/jquery-cluetip.js", JQueryCluetipBehavior.JS_CLUETIP_JQUERY.getSharedResourceKey()); //$NON-NLS-1$
 		mountSharedResource("/js/fancybox.js", JQueryFancyboxBehavior.JS_FANCYBOX.getSharedResourceKey()); //$NON-NLS-1$
-		mountSharedResource("/js/calendar.js", CalendarPanelV2.JS_CALENDAR.getSharedResourceKey()); //$NON-NLS-1$
+		mountSharedResource("/js/calendar.js", CalendarPanel.JS_CALENDAR.getSharedResourceKey()); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {

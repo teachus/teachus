@@ -47,7 +47,7 @@ import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
 import dk.teachus.frontend.utils.Formatters;
 
-public abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotPayload> {
+public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTimeSlotPayload> {
 	private static final long serialVersionUID = 1L;
 	
 	public static class PeriodBookingTimeSlotPayload implements Serializable {

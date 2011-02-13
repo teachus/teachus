@@ -53,10 +53,10 @@ import dk.teachus.frontend.components.jquery.JQueryBehavior;
 /**
  * @param <T> TimeSlot payload
  */
-public abstract class CalendarPanelV2<T> extends Panel {
+public abstract class CalendarPanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public static final ResourceReference JS_CALENDAR = new JavascriptResourceReference(CalendarPanelV2.class, "calendar.js"); //$NON-NLS-1$
+	public static final ResourceReference JS_CALENDAR = new JavascriptResourceReference(CalendarPanel.class, "calendar.js"); //$NON-NLS-1$
 
 	public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern("HH:mm"); //$NON-NLS-1$
 	private static final DateTimeFormatter HEADER_FORMAT = DateTimeFormat.forPattern("EE d/M"); //$NON-NLS-1$
@@ -87,7 +87,7 @@ public abstract class CalendarPanelV2<T> extends Panel {
 		}
 	}
 	
-	public CalendarPanelV2(String id, IModel<TeachUsDate> weekDateModel) {
+	public CalendarPanel(String id, IModel<TeachUsDate> weekDateModel) {
 		super(id, weekDateModel);
 		
 		add(new JQueryBehavior());
@@ -142,7 +142,7 @@ public abstract class CalendarPanelV2<T> extends Panel {
 
 			@Override
 			protected List<TeachUsDate> load() {
-				TeachUsDate thisMonday = CalendarPanelV2.this.getModelObject().withDayOfWeek(DateTimeConstants.MONDAY);
+				TeachUsDate thisMonday = CalendarPanel.this.getModelObject().withDayOfWeek(DateTimeConstants.MONDAY);
 				List<TeachUsDate> days = new ArrayList<TeachUsDate>();
 				for (int i = 0; i < 7; i++) {
 					days.add(thisMonday);
