@@ -37,7 +37,7 @@ import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.calendar.v2.PupilPeriodsCalendarPanel;
+import dk.teachus.frontend.components.calendar.PupilPeriodsCalendarPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestPupilCalendarPage extends WicketTestCase {

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.components.calendar.v2;
+package dk.teachus.frontend.components.calendar;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
+import dk.teachus.frontend.components.calendar.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
 import dk.teachus.frontend.utils.Formatters;
 
 public abstract class PeriodsCalendarPanel extends CalendarPanelV2<PeriodBookingTimeSlotPayload> {

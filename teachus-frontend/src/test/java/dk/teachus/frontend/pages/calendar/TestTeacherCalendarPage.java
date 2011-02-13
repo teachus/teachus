@@ -39,7 +39,7 @@ import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.calendar.v2.TeacherPeriodsCalendarPanel;
+import dk.teachus.frontend.components.calendar.TeacherPeriodsCalendarPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestTeacherCalendarPage extends WicketTestCase {

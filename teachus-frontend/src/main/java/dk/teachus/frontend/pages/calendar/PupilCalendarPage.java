@@ -23,7 +23,7 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.calendar.v2.PupilPeriodsCalendarPanel;
+import dk.teachus.frontend.components.calendar.PupilPeriodsCalendarPanel;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 

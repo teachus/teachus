@@ -47,7 +47,7 @@ import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.calendar.v2.PeriodsCalendarPanel;
+import dk.teachus.frontend.components.calendar.PeriodsCalendarPanel;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.CheckGroupElement;
 import dk.teachus.frontend.components.form.DateElement;

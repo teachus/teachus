@@ -55,7 +55,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
-import dk.teachus.frontend.components.calendar.v2.CalendarPanelV2;
+import dk.teachus.frontend.components.calendar.CalendarPanelV2;
 import dk.teachus.frontend.components.fancybox.JQueryFancyboxBehavior;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
