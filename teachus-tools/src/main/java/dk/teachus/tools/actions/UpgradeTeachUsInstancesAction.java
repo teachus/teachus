@@ -144,7 +144,7 @@ public class UpgradeTeachUsInstancesAction implements Action {
 			}
 			
 			SftpDeleteFileAction deleteFile = new SftpDeleteFileAction(tomcat.getHost(), tomcat.getHome()+"/webapps/"+instanceName+".war");
-			SftpDeleteDirectoryAction deleteDirectory = new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/webapps/"+instanceName);
+			SshDeleteDirectoryAction deleteDirectory = new SshDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/webapps/"+instanceName);
 			
 			deleteFile.init();
 			deleteDirectory.init();
@@ -157,7 +157,7 @@ public class UpgradeTeachUsInstancesAction implements Action {
 		}
 		
 		log.info("Remove tomcat work dir");
-		SftpDeleteDirectoryAction deleteTomcatWorkDir = new SftpDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina");
+		SshDeleteDirectoryAction deleteTomcatWorkDir = new SshDeleteDirectoryAction(tomcat.getHost(), tomcat.getHome()+"/work/Catalina");
 		deleteTomcatWorkDir.init();
 		deleteTomcatWorkDir.check();
 		deleteTomcatWorkDir.execute();
