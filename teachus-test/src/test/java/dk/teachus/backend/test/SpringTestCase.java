@@ -76,7 +76,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	}
 	
 	protected Long createPupilBooking(long periodId, long pupilId, DateTime dateTime, Date createDate) {
-		return createPupilBooking(periodId, pupilId, new TeachUsDate(dateTime, TimeZone.getDefault()), new TeachUsDate(createDate, TimeZone.getDefault()));
+		return createPupilBooking(periodId, pupilId, new TeachUsDate(dateTime, TimeZone.getDefault()), createDate != null ? new TeachUsDate(createDate, TimeZone.getDefault()) : null);
 	}
 	
 	protected Long createPupilBooking(long periodId, long pupilId, TeachUsDate date, TeachUsDate createDate) {
@@ -109,7 +109,15 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		return createTeacherBooking(periodId, teacherId, new TeachUsDate(date, TimeZone.getDefault()));
 	}
 	
+	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date, DateTime createDate) {
+		return createTeacherBooking(periodId, teacherId, new TeachUsDate(date, TimeZone.getDefault()), createDate != null ? new TeachUsDate(createDate, TimeZone.getDefault()) : null);
+	}
+	
 	protected Long createTeacherBooking(long periodId, long teacherId, TeachUsDate date) {
+		return createTeacherBooking(periodId, teacherId, date, new TeachUsDate(new DateTime().minusHours(3).toDate(), TimeZone.getDefault()));
+	}
+	
+	protected Long createTeacherBooking(long periodId, long teacherId, TeachUsDate date, TeachUsDate createDate) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();
@@ -121,7 +129,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		endTransaction();
 		
 		TeacherBooking teacherBooking = bookingDAO.createTeacherBookingObject();
-		teacherBooking.setCreateDate(new TeachUsDate(new DateTime().minusHours(3).toDate(), TimeZone.getDefault()));
+		teacherBooking.setCreateDate(createDate);
 		teacherBooking.setDate(date);
 		teacherBooking.setPeriod(period);
 		teacherBooking.setTeacher(teacher);

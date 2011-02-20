@@ -69,12 +69,15 @@ public class TestBookingDAO extends SpringTestCase {
 	
 	public void testBook_createDate() {
 		{
-			Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), null);
 			
-			Booking booking = getBookingDAO().getBooking(bookingId);
-			endTransaction();
-			
-			assertNull(booking.getCreateDate());
+			try {
+				createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), null);
+				fail("An exception is expected to be thrown, because we require a create date for pupil bookings.");
+			} catch (IllegalArgumentException e) {
+				// Expected
+			} finally {
+				endTransaction();
+			}
 		}
 		
 		{
@@ -84,6 +87,16 @@ public class TestBookingDAO extends SpringTestCase {
 			endTransaction();
 			
 			assertNotNull(booking.getCreateDate());
+		}
+		
+		{
+			Teacher teacher = getTeacher();
+			Long bookingId = createTeacherBooking(1L, teacher.getId(), new DateTime(2007, 3, 12, 12, 0, 0, 0), null);
+			
+			Booking booking = getBookingDAO().getBooking(bookingId);
+			endTransaction();
+			
+			assertNull(booking.getCreateDate());
 		}
 	}
 	

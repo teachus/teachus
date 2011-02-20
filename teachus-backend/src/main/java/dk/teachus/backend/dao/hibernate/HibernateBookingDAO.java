@@ -71,6 +71,10 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 				throw new IllegalArgumentException("Can only book for active pupils");
 			}
 			
+			if (pupilBooking.getCreateDate() == null) {
+				throw new IllegalArgumentException("Pupil bookings must have a create date");
+			}
+			
 			// Ensure that the teacher property is set
 			if (pupilBooking.getTeacher() == null) {
 				pupilBooking.setTeacher(pupilBooking.getPupil().getTeacher());

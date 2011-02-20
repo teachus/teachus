@@ -198,6 +198,10 @@ public class TeachUsSession extends WebSession {
 			return '!' + key + '!';
 		}
 	}
+	
+	public TeachUsDate createNewDate() {
+		return createNewDate(new DateTime());
+	}
 
 	public TeachUsDate createNewDate(DateMidnight dateMidnight) {
 		return createNewDate(dateMidnight.toDateTime());

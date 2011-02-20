@@ -16,6 +16,7 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -116,9 +117,9 @@ public class TestPersonDAO extends SpringTestCase {
 		// Create some bookings for the teacher and pupils
 		DateTime date = new DateTime().plusWeeks(1).withDayOfWeek(WeekDay.FRIDAY.getYodaWeekDay());
 		date = date.withTime(11, 0, 0, 0);
-		Long pupilBooking1 = createPupilBooking(period.getId(), pupil1.getId(), date, null);
+		Long pupilBooking1 = createPupilBooking(period.getId(), pupil1.getId(), date, new Date());
 		date = date.withTime(13, 0, 0, 0);
-		Long pupilBooking2 = createPupilBooking(period.getId(), pupil2.getId(), date, null);
+		Long pupilBooking2 = createPupilBooking(period.getId(), pupil2.getId(), date, new Date());
 		
 		date = date.withTime(15, 0, 0, 0);
 		Long teacherBooking = createTeacherBooking(period.getId(), teacher.getId(), date);
