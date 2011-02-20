@@ -2,7 +2,7 @@ package dk.teachus.tools.test;
 
 import java.io.File;
 
-public class TestUtils {
+public abstract class TestUtils {
 	
 	public static void printFolder(File folder, int level) {
 		System.out.println(createIndent(level)+"["+folder.getName()+"]");
