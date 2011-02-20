@@ -56,7 +56,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			Teacher teacher = createTeacher(2L);
 			will(returnValue(teacher));
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			one(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(new PeriodsImpl()));
 			
 			one(personDAO).getAttributes(teacher);
@@ -100,10 +100,10 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			PeriodsImpl periodsImpl = new PeriodsImpl();
 			periodsImpl.setPeriods(periods);
 			
-			exactly(3).of(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			exactly(3).of(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periodsImpl));
 			
-			exactly(1).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
+			exactly(1).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(TeachUsDate.class)), with(aNonNull(TeachUsDate.class)));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			one(bookingDAO).createTeacherBookingObject();
@@ -112,9 +112,9 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			one(personDAO).getAttributes(teacher);
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
-			one(bookingDAO).book(with(a(Booking.class)));
+			one(bookingDAO).book(with(aNonNull(Booking.class)));
 			
-			exactly(2).of(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
+			exactly(2).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(TeachUsDate.class)), with(aNonNull(TeachUsDate.class)));
 			TeacherBookingImpl teacherBooking = new TeacherBookingImpl();
 			teacherBooking.setPeriod(period);
 			teacherBooking.setTeacher(teacher);
@@ -182,7 +182,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			Periods periods = new PeriodsImpl();
 			Period period = createPeriod();
 			periods.addPeriod(period);
-			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			exactly(2).of(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periods));
 			
 			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));
@@ -235,7 +235,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			period.addWeekDay(WeekDay.SATURDAY);
 			period.addWeekDay(WeekDay.SUNDAY);
 			periods.addPeriod(period);
-			exactly(2).of(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			exactly(2).of(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periods));
 			
 			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));

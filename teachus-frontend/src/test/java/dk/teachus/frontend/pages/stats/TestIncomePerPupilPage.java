@@ -43,7 +43,7 @@ public class TestIncomePerPupilPage extends WicketTestCase {
 			Teacher teacher = createTeacher();
 			will(returnValue(teacher));
 			
-			one(personDAO).getAttributes(with(a(Teacher.class)));
+			one(personDAO).getAttributes(with(aNonNull(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			List<PupilBooking> bookings = new ArrayList<PupilBooking>();

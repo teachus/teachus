@@ -49,7 +49,7 @@ public class TestAgendaPage extends WicketTestCase {
 			bookings.add(createPupilBooking(1L, new TeachUsDate(2007, 4, 20, 13, 0, 0, timeZone)));
 			bookings.add(createPupilBooking(2L, new TeachUsDate(2007, 4, 20, 14, 0, 0, timeZone)));
 			
-			one(bookingDAO).getFutureBookingsForTeacher(with(a(Teacher.class)));
+			one(bookingDAO).getFutureBookingsForTeacher(with(aNonNull(Teacher.class)));
 			will(returnValue(bookings));
 			
 			one(personDAO).getPerson(3L);

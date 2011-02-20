@@ -55,10 +55,10 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			one(personDAO).getPerson(2L);
 			will(returnValue(createTeacher(2L)));
 			
-			one(personDAO).getAttributes(with(a(Teacher.class)));
+			one(personDAO).getAttributes(with(aNonNull(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			one(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(new PeriodsImpl()));
 			
 			tester.setPersonDAO(personDAO);
@@ -91,10 +91,10 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			one(personDAO).getPerson(11L);
 			will(returnValue(createPupil(11L)));
 			
-			exactly(1).of(personDAO).getAttributes(with(a(Teacher.class)));
+			exactly(1).of(personDAO).getAttributes(with(aNonNull(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			one(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(new PeriodsImpl()));
 			
 			tester.setPersonDAO(personDAO);
@@ -133,10 +133,10 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			PeriodsImpl periodsImpl = new PeriodsImpl();
 			periodsImpl.setPeriods(periods);
 			
-			one(periodDAO).getPeriods(with(a(Teacher.class)), with(same(true)));
+			one(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periodsImpl));
 			
-			one(personDAO).getAttributes(with(a(Teacher.class)));
+			one(personDAO).getAttributes(with(aNonNull(Teacher.class)));
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
 			List<Booking> bookings = new ArrayList<Booking>();
@@ -144,7 +144,7 @@ public class TestPupilCalendarPage extends WicketTestCase {
 			bookings.add(createPupilBooking(1L, createPupil(7L), period, dateTime.plusHours(2)));
 			Bookings bookingsImpl = new BookingsImpl(bookings);
 			
-			one(bookingDAO).getBookings(with(a(Teacher.class)), with(a(TeachUsDate.class)), with(a(TeachUsDate.class)));
+			one(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(TeachUsDate.class)), with(aNonNull(TeachUsDate.class)));
 			will(returnValue(bookingsImpl));
 			
 			tester.setPersonDAO(personDAO);

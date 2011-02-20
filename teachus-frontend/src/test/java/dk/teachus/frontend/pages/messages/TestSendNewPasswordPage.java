@@ -40,7 +40,7 @@ public class TestSendNewPasswordPage extends WicketTestCase {
 			one(personDAO).getPerson(4L);
 			will(returnValue(createPupil(4L)));
 			
-			one(personDAO).getAttributes(with(a(Teacher.class)));
+			one(personDAO).getAttributes(with(aNonNull(Teacher.class)));
 			will(returnValue(null));
 			
 			tester.setPersonDAO(personDAO);
