@@ -11,6 +11,7 @@ import dk.teachus.tools.actions.Action;
 public class Workflow {
 	private static final Log log = LogFactory.getLog(Workflow.class);
 
+	private boolean failOnError = false;
 	private List<Action> actions = new ArrayList<Action>();
 	
 	public void addAction(Action action) {
@@ -41,6 +42,10 @@ public class Workflow {
 			}
 		} catch (Exception e) {
 			log.error("Error during processing of the workflow", e);
+			
+			if (failOnError) {
+				throw e;
+			}
 		} finally {
 			try {
 				// CLEANUP
@@ -53,6 +58,10 @@ public class Workflow {
 				log.fatal("FATAL exception. Were not able to clean everyting up.", e);
 			}
 		}
+	}
+	
+	public void setFailOnError(boolean failOnError) {
+		this.failOnError = failOnError;
 	}
 	
 }

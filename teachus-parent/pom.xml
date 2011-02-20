@@ -227,15 +227,21 @@
 				<scope>test</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.jmock</groupId>
+				<artifactId>jmock-junit4</artifactId>
+				<version>2.5.1</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.hamcrest</groupId>
-				<artifactId>hamcrest-api</artifactId>
-				<version>1.0</version>
+				<artifactId>hamcrest-core</artifactId>
+				<version>1.2.1</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>
 				<artifactId>hamcrest-library</artifactId>
-				<version>1.0</version>
+				<version>1.2.1</version>
 				<scope>test</scope>
 			</dependency>
 		</dependencies>
