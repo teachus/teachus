@@ -101,6 +101,7 @@
 		<dependency>
 			<groupId>dk.teachus</groupId>
 			<artifactId>teachus-backend</artifactId>
+			<scope>test</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.servlet</groupId>
@@ -177,10 +178,12 @@
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-core</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-library</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
