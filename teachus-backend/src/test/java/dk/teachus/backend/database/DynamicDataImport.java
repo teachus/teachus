@@ -57,6 +57,7 @@ import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationEntry;
+import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
@@ -424,6 +425,11 @@ public abstract class DynamicDataImport {
 		teacher.setTheme(Theme.GREEN);
 		teacher.setCurrency("kr");
 		session.save(teacher);
+		
+		CalendarNarrowTimesTeacherAttribute calAtt = new CalendarNarrowTimesTeacherAttribute();
+		calAtt.setBooleanValue(true);
+		calAtt.setTeacher(teacher);
+		session.save(calAtt);
 		
 		session.getTransaction().commit();
 		session.close();
