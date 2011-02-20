@@ -45,13 +45,15 @@ public class ModifyPomVersionAction implements Action {
 		modifyModulePom("teachus-backend/pom.xml");
 		modifyModulePom("teachus-frontend/pom.xml");
 		modifyModulePom("teachus-test/pom.xml");
+		modifyModulePom("teachus-tools/pom.xml");
 		
 		ScmCommitAction scmCommit = new ScmCommitAction(scmClient, projectDirectory, "Upgrading to "+version, 
 				getFiles(
 				"teachus-parent/pom.xml",
 				"teachus-backend/pom.xml",
 				"teachus-frontend/pom.xml",
-				"teachus-test/pom.xml"));
+				"teachus-test/pom.xml",
+				"teachus-tools/pom.xml"));
 		scmCommit.execute();
 	}
 	

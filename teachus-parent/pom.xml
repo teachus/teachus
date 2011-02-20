@@ -20,6 +20,7 @@
 		<module>../teachus-backend</module>
 		<module>../teachus-frontend</module>
 		<module>../teachus-test</module>
+		<module>../teachus-tools</module>
 	</modules>
 
 	<dependencyManagement>
@@ -40,6 +41,12 @@
 			<dependency>
 				<groupId>dk.teachus</groupId>
 				<artifactId>teachus-test</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>dk.teachus</groupId>
+				<artifactId>teachus-tools</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
