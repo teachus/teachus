@@ -17,29 +17,21 @@
 package dk.teachus.frontend.pages;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
-import org.joda.time.DateMidnight;
-import org.joda.time.LocalTime;
 
 import dk.teachus.backend.dao.BookingDAO;
-import dk.teachus.backend.domain.Booking;
-import dk.teachus.backend.domain.Bookings;
-import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.FunctionsColumn;
+import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
@@ -58,49 +50,6 @@ public class AgendaPage extends AuthenticatedBasePage {
 		
 		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 				
-		
-		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		Bookings bookings = bookingDAO.getBookings(teacher, TeachUsSession.get().createNewDate(new DateMidnight(2006, 1, 1)), TeachUsSession.get().createNewDate(new DateMidnight(2015, 12, 31)));
-		List<Booking> bookingList = bookings.getBookingList();
-		Collections.sort(bookingList, new Comparator<Booking>() {
-			public int compare(Booking o1, Booking o2) {
-				int compare = 0;
-				
-				if (o1 != null && o2 != null) {
-					TeachUsDate d1 = o1.getDate();
-					TeachUsDate d2 = o2.getDate();
-					
-					if (d1 != null && d2 != null) {
-						compare = d1.compareTo(d2);
-					} else if (d1 != null) {
-						compare = -1;
-					} else if (d2 != null) {
-						compare = 1;
-					}
-				} else if (o1 != null) {
-					compare = -1;
-				} else if (o2 != null) {
-					compare = 1;
-				}
-				
-				return compare;
-			}
-		});
-		for (Booking booking : bookingList) {
-			if (booking.getPeriod().mayBook(booking.getDate()) == false) {
-				System.out.println("This booking is wrong:");
-				System.out.println(booking.getClass().getSimpleName()+" - "+booking.getDate());
-				System.out.println("The period would have these booking times:");
-				Period period = booking.getPeriod();
-				LocalTime startTime = period.getStartTime().getLocalTime();
-				while(startTime.isBefore(period.getEndTime().getLocalTime())) {
-					System.out.println(startTime);
-					startTime = startTime.plusMinutes(period.getIntervalBetweenLessonStart());
-				}
-			}
-		}
-		
-		
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 		functions.add(new CancelPubilBookingFunction() {
 			private static final long serialVersionUID = 1L;
