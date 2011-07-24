@@ -27,7 +27,6 @@ import org.joda.time.DateTimeConstants;
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
-import dk.teachus.backend.domain.TeachUsDate;
 
 public class PeriodsImpl implements Periods {
 	private static final long serialVersionUID = 1L;
@@ -46,7 +45,7 @@ public class PeriodsImpl implements Periods {
 		periods.add(period);
 	}
 	
-	public boolean hasDate(TeachUsDate date) {
+	public boolean hasDate(DateMidnight date) {
 		boolean hasDate = false;
 		
 		for (Period period : getValidPeriods()) {
@@ -59,7 +58,7 @@ public class PeriodsImpl implements Periods {
 		return hasDate;
 	}
 	
-	public boolean containsDate(TeachUsDate date) {
+	public boolean containsDate(DateMidnight date) {
 		boolean contains = false;
 		
 		for (Period period : getValidPeriods()) {
@@ -72,18 +71,16 @@ public class PeriodsImpl implements Periods {
 		return contains;
 	}
 	
-	public boolean hasPeriodBefore(TeachUsDate date) {
+	public boolean hasPeriodBefore(DateMidnight dateMidnight) {
 		boolean hasPeriodBefore = false;
 		
-		DateMidnight dateMidnight = date.getDateMidnight();
-		
 		for (Period period : getValidPeriods()) {
-			TeachUsDate beginDate = period.getBeginDate();
+			DateMidnight beginDate = period.getBeginDate();
 			if (beginDate == null) {
 				hasPeriodBefore = true;
 				break;
 			} else {
-				if (beginDate.getDateMidnight().isBefore(dateMidnight) || beginDate.getDateMidnight().equals(dateMidnight)) {
+				if (beginDate.isBefore(dateMidnight) || beginDate.equals(dateMidnight)) {
 					hasPeriodBefore = true;
 					break;
 				}
@@ -93,17 +90,15 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodBefore;
 	}
 	
-	public boolean hasPeriodAfter(TeachUsDate date) {
+	public boolean hasPeriodAfter(DateMidnight dateMidnight) {
 		boolean hasPeriodAfter = false;
-		
-		DateMidnight dateMidnight = date.getDateMidnight();
 		
 		for (Period period : getValidPeriods()) {
 			if (period.getEndDate() == null) {
 				hasPeriodAfter = true;
 				break;
 			} else {
-				DateMidnight endDate = period.getEndDate().getDateMidnight();
+				DateMidnight endDate = period.getEndDate();
 				if (endDate.isAfter(dateMidnight) || endDate.isEqual(dateMidnight)) {
 					hasPeriodAfter = true;
 					break;
@@ -114,9 +109,9 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodAfter;
 	}
 	
-	public List<DatePeriod> generateDatesForWeek(TeachUsDate startDate) {
+	public List<DatePeriod> generateDatesForWeek(DateMidnight startDate) {
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
-		TeachUsDate sd = startDate.withDayOfWeek(DateTimeConstants.MONDAY);
+		DateMidnight sd = startDate.withDayOfWeek(DateTimeConstants.MONDAY);
 		int week = sd.getWeekOfWeekyear();
 		
 		while(week == sd.getWeekOfWeekyear()) {			
@@ -124,7 +119,7 @@ public class PeriodsImpl implements Periods {
 			for (Period period : getValidPeriods()) {
 				// Check if this period can handle the date at all
 				if (period.dateIntervalContains(sd)) {				
-					TeachUsDate date = period.generateDate(sd);
+					DateMidnight date = period.generateDate(sd);
 					if (date != null) {
 						if (datePeriod == null) {
 							datePeriod = new DatePeriodImpl(date);
@@ -148,11 +143,11 @@ public class PeriodsImpl implements Periods {
 		return dates;
 	}
 	
-	public List<DatePeriod> generateDates(TeachUsDate weekDate, int numberOfDays) {
+	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays) {
 		return generateDates(weekDate, numberOfDays, false);
 	}
 
-	public List<DatePeriod> generateDates(TeachUsDate weekDate, int numberOfDays, boolean explicitNumberOfDays) {
+	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays, boolean explicitNumberOfDays) {
 		weekDate = weekDate.withDayOfWeek(DateTimeConstants.MONDAY);
 		
 		List<DatePeriod> dates = new ArrayList<DatePeriod>();
@@ -177,7 +172,7 @@ public class PeriodsImpl implements Periods {
 		return dates;
 	}
 	
-	public int numberOfWeeksBack(TeachUsDate lastDate, int numberOfDays) {
+	public int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays) {
 		int numberOfWeeks = 0;
 		
 		int dates = 0;

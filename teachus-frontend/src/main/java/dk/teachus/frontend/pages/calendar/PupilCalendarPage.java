@@ -17,10 +17,9 @@
 package dk.teachus.frontend.pages.calendar;
 
 import org.apache.wicket.model.Model;
-import org.joda.time.DateTime;
+import org.joda.time.DateMidnight;
 
 import dk.teachus.backend.domain.Pupil;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.calendar.PupilPeriodsCalendarPanel;
@@ -37,10 +36,10 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 	}
 	
 	public PupilCalendarPage(Pupil pupil) {
-		this(TeachUsSession.get().createNewDate(new DateTime()), pupil);
+		this(new DateMidnight(), pupil);
 	}
 	
-	public PupilCalendarPage(TeachUsDate pageDate, Pupil pupil) {
+	public PupilCalendarPage(DateMidnight pageDate, Pupil pupil) {
 		super(UserLevel.PUPIL);
 		
 		if (pupil == null) {
@@ -49,7 +48,7 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 		
 		this.pupil = pupil;
 				
-		add(new PupilPeriodsCalendarPanel("calendar", new Model<TeachUsDate>(pageDate), pupil));
+		add(new PupilPeriodsCalendarPanel("calendar", new Model<DateMidnight>(pageDate), pupil));
 	}
 	
 	@Override

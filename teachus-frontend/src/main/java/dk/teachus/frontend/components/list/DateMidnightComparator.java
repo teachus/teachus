@@ -3,12 +3,12 @@ package dk.teachus.frontend.components.list;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.joda.time.LocalTime;
+import org.joda.time.DateMidnight;
 
-public class TimeComparator implements Comparator<LocalTime>, Serializable {
+public class DateMidnightComparator implements Comparator<DateMidnight>, Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public int compare(LocalTime o1, LocalTime o2) {
+	public int compare(DateMidnight o1, DateMidnight o2) {
 		int compare = 0;
 		
 		if (o1 != null && o2 != null) {

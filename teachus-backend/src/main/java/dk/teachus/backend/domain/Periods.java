@@ -19,6 +19,8 @@ package dk.teachus.backend.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+
 
 public interface Periods extends Serializable {
 
@@ -27,20 +29,20 @@ public interface Periods extends Serializable {
 
 	void addPeriod(Period period);
 
-	boolean hasDate(TeachUsDate date);
+	boolean hasDate(DateMidnight date);
 	
-	boolean containsDate(TeachUsDate date);
+	boolean containsDate(DateMidnight date);
 	
-	boolean hasPeriodBefore(TeachUsDate date);
+	boolean hasPeriodBefore(DateMidnight date);
 	
-	boolean hasPeriodAfter(TeachUsDate date);
+	boolean hasPeriodAfter(DateMidnight date);
 
-	List<DatePeriod> generateDatesForWeek(TeachUsDate startDate);
+	List<DatePeriod> generateDatesForWeek(DateMidnight startDate);
 	
-	List<DatePeriod> generateDates(TeachUsDate startDate, int numberOfDays);
+	List<DatePeriod> generateDates(DateMidnight startDate, int numberOfDays);
 	
-	List<DatePeriod> generateDates(TeachUsDate startDate, int numberOfDays, boolean explicitNumberOfDays);
+	List<DatePeriod> generateDates(DateMidnight startDate, int numberOfDays, boolean explicitNumberOfDays);
 
-	int numberOfWeeksBack(TeachUsDate lastDate, int numberOfDays);
+	int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays);
 
 }

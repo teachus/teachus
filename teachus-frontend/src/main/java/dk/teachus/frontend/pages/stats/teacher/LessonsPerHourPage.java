@@ -37,7 +37,6 @@ import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.BarChartResource;
@@ -61,8 +60,8 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		
 		createFilterForm(year, yearsWithPaidBookings);
 		
-		TeachUsDate fromDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(1).withDayOfMonth(1);
-		TeachUsDate toDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(12).withDayOfMonth(31);
+		DateMidnight fromDate = new DateMidnight(year, 1, 1);
+		DateMidnight toDate = new DateMidnight(year, 12, 31);
 		
 		// Paid
 		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(getPerson(), fromDate, toDate);
@@ -73,7 +72,7 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		// Extract the unpaid bookings which is before now
 		List<PupilBooking> unPaidBookings = new ArrayList<PupilBooking>();
 		List<PupilBooking> futureBookings = new ArrayList<PupilBooking>();
-		TeachUsDate now = TeachUsSession.get().createNewDate(new DateTime());
+		DateTime now = new DateTime();
 		for (PupilBooking booking : allUnPaidBookings) {
 			if (now.isAfter(booking.getDate())) {
 				unPaidBookings.add(booking);

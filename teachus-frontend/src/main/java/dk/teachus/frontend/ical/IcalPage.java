@@ -2,6 +2,7 @@ package dk.teachus.frontend.ical;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,6 +12,7 @@ import org.apache.wicket.RequestCycle;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.string.Strings;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -23,6 +25,7 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 
@@ -74,7 +77,7 @@ public class IcalPage extends Page {
 			List<PupilBooking> pupilBookings = new ArrayList<PupilBooking>();
 			if (person instanceof Pupil) {
 				Pupil pupil = (Pupil) person;
-				Bookings bookings = bookingDAO.getBookings(pupil, teachUsSession.createNewDate(new DateTime()).minusWeeks(1), teachUsSession.createNewDate(new DateTime()).plusYears(1));
+				Bookings bookings = bookingDAO.getBookings(pupil, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
 				List<Booking> bookingList = bookings.getBookingList();
 				for (Booking booking : bookingList) {
 					if (booking instanceof PupilBooking && booking.isActive()) {
@@ -84,7 +87,7 @@ public class IcalPage extends Page {
 				}
 			} else if (person instanceof Teacher) {
 				Teacher teacher = (Teacher) person;
-				Bookings bookings = bookingDAO.getBookings(teacher, teachUsSession.createNewDate(new DateTime()).minusWeeks(1), teachUsSession.createNewDate(new DateTime()).plusYears(1));
+				Bookings bookings = bookingDAO.getBookings(teacher, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
 				List<Booking> bookingList = bookings.getBookingList();
 				for (Booking booking : bookingList) {
 					if (booking instanceof PupilBooking && booking.isActive()) {
@@ -97,7 +100,9 @@ public class IcalPage extends Page {
 			for (PupilBooking pupilBooking : pupilBookings) {
 				b.append("BEGIN:VEVENT").append(CRLF);
 				
-				DateTime startTime = pupilBooking.getDate().getDateTime();
+				DateTime startTime = pupilBooking.getDate();
+				TimeZone teacherTimeZone = teachUsSession.getTeacherAttribute(TimeZoneAttribute.class).getTimeZone();
+				startTime = startTime.withZoneRetainFields(DateTimeZone.forTimeZone(teacherTimeZone));
 				startTime = startTime.withZone(DateTimeZone.UTC);
 				
 				// UID

@@ -18,14 +18,13 @@ package dk.teachus.frontend.pages;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.jmock.Expectations;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.pages.persons.PupilPage;
 import dk.teachus.frontend.test.WicketTestCase;
@@ -37,8 +36,6 @@ public class TestAgendaPage extends WicketTestCase {
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
-			TimeZone timeZone = TimeZone.getDefault();
-			
 			PersonDAO personDAO = createPersonDAO();
 			BookingDAO bookingDAO = createBookingDAO();
 			
@@ -46,8 +43,8 @@ public class TestAgendaPage extends WicketTestCase {
 			will(returnValue(createTeacher(2L)));
 			
 			List<PupilBooking> bookings = new ArrayList<PupilBooking>();
-			bookings.add(createPupilBooking(1L, new TeachUsDate(2007, 4, 20, 13, 0, 0, timeZone)));
-			bookings.add(createPupilBooking(2L, new TeachUsDate(2007, 4, 20, 14, 0, 0, timeZone)));
+			bookings.add(createPupilBooking(1L, new DateTime(2007, 4, 20, 13, 0, 0, 0)));
+			bookings.add(createPupilBooking(2L, new DateTime(2007, 4, 20, 14, 0, 0, 0)));
 			
 			one(bookingDAO).getFutureBookingsForTeacher(with(aNonNull(Teacher.class)));
 			will(returnValue(bookings));

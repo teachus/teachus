@@ -18,10 +18,11 @@ package dk.teachus.backend.domain.impl;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.TeachUsDate;
 
 public class BookingsImpl implements Bookings {
 	private static final long serialVersionUID = 1L;
@@ -32,15 +33,15 @@ public class BookingsImpl implements Bookings {
 		this.bookings = bookings;
 	}
 
-	public Booking getBooking(Period period, TeachUsDate time) {
+	public Booking getBooking(Period period, DateTime time) {
 		Booking booking = null;
 		
 		for (Booking foundBooking : bookings) {
 			if (foundBooking.getPeriod().getId().equals(period.getId())) {
-				TeachUsDate dt1 = foundBooking.getDate();
-				TeachUsDate dt2 = time;
+				DateTime dt1 = foundBooking.getDate();
+				DateTime dt2 = time;
 				
-				if (dt1.getDateMidnight().equals(dt2.getDateMidnight())) {
+				if (dt1.toDateMidnight().equals(dt2.toDateMidnight())) {
 					if (dt1.getHourOfDay() == dt2.getHourOfDay()
 							&& dt1.getMinuteOfHour() == dt2.getMinuteOfHour()) {
 						booking = foundBooking;
@@ -57,7 +58,7 @@ public class BookingsImpl implements Bookings {
 		return bookings;
 	}
 	
-	public boolean mayBook(Period period, TeachUsDate time) {
+	public boolean mayBook(Period period, DateTime time) {
 		boolean mayBook = false;
 		
 		{
@@ -78,7 +79,7 @@ public class BookingsImpl implements Bookings {
 		return mayBook;
 	}
 	
-	public boolean isBeforeBooking(Period period, TeachUsDate time) {
+	public boolean isBeforeBooking(Period period, DateTime time) {
 		boolean beforeBooking = false;
 		
 		{

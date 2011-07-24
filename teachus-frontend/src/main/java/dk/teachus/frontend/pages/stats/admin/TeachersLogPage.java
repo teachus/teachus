@@ -14,7 +14,6 @@ import org.joda.time.DateMidnight;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 
 public class TeachersLogPage extends AbstractAdminStatisticsPage {
@@ -31,9 +30,9 @@ public class TeachersLogPage extends AbstractAdminStatisticsPage {
 				List<LogProvider> providers = new ArrayList<LogProvider>();
 				providers.add(new BookingLogProvider());
 				
-				TeachUsDate now = TeachUsSession.get().createNewDate(new DateMidnight());
-				TeachUsDate fromDate = now.minusMonths(1);
-				TeachUsDate toDate = now;
+				DateMidnight now = new DateMidnight();
+				DateMidnight fromDate = now.minusMonths(1);
+				DateMidnight toDate = now;
 				
 				for (LogProvider logProvider : providers) {
 					logProvider.appendEntries(entries, fromDate, toDate);

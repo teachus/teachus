@@ -16,7 +16,7 @@
  */
 package dk.teachus.backend.domain.impl;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.MessageState;
@@ -25,13 +25,13 @@ import dk.teachus.backend.domain.Person;
 public abstract class AbstractMessage extends AbstractHibernateObject implements Message {
 	private static final long serialVersionUID = 1L;
 	
-	private Date createDate;
+	private DateTime createDate;
 	private String subject;
 	private String body;
 	private Person sender;
 	private Person recipient;
 	private MessageState state;
-	private Date processingDate;
+	private DateTime processingDate;
 	
 	public AbstractMessage() {
 	}
@@ -44,7 +44,7 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 		}
 		
 		if (m.createDate != null) {
-			this.createDate = new Date(m.createDate.getTime());
+			this.createDate = new DateTime(m.createDate);
 		}
 		
 		// We don't make a copy of the sender and recipient object.
@@ -54,7 +54,7 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 		this.state = m.state;
 		
 		if (m.processingDate != null) {
-			this.processingDate = new Date(m.processingDate.getTime());
+			this.processingDate = new DateTime(m.processingDate);
 		}
 		
 		if (m.subject != null) {
@@ -66,11 +66,11 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 		return body;
 	}
 	
-	public Date getCreateDate() {
+	public DateTime getCreateDate() {
 		return createDate;
 	}
 	
-	public Date getProcessingDate() {
+	public DateTime getProcessingDate() {
 		return processingDate;
 	}
 	
@@ -94,11 +94,11 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 		this.body = body;
 	}
 
-	public void setCreateDate(Date createDate) {
+	public void setCreateDate(DateTime createDate) {
 		this.createDate = createDate;
 	}
 	
-	public void setProcessingDate(Date processingDate) {
+	public void setProcessingDate(DateTime processingDate) {
 		this.processingDate = processingDate;
 	}
 

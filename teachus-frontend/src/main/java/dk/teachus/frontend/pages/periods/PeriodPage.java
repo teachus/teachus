@@ -33,14 +33,15 @@ import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.IValidator;
 import org.apache.wicket.validation.ValidationError;
 import org.apache.wicket.validation.validator.StringValidator;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Periods;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
@@ -51,6 +52,7 @@ import dk.teachus.frontend.components.calendar.PeriodsCalendarPanel;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.CheckGroupElement;
 import dk.teachus.frontend.components.form.DateElement;
+import dk.teachus.frontend.components.form.DateModel;
 import dk.teachus.frontend.components.form.DecimalFieldElement;
 import dk.teachus.frontend.components.form.DropDownElement;
 import dk.teachus.frontend.components.form.FormPanel;
@@ -67,9 +69,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 	private static class TimeModel extends Model<Integer> {
 		private static final long serialVersionUID = 1L;
 		
-		private final IModel<TeachUsDate> nestedModel;
+		private final IModel<LocalTime> nestedModel;
 		
-		public TimeModel(final IModel<TeachUsDate> nestedModel) {
+		public TimeModel(final IModel<LocalTime> nestedModel) {
 			this.nestedModel = nestedModel;
 		}
 		
@@ -77,9 +79,9 @@ public class PeriodPage extends AuthenticatedBasePage {
 		public Integer getObject() {
 			Integer returnObject = null;
 			
-			final TeachUsDate date = nestedModel.getObject();
-			if (date != null) {
-				returnObject = date.getMinuteOfDay();
+			final LocalTime time = nestedModel.getObject();
+			if (time != null) {
+				returnObject = time.getHourOfDay()*60+time.getMinuteOfHour();
 			}
 			
 			return returnObject;
@@ -88,9 +90,8 @@ public class PeriodPage extends AuthenticatedBasePage {
 		@Override
 		public void setObject(final Integer minutesOfDay) {
 			if (minutesOfDay != null) {
-				DateTime date = new DateTime().withTime(0, 0, 0, 0).plusMinutes(minutesOfDay);
-				TeachUsDate tud = TeachUsSession.get().createNewDate(date);
-				nestedModel.setObject(tud);
+				LocalTime time = new LocalTime(0, 0, 0, 0).plusMinutes(minutesOfDay);
+				nestedModel.setObject(time);
 			}
 		}
 		
@@ -113,12 +114,12 @@ public class PeriodPage extends AuthenticatedBasePage {
 		form.addElement(nameElement);
 		
 		// Begin date
-		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel(period, "beginDate.date")); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new DateModel(new PropertyModel<DateMidnight>(period, "beginDate"))); //$NON-NLS-1$ //$NON-NLS-2$
 		beginDateElement.setReadOnly(period.getStatus() != Status.DRAFT);
 		form.addElement(beginDateElement);
 		
 		// End date
-		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel(period, "endDate.date")); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new DateModel(new PropertyModel<DateMidnight>(period, "endDate"))); //$NON-NLS-1$ //$NON-NLS-2$
 		endDateElement.add(new IValidator() {
 			private static final long serialVersionUID = 1L;
 			
@@ -126,17 +127,17 @@ public class PeriodPage extends AuthenticatedBasePage {
 				Object value = validatable.getValue();
 				if (value != null) {
 					if (value instanceof Date) {
-						Date date = (Date) value;
+						DateTime date = new DateTime(value);
 						
 						// Check if the end date conflicts with some bookings
 						if (period.getId() != null) {
 							BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-							TeachUsDate lastBookingDate = bookingDAO.getLastBookingDate(period);
+							DateTime lastBookingDate = bookingDAO.getLastBookingDate(period);
 							if (lastBookingDate != null) {
-								if (date.before(lastBookingDate.getDate())) {
+								if (date.isBefore(lastBookingDate)) {
 									ValidationError validationError = new ValidationError();
 									String bookingConflictMessage = TeachUsSession.get().getString("PeriodPage.endDateBookingConflict");
-									bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(lastBookingDate.getDateTime()));
+									bookingConflictMessage = bookingConflictMessage.replace("${lastBookingDate}", Formatters.getFormatPrettyDate().print(lastBookingDate));
 									validationError.setMessage(bookingConflictMessage); //$NON-NLS-1$
 									validatable.error(validationError);
 								}
@@ -160,13 +161,13 @@ public class PeriodPage extends AuthenticatedBasePage {
 		final TimeChoiceRenderer timeChoiceRenderer = new TimeChoiceRenderer();
 		
 		// Start time
-		final DropDownElement startTimeElement = new DropDownElement(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel( //$NON-NLS-1$
+		final DropDownElement startTimeElement = new DropDownElement(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel<LocalTime>( //$NON-NLS-1$
 				period, "startTime")), hours, timeChoiceRenderer, true); //$NON-NLS-1$
 		startTimeElement.setReadOnly(period.getStatus() != Status.DRAFT);
 		form.addElement(startTimeElement);
 		
 		// End time
-		final DropDownElement endTimeElement = new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel(period, //$NON-NLS-1$
+		final DropDownElement endTimeElement = new DropDownElement(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel<LocalTime>(period, //$NON-NLS-1$
 				"endTime")), hours, timeChoiceRenderer, true); //$NON-NLS-1$
 		endTimeElement.setReadOnly(period.getStatus() != Status.DRAFT);
 		form.addElement(endTimeElement);
@@ -262,26 +263,26 @@ public class PeriodPage extends AuthenticatedBasePage {
 	}
 	
 	private WebMarkupContainer generatePreview(final Period period) {
-		IModel<TeachUsDate> dateModel = new Model<TeachUsDate>() {
+		IModel<DateMidnight> dateModel = new Model<DateMidnight>() {
 			private static final long serialVersionUID = 1L;
 
-			private TeachUsDate date;
+			private DateMidnight date;
 			
 			{
-				TeachUsDate beginDate = period.getBeginDate();
+				DateMidnight beginDate = period.getBeginDate();
 				if (beginDate == null) {
-					beginDate = TeachUsSession.get().createNewDate(new DateTime());
+					beginDate = new DateMidnight();
 				}
 				this.date = beginDate;
 			}
 			
 			@Override
-			public TeachUsDate getObject() {
+			public DateMidnight getObject() {
 				return date;
 			}
 			
 			@Override
-			public void setObject(TeachUsDate date) {
+			public void setObject(DateMidnight date) {
 				this.date = date;
 			}
 		};

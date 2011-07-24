@@ -20,11 +20,12 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -34,7 +35,7 @@ public class PupilPeriodsCalendarPanel extends PeriodsCalendarPanel {
 
 	private final Pupil pupil;
 
-	public PupilPeriodsCalendarPanel(String id, IModel<TeachUsDate> weekDateModel, Pupil pupil) {
+	public PupilPeriodsCalendarPanel(String id, IModel<DateMidnight> weekDateModel, Pupil pupil) {
 		super(id, weekDateModel);
 		this.pupil = pupil;
 	}
@@ -99,7 +100,7 @@ public class PupilPeriodsCalendarPanel extends PeriodsCalendarPanel {
 	}
 	
 	@Override
-	protected void onTimeSlotClicked(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, TeachUsDate date, AjaxRequestTarget target) {
+	protected void onTimeSlotClicked(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, DateTime dateTime, AjaxRequestTarget target) {
 		PeriodBookingTimeSlotPayload payload = timeSlot.getPayload();
 		Booking booking = payload.getBooking();
 		if (booking != null) {
@@ -108,11 +109,11 @@ public class PupilPeriodsCalendarPanel extends PeriodsCalendarPanel {
 		} else {
 			PupilBooking pupilBooking = TeachUsApplication.get().getBookingDAO().createPupilBookingObject();
 			pupilBooking.setActive(true);
-			pupilBooking.setDate(date);
+			pupilBooking.setDate(dateTime);
 			pupilBooking.setPeriod(payload.getPeriod());
 			pupilBooking.setTeacher(pupil.getTeacher());
 			pupilBooking.setPupil(pupil);
-			pupilBooking.setCreateDate(TeachUsSession.get().createNewDate());
+			pupilBooking.setCreateDate(new DateTime());
 			TeachUsApplication.get().getBookingDAO().book(pupilBooking);
 			payload.setBooking(pupilBooking);
 		}

@@ -19,9 +19,7 @@ package dk.teachus.backend.test;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -46,7 +44,6 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
@@ -75,11 +72,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		setDefaultRollback(false);	
 	}
 	
-	protected Long createPupilBooking(long periodId, long pupilId, DateTime dateTime, Date createDate) {
-		return createPupilBooking(periodId, pupilId, new TeachUsDate(dateTime, TimeZone.getDefault()), createDate != null ? new TeachUsDate(createDate, TimeZone.getDefault()) : null);
-	}
-	
-	protected Long createPupilBooking(long periodId, long pupilId, TeachUsDate date, TeachUsDate createDate) {
+	protected Long createPupilBooking(long periodId, long pupilId, DateTime dateTime, DateTime createDate) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();
@@ -97,7 +90,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		pupilBooking.setPaid(false);
 		pupilBooking.setNotificationSent(false);
 		pupilBooking.setCreateDate(createDate);
-		pupilBooking.setDate(date);
+		pupilBooking.setDate(dateTime);
 		
 		bookingDAO.book(pupilBooking);
 		endTransaction();
@@ -106,18 +99,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	}
 	
 	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date) {
-		return createTeacherBooking(periodId, teacherId, new TeachUsDate(date, TimeZone.getDefault()));
+		return createTeacherBooking(periodId, teacherId, date, new DateTime());
 	}
 	
 	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date, DateTime createDate) {
-		return createTeacherBooking(periodId, teacherId, new TeachUsDate(date, TimeZone.getDefault()), createDate != null ? new TeachUsDate(createDate, TimeZone.getDefault()) : null);
-	}
-	
-	protected Long createTeacherBooking(long periodId, long teacherId, TeachUsDate date) {
-		return createTeacherBooking(periodId, teacherId, date, new TeachUsDate(new DateTime().minusHours(3).toDate(), TimeZone.getDefault()));
-	}
-	
-	protected Long createTeacherBooking(long periodId, long teacherId, TeachUsDate date, TeachUsDate createDate) {
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		PeriodDAO periodDAO = getPeriodDAO();

@@ -21,10 +21,11 @@ import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.model.IModel;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
 import dk.teachus.frontend.TeachUsApplication;
@@ -33,7 +34,7 @@ import dk.teachus.frontend.TeachUsSession;
 public class TeacherPeriodsCalendarPanel extends PeriodsCalendarPanel {
 	private static final long serialVersionUID = 1L;
 
-	public TeacherPeriodsCalendarPanel(String id, IModel<TeachUsDate> weekDateModel) {
+	public TeacherPeriodsCalendarPanel(String id, IModel<DateMidnight> weekDateModel) {
 		super(id, weekDateModel);
 	}
 	
@@ -92,7 +93,7 @@ public class TeacherPeriodsCalendarPanel extends PeriodsCalendarPanel {
 	}
 	
 	@Override
-	protected void onTimeSlotClicked(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, TeachUsDate date, AjaxRequestTarget target) {
+	protected void onTimeSlotClicked(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, DateTime dateTime, AjaxRequestTarget target) {
 		PeriodBookingTimeSlotPayload payload = timeSlot.getPayload();
 		Booking booking = payload.getBooking();
 		if (booking != null) {
@@ -101,10 +102,10 @@ public class TeacherPeriodsCalendarPanel extends PeriodsCalendarPanel {
 		} else {
 			TeacherBooking teacherBooking = TeachUsApplication.get().getBookingDAO().createTeacherBookingObject();
 			teacherBooking.setActive(true);
-			teacherBooking.setDate(date);
+			teacherBooking.setDate(dateTime);
 			teacherBooking.setPeriod(payload.getPeriod());
 			teacherBooking.setTeacher(TeachUsSession.get().getTeacher());
-			teacherBooking.setCreateDate(TeachUsSession.get().createNewDate());
+			teacherBooking.setCreateDate(new DateTime());
 			TeachUsApplication.get().getBookingDAO().book(teacherBooking);
 			payload.setBooking(teacherBooking);
 		}

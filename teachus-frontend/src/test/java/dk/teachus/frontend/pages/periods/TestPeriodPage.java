@@ -17,19 +17,18 @@
 package dk.teachus.frontend.pages.periods;
 
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
@@ -82,7 +81,7 @@ public class TestPeriodPage extends WicketTestCase {
 			
 			BookingDAO bookingDAO = createBookingDAO();
 			
-			exactly(1).of(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 1, 1, TimeZone.getDefault()), new TeachUsDate(2007, 1, 7, TimeZone.getDefault()));
+			exactly(1).of(bookingDAO).getBookings(teacher, new DateMidnight(2007, 1, 1), new DateMidnight(2007, 1, 7));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setBookingDAO(bookingDAO);
@@ -123,9 +122,9 @@ public class TestPeriodPage extends WicketTestCase {
 			BookingDAO bookingDAO = createBookingDAO();
 			
 			one(bookingDAO).getLastBookingDate(period);
-			will(returnValue(new TeachUsDate(new DateTime())));
+			will(returnValue(new DateTime()));
 			
-			exactly(2).of(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 1, 1, TimeZone.getDefault()), new TeachUsDate(2007, 1, 7, TimeZone.getDefault()));
+			exactly(2).of(bookingDAO).getBookings(teacher, new DateMidnight(2007, 1, 1), new DateMidnight(2007, 1, 7));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setBookingDAO(bookingDAO);

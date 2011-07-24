@@ -18,10 +18,12 @@ package dk.teachus.backend.domain;
 
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+
 
 public interface DatePeriod {
 
-	TeachUsDate getDate();
+	DateMidnight getDate();
 
 	List<Period> getPeriods();
 

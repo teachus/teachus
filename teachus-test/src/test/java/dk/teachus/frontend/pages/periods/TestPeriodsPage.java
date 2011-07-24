@@ -1,18 +1,16 @@
 package dk.teachus.frontend.pages.periods;
 
-import java.util.Date;
-import java.util.TimeZone;
-
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.DataGridView;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.util.tester.WicketTester;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalTime;
 
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
@@ -22,14 +20,12 @@ public class TestPeriodsPage extends WicketSpringTestCase {
 	private static final long serialVersionUID = 1L;
 
 	public void testDeleteablePeriods() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
 		// Create period with no bookings on it at all
 		Period period = new PeriodImpl();
 		period.setName("Empty period");
-		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
-		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(18, 0, 0, 0));
-		period.setEndDate(new TeachUsDate(2005, 12, 15, timeZone));
+		period.setStartTime(new LocalTime(10, 0, 0, 0));
+		period.setEndTime(new LocalTime(18, 0, 0, 0));
+		period.setEndDate(new DateMidnight(2005, 12, 15));
 		period.setLocation("Private");
 		period.setPrice(300);
 		period.setStatus(Status.FINAL);
@@ -41,9 +37,9 @@ public class TestPeriodsPage extends WicketSpringTestCase {
 		// Create period which has a deleted booking
 		period = new PeriodImpl();
 		period.setName("Empty period with deleted booking");
-		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
-		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(18, 0, 0, 0));
-		period.setEndDate(new TeachUsDate(2005, 12, 15, timeZone));
+		period.setStartTime(new LocalTime(10, 0, 0, 0));
+		period.setEndTime(new LocalTime(18, 0, 0, 0));
+		period.setEndDate(new DateMidnight(2005, 12, 15));
 		period.setLocation("Private");
 		period.setPrice(300);
 		period.setStatus(Status.FINAL);
@@ -52,7 +48,7 @@ public class TestPeriodsPage extends WicketSpringTestCase {
 		getPeriodDAO().save(period);
 		endTransaction();
 		
-		Long booking = createPupilBooking(period.getId(), 3, new DateTime(2005, 10, 10, 11, 0, 0, 0).withDayOfWeek(DateTimeConstants.TUESDAY), new Date());
+		Long booking = createPupilBooking(period.getId(), 3, new DateTime(2005, 10, 10, 11, 0, 0, 0).withDayOfWeek(DateTimeConstants.TUESDAY), new DateTime());
 		getBookingDAO().deleteBooking(getBookingDAO().getBooking(booking));
 		endTransaction();
 		

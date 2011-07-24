@@ -19,15 +19,17 @@ package dk.teachus.backend.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 
 public interface Bookings extends Serializable {
 
-	Booking getBooking(Period period, TeachUsDate time);
+	Booking getBooking(Period period, DateTime time);
 
 	List<Booking> getBookingList();
 
-	boolean mayBook(Period period, TeachUsDate time);
+	boolean mayBook(Period period, DateTime time);
 	
-	boolean isBeforeBooking(Period period, TeachUsDate time);
+	boolean isBeforeBooking(Period period, DateTime time);
 	
 }

@@ -3,9 +3,13 @@ package dk.teachus.backend.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import junit.framework.TestCase;
+
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
@@ -24,11 +28,11 @@ public class TestBookings extends TestCase {
 		Period period2 = createPeriod(2, teacher);
 		
 		List<Booking> bookingList = new ArrayList<Booking>();
-		TeachUsDate time1 = new TeachUsDate(2009, 6, 11, 16, 0, 0, TimeZone.getTimeZone("Europe/Copenhagen"));
+		DateTime time1 = new DateTime(2009, 6, 11, 16, 0, 0, 0);
 		bookingList.add(createTeacherBooking(period1, teacher, time1));
-		bookingList.add(createTeacherBooking(period1, teacher, new TeachUsDate(2009, 6, 11, 17, 0, 0, TimeZone.getTimeZone("Europe/Copenhagen"))));
-		bookingList.add(createTeacherBooking(period1, teacher, new TeachUsDate(2009, 6, 18, 16, 0, 0, TimeZone.getTimeZone("Europe/Copenhagen"))));
-		bookingList.add(createTeacherBooking(period1, teacher, new TeachUsDate(2009, 6, 18, 17, 0, 0, TimeZone.getTimeZone("Europe/Copenhagen"))));
+		bookingList.add(createTeacherBooking(period1, teacher, new DateTime(2009, 6, 11, 17, 0, 0, 0)));
+		bookingList.add(createTeacherBooking(period1, teacher, new DateTime(2009, 6, 18, 16, 0, 0, 0)));
+		bookingList.add(createTeacherBooking(period1, teacher, new DateTime(2009, 6, 18, 17, 0, 0, 0)));
 		
 		Bookings bookings = new BookingsImpl(bookingList);
 		
@@ -52,9 +56,9 @@ public class TestBookings extends TestCase {
 		PeriodImpl period = new PeriodImpl();
 		period.setId(id);
 		period.setName("Period "+id);
-		period.setBeginDate(new TeachUsDate(2009, 6, 11, TimeZone.getTimeZone("Europe/Copenhagen")));
-		period.setStartTime(new TeachUsDate(2009, 6, 11, 16, 0, 0, TimeZone.getTimeZone("Europe/Copenhagen")));
-		period.setEndTime(new TeachUsDate(2009, 6, 11, 16, 0, 0, TimeZone.getTimeZone("Europe/Copenhagen")));
+		period.setBeginDate(new DateMidnight(2009, 6, 11));
+		period.setStartTime(new LocalTime(16, 0, 0, 0));
+		period.setEndTime(new LocalTime(16, 0, 0, 0));
 		period.setIntervalBetweenLessonStart(60);
 		period.setLessonDuration(60);
 		period.setLocation("Location 1");
@@ -65,13 +69,13 @@ public class TestBookings extends TestCase {
 		return period;
 	}
 	
-	private TeacherBooking createTeacherBooking(Period period, Teacher teacher, TeachUsDate date) {
+	private TeacherBooking createTeacherBooking(Period period, Teacher teacher, DateTime date) {
 		TeacherBooking tb = new TeacherBookingImpl();
 		tb.setActive(true);
-		tb.setCreateDate(new TeachUsDate());
+		tb.setCreateDate(new DateTime());
 		tb.setDate(date);
 		tb.setPeriod(period);
-		tb.setUpdateDate(new TeachUsDate());
+		tb.setUpdateDate(new DateTime());
 		tb.setTeacher(teacher);
 		return tb;
 	}

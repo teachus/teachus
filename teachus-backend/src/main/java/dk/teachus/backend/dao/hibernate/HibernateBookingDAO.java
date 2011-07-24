@@ -17,17 +17,16 @@
 package dk.teachus.backend.dao.hibernate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
@@ -37,12 +36,11 @@ import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
+import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.BookingImpl;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
@@ -55,7 +53,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 	public void book(Booking booking) {
 		// Validate the booking
 		Period period = booking.getPeriod();
-		TeachUsDate date = booking.getDate();
+		DateTime date = booking.getDate();
 		
 		if (period.getStatus() != Status.FINAL) {
 			throw new IllegalArgumentException("Can only book in active periods");
@@ -98,7 +96,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 	public void deleteBooking(Booking booking) {
 		booking.setActive(false);
 		// TODO Can we get the real timezone somehow?
-		booking.setUpdateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
+		booking.setUpdateDate(new DateTime());
 		
 		getHibernateTemplate().update(booking);
 		getHibernateTemplate().flush();
@@ -118,10 +116,10 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 			.add(Restrictions.eq("active", true))
 			.createCriteria("teacher")
 				.add(Restrictions.eq("active", true));
-		c.add(Restrictions.gt("date.date", end.toDate()));
+		c.add(Restrictions.gt("date", end));
 		c.add(Restrictions.eq("active", true));
 		
-		c.addOrder(Order.asc("date.date"));
+		c.addOrder(Order.asc("date"));
 		
 		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
 		
@@ -139,11 +137,11 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 			.createCriteria("teacher")
 				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("pupil", pupil));
-		c.add(Restrictions.lt("date.date", new Date()));
+		c.add(Restrictions.lt("date", new DateTime()));
 		c.add(Restrictions.eq("paid", false));
 		c.add(Restrictions.eq("active", true));
 		
-		c.addOrder(Order.asc("date.date"));
+		c.addOrder(Order.asc("date"));
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
@@ -160,11 +158,11 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 			.add(Restrictions.eq("active", true))
 			.createCriteria("teacher")
 				.add(Restrictions.eq("active", true));
-		c.add(Restrictions.lt("date.date", new Date()));
+		c.add(Restrictions.lt("date", new DateTime()));
 		c.add(Restrictions.eq("paid", false));
 		c.add(Restrictions.eq("active", true));
 		
-		c.addOrder(Order.asc("date.date"));
+		c.addOrder(Order.asc("date"));
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
@@ -182,7 +180,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 			.createCriteria("teacher")
 				.add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("notificationSent", false));
-		c.add(Restrictions.lt("createDate.date", new DateTime().minusMinutes(15).toDate()));
+		c.add(Restrictions.lt("createDate", new DateTime().minusMinutes(15)));
 		c.add(Restrictions.eq("active", true));
 		
 		return getHibernateTemplate().findByCriteria(c);
@@ -198,7 +196,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("pupil").add(Restrictions.eq("active", true)).createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("pupilNotificationSent", false));
-		c.add(Restrictions.lt("createDate.date", new DateTime().minusMinutes(15).toDate()));
+		c.add(Restrictions.lt("createDate", new DateTime().minusMinutes(15)));
 		c.add(Restrictions.eq("active", true));
 		
 		List<PupilBooking> bookings = getHibernateTemplate().findByCriteria(c);
@@ -220,7 +218,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		if (pupilBookings.isEmpty() == false) {
 			StringBuilder hql = new StringBuilder();
 			
-			hql.append("UPDATE PupilBookingImpl SET notificationSent=1, updateDate.date=NOW() WHERE active = 1 AND id IN(");
+			hql.append("UPDATE PupilBookingImpl SET notificationSent=1, updateDate=NOW() WHERE active = 1 AND id IN(");
 			
 			String sep = "";
 			for (PupilBooking pupilBooking : pupilBookings) {
@@ -240,7 +238,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		if (pupilBookings.isEmpty() == false) {
 			StringBuilder hql = new StringBuilder();
 			
-			hql.append("UPDATE PupilBookingImpl SET pupilNotificationSent=1, updateDate.date=NOW() WHERE active = 1 AND id IN(");
+			hql.append("UPDATE PupilBookingImpl SET pupilNotificationSent=1, updateDate=NOW() WHERE active = 1 AND id IN(");
 			
 			String sep = "";
 			for (List<PupilBooking> pupilBookingList : pupilBookings.values()) {
@@ -265,7 +263,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		
 		pupilBooking.setPaid(pupilBooking.isPaid() == false);
 		// TODO Can we get the real timezone somehow?
-		pupilBooking.setUpdateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
+		pupilBooking.setUpdateDate(new DateTime());
 		
 		getHibernateTemplate().update(pupilBooking);
 		getHibernateTemplate().flush();
@@ -273,7 +271,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getPaidBookings(Teacher teacher, TeachUsDate startDate, TeachUsDate endDate) {
+	public List<PupilBooking> getPaidBookings(Teacher teacher, DateMidnight startDate, DateMidnight endDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
@@ -287,21 +285,21 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.add(Restrictions.eq("active", true));
 		
 		if (startDate != null && endDate != null) {
-			c.add(Restrictions.between("date.date", startDate.getDate(), endDate.getDate()));
+			c.add(Restrictions.between("date", startDate.toDateTime(), endDate.toDateTime()));
 		} else if (startDate != null) {
-			c.add(Restrictions.gt("date.date", startDate.getDate()));
+			c.add(Restrictions.gt("date", startDate.toDateTime()));
 		} else if (endDate != null) {
-			c.add(Restrictions.lt("date.date", endDate.getDate()));
+			c.add(Restrictions.lt("date", endDate.toDateTime()));
 		}
 		
-		c.addOrder(Order.asc("date.date"));
+		c.addOrder(Order.asc("date"));
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getUnPaidBookings(Teacher teacher, TeachUsDate startDate, TeachUsDate endDate) {
+	public List<PupilBooking> getUnPaidBookings(Teacher teacher, DateMidnight startDate, DateMidnight endDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		
 		c.createCriteria("period")
@@ -315,14 +313,14 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.add(Restrictions.eq("active", true));
 		
 		if (startDate != null && endDate != null) {
-			c.add(Restrictions.between("date.date", startDate.getDate(), endDate.getDate()));
+			c.add(Restrictions.between("date", startDate.toDateTime(), endDate.toDateTime()));
 		} else if (startDate != null) {
-			c.add(Restrictions.gt("date.date", startDate.getDate()));
+			c.add(Restrictions.gt("date", startDate.toDateTime()));
 		} else if (endDate != null) {
-			c.add(Restrictions.lt("date.date", endDate.getDate()));
+			c.add(Restrictions.lt("date", endDate.toDateTime()));
 		}
 		
-		c.addOrder(Order.asc("date.date"));
+		c.addOrder(Order.asc("date"));
 		
 		return getHibernateTemplate().findByCriteria(c);
 	}
@@ -330,7 +328,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithPaidBookings(Teacher teacher) {
-		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND b.paid = 1 AND pe.status = ? AND t.active = 1 GROUP BY year(b.date.date)", new Object[] {
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND b.paid = 1 AND pe.status = ? AND t.active = 1 GROUP BY year(b.date)", new Object[] {
 				teacher,
 				Status.FINAL
 		});
@@ -341,7 +339,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public List<Integer> getYearsWithBookings(Teacher teacher) {
-		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND pe.status = ? AND t.active = 1 GROUP BY year(b.date.date)", new Object[] {
+		List<Integer> years = getHibernateTemplate().find("SELECT year(b.date.date) AS theYear FROM PupilBookingImpl b JOIN b.pupil p JOIN b.period pe JOIN p.teacher t WHERE b.active = 1 AND p.teacher = ? AND p.active = 1 AND pe.status = ? AND t.active = 1 GROUP BY year(b.date)", new Object[] {
 				teacher,
 				Status.FINAL
 		});
@@ -351,16 +349,16 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public Bookings getBookings(Teacher teacher, TeachUsDate fromDate, TeachUsDate toDate) {
+	public Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		
-		TeachUsDate start = fromDate.withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
-		TeachUsDate end = toDate.withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
+		DateTime start = fromDate.toDateTime().withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+		DateTime end = toDate.toDateTime().withHourOfDay(23).withMinuteOfHour(59).withSecondOfMinute(59).withMillisOfSecond(999);
 		
 		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("teacher", teacher));
-		c.add(Restrictions.between("date.date", start.getDate(), end.getDate()));
+		c.add(Restrictions.between("date", start, end));
 		c.add(Restrictions.eq("active", true));
 		
 		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
@@ -373,7 +371,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public Bookings getBookings(Pupil pupil, TeachUsDate fromDate, TeachUsDate toDate) {
+	public Bookings getBookings(Pupil pupil, DateMidnight fromDate, DateMidnight toDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		
 		DateTime start = new DateTime(fromDate).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
@@ -382,7 +380,7 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("pupil", pupil));
-		c.add(Restrictions.between("date.date", start.toDate(), end.toDate()));
+		c.add(Restrictions.between("date", start, end));
 		c.add(Restrictions.eq("active", true));
 		
 		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
@@ -411,16 +409,16 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public TeachUsDate getLastBookingDate(Period period) {
+	public DateTime getLastBookingDate(Period period) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		c.createCriteria("pupil").add(Restrictions.eq("active", true));
 		c.add(Restrictions.eq("period", period));
 		c.add(Restrictions.eq("active", true));
-		c.addOrder(Order.desc("date.date"));
+		c.addOrder(Order.desc("date"));
 		
 		List<Booking> list = getHibernateTemplate().findByCriteria(c, 0, 1);
 		
-		TeachUsDate lastBookingDate = null;
+		DateTime lastBookingDate = null;
 		if (list.size() == 1) {
 			Booking booking = list.get(0);
 			lastBookingDate = booking.getDate();

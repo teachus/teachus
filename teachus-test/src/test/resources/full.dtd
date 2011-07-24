@@ -37,13 +37,9 @@
     version CDATA #REQUIRED
     name CDATA #IMPLIED
     begin_date CDATA #IMPLIED
-    begin_date_tz CDATA #IMPLIED
     end_date CDATA #IMPLIED
-    end_date_tz CDATA #IMPLIED
     start_time CDATA #IMPLIED
-    start_time_tz CDATA #IMPLIED
     end_time CDATA #IMPLIED
-    end_time_tz CDATA #IMPLIED
     week_days CDATA #IMPLIED
     teacher_id CDATA #IMPLIED
     location CDATA #IMPLIED
@@ -62,11 +58,8 @@
     active CDATA #IMPLIED
     period_id CDATA #IMPLIED
     date CDATA #IMPLIED
-    date_tz CDATA #IMPLIED
     create_date CDATA #IMPLIED
-    create_date_tz CDATA #IMPLIED
     update_date CDATA #IMPLIED
-    update_date_tz CDATA #IMPLIED
     teacher_id CDATA #IMPLIED
     pupil_id CDATA #IMPLIED
     notification_sent CDATA #IMPLIED

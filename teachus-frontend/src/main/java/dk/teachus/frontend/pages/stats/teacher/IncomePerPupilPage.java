@@ -31,12 +31,11 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.jfree.data.general.DefaultPieDataset;
-import org.joda.time.DateTime;
+import org.joda.time.DateMidnight;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
@@ -49,15 +48,15 @@ import dk.teachus.frontend.utils.PercentChoiceRenderer;
 public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 	private static final long serialVersionUID = 1L;
 
-	private TeachUsDate startDate;
+	private DateMidnight startDate;
 	
-	private TeachUsDate endDate;
+	private DateMidnight endDate;
 	
 	public IncomePerPupilPage() {
-		this(TeachUsSession.get().createNewDate((DateTime) null), TeachUsSession.get().createNewDate((DateTime) null));
+		this(null, null);
 	}
 	
-	public IncomePerPupilPage(TeachUsDate startDate, TeachUsDate endDate) {
+	public IncomePerPupilPage(DateMidnight startDate, DateMidnight endDate) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		
@@ -86,7 +85,7 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 		add(new Label("pctDistribution", TeachUsSession.get().getString("IncomePerPupilPage.percentageDistribution"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-		List<PupilBooking> bookings = bookingDAO.getPaidBookings(getPerson(), startDate.getDate() != null ? startDate : null, endDate.getDate() != null ? endDate : null);
+		List<PupilBooking> bookings = bookingDAO.getPaidBookings(getPerson(), startDate, endDate);
 		
 		// Build the dataset
 		List<PupilSummary> sumList = new ArrayList<PupilSummary>();
@@ -132,19 +131,19 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 		return TeachUsSession.get().getString("General.incomePerPupil"); //$NON-NLS-1$
 	}
 
-	public TeachUsDate getEndDate() {
+	public DateMidnight getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(TeachUsDate endDate) {
+	public void setEndDate(DateMidnight endDate) {
 		this.endDate = endDate;
 	}
 
-	public TeachUsDate getStartDate() {
+	public DateMidnight getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(TeachUsDate startDate) {
+	public void setStartDate(DateMidnight startDate) {
 		this.startDate = startDate;
 	}
 

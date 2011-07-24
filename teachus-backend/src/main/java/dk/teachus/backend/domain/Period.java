@@ -18,6 +18,10 @@ package dk.teachus.backend.domain;
 
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
+
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
 public interface Period {
@@ -32,13 +36,13 @@ public interface Period {
 	
 	String getName();
 	
-	TeachUsDate getEndDate();
+	DateMidnight getEndDate();
 
-	TeachUsDate getEndTime();
+	LocalTime getEndTime();
 
-	TeachUsDate getBeginDate();
+	DateMidnight getBeginDate();
 
-	TeachUsDate getStartTime();
+	LocalTime getStartTime();
 
 	List<WeekDay> getWeekDays();
 	
@@ -65,13 +69,13 @@ public interface Period {
 	
 	void setName(String name);
 
-	void setEndDate(TeachUsDate endDate);
+	void setEndDate(DateMidnight endDate);
 
-	void setEndTime(TeachUsDate endTime);
+	void setEndTime(LocalTime endTime);
 
-	void setBeginDate(TeachUsDate startDate);
+	void setBeginDate(DateMidnight startDate);
 
-	void setStartTime(TeachUsDate startTime);
+	void setStartTime(LocalTime startTime);
 	
 	void setTeacher(Teacher teacher);
 	
@@ -92,21 +96,27 @@ public interface Period {
 	 */
 	void addWeekDay(WeekDay weekDay);
 
-	boolean hasWeekDay(TeachUsDate date);
+	boolean hasWeekDay(DateMidnight date);
 
-	boolean dateIntervalContains(TeachUsDate date);
+	boolean dateIntervalContains(DateMidnight date);
 
-	boolean hasDate(TeachUsDate date);
-
-	TeachUsDate generateDate(TeachUsDate startDate);
+	boolean hasDate(DateTime dateTime);
 	
-	boolean isTimeValid(TeachUsDate time);
+	boolean hasDate(DateMidnight date);
 
-	boolean mayBook(TeachUsDate time);
+	DateMidnight generateDate(DateMidnight startDate);
+	
+	boolean isTimeValid(DateTime dateTime);
+	
+	boolean isTimeValid(LocalTime time);
 
-	boolean conflicts(TeachUsDate bookedTime, TeachUsDate time);
+	boolean mayBook(DateTime dateTime);
+	
+	boolean mayBook(LocalTime time);
 
-	boolean inLesson(TeachUsDate bookedTime, TeachUsDate time);
+	boolean conflicts(DateTime bookedTime, DateTime time);
+
+	boolean inLesson(DateTime bookedTime, DateTime time);
 	
 	boolean isValid();
 	

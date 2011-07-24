@@ -21,23 +21,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+
 import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.utils.PeriodComparator;
 
 public class DatePeriodImpl implements Serializable, DatePeriod {
 	private static final long serialVersionUID = 1L;
 
-	private TeachUsDate date;
+	private DateMidnight date;
 
 	private List<Period> periods;
 
-	public DatePeriodImpl(TeachUsDate date) {
+	public DatePeriodImpl(DateMidnight date) {
 		this.date = date;
 	}
 
-	public TeachUsDate getDate() {
+	public DateMidnight getDate() {
 		return date;
 	}
 

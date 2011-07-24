@@ -22,15 +22,15 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.DistinctRootEntityResultTransformer;
+import org.joda.time.DateMidnight;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import dk.teachus.backend.dao.StatisticsDAO;
-import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
-import dk.teachus.backend.domain.TeacherStatistics;
 import dk.teachus.backend.domain.Period.Status;
+import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.TeacherStatistics;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 
 @Transactional(propagation=Propagation.REQUIRED)
@@ -60,14 +60,14 @@ public class HibernateStatisticsDAO extends HibernateDaoSupport implements Stati
 	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
-	public List<PupilBooking> getAllBookings(TeachUsDate fromDate, TeachUsDate toDate) {
+	public List<PupilBooking> getAllBookings(DateMidnight fromDate, DateMidnight toDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(PupilBookingImpl.class);
 		c.createCriteria("pupil").add(Restrictions.eq("active", true));
 		c.createCriteria("teacher").add(Restrictions.eq("active", true));
 		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
 		Disjunction disjunction = Restrictions.disjunction();
-		disjunction.add(Restrictions.and(Restrictions.ge("createDate.date", fromDate.getDate()), Restrictions.le("createDate.date", toDate.getDate())));
-		disjunction.add(Restrictions.and(Restrictions.ge("updateDate.date", fromDate.getDate()), Restrictions.le("updateDate.date", toDate.getDate())));
+		disjunction.add(Restrictions.and(Restrictions.ge("createDate", fromDate.toDateTime()), Restrictions.le("createDate", toDate.toDateTime())));
+		disjunction.add(Restrictions.and(Restrictions.ge("updateDate", fromDate.toDateTime()), Restrictions.le("updateDate", toDate.toDateTime())));
 		c.add(disjunction);
 		
 		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);

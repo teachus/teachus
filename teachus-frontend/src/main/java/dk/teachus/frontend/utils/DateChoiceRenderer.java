@@ -21,9 +21,7 @@ import java.util.Date;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
 
-import dk.teachus.backend.domain.TeachUsDate;
-
-public class DateChoiceRenderer extends ChoiceRenderer {
+public class DateChoiceRenderer extends ChoiceRenderer<Object> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -31,9 +29,9 @@ public class DateChoiceRenderer extends ChoiceRenderer {
 		String display = ""; //$NON-NLS-1$
 		
 		if (object != null) {
-			if (object instanceof TeachUsDate) {
-				TeachUsDate date = (TeachUsDate) object;
-				display = Formatters.getFormatPrettyDate().print(date.getDateTime());
+			if (object instanceof DateTime) {
+				DateTime date = (DateTime) object;
+				display = Formatters.getFormatPrettyDate().print(date);
 			} else if (object instanceof Date) {
 				Date date = (Date) object;
 				display = Formatters.getFormatPrettyDate().print(new DateTime(date));

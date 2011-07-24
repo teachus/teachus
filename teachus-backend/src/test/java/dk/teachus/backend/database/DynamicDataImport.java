@@ -18,7 +18,6 @@ package dk.teachus.backend.database;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -39,6 +38,7 @@ import org.hibernate.classic.Session;
 import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
@@ -51,7 +51,6 @@ import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.Theme;
@@ -65,7 +64,6 @@ import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
-import dk.teachus.utils.DateUtils;
 
 public abstract class DynamicDataImport {
 	private static final Log log = LogFactory.getLog(DynamicDataImport.class);
@@ -95,8 +93,8 @@ public abstract class DynamicDataImport {
 		
 		TimeZone timeZone = TimeZone.getDefault();
 
-		TeachUsDate startDate = new TeachUsDate(new DateMidnight(), timeZone).minusYears(3).withMonthOfYear(1).withDayOfMonth(10);
-		TeachUsDate endDate = new TeachUsDate(new DateMidnight(), timeZone).withMonthOfYear(12).withDayOfMonth(31);
+		DateMidnight startDate = new DateMidnight().minusYears(3).withMonthOfYear(1).withDayOfMonth(10);
+		DateMidnight endDate = new DateMidnight().withMonthOfYear(12).withDayOfMonth(31);
 
 		deleteExistingData(sessionFactory);
 		
@@ -203,19 +201,19 @@ public abstract class DynamicDataImport {
 		session.close();		
 	}
 	
-	private static void createBookings(SessionFactory sessionFactory, Teacher teacher, TeachUsDate startDate, TeachUsDate endDate) {
+	private static void createBookings(SessionFactory sessionFactory, Teacher teacher, DateMidnight startDate, DateMidnight endDate) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
-		Set<TeachUsDate> bookedDates = new HashSet<TeachUsDate>();
+		Set<DateTime> bookedDates = new HashSet<DateTime>();
 		
 		List<Pupil> pupils = getPupils(teacher, session);
 		List<Period> periods = getPeriods(teacher, session);
 		
-		TeachUsDate now = new TeachUsDate(new DateTime(), startDate.getTimeZone());
+		DateTime now = new DateTime();
 		
 		for (Pupil pupil : pupils) {
-			TeachUsDate date = startDate;
+			DateMidnight date = startDate;
 			while(date.isBefore(endDate)) {
 				// First see if the pupil should have a booking here at all
 				long shouldBook = Math.round(Math.random());
@@ -228,13 +226,13 @@ public abstract class DynamicDataImport {
 					// Then find out which day in the period to book in
 					int weekDayIndex = (int) (Math.random()*period.getWeekDays().size());
 					WeekDay weekDay = period.getWeekDays().get(weekDayIndex);
-					TeachUsDate weekDayDate = date.withDayOfWeek(weekDay.getYodaWeekDay());
+					DateMidnight weekDayDate = date.withDayOfWeek(weekDay.getYodaWeekDay());
 					
 					// Now find out which time of day to use
 					// We do that by listing the possible booking time entries. A lesson doesn't have to start at a whole number.
-					List<TeachUsDate> avaiableLessonsStart = new ArrayList<TeachUsDate>();
-					TeachUsDate bookTime = DateUtils.resetDateTime(period.getStartTime(), weekDayDate);
-					TeachUsDate et = DateUtils.resetDateTime(period.getEndTime(), weekDayDate);
+					List<DateTime> avaiableLessonsStart = new ArrayList<DateTime>();
+					DateTime bookTime = period.getStartTime().toDateTime(weekDayDate);
+					DateTime et = period.getEndTime().toDateTime(weekDayDate);
 					while(bookTime.isBefore(et)) {
 						if (period.mayBook(bookTime)) {
 							avaiableLessonsStart.add(bookTime);
@@ -252,7 +250,7 @@ public abstract class DynamicDataImport {
 						
 						// Create booking
 						PupilBooking booking = new PupilBookingImpl();
-						booking.setCreateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
+						booking.setCreateDate(new DateTime());
 						booking.setDate(bookTime);
 						booking.setPeriod(period);
 						booking.setTeacher(teacher);
@@ -302,7 +300,7 @@ public abstract class DynamicDataImport {
 		return periods;
 	}
 	
-	private static void createPeriods(SessionFactory sessionFactory, Teacher teacher, TeachUsDate startDate) {
+	private static void createPeriods(SessionFactory sessionFactory, Teacher teacher, DateMidnight startDate) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -311,8 +309,8 @@ public abstract class DynamicDataImport {
 		period.setStatus(Status.FINAL);
 		period.setName("Mon/Wed");
 		period.setBeginDate(startDate);
-		period.setStartTime(startDate.withTime(10, 0, 0, 0));
-		period.setEndTime(startDate.withTime(17, 0, 0, 0));
+		period.setStartTime(new LocalTime(10, 0, 0, 0));
+		period.setEndTime(new LocalTime(17, 0, 0, 0));
 		period.setLocation("Odense");
 		period.setPrice(450);
 		period.addWeekDay(WeekDay.MONDAY);
@@ -324,8 +322,8 @@ public abstract class DynamicDataImport {
 		period.setStatus(Status.FINAL);
 		period.setName("Tue/Thu");
 		period.setBeginDate(startDate);
-		period.setStartTime(startDate.withTime(9, 0, 0, 0));
-		period.setEndTime(startDate.withTime(17, 0, 0, 0));
+		period.setStartTime(new LocalTime(9, 0, 0, 0));
+		period.setEndTime(new LocalTime(17, 0, 0, 0));
 		period.setLocation("Copenhagen");
 		period.setPrice(450);
 		period.addWeekDay(WeekDay.TUESDAY);
@@ -337,8 +335,8 @@ public abstract class DynamicDataImport {
 		period.setStatus(Status.FINAL);
 		period.setName("Fri");
 		period.setBeginDate(startDate);
-		period.setStartTime(startDate.withTime(9, 0, 0, 0));
-		period.setEndTime(startDate.withTime(16, 0, 0, 0));
+		period.setStartTime(new LocalTime(9, 0, 0, 0));
+		period.setEndTime(new LocalTime(16, 0, 0, 0));
 		period.setLocation("Aarhus");
 		period.setPrice(450);
 		period.setIntervalBetweenLessonStart(70);

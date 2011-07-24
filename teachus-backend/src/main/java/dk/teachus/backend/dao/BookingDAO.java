@@ -20,13 +20,14 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherBooking;
 
@@ -56,22 +57,22 @@ public interface BookingDAO extends Serializable {
 
 	void changePaidStatus(PupilBooking pupilBooking);
 
-	List<PupilBooking> getPaidBookings(Teacher teacher, TeachUsDate startDate, TeachUsDate endDate);
+	List<PupilBooking> getPaidBookings(Teacher teacher, DateMidnight startDate, DateMidnight endDate);
 
-	List<PupilBooking> getUnPaidBookings(Teacher teacher, TeachUsDate fromDate, TeachUsDate toDate);
+	List<PupilBooking> getUnPaidBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate);
 	
 	List<Integer> getYearsWithPaidBookings(Teacher teacher);
 
 	List<Integer> getYearsWithBookings(Teacher teacher);
 
-	Bookings getBookings(Teacher teacher, TeachUsDate fromDate, TeachUsDate toDate);
+	Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate);
 
-	Bookings getBookings(Pupil pupil, TeachUsDate fromDate, TeachUsDate toDate);
+	Bookings getBookings(Pupil pupil, DateMidnight fromDate, DateMidnight toDate);
 
 	Booking getBooking(Long id);
 
 	int getBookingCount(Period period);
 
-	TeachUsDate getLastBookingDate(Period period);
+	DateTime getLastBookingDate(Period period);
 	
 }

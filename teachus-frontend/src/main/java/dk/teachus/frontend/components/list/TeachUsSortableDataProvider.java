@@ -15,7 +15,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Objects;
 import org.apache.wicket.util.lang.PropertyResolver;
 
-public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvider {
+public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvider<O> {
 	private static final long serialVersionUID = 1L;
 
 	private class DelegatedComparator implements Comparator<O> {
@@ -58,15 +58,15 @@ public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvide
 		
 	}
 	
-	private IModel listModel;
+	private IModel<O> listModel;
 	private Map<String, Comparator<?>> comparators; 
 	
-	public TeachUsSortableDataProvider(IModel listModel) {
+	public TeachUsSortableDataProvider(IModel<O> listModel) {
 		this.listModel = listModel;
 		this.comparators = new HashMap<String, Comparator<?>>();
 	}
 
-	public Iterator<?> iterator(int first, int count) {		
+	public Iterator<O> iterator(int first, int count) {		
 		List<O> sortedList = getSortedList();
 		
 		int toIndex = first + count;
@@ -77,7 +77,7 @@ public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvide
 		return sortedList.subList(first, toIndex).listIterator();
 	}
 	
-	public IModel model(Object object) {
+	public IModel<O> model(Object object) {
 		return new Model((Serializable) object);
 	}
 	

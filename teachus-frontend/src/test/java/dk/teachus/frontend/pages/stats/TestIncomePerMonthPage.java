@@ -18,7 +18,6 @@ package dk.teachus.frontend.pages.stats;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.jmock.Expectations;
 import org.joda.time.DateMidnight;
@@ -26,9 +25,7 @@ import org.joda.time.DateMidnight;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -46,17 +43,14 @@ public class TestIncomePerMonthPage extends WicketTestCase {
 			Teacher teacher = createTeacher();
 			will(returnValue(teacher));
 			
-			one(personDAO).getAttributes(teacher);
-			will(returnValue(new ArrayList<TeacherAttribute>()));
-			
 			List<Integer> years = new ArrayList<Integer>();
 			years.add(new DateMidnight().getYear());
 			
 			one(bookingDAO).getYearsWithBookings(teacher);
 			will(returnValue(years));
 			
-			TeachUsDate startDate = new TeachUsDate(new DateMidnight(), TimeZone.getDefault()).withMonthOfYear(1).withDayOfMonth(1);
-			TeachUsDate endDate = new TeachUsDate(new DateMidnight(), TimeZone.getDefault()).withMonthOfYear(12).withDayOfMonth(31);
+			DateMidnight startDate = new DateMidnight().withMonthOfYear(1).withDayOfMonth(1);
+			DateMidnight endDate = new DateMidnight().withMonthOfYear(12).withDayOfMonth(31);
 			
 			List<PupilBooking> bookings = new ArrayList<PupilBooking>();
 			PupilBooking pupilBooking = createPupilBooking(1L);

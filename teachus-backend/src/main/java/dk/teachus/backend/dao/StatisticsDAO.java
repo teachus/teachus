@@ -18,14 +18,15 @@ package dk.teachus.backend.dao;
 
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.TeacherStatistics;
 
 public interface StatisticsDAO {
 
 	List<TeacherStatistics> getTeachers();
 
-	List<PupilBooking> getAllBookings(TeachUsDate fromDate, TeachUsDate toDate);
+	List<PupilBooking> getAllBookings(DateMidnight fromDate, DateMidnight toDate);
 	
 }

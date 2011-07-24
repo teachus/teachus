@@ -16,11 +16,10 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
@@ -30,16 +29,13 @@ import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Bookings;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.test.SpringTestCase;
 
 public class TestBookingDAO extends SpringTestCase {
 	private static final long serialVersionUID = 1L;
 
-	public void testBook() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
+	public void testBook() {		
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		
@@ -48,12 +44,12 @@ public class TestBookingDAO extends SpringTestCase {
 		
 		Long periodId = 1L;
 
-		TeachUsDate date = new TeachUsDate(2007, 6, 11, 11, 0, 0, timeZone);
+		DateTime date = new DateTime(2007, 6, 11, 11, 0, 0, 0);
 		
 		// First create a list of new bookings
-		createPupilBooking(periodId, 6, date, new TeachUsDate(new DateTime(), timeZone).minusHours(3));
+		createPupilBooking(periodId, 6, date, new DateTime().minusHours(3));
 		
-		Bookings bookings = bookingDAO.getBookings(teacher, date, date);
+		Bookings bookings = bookingDAO.getBookings(teacher, date.toDateMidnight(), date.toDateMidnight());
 		endTransaction();
 				
 		assertEquals(1, bookings.getBookingList().size());
@@ -61,7 +57,7 @@ public class TestBookingDAO extends SpringTestCase {
 		// Add a teacher booking on the date
 		createTeacherBooking(periodId, 2, date.plusHours(1));
 		
-		bookings = bookingDAO.getBookings(teacher, date, date);
+		bookings = bookingDAO.getBookings(teacher, date.toDateMidnight(), date.toDateMidnight());
 		endTransaction();
 				
 		assertEquals(2, bookings.getBookingList().size());
@@ -81,7 +77,7 @@ public class TestBookingDAO extends SpringTestCase {
 		}
 		
 		{
-			Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new Date());
+			Long bookingId = createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime());
 			
 			Booking booking = getBookingDAO().getBooking(bookingId);
 			endTransaction();
@@ -108,7 +104,7 @@ public class TestBookingDAO extends SpringTestCase {
 		endTransaction();
 		
 		// First create a list of new bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		List<PupilBooking> unsentBookings = bookingDAO.getTeacherNotificationBookings(teacher);
 		endTransaction();
@@ -121,10 +117,10 @@ public class TestBookingDAO extends SpringTestCase {
 		endTransaction();
 		
 		// First create a list of new bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3));
 		
 		Map<Pupil, List<PupilBooking>> unsentBookings = bookingDAO.getPupilNotificationBookings();
 		endTransaction();
@@ -171,7 +167,7 @@ public class TestBookingDAO extends SpringTestCase {
 		endTransaction();
 		
 		// First create a list of new bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		List<PupilBooking> unsentBookings = bookingDAO.getTeacherNotificationBookings(teacher);
 		endTransaction();
@@ -198,10 +194,10 @@ public class TestBookingDAO extends SpringTestCase {
 		endTransaction();
 		
 		// First create a list of new bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3));
 		
 		Map<Pupil, List<PupilBooking>> pupilNotificationBookings = bookingDAO.getPupilNotificationBookings();
 		endTransaction();
@@ -224,9 +220,7 @@ public class TestBookingDAO extends SpringTestCase {
 		assertNotNull(getPupil(pupilNotificationBookings, 7));
 	}
 	
-	public void testGetBookings() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
+	public void testGetBookings() {		
 		BookingDAO bookingDAO = getBookingDAO();
 		PersonDAO personDAO = getPersonDAO();
 		
@@ -234,16 +228,16 @@ public class TestBookingDAO extends SpringTestCase {
 		endTransaction();
 		
 		// Create some bookings
-		createPupilBooking(1, 6, new DateTime(2007, 6, 11, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1, 6, new DateTime(2007, 6, 13, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1, 6, new DateTime(2007, 6, 15, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1, 6, new DateTime(2007, 6, 11, 11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1, 6, new DateTime(2007, 6, 13, 11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1, 6, new DateTime(2007, 6, 15, 11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		createTeacherBooking(1, 2, new DateTime(2007, 6, 11, 12, 0, 0, 0));
 		createTeacherBooking(1, 2, new DateTime(2007, 6, 13, 12, 0, 0, 0));
 		createTeacherBooking(1, 2, new DateTime(2007, 6, 15, 12, 0, 0, 0));
 		
-		TeachUsDate fromDate = new TeachUsDate(2007, 6, 11, timeZone);
-		TeachUsDate toDate = new TeachUsDate(2007, 6, 17, timeZone);
+		DateMidnight fromDate = new DateMidnight(2007, 6, 11);
+		DateMidnight toDate = new DateMidnight(2007, 6, 17);
 		Bookings bookings = bookingDAO.getBookings(teacher, fromDate, toDate);
 		endTransaction();
 		
@@ -252,7 +246,7 @@ public class TestBookingDAO extends SpringTestCase {
 		assertEquals(6, bookings.getBookingList().size());
 		
 		for (Booking booking : bookings.getBookingList()) {
-			TeachUsDate date = booking.getDate();
+			DateTime date = booking.getDate();
 			assertTrue(fromDate.isBefore(date));
 			assertTrue(toDate.isAfter(date));
 			
@@ -284,9 +278,9 @@ public class TestBookingDAO extends SpringTestCase {
 	
 	public void testGetFutureBookingsForTeacher_inactiveTeacher() {
 		// Add some future bookings
-		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.MONDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.WEDNESDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.FRIDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.MONDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.WEDNESDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.FRIDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		Teacher teacher = inactivateTeacher();
 		
@@ -333,9 +327,9 @@ public class TestBookingDAO extends SpringTestCase {
 	
 	public void testGetUnsentBookings_inactiveTeacher() {
 		// add some unsent bookings
-		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.MONDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.WEDNESDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.FRIDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.MONDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.WEDNESDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime().plusMonths(1).withDayOfWeek(DateTimeConstants.FRIDAY).withTime(11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		Teacher teacher = getTeacher();
 		
@@ -354,12 +348,10 @@ public class TestBookingDAO extends SpringTestCase {
 	}
 	
 	public void testGetPaidBookings_inactiveTeacher() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
 		Teacher teacher = getTeacher();
 		
-		TeachUsDate startDate = new TeachUsDate(2007, 1, 1, timeZone);
-		TeachUsDate endDate = new TeachUsDate(2007, 12, 31, timeZone);
+		DateMidnight startDate = new DateMidnight(2007, 1, 1);
+		DateMidnight endDate = new DateMidnight(2007, 12, 31);
 		
 		List<PupilBooking> paidBookings = getBookingDAO().getPaidBookings(teacher, startDate, endDate);
 		endTransaction();
@@ -375,13 +367,11 @@ public class TestBookingDAO extends SpringTestCase {
 		assertEquals(0, paidBookings.size());
 	}
 	
-	public void testGetUnPaidBookings_dateRange_inactiveTeacher() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
+	public void testGetUnPaidBookings_dateRange_inactiveTeacher() {		
 		Teacher teacher = getTeacher();
 		
-		TeachUsDate startDate = new TeachUsDate(2007, 3, 1, timeZone);
-		TeachUsDate endDate = new TeachUsDate(2007, 12, 31, timeZone);
+		DateMidnight startDate = new DateMidnight(2007, 3, 1);
+		DateMidnight endDate = new DateMidnight(2007, 12, 31);
 		
 		List<PupilBooking> unpaidBookings = getBookingDAO().getUnPaidBookings(teacher, startDate, endDate);
 		endTransaction();
@@ -432,12 +422,10 @@ public class TestBookingDAO extends SpringTestCase {
 	}
 	
 	public void testGetBookings_inactiveTeacher() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
 		Teacher teacher = getTeacher();
 		
-		TeachUsDate fromDate = new TeachUsDate(2007, 1, 1, timeZone);
-		TeachUsDate toDate = new TeachUsDate(2007, 12, 31, timeZone);
+		DateMidnight fromDate = new DateMidnight(2007, 1, 1);
+		DateMidnight toDate = new DateMidnight(2007, 12, 31);
 		
 		// Add some teacher bookings
 		createTeacherBooking(1L, teacher.getId(), new DateTime(2007, 5, 9, 11, 0, 0, 0));

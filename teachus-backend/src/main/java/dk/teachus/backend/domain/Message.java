@@ -19,18 +19,20 @@ package dk.teachus.backend.domain;
 import java.io.Serializable;
 import java.util.Date;
 
+import org.joda.time.DateTime;
+
 public interface Message extends Serializable {
 	
 	Long getId();
 	
-	Date getCreateDate();
-	void setCreateDate(Date createDate);
+	DateTime getCreateDate();
+	void setCreateDate(DateTime DateTime);
 	
 	MessageState getState();
 	void setState(MessageState state);
 	
-	Date getProcessingDate();
-	void setProcessingDate(Date processingDate);
+	DateTime getProcessingDate();
+	void setProcessingDate(DateTime processingDate);
 	
 	Person getSender();
 	void setSender(Person sender);

@@ -16,18 +16,17 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.AbstractTeacherAttribute;
@@ -83,8 +82,6 @@ public class TestPersonDAO extends SpringTestCase {
 	}
 	
 	public void testDeleteTeacher() {
-		TimeZone timeZone = TimeZone.getDefault();
-		
 		int teachersBefore = getPersonDAO().getPersons(Teacher.class).size();
 		int pupilsBefore = getPersonDAO().getPersons(Pupil.class).size();
 		
@@ -103,9 +100,9 @@ public class TestPersonDAO extends SpringTestCase {
 		Period period = new PeriodImpl();
 		period.setTeacher(teacher);
 		period.setStatus(Status.FINAL);
-		period.setBeginDate(new TeachUsDate(new DateTime(), timeZone));
-		period.setStartTime(new TeachUsDate(new DateTime(), timeZone).withTime(10, 0, 0, 0));
-		period.setEndTime(new TeachUsDate(new DateTime(), timeZone).withTime(16, 0, 0, 0));
+		period.setBeginDate(new DateMidnight());
+		period.setStartTime(new LocalTime(10, 0, 0, 0));
+		period.setEndTime(new LocalTime(16, 0, 0, 0));
 		period.addWeekDay(WeekDay.FRIDAY);
 		period.setName("Test period");
 		getPeriodDAO().save(period);
@@ -117,9 +114,9 @@ public class TestPersonDAO extends SpringTestCase {
 		// Create some bookings for the teacher and pupils
 		DateTime date = new DateTime().plusWeeks(1).withDayOfWeek(WeekDay.FRIDAY.getYodaWeekDay());
 		date = date.withTime(11, 0, 0, 0);
-		Long pupilBooking1 = createPupilBooking(period.getId(), pupil1.getId(), date, new Date());
+		Long pupilBooking1 = createPupilBooking(period.getId(), pupil1.getId(), date, new DateTime());
 		date = date.withTime(13, 0, 0, 0);
-		Long pupilBooking2 = createPupilBooking(period.getId(), pupil2.getId(), date, new Date());
+		Long pupilBooking2 = createPupilBooking(period.getId(), pupil2.getId(), date, new DateTime());
 		
 		date = date.withTime(15, 0, 0, 0);
 		Long teacherBooking = createTeacherBooking(period.getId(), teacher.getId(), date);

@@ -18,11 +18,11 @@ package dk.teachus.frontend.pages.calendar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TimeZone;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.util.tester.ITestPageSource;
 import org.jmock.Expectations;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
@@ -31,7 +31,6 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
@@ -103,7 +102,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			exactly(3).of(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periodsImpl));
 			
-			exactly(1).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(TeachUsDate.class)), with(aNonNull(TeachUsDate.class)));
+			exactly(1).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(DateMidnight.class)), with(aNonNull(DateMidnight.class)));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			one(bookingDAO).createTeacherBookingObject();
@@ -114,15 +113,15 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			
 			one(bookingDAO).book(with(aNonNull(Booking.class)));
 			
-			exactly(2).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(TeachUsDate.class)), with(aNonNull(TeachUsDate.class)));
+			exactly(2).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(DateMidnight.class)), with(aNonNull(DateMidnight.class)));
 			TeacherBookingImpl teacherBooking = new TeacherBookingImpl();
 			teacherBooking.setPeriod(period);
 			teacherBooking.setTeacher(teacher);
 			teacherBooking.setId(123567L);
 			teacherBooking.setActive(true);
-			teacherBooking.setCreateDate(new TeachUsDate(new DateTime()));
-			teacherBooking.setUpdateDate(new TeachUsDate(new DateTime()));
-			teacherBooking.setDate(new TeachUsDate(new DateTime(), TimeZone.getDefault()).withDate(2007, 5, 9).withTime(13, 0, 0, 0));
+			teacherBooking.setCreateDate(new DateTime());
+			teacherBooking.setUpdateDate(new DateTime());
+			teacherBooking.setDate(new DateTime().withDate(2007, 5, 9).withTime(13, 0, 0, 0));
 			List<Booking> bookings = new ArrayList<Booking>();
 			bookings.add(teacherBooking);
 			will(returnValue(new BookingsImpl(bookings)));
@@ -136,7 +135,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new TeachUsDate(2007, 5, 9, TimeZone.getDefault()));
+				return new TeacherCalendarPage(new DateMidnight(2007, 5, 9));
 			}			
 		});
 		
@@ -154,7 +153,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new TeachUsDate(2007, 5, 9, TimeZone.getDefault()));
+				return new TeacherCalendarPage(new DateMidnight(2007, 5, 9));
 			}			
 		});
 		
@@ -162,8 +161,6 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 	}
 	
 	public void testNavigation() {
-		final TimeZone timeZone = TimeZone.getDefault();
-		
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
@@ -185,10 +182,10 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			exactly(2).of(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periods));
 			
-			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));
+			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 11, 5), new DateMidnight(2007, 11, 11));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
-			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 10, 29, timeZone), new TeachUsDate(2007, 11, 4, timeZone));
+			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 10, 29), new DateMidnight(2007, 11, 4));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setPersonDAO(personDAO);
@@ -200,7 +197,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new TeachUsDate(2007, 11, 7, timeZone));
+				return new TeacherCalendarPage(new DateMidnight(2007, 11, 7));
 			}
 		});
 		
@@ -212,8 +209,6 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 	}
 	
 	public void testNavigation_fullWeek() {
-		final TimeZone timeZone = TimeZone.getDefault();
-		
 		final TeachUsWicketTester tester = createTester();
 		
 		checking(new Expectations() {{
@@ -238,10 +233,10 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			exactly(2).of(periodDAO).getPeriods(with(aNonNull(Teacher.class)), with(same(true)));
 			will(returnValue(periods));
 			
-			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 11, 5, timeZone), new TeachUsDate(2007, 11, 11, timeZone));
+			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 11, 5), new DateMidnight(2007, 11, 11));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
-			one(bookingDAO).getBookings(teacher, new TeachUsDate(2007, 10, 29, timeZone), new TeachUsDate(2007, 11, 4, timeZone));
+			one(bookingDAO).getBookings(teacher, new DateMidnight(2007, 10, 29), new DateMidnight(2007, 11, 4));
 			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
 			
 			tester.setPersonDAO(personDAO);
@@ -253,7 +248,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			private static final long serialVersionUID = 1L;
 
 			public Page getTestPage() {
-				return new TeacherCalendarPage(new TeachUsDate(2007, 11, 7, timeZone));
+				return new TeacherCalendarPage(new DateMidnight(2007, 11, 7));
 			}
 		});
 		

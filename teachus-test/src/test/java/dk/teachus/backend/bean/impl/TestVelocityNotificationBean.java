@@ -43,7 +43,7 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 		assertEquals(firstMessageCount, secondMessageCount);
 		
 		// Create a new booking
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		// Execute the new bookings bean
 		notificationBean.sendTeacherNotificationMail();
@@ -57,7 +57,7 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 	public void testSetSentTeacherNotificationFlag() {
 		NotificationBean notificationBean = (NotificationBean) applicationContext.getBean("notificationBean");
 
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		List<PupilBooking> unsentBookingsBefore = getBookingDAO().getTeacherNotificationBookings(getTeacher());
 		
@@ -83,10 +83,10 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 		assertEquals(firstMessageCount, secondMessageCount);
 		
 		// Create some bookings
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3).toDate());
-		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 12, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 7L, new DateTime(2007, 3, 12, 13, 0, 0, 0), new DateTime().minusHours(3));
+		createPupilBooking(1L, 8L, new DateTime(2007, 3, 12, 14, 0, 0, 0), new DateTime().minusHours(3));
 				
 		// Execute the new bookings bean
 		notificationBean.sendPupilNotificationMail();
@@ -99,7 +99,7 @@ public class TestVelocityNotificationBean extends SpringTestCase {
 	public void testSetSentPupilNotificationFlag() {
 		NotificationBean notificationBean = (NotificationBean) applicationContext.getBean("notificationBean");
 
-		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3).toDate());
+		createPupilBooking(1L, 6L, new DateTime(2007, 3, 12, 11, 0, 0, 0), new DateTime().minusHours(3));
 		
 		Map<Pupil, List<PupilBooking>> unsentBookingsBefore = getBookingDAO().getPupilNotificationBookings();
 		

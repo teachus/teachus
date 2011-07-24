@@ -46,7 +46,6 @@ import org.joda.time.PeriodType;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 
@@ -87,7 +86,7 @@ public abstract class CalendarPanel<T> extends Panel {
 		}
 	}
 	
-	public CalendarPanel(String id, IModel<TeachUsDate> weekDateModel) {
+	public CalendarPanel(String id, IModel<DateMidnight> weekDateModel) {
 		super(id, weekDateModel);
 		
 		add(new JQueryBehavior());
@@ -103,7 +102,7 @@ public abstract class CalendarPanel<T> extends Panel {
 		/*
 		 * Navigation
 		 */
-		Link<TeachUsDate> previousWeekLink = new Link<TeachUsDate>("previousWeek", weekDateModel) { //$NON-NLS-1$
+		Link<DateMidnight> previousWeekLink = new Link<DateMidnight>("previousWeek", weekDateModel) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -113,17 +112,17 @@ public abstract class CalendarPanel<T> extends Panel {
 		};
 		previousWeekLink.add(new Label("label", TeachUsSession.get().getString("CalendarPanelV2.previousWeek"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(previousWeekLink);
-		Link<TeachUsDate> thisWeekLink = new Link<TeachUsDate>("thisWeek", weekDateModel) { //$NON-NLS-1$
+		Link<DateMidnight> thisWeekLink = new Link<DateMidnight>("thisWeek", weekDateModel) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				setModelObject(getModelObject().withDate(new DateMidnight()));
+				setModelObject(new DateMidnight());
 			}
 		};
 		thisWeekLink.add(new Label("label", TeachUsSession.get().getString("CalendarPanelV2.thisWeek"))); //$NON-NLS-1$ //$NON-NLS-2$
 		add(thisWeekLink);
-		Link<TeachUsDate> nextWeekLink = new Link<TeachUsDate>("nextWeek", weekDateModel) { //$NON-NLS-1$
+		Link<DateMidnight> nextWeekLink = new Link<DateMidnight>("nextWeek", weekDateModel) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -137,13 +136,13 @@ public abstract class CalendarPanel<T> extends Panel {
 		/*
 		 * Calendar
 		 */		
-		IModel<List<TeachUsDate>> daysModel = new LoadableDetachableModel<List<TeachUsDate>>() {
+		IModel<List<DateMidnight>> daysModel = new LoadableDetachableModel<List<DateMidnight>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected List<TeachUsDate> load() {
-				TeachUsDate thisMonday = CalendarPanel.this.getModelObject().withDayOfWeek(DateTimeConstants.MONDAY);
-				List<TeachUsDate> days = new ArrayList<TeachUsDate>();
+			protected List<DateMidnight> load() {
+				DateMidnight thisMonday = CalendarPanel.this.getModelObject().withDayOfWeek(DateTimeConstants.MONDAY);
+				List<DateMidnight> days = new ArrayList<DateMidnight>();
 				for (int i = 0; i < 7; i++) {
 					days.add(thisMonday);
 					thisMonday = thisMonday.plusDays(1);
@@ -170,17 +169,17 @@ public abstract class CalendarPanel<T> extends Panel {
 		};
 		
 		// Headers
-		add(new ListView<TeachUsDate>("headers", daysModel) { //$NON-NLS-1$
+		add(new ListView<DateMidnight>("headers", daysModel) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<TeachUsDate> item) {
+			protected void populateItem(final ListItem<DateMidnight> item) {
 				item.add(new Label("label", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public String getObject() {
-						return HEADER_FORMAT.withLocale(TeachUsSession.get().getLocale()).print(item.getModelObject().getDateMidnight());
+						return HEADER_FORMAT.withLocale(TeachUsSession.get().getLocale()).print(item.getModelObject());
 					}
 				}).setRenderBodyOnly(true));
 			}
@@ -224,11 +223,11 @@ public abstract class CalendarPanel<T> extends Panel {
 		});
 
 		// Days
-		add(new ListView<TeachUsDate>("days", daysModel) { //$NON-NLS-1$
+		add(new ListView<DateMidnight>("days", daysModel) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected void populateItem(final ListItem<TeachUsDate> dayItem) {
+			protected void populateItem(final ListItem<DateMidnight> dayItem) {
 				// Times
 				dayItem.add(new ListView<LocalTime>("times", timesModel) { //$NON-NLS-1$
 					private static final long serialVersionUID = 1L;
@@ -349,9 +348,9 @@ public abstract class CalendarPanel<T> extends Panel {
 		return new LocalTime(0, 0);
 	}
 	
-	protected abstract IModel<List<TimeSlot<T>>> getTimeSlotModel(TeachUsDate date);
+	protected abstract IModel<List<TimeSlot<T>>> getTimeSlotModel(DateMidnight date);
 	
-	protected abstract List<String> getTimeSlotContent(TeachUsDate date, TimeSlot<T> timeSlot, ListItem<TimeSlot<T>> timeSlotItem);
+	protected abstract List<String> getTimeSlotContent(DateMidnight date, TimeSlot<T> timeSlot, ListItem<TimeSlot<T>> timeSlotItem);
 	
 	protected void modifyTimeSlotItem(ListItem<TimeSlot<T>> timeSlotItem) {
 	}
@@ -360,8 +359,8 @@ public abstract class CalendarPanel<T> extends Panel {
 		return new WebMarkupContainer(wicketId).setVisible(false);
 	}
 	
-	public TeachUsDate getModelObject() {
-		return (TeachUsDate) getDefaultModelObject();
+	public DateMidnight getModelObject() {
+		return (DateMidnight) getDefaultModelObject();
 	}
 	
 }

@@ -17,13 +17,13 @@
 package dk.teachus.backend.bean.impl;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
 
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joda.time.DateTime;
 
 import dk.teachus.backend.MailException;
 import dk.teachus.backend.RecipientErrorMailException;
@@ -94,7 +94,7 @@ public class MailMessageSendingBean {
 						log.warn("Message couln't be send due to unknown error", e);
 					}
 					
-					message.setProcessingDate(new Date());
+					message.setProcessingDate(new DateTime());
 					messageDAO.save(message);
 				} catch (UnsupportedEncodingException e) {
 					throw new RuntimeException(e);

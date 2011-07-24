@@ -39,7 +39,6 @@ import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jfreechart.BarChartResource;
@@ -177,8 +176,8 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		form.add(years);
 		
 			
-		TeachUsDate fromDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(1).withDayOfMonth(1);
-		TeachUsDate toDate = TeachUsSession.get().createNewDate(new DateMidnight()).withYear(year).withMonthOfYear(12).withDayOfMonth(31);
+		DateMidnight fromDate = new DateMidnight(year, 1, 1);
+		DateMidnight toDate = new DateMidnight(year, 12, 31);
 		
 		List<PupilBooking> paidBookings = bookingDAO.getPaidBookings(getPerson(), fromDate, toDate);
 		
@@ -190,7 +189,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		List<PupilBooking> futureBookings = new ArrayList<PupilBooking>();
 		DateTime now = new DateTime();
 		for (PupilBooking booking : allUnPaidBookings) {
-			if (now.isAfter(booking.getDate().getDateTime())) {
+			if (now.isAfter(booking.getDate())) {
 				unPaidBookings.add(booking);
 			} else {
 				futureBookings.add(booking);
@@ -264,7 +263,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 	private PaintedDefaultCategoryDataset createCategoryDataset(List<PupilBooking> bookings, Comparable<?> dataSetLabel, Paint paint) {
 		Map<Integer, Double> months = new HashMap<Integer, Double>();
 		for (PupilBooking booking : bookings) {
-			int month = booking.getDate().getDateMidnight().getMonthOfYear();
+			int month = booking.getDate().getMonthOfYear();
 			double price = booking.getPeriod().getPrice();
 			if (months.containsKey(month)) {
 				months.put(month, months.get(month) + price);
@@ -294,7 +293,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 	private MonthIncome getMonthIncome(List<MonthIncome> data, PupilBooking booking) {
 		MonthIncome monthIncome = null;
 		for (MonthIncome income : data) {
-			if (income.getMonth() == booking.getDate().getDateMidnight().getMonthOfYear()) {
+			if (income.getMonth() == booking.getDate().getMonthOfYear()) {
 				monthIncome = income;
 				break;
 			}
@@ -302,7 +301,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		
 		if (monthIncome == null) {
 			monthIncome = new MonthIncome();
-			monthIncome.setMonth(booking.getDate().getDateMidnight().getMonthOfYear());
+			monthIncome.setMonth(booking.getDate().getMonthOfYear());
 			data.add(monthIncome);
 		}
 		return monthIncome;

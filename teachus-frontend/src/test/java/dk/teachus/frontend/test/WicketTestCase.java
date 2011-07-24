@@ -18,8 +18,6 @@ package dk.teachus.frontend.test;
 
 import java.io.Serializable;
 import java.lang.reflect.Proxy;
-import java.util.Date;
-import java.util.TimeZone;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.Request;
@@ -30,6 +28,8 @@ import org.apache.wicket.util.tester.TagTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
@@ -42,7 +42,6 @@ import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
@@ -329,16 +328,14 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected Period createPeriod(Long periodId) {
-		TimeZone timeZone = TimeZone.getDefault();
-		
-		TeachUsDate beginDate = new TeachUsDate(2007, 1, 1, timeZone);
-		TeachUsDate endDate = new TeachUsDate(2007, 12, 31, timeZone);
-		TeachUsDate startTime = new TeachUsDate(new DateMidnight(), timeZone).withTime(10, 0, 0, 0);
-		TeachUsDate endTime = new TeachUsDate(new DateMidnight(), timeZone).withTime(18, 0, 0, 0);
+		DateMidnight beginDate = new DateMidnight(2007, 1, 1);
+		DateMidnight endDate = new DateMidnight(2007, 12, 31);
+		LocalTime startTime = new LocalTime(10, 0, 0, 0);
+		LocalTime endTime = new LocalTime(18, 0, 0, 0);
 		return createPeriod(periodId, createTeacher(), beginDate, endDate, startTime, endTime);
 	}
 	
-	protected Period createPeriod(Long periodId, Teacher teacher, TeachUsDate beginDate, TeachUsDate endDate, TeachUsDate startTime, TeachUsDate endTime) {
+	protected Period createPeriod(Long periodId, Teacher teacher, DateMidnight beginDate, DateMidnight endDate, LocalTime startTime, LocalTime endTime) {
 		PeriodImpl period = new PeriodImpl();
 		period.setId(periodId);
 		period.setStatus(Status.FINAL);
@@ -360,19 +357,19 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	}
 	
 	protected PupilBooking createPupilBooking(Long pupilBookingId) {
-		TeachUsDate dateTime = new TeachUsDate(2007, 4, 20, 13, 0, 0, TimeZone.getDefault());
+		DateTime dateTime = new DateTime(2007, 4, 20, 13, 0, 0, 0);
 		return createPupilBooking(pupilBookingId, dateTime);
 	}
 	
-	protected PupilBooking createPupilBooking(Long pupilBookingId, TeachUsDate dateTime) {
+	protected PupilBooking createPupilBooking(Long pupilBookingId, DateTime dateTime) {
 		return createPupilBooking(pupilBookingId, createPupil(), createPeriod(), dateTime);
 	}
 	
-	protected PupilBooking createPupilBooking(Long pupilBookingId, Pupil pupil, Period period, TeachUsDate dateTime) {
+	protected PupilBooking createPupilBooking(Long pupilBookingId, Pupil pupil, Period period, DateTime dateTime) {
 		PupilBookingImpl booking = new PupilBookingImpl();
 		booking.setId(pupilBookingId);
 		booking.setActive(true);
-		booking.setCreateDate(new TeachUsDate(new Date(), TimeZone.getDefault()));
+		booking.setCreateDate(new DateTime());
 		booking.setDate(dateTime);
 		booking.setPupil(pupil);
 		booking.setTeacher(pupil.getTeacher());

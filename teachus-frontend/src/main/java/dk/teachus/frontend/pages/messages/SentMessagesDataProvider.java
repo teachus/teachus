@@ -5,7 +5,7 @@ import org.apache.wicket.model.IModel;
 import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.impl.AbstractMessage;
 import dk.teachus.backend.domain.impl.PersonImpl;
-import dk.teachus.frontend.components.list.DateComparator;
+import dk.teachus.frontend.components.list.DateTimeComparator;
 import dk.teachus.frontend.components.list.DateFilter;
 import dk.teachus.frontend.components.list.MessageStateComparator;
 import dk.teachus.frontend.components.list.SameObjectFilter;
@@ -21,7 +21,7 @@ public class SentMessagesDataProvider extends TeachUsFilteredSortableDataProvide
 		
 		StringComparator stringComparator = new StringComparator();
 		addComparator("recipient.name", stringComparator); //$NON-NLS-1$
-		addComparator("processingDate", new DateComparator()); //$NON-NLS-1$
+		addComparator("processingDate", new DateTimeComparator()); //$NON-NLS-1$
 		addComparator("state", new MessageStateComparator()); //$NON-NLS-1$
 		addComparator("subject", stringComparator); //$NON-NLS-1$
 		

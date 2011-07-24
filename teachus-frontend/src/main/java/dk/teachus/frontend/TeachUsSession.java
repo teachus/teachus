@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.TimeZone;
 
 import javax.servlet.http.Cookie;
 
@@ -32,18 +31,13 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebRequest;
 import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
-import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.pages.UnAuthenticatedBasePage;
 import dk.teachus.utils.ClassUtils;
 
@@ -199,62 +193,6 @@ public class TeachUsSession extends WebSession {
 		}
 	}
 	
-	public TeachUsDate createNewDate() {
-		return createNewDate(new DateTime());
-	}
-
-	public TeachUsDate createNewDate(DateMidnight dateMidnight) {
-		return createNewDate(dateMidnight.toDateTime());
-	}
-
-	public TeachUsDate createNewDate(DateTime dateTime) {
-		return createNewDate(dateTime, getPerson());
-	}
-	
-	public TeachUsDate createNewDate(DateMidnight dateMidnight, Person person) {
-		return createNewDate(dateMidnight.toDateTime(), person);
-	}
-	
-	public TeachUsDate createNewDate(DateTime dateTime, Person person) {
-		TeachUsDate date = new TeachUsDate(dateTime);
-		
-		TimeZone timeZone = null;
-		if (person != null) {
-			Teacher teacher = null;
-			if (person instanceof Pupil) {
-				Pupil pupil = (Pupil) person;
-				teacher = pupil.getTeacher();
-			} else if (person instanceof Teacher) {
-				teacher = (Teacher) person;
-			}
-			
-			if (teacher != null) {
-				TimeZoneAttribute timeZoneAttribute = getTeacherAttribute(TimeZoneAttribute.class, teacher);
-				
-				if (timeZoneAttribute != null) {
-					timeZone = timeZoneAttribute.getTimeZone();
-				}
-			}
-		}
-		
-		if (timeZone == null) {
-			ApplicationConfiguration configuration = TeachUsApplication.get().getConfiguration();
-			String tzString = configuration.getConfiguration(ApplicationConfiguration.DEFAULT_TIMEZONE);
-			
-			if (tzString != null) {
-				timeZone = TimeZone.getTimeZone(tzString);
-			}
-		}
-		
-		if (timeZone == null) {
-			timeZone = TimeZone.getDefault();
-		}
-		
-		date.setTimeZone(timeZone);
-		
-		return date;
-	}
-
 	public static TeachUsSession get() {
 		return (TeachUsSession) Session.get();
 	}

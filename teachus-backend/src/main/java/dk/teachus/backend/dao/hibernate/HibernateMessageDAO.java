@@ -16,11 +16,11 @@
  */
 package dk.teachus.backend.dao.hibernate;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.joda.time.DateTime;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,7 +58,7 @@ public class HibernateMessageDAO extends HibernateDaoSupport implements MessageD
 		}
 		
 		if (message.getId() == null) {
-			message.setCreateDate(new Date());
+			message.setCreateDate(new DateTime());
 		}
 		
 		getHibernateTemplate().saveOrUpdate(message);

@@ -16,7 +16,6 @@
  */
 package dk.teachus.backend.bean.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +26,8 @@ import java.util.ResourceBundle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.exception.VelocityException;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import dk.teachus.backend.bean.NotificationBean;
 import dk.teachus.backend.bean.VelocityBean;
@@ -43,6 +44,9 @@ import dk.teachus.utils.ClassUtils;
 
 public class VelocityNotificationBean implements NotificationBean {
 	private static final long serialVersionUID = 1L;
+	
+	private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormat.forPattern("EE, d. MMM yyyy H:mm");
+	
 	private static final Log log = LogFactory.getLog(VelocityNotificationBean.class);
 	
 	public static class FormattedBooking {
@@ -129,8 +133,8 @@ public class VelocityNotificationBean implements NotificationBean {
 				for (PupilBooking pupilBooking : pupilBookings) {
 					FormattedPupilBooking formattedPupilBooking = new FormattedPupilBooking();
 					formattedPupilBooking.setPupilBooking(pupilBooking);
-					SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);
-					formattedPupilBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate().getDate()));
+					DateTimeFormatter dateFormat = DATE_TIME_FORMAT.withLocale(locale);
+					formattedPupilBooking.setFormattedDate(dateFormat.print(pupilBooking.getDate()));
 					pupilBookingList.add(formattedPupilBooking);
 				}
 				
@@ -194,8 +198,8 @@ public class VelocityNotificationBean implements NotificationBean {
 				for (PupilBooking pupilBooking : bookings) {
 					FormattedBooking formattedBooking = new FormattedBooking();
 					formattedBooking.setLocation(pupilBooking.getPeriod().getLocation());
-					SimpleDateFormat dateFormat = new SimpleDateFormat("EE, d. MMM yyyy H:mm", locale);
-					formattedBooking.setFormattedDate(dateFormat.format(pupilBooking.getDate().getDate()));
+					DateTimeFormatter dateFormat = DATE_TIME_FORMAT.withLocale(locale);
+					formattedBooking.setFormattedDate(dateFormat.print(pupilBooking.getDate()));
 					bookingList.add(formattedBooking);
 				}
 				

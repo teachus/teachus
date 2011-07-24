@@ -17,9 +17,10 @@
 package dk.teachus.utils;
 
 import java.util.Comparator;
-import java.util.Date;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import dk.teachus.backend.domain.Period;
 
@@ -30,8 +31,8 @@ public class PeriodComparator implements Comparator<Period> {
 		
 		if (o1 != null && o2 != null) {
 			if (o1.getStartTime() != null && o2.getStartTime() != null) {
-				DateTime startTime1 = convertAndReset(o1.getStartTime().getDate());
-				DateTime startTime2 = convertAndReset(o2.getStartTime().getDate());
+				DateTime startTime1 = convertAndReset(o1.getStartTime());
+				DateTime startTime2 = convertAndReset(o2.getStartTime());
 				compare = startTime1.compareTo(startTime2);
 			} else if (o1.getStartTime() != null) {
 				compare = -1;
@@ -47,13 +48,9 @@ public class PeriodComparator implements Comparator<Period> {
 		return compare;
 	}
 	
-	private DateTime convertAndReset(Date date) {
-		DateTime now = new DateTime();
-		DateTime dateTime = new DateTime(date);
-		
-		dateTime = dateTime.withYear(now.getYear());
-		dateTime = dateTime.withMonthOfYear(now.getMonthOfYear());
-		dateTime = dateTime.withDayOfMonth(now.getDayOfMonth());
+	private DateTime convertAndReset(LocalTime date) {
+		DateMidnight now = new DateMidnight();
+		DateTime dateTime = date.toDateTime(now);
 		dateTime = dateTime.withSecondOfMinute(0);
 		dateTime = dateTime.withMillisOfSecond(0);
 		

@@ -2,17 +2,20 @@ package dk.teachus.frontend.pages.stats.admin;
 
 import java.util.List;
 
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.PupilBooking;
-import dk.teachus.backend.domain.TeachUsDate;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.utils.LocalizationUtils;
+import dk.teachus.utils.DateUtils;
 
 public class BookingLogProvider implements LogProvider {
 	private static final long serialVersionUID = 1L;
 	
-	public void appendEntries(List<Entry> entries, TeachUsDate fromDate, TeachUsDate toDate) {
+	public void appendEntries(List<Entry> entries, DateMidnight fromDate, DateMidnight toDate) {
 		StatisticsDAO statisticsDAO = TeachUsApplication.get().getStatisticsDAO();
 		List<PupilBooking> bookings = statisticsDAO.getAllBookings(fromDate, toDate);
 		
@@ -20,10 +23,10 @@ public class BookingLogProvider implements LogProvider {
 			if (pupilBooking.isActive()) {
 				entries.add(createEntry(pupilBooking));
 			} else {
-				TeachUsDate createDate = pupilBooking.getCreateDate();
-				TeachUsDate updateDate = pupilBooking.getUpdateDate();
+				DateTime createDate = pupilBooking.getCreateDate();
+				DateTime updateDate = pupilBooking.getUpdateDate();
 				
-				if (createDate.intervalMinutes(updateDate) > 60) {
+				if (DateUtils.intervalMinutes(createDate, updateDate) > 60) {
 					entries.add(createEntry(pupilBooking));
 					entries.add(createDeleteEntry(pupilBooking));
 				}
@@ -63,7 +66,7 @@ public class BookingLogProvider implements LogProvider {
 		text = text.replace("{pupil.name}", booking.getPupil().getName());
 		text = text.replace("{teacher.name}", booking.getTeacher().getName());
 		text = LocalizationUtils.replaceDate(text, "bookingDate", booking.getDate());
-		return new Entry(booking.getTeacher(), booking.getCreateDate().getDateTime(), text);
+		return new Entry(booking.getTeacher(), booking.getCreateDate(), text);
 	}
 	
 	private Entry createDeleteEntry(PupilBooking booking) {
@@ -71,6 +74,6 @@ public class BookingLogProvider implements LogProvider {
 		text = text.replace("{pupil.name}", booking.getPupil().getName());
 		text = text.replace("{teacher.name}", booking.getTeacher().getName());
 		text = LocalizationUtils.replaceDate(text, "bookingDate", booking.getDate());
-		return new Entry(booking.getTeacher(), booking.getUpdateDate().getDateTime(), text);
+		return new Entry(booking.getTeacher(), booking.getUpdateDate(), text);
 	}
 }
