@@ -349,6 +349,24 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
+	public Bookings getAllBookings(Teacher teacher) {
+		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
+		
+		c.createCriteria("period").add(Restrictions.eq("status", Status.FINAL));
+		c.createCriteria("teacher").add(Restrictions.eq("active", true));
+		c.add(Restrictions.eq("teacher", teacher));
+		c.add(Restrictions.eq("active", true));
+		
+		c.setResultTransformer(DistinctRootEntityResultTransformer.INSTANCE);
+		
+		List<Booking> bookings = getHibernateTemplate().findByCriteria(c);
+		List<Booking> filteredBookings = filterBookings(bookings);
+		
+		return new BookingsImpl(filteredBookings);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly=true)
 	public Bookings getBookings(Teacher teacher, DateMidnight fromDate, DateMidnight toDate) {
 		DetachedCriteria c = DetachedCriteria.forClass(BookingImpl.class);
 		

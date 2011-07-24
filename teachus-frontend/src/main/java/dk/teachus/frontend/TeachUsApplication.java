@@ -78,6 +78,7 @@ import dk.teachus.frontend.pages.persons.AdminsPage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.ApplicationConfigurationPage;
+import dk.teachus.frontend.pages.settings.InvalidBookingsPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
 import dk.teachus.frontend.pages.settings.WelcomeMailSettingsPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersLogPage;
@@ -137,6 +138,7 @@ public class TeachUsApplication extends WebApplication {
 		mount(new HybridUrlCodingStrategy("/teachers", TeachersPage.class));
 		mountBookmarkablePage("/settings/profile", TeacherSettingsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/settings/welcomemail", WelcomeMailSettingsPage.class); //$NON-NLS-1$
+		mountBookmarkablePage("/settings/invalidbookings", InvalidBookingsPage.class); //$NON-NLS-1$
 		mount(new HybridUrlCodingStrategy("/admins", AdminsPage.class));
 		mountBookmarkablePage("/periods", PeriodsPage.class); //$NON-NLS-1$
 		mountBookmarkablePage("/agenda", AgendaPage.class); //$NON-NLS-1$

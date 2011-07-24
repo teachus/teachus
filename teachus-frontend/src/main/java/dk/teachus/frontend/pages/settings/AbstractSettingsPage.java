@@ -35,6 +35,7 @@ public abstract class AbstractSettingsPage extends AuthenticatedBasePage {
 		List<ToolbarItemInterface> items = new ArrayList<ToolbarItemInterface>();
 		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("Settings.personalInformation"), TeacherSettingsPage.class));
 		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("TeacherSettingsPage.introductionMailText"), WelcomeMailSettingsPage.class));
+		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("Settings.invalidBookings"), InvalidBookingsPage.class));
 	
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
 	}

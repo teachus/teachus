@@ -1,5 +1,7 @@
 package dk.teachus.frontend.pages.periods;
 
+import java.util.List;
+
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Period;
@@ -13,7 +15,7 @@ import dk.teachus.frontend.components.list.WeekDayComparator;
 public class PeriodsDataProvider extends TeachUsSortableDataProvider<Period> {
 	private static final long serialVersionUID = 1L;
 
-	public PeriodsDataProvider(IModel<Period> listModel) {
+	public PeriodsDataProvider(IModel<List<Period>> listModel) {
 		super(listModel);
 		
 		addComparator("name", new StringComparator());

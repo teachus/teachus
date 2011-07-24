@@ -58,10 +58,10 @@ public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvide
 		
 	}
 	
-	private IModel<O> listModel;
+	private IModel<List<O>> listModel;
 	private Map<String, Comparator<?>> comparators; 
 	
-	public TeachUsSortableDataProvider(IModel<O> listModel) {
+	public TeachUsSortableDataProvider(IModel<List<O>> listModel) {
 		this.listModel = listModel;
 		this.comparators = new HashMap<String, Comparator<?>>();
 	}
@@ -77,7 +77,7 @@ public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvide
 		return sortedList.subList(first, toIndex).listIterator();
 	}
 	
-	public IModel<O> model(Object object) {
+	public IModel<O> model(O object) {
 		return new Model((Serializable) object);
 	}
 	
@@ -85,9 +85,8 @@ public abstract class TeachUsSortableDataProvider<O> extends SortableDataProvide
 		return getSortedList().size();
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected List<O> getList() {
-		return (List<O>) listModel.getObject();
+		return listModel.getObject();
 	}
 	
 	protected List<O> getSortedList() {
