@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>teachus-parent</artifactId>
 		<groupId>dk.teachus</groupId>
-		<version>1.57-SNAPSHOT</version>
+		<version>1.57</version>
 		<relativePath>../teachus-parent/pom.xml</relativePath>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
