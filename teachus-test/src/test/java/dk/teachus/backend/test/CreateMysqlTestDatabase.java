@@ -20,7 +20,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -101,36 +104,92 @@ public class CreateMysqlTestDatabase {
 	}
 	
 	public void executeSql(Connection connection, CharSequence sql) throws SQLException {
-		Statement statement = null;
+		List<String> statements = parseSqlIntoSingleStatements(sql);
 		
-		try {
-			statement = connection.createStatement();
-			statement.execute(sql.toString());
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
+		for (String sqlStatement : statements) {
+			Statement statement = null;
+			
+			try {
+				statement = connection.createStatement();
+				statement.execute(sqlStatement);
+			} catch (SQLSyntaxErrorException e) {
+				System.err.println(sqlStatement);
+				throw e;
+			} finally {
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			}
 		}
 	}
 	
 	public void executeUpdateSql(Connection connection, CharSequence sql) throws SQLException {
-		Statement statement = null;
+		List<String> statements = parseSqlIntoSingleStatements(sql);
 		
-		try {
-			statement = connection.createStatement();
-			statement.executeUpdate(sql.toString());
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException e) {
-					throw new RuntimeException(e);
+		for (String sqlStatement : statements) {
+			Statement statement = null;
+			
+			try {
+				statement = connection.createStatement();
+				statement.executeUpdate(sqlStatement);
+			} finally {
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			}
 		}
 	}
+	
+	private List<String> parseSqlIntoSingleStatements(CharSequence sql) {
+		List<String> statements = new ArrayList<String>();
+		
+		StringBuilder statement = new StringBuilder();
+		boolean escape = false;
+		boolean quote = false;
+		for (int n = 0; n < sql.length(); n++) {
+			char currentChar = sql.charAt(n);
+			
+			switch (currentChar) {
+				case '"':
+				case '`':
+				case '\'':
+					if (escape == false) {
+						quote = quote == false;
+					}
+					escape = false;
+					statement.append(currentChar);
+					break;
+				case '\\':
+					escape = escape == false;
+					statement.append(currentChar);
+					break;
+				case ';':
+					if (quote == false) {
+						statements.add(statement.toString());
+						statement = new StringBuilder();
+					}
+					break;
+				default:
+					statement.append(currentChar);
+			}
+		}
+		
+		String sqlStatement = statement.toString();
+		sqlStatement = sqlStatement.trim();
+		
+		if (sqlStatement.length() > 0) {
+			statements.add(sqlStatement);
+		}
+		
+		return statements;
+	}
+	
 }

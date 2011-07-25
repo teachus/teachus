@@ -5,7 +5,7 @@ CREATE TABLE
 	version INTEGER NOT NULL DEFAULT 0, 
 	value MEDIUMTEXT, 
 	primary key (name)
-) type=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE 
 	booking 
@@ -24,7 +24,7 @@ CREATE TABLE
 	pupil_notification_sent TINYINT(1), 
 	paid TINYINT(1), 
 	primary key (id)
-) type=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE 
 	period 
@@ -45,7 +45,7 @@ CREATE TABLE
 	repeat_every_week INTEGER NOT NULL,
 	status VARCHAR(10) NOT NULL,
 	primary key (id)
-) type=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE 
 	person 
@@ -65,7 +65,7 @@ CREATE TABLE
 	teacher_id BIGINT, 
 	notes MEDIUMTEXT,
 	primary key (id)
-) type=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE 
 	teacher_attribute 
@@ -76,7 +76,7 @@ CREATE TABLE
 	teacher_id BIGINT NOT NULL, 
 	value TEXT NOT NULL, 
 	primary key (id)
-) type=InnoDB;
+) ENGINE=InnoDB;
 
 CREATE TABLE
 	message 
@@ -93,7 +93,7 @@ CREATE TABLE
 	processing_date DATETIME,
 	mail_type VARCHAR(255),
 	primary key (id)
-) type=InnoDB;
+) ENGINE=InnoDB;
 
 ALTER TABLE 
 	booking 
