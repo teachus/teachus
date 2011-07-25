@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>dk.teachus</groupId>
 		<artifactId>teachus-parent</artifactId>
-		<version>1.58-SNAPSHOT</version>
+		<version>1.58</version>
 		<relativePath>../teachus-parent/pom.xml</relativePath>
 	</parent>
 	
