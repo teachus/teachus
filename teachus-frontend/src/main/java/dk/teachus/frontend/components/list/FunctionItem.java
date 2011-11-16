@@ -21,8 +21,8 @@ import java.io.Serializable;
 import org.apache.wicket.Component;
 import org.apache.wicket.model.IModel;
 
-public interface FunctionItem extends Serializable {
+public interface FunctionItem<T> extends Serializable {
 	
-	Component createComponent(String wicketId, IModel rowModel);
+	Component createComponent(String wicketId, IModel<T> rowModel);
 	
 }

@@ -21,7 +21,7 @@ import java.util.Currency;
 import org.apache.wicket.Session;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
-public class CurrencyChoiceRenderer extends ChoiceRenderer {
+public class CurrencyChoiceRenderer extends ChoiceRenderer<Object> {
 	private static final long serialVersionUID = 1L;
 
 	@Override

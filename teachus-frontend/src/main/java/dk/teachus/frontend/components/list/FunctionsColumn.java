@@ -20,16 +20,17 @@ import java.util.List;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 
-public class FunctionsColumn extends AbstractColumn {
+public class FunctionsColumn<T> extends AbstractColumn<T> {
 	private static final long serialVersionUID = 1L;
 
-	private List<FunctionItem> functions;
+	private List<FunctionItem<T>> functions;
 	
-	public FunctionsColumn(IModel displayModel, List<FunctionItem> functions) {
+	public FunctionsColumn(IModel<String> displayModel, List<FunctionItem<T>> functions) {
 		super(displayModel);
 		this.functions = functions;
 	}
@@ -41,49 +42,10 @@ public class FunctionsColumn extends AbstractColumn {
 		return component;
 	}
 
-	public void populateItem(Item cellItem, String componentId, IModel rowModel) {		
+	public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel) {		
 		cellItem.add(new SimpleAttributeModifier("class", "functions"));
 		
-		cellItem.add(new FunctionColumnPanel(componentId, functions, rowModel));
-		
-//		LinkPropertyColumnPanel linkPropertyColumnPanel = new LinkPropertyColumnPanel(componentId);
-//		linkPropertyColumnPanel.setRenderBodyOnly(true);
-//		cellItem.add(linkPropertyColumnPanel);
-//		
-//		RepeatingView links = new RepeatingView("link");
-//		linkPropertyColumnPanel.add(links);
-//		
-//		for (final FunctionItem function : functions) {
-//			Link link = new Link(links.newChildId()) {
-//				private static final long serialVersionUID = 1L;
-//
-//				@Override
-//				public void onClick() {
-//					function.onEvent(object);
-//				}
-//				
-//				@Override
-//				public boolean isEnabled() {
-//					return function.isEnabled(object);
-//				}
-//			};
-//			
-//			String clickConfirmText = function.getClickConfirmText(object);
-//			link.add(new ConfirmClickBehavior(clickConfirmText));
-//			link.add(new AttributeModifier("title", true, new AbstractReadOnlyModel() {
-//				private static final long serialVersionUID = 1L;
-//
-//				@Override
-//				public Object getObject() {
-//					return function.getTitle();
-//				}
-//			}));
-//			function.modifyLink(link);
-//
-//			link.add(function.createLabelComponent("label", object));
-//			
-//			links.add(link);
-//		}
+		cellItem.add(new FunctionColumnPanel<T>(componentId, functions, rowModel));
 	}
 
 }

@@ -20,7 +20,7 @@ import org.apache.wicket.Component;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 
-public abstract class DefaultFunctionItem implements FunctionItem {
+public abstract class DefaultFunctionItem<T> implements FunctionItem<T> {
 	private static final long serialVersionUID = 1L;
 	
 	private String title;
@@ -32,27 +32,27 @@ public abstract class DefaultFunctionItem implements FunctionItem {
 		this.title = title;
 	}
 
-	public abstract void onEvent(Object object);
+	public abstract void onEvent(T object);
 	
 	public abstract Component createLabelComponent(String wicketId, Object object);
 	
-	public Component createComponent(String wicketId, IModel rowModel) {
-		return new DefaultFunctionPanel(wicketId, this, rowModel);
+	public Component createComponent(String wicketId, IModel<T> rowModel) {
+		return new DefaultFunctionPanel<T>(wicketId, this, rowModel);
 	}
 	
-	public String getClickConfirmText(Object object) {
+	public String getClickConfirmText(T object) {
 		return null;
 	}
 	
-	public boolean isEnabled(Object object) {
+	public boolean isEnabled(T object) {
 		return true;
 	}
 	
-	public String getTitle(Object rowObject) {
+	public String getTitle(T rowObject) {
 		return title;
 	}
 
-	public void modifyLink(Link link) {
+	public void modifyLink(Link<T> link) {
 		// Do nothing per default
 	}
 	

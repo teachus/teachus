@@ -24,7 +24,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
-public class WeekDayChoiceRenderer extends ChoiceRenderer {
+public class WeekDayChoiceRenderer extends ChoiceRenderer<Object> {
 	private static final long serialVersionUID = 1L;
 	
 	public static enum Format {

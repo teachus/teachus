@@ -17,6 +17,7 @@
 package dk.teachus.frontend.components.list;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
@@ -26,32 +27,32 @@ import org.apache.wicket.model.PropertyModel;
 
 import dk.teachus.frontend.components.RenderingLabel;
 
-public class RendererPropertyColumn extends FilteredAbstractColumn {
+public class RendererPropertyColumn<T,R> extends FilteredAbstractColumn<T> {
 	private static final long serialVersionUID = 1L;
 	
-	private IChoiceRenderer renderer;
+	private IChoiceRenderer<R> renderer;
 	private String propertyExpressions;
 
-	public RendererPropertyColumn(IModel displayModel, String propertyExpressions) {
+	public RendererPropertyColumn(IModel<String> displayModel, String propertyExpressions) {
 		this(displayModel, null, propertyExpressions, null);
 	}
 
-	public RendererPropertyColumn(IModel displayModel, String sortProperty, String propertyExpressions) {
+	public RendererPropertyColumn(IModel<String> displayModel, String sortProperty, String propertyExpressions) {
 		this(displayModel, sortProperty, propertyExpressions, null);
 	}
 	
-	public RendererPropertyColumn(IModel displayModel, String propertyExpressions, IChoiceRenderer renderer) {
+	public RendererPropertyColumn(IModel<String> displayModel, String propertyExpressions, IChoiceRenderer<R> renderer) {
 		this(displayModel, null, propertyExpressions, renderer);
 	}
 	
-	public RendererPropertyColumn(IModel displayModel, String sortProperty, String propertyExpressions, IChoiceRenderer renderer) {
+	public RendererPropertyColumn(IModel<String> displayModel, String sortProperty, String propertyExpressions, IChoiceRenderer<R> renderer) {
 		super(displayModel, sortProperty);
 		this.renderer = renderer;
 		this.propertyExpressions = propertyExpressions;
 	}
 
-	public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-		RenderingLabel renderingLabel = new RenderingLabel(componentId, new PropertyModel(rowModel, propertyExpressions), renderer);
+	public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel) {
+		RenderingLabel renderingLabel = new RenderingLabel(componentId, new PropertyModel<String>(rowModel, propertyExpressions), renderer);
 		renderingLabel.setRenderBodyOnly(true);
 		cellItem.add(renderingLabel);
 	}

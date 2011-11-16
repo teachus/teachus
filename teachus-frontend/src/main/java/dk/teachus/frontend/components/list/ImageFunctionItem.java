@@ -9,7 +9,7 @@ import org.apache.wicket.model.Model;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior.Style;
 
-public abstract class ImageFunctionItem extends DefaultFunctionItem {
+public abstract class ImageFunctionItem<T> extends DefaultFunctionItem<T> {
 	private static final long serialVersionUID = 1L;
 	
 	private ResourceReference imageReference;
@@ -29,8 +29,8 @@ public abstract class ImageFunctionItem extends DefaultFunctionItem {
 	}
 	
 	@Override
-	public void modifyLink(final Link link) {
-		link.add(new AttributeAppender("class", true, new Model("imglink"), " "));
+	public void modifyLink(final Link<T> link) {
+		link.add(new AttributeAppender("class", true, new Model<String>("imglink"), " "));
 		
 		link.add(new JQueryCluetipBehavior(Style.NO_HEADER) {
 			private static final long serialVersionUID = 1L;
@@ -43,7 +43,7 @@ public abstract class ImageFunctionItem extends DefaultFunctionItem {
 	}
 	
 	@Override
-	public String getTitle(Object rowObject) {
+	public String getTitle(T rowObject) {
 		return "|"+super.getTitle(rowObject);
 	}
 	

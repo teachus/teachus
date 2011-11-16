@@ -17,6 +17,7 @@
 package dk.teachus.frontend.components.list;
 
 import org.apache.wicket.Component;
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredAbstractColumn;
 import org.apache.wicket.markup.html.basic.Label;
@@ -25,40 +26,40 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
 
-public abstract class LinkPropertyColumn extends FilteredAbstractColumn {
+public abstract class LinkPropertyColumn<T> extends FilteredAbstractColumn<T> {
 	private static final long serialVersionUID = 1L;
 	
 	private String propertyExpression;
 	
-	public LinkPropertyColumn(IModel displayModel, String propertyExpression) {
+	public LinkPropertyColumn(IModel<String> displayModel, String propertyExpression) {
 		this(displayModel, null, propertyExpression);
 	}
 	
-	public LinkPropertyColumn(IModel displayModel, String sortProperty, String propertyExpression) {
+	public LinkPropertyColumn(IModel<String> displayModel, String sortProperty, String propertyExpression) {
 		super(displayModel, sortProperty);
 		
 		this.propertyExpression = propertyExpression;
 	}
 
-	public void populateItem(final Item cellItem, String componentId, final IModel rowModel) {
+	public void populateItem(final Item<ICellPopulator<T>> cellItem, String componentId, final IModel<T> rowModel) {
 		LinkPropertyColumnPanel linkPropertyColumnPanel = new LinkPropertyColumnPanel(componentId);
 		linkPropertyColumnPanel.setRenderBodyOnly(true);
-		Link link = new Link("link") {
+		Link<T> link = new Link<T>("link", rowModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void onClick() {
-				LinkPropertyColumn.this.onClick(rowModel.getObject());
+				LinkPropertyColumn.this.onClick(getModelObject());
 			}			
 		};
-		Label label = new Label("label", new PropertyModel(rowModel, propertyExpression));
+		Label label = new Label("label", new PropertyModel<String>(rowModel, propertyExpression));
 		label.setRenderBodyOnly(true);
 		link.add(label);
 		linkPropertyColumnPanel.add(link);
 		cellItem.add(linkPropertyColumnPanel);
 	}
 
-	protected abstract void onClick(Object rowModelObject);
+	protected abstract void onClick(T rowModelObject);
 	
 	public Component getFilter(String componentId, FilterForm form) {
 		return null;
