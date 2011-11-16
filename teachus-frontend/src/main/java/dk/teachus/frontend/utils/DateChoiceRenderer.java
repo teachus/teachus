@@ -20,6 +20,7 @@ import java.util.Date;
 
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
+import org.joda.time.ReadableInstant;
 
 public class DateChoiceRenderer extends ChoiceRenderer<Object> {
 	private static final long serialVersionUID = 1L;
@@ -29,8 +30,8 @@ public class DateChoiceRenderer extends ChoiceRenderer<Object> {
 		String display = ""; //$NON-NLS-1$
 		
 		if (object != null) {
-			if (object instanceof DateTime) {
-				DateTime date = (DateTime) object;
+			if (object instanceof ReadableInstant) {
+				ReadableInstant date = (ReadableInstant) object;
 				display = Formatters.getFormatPrettyDate().print(date);
 			} else if (object instanceof Date) {
 				Date date = (Date) object;
