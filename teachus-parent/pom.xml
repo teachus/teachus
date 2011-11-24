@@ -20,7 +20,6 @@
 		<module>../teachus-backend</module>
 		<module>../teachus-frontend</module>
 		<module>../teachus-test</module>
-		<module>../teachus-tools</module>
 	</modules>
 
 	<dependencyManagement>
@@ -41,12 +40,6 @@
 			<dependency>
 				<groupId>dk.teachus</groupId>
 				<artifactId>teachus-test</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
-			</dependency>
-			<dependency>
-				<groupId>dk.teachus</groupId>
-				<artifactId>teachus-tools</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -293,7 +286,7 @@
 	<developers>
 		<developer>
 			<name>Frank Bille</name>
-			<id>fb</id>
+			<id>frankbille</id>
 			<email>frank at teachus.dk</email>
 			<timezone>+1</timezone>
 		</developer>
