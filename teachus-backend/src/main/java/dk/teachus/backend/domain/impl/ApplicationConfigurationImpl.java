@@ -91,7 +91,7 @@ public class ApplicationConfigurationImpl implements ApplicationConfiguration {
 		}
 		
 		if (String.valueOf(oldValue).equals(configurationValue) == false) {
-			firePropertyChangeEvent("configuration", oldValue, configurationValue);
+			firePropertyChangeEvent(configurationKey, oldValue, configurationValue);
 		}
 	}
 

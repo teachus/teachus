@@ -16,7 +16,12 @@
  */
 package dk.teachus.utils;
 
-public abstract class ClassUtils {
+public final class ClassUtils {
+	
+	public static ClassUtils INSTANCE = new ClassUtils();
+	
+	private ClassUtils() {
+	}
 
 	public static String getAsResourcePath(Class<?> clazz, String resourceName) {
 		String resourcePath = clazz.getPackage().getName();
