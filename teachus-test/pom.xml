@@ -97,6 +97,25 @@
 		</testResources>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+				<version>1.0-alpha-3</version>
+				<inherited>true</inherited>
+				<executions>
+					<execution>
+						<goals>
+							<goal>instrument</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<instrumentationPaths>
+						<instrumentationPath>../teachus-backend/target/classes</instrumentationPath>
+						<instrumentationPath>../teachus-frontend/target/classes</instrumentationPath>
+					</instrumentationPaths>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
