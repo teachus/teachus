@@ -99,7 +99,12 @@ public class InfoPage extends UnAuthenticatedBasePage {
 			featuresContainer.add(new MultiLineLabel(featuresContainer.newChildId(), feature));
 		}
 	}
-	
+
+	@Override
+	protected String getPagePath() {
+		return "/info";
+	}
+
 	@Override
 	protected UnAuthenticatedPageCategory getPageCategory() {
 		return UnAuthenticatedPageCategory.INFO;

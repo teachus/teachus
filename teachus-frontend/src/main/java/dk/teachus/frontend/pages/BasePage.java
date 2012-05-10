@@ -33,6 +33,8 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.joda.time.DateMidnight;
 
+import com.newrelic.api.agent.NewRelic;
+
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
@@ -117,6 +119,12 @@ public abstract class BasePage extends WebPage {
 			}
 		};
 		add(googleAnalytics);
+
+		/*
+		 * New Relic
+		 */
+		add(new Label("newRelicTimingHeader", NewRelic.getBrowserTimingHeader()).setEscapeModelStrings(false).setRenderBodyOnly(true));
+		add(new Label("newRelicTimingFooter", NewRelic.getBrowserTimingFooter()).setEscapeModelStrings(false).setRenderBodyOnly(true));
 	}
 	
 	private void setTheme(Theme theme) {
@@ -164,11 +172,14 @@ public abstract class BasePage extends WebPage {
 	}
 
 	@Override
-	protected final void onBeforeRender() {
+	protected void onBeforeRender() {
 		super.onBeforeRender();
 		
 		if (attached == false) {
 			add(new Label("pageLabel", getPageLabel())); //$NON-NLS-1$
+
+			NewRelic.setTransactionName(null, getPagePath());
+
 			attached = true;
 		}
 	}
@@ -176,6 +187,8 @@ public abstract class BasePage extends WebPage {
 	protected Theme getTheme() {
 		return TeachUsApplication.get().getDefaultTheme();
 	}
+
+	protected abstract String getPagePath();
 
 	protected abstract String getPageLabel();
 

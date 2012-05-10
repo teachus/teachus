@@ -22,7 +22,12 @@ import java.util.List;
 import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 
+import com.newrelic.api.agent.NewRelic;
+
+import dk.teachus.backend.domain.Admin;
+import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
+import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -78,6 +83,20 @@ public abstract class AuthenticatedBasePage extends BasePage {
 	}
 
 	@Override
+	protected void onBeforeRender() {
+		super.onBeforeRender();
+
+		Person person = TeachUsSession.get().getPerson();
+		if (person instanceof Teacher) {
+			NewRelic.addCustomParameter("teacher", person.getUsername());
+		} else if (person instanceof Admin) {
+			NewRelic.addCustomParameter("admin", person.getUsername());
+		} else if (person instanceof Pupil) {
+			NewRelic.addCustomParameter("pupil", person.getUsername());
+		}
+	}
+
+	@Override
 	protected List<MenuItem> createMenuItems() {
 		TeachUsSession teachUsSession = TeachUsSession.get();
 		
@@ -114,7 +133,12 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		
 		return menuItemsList;
 	}
-	
+
+	@Override
+	protected String getPagePath() {
+		return getRequestCycle().urlFor(this).toString();
+	}
+
 	@Override
 	protected abstract AuthenticatedPageCategory getPageCategory();
 	

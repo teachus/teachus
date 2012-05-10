@@ -46,6 +46,10 @@
 			<artifactId>jfreechart</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.newrelic</groupId>
+			<artifactId>newrelic-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>

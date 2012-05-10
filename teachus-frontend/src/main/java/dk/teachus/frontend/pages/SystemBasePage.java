@@ -22,6 +22,11 @@ public class SystemBasePage extends BasePage {
 	private static final long serialVersionUID = 1L;
 
 	@Override
+	protected String getPagePath() {
+		return "/errors";
+	}
+
+	@Override
 	protected List<MenuItem> createMenuItems() {
 		return null;
 	}
