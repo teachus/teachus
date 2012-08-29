@@ -62,7 +62,7 @@ public class PupilPeriodsCalendarPanel extends PeriodsCalendarPanel {
 		
 		return false;
 	}
-
+	
 	@Override
 	protected void appendToTimeSlotContent(List<String> contentLines, TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
 		Booking booking = timeSlot.getPayload().getBooking();
@@ -104,8 +104,20 @@ public class PupilPeriodsCalendarPanel extends PeriodsCalendarPanel {
 		PeriodBookingTimeSlotPayload payload = timeSlot.getPayload();
 		Booking booking = payload.getBooking();
 		if (booking != null) {
-			TeachUsApplication.get().getBookingDAO().deleteBooking(booking);
-			payload.setBooking(null);
+			boolean mayDelete = true;
+			/*
+			 * Pupils are only allowed to delete a booking if it is more than 24 hours since they did it.
+			 */
+			if (TeachUsSession.get().getPerson() instanceof Pupil) {
+				if (new DateTime().minusHours(24).isBefore(booking.getDate())) {
+					mayDelete = false;
+				}
+			}
+			
+			if (mayDelete) {
+				TeachUsApplication.get().getBookingDAO().deleteBooking(booking);
+				payload.setBooking(null);
+			}
 		} else {
 			PupilBooking pupilBooking = TeachUsApplication.get().getBookingDAO().createPupilBookingObject();
 			pupilBooking.setActive(true);
