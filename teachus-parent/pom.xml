@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dk.teachus</groupId>
 	<artifactId>teachus-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.59-SNAPSHOT</version>
+	<version>1.59</version>
 	<name>TeachUs Parent</name>
 	<description>Scheduling system for private teachers.</description>
 
@@ -349,7 +348,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
@@ -364,7 +363,8 @@
 		<connection>scm:git:git://github.com/teachus/teachus.git</connection>
 		<developerConnection>scm:git:git@github.com:teachus/teachus.git</developerConnection>
 		<url>http://github.com/teachus/teachus/tree/master</url>
-	</scm>
+	  <tag>release-1.59</tag>
+  </scm>
 
 	<developers>
 		<developer>
