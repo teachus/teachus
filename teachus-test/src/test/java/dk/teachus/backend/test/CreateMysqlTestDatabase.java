@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.Resource;
 
 public class CreateMysqlTestDatabase {
@@ -74,10 +73,6 @@ public class CreateMysqlTestDatabase {
 				// The person table might not exist, so it's ok
 			}
 			dropTable(connection, "person");
-			
-			// Create new tables based on the schema
-			String schemaSql = IOUtils.toString(getClass().getResourceAsStream("/mysql.sql"), "UTF-8");
-			executeSql(connection, schemaSql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new RuntimeException(e);
