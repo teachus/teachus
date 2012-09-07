@@ -257,7 +257,6 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		ApplicationConfigurationImpl conf = new ApplicationConfigurationImpl(null);
 		
 		conf.setConfiguration(ApplicationConfiguration.SERVER_URL, "http://localhost:8080/");
-		conf.setConfiguration(ApplicationConfiguration.VERSION, "1.2.3");
 		
 		return conf;
 	}

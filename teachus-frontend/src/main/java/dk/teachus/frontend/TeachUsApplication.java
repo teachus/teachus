@@ -18,9 +18,15 @@ package dk.teachus.frontend;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -54,6 +60,7 @@ import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
+import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.calendar.CalendarPanel;
 import dk.teachus.frontend.components.fancybox.JQueryFancyboxBehavior;
@@ -93,6 +100,7 @@ public class TeachUsApplication extends WebApplication {
 	private static final Log log = LogFactory.getLog(TeachUsApplication.class);
 	
 	private ApplicationConfiguration configuration;
+	private String version;
 	
 	@Override
 	protected void init() {
@@ -333,7 +341,38 @@ public class TeachUsApplication extends WebApplication {
 	}
 	
 	public String getVersion() {
-		return getConfiguration().getConfiguration(ApplicationConfiguration.VERSION);
+		if (version == null) {
+			Package pkg = Teacher.class.getPackage();
+			if (pkg != null) {
+				version = pkg.getImplementationVersion();
+			}
+	
+			if (version == null) {
+				// When running from a project in development mode
+				File pomFile = new File("pom.xml");
+				if (pomFile.exists() && pomFile.isFile()) {
+					try {
+						BufferedReader reader = new BufferedReader(new FileReader(pomFile));
+						String line = null;
+						while ((line = reader.readLine()) != null && line.contains("<version>") == false) {
+						}
+						reader.close();
+						
+						if (line != null) {
+							Pattern pattern = Pattern.compile(".*<version>([^<]+)</version>.*");
+							Matcher matcher = pattern.matcher(line);
+							if (matcher.matches()) {
+								version = matcher.group(1);
+							}
+						}
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+		
+		return version;
 	}
 	
 	public String getServerUrl() {

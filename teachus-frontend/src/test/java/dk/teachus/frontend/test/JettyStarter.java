@@ -52,7 +52,7 @@ public class JettyStarter {
 		MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
 		dataSource.setUrl("jdbc:mysql://localhost/teachus");
 		dataSource.setUser("root");
-		dataSource.setPassword("root");
+		dataSource.setPassword("");
 		new Resource("jdbc/teachus", dataSource);
 		
 		server.setHandler(webAppContext);

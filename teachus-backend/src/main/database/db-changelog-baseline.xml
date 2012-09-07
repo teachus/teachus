@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+	<changeSet id="baseline_table_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="person" />
+			</not>
+		</preConditions>
+		<createTable tableName="person">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="person_type" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="username" type="varchar(50)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="password" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="email" type="varchar(250)">
+				<constraints nullable="true" />
+			</column>
+			<column name="phone_number" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="theme" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="active" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="currency" type="varchar(10)">
+				<constraints nullable="true" />
+			</column>
+			<column name="teacher_id" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="notes" type="mediumtext">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="baseline_table_person_indexes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="FKC4E39B551CC24034" />
+			</not>
+		</preConditions>
+		<createIndex tableName="person" indexName="FKC4E39B551CC24034">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FKC4E39B551CC24034" baseTableName="person"
+			baseColumnNames="teacher_id" referencedTableName="person" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="baseline_table_teacher_attributes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="teacher_attribute" />
+			</not>
+		</preConditions>
+		<createTable tableName="teacher_attribute">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="attribute" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="teacher_id" type="bigint">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="[text]">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="baseline_table_teacher_attribute_indexes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="FKD49E7E7F1CC24034" />
+			</not>
+		</preConditions>
+		<createIndex tableName="teacher_attribute" indexName="FKD49E7E7F1CC24034">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FKD49E7E7F1CC24034" baseTableName="teacher_attribute"
+			baseColumnNames="teacher_id" referencedTableName="person" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="baseline_table_period" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="period" />
+			</not>
+		</preConditions>
+		<createTable tableName="period">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="begin_date" type="date">
+				<constraints nullable="true" />
+			</column>
+			<column name="end_date" type="date">
+				<constraints nullable="true" />
+			</column>
+			<column name="start_time" type="time">
+				<constraints nullable="true" />
+			</column>
+			<column name="end_time" type="time">
+				<constraints nullable="true" />
+			</column>
+			<column name="week_days" type="varchar(255)">
+				<constraints nullable="true" />
+			</column>
+			<column name="teacher_id" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="location" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="price" type="double precision">
+				<constraints nullable="true" />
+			</column>
+			<column name="lesson_duration" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="interval_between_lesson_start" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="repeat_every_week" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="status" type="varchar(10)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="baseline_table_period_indexes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="FKC4E375C11CC24034" />
+			</not>
+		</preConditions>
+		<createIndex tableName="period" indexName="FKC4E375C11CC24034">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FKC4E375C11CC24034" baseTableName="period"
+			baseColumnNames="teacher_id" referencedTableName="person" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="baseline_table_booking" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="booking" />
+			</not>
+		</preConditions>
+		<createTable tableName="booking">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="booking_type" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="active" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="period_id" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="date" type="datetime">
+				<constraints nullable="true" />
+			</column>
+			<column name="create_date" type="datetime">
+				<constraints nullable="true" />
+			</column>
+			<column name="update_date" type="datetime">
+				<constraints nullable="true" />
+			</column>
+			<column name="teacher_id" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="pupil_id" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="notification_sent" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="pupil_notification_sent" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="paid" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="baseline_table_booking_indexes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="FK3DB08598007F534" />
+			</not>
+		</preConditions>
+		<createIndex tableName="booking" indexName="FK3DB08598007F534">
+			<column name="pupil_id"></column>
+		</createIndex>
+		<createIndex tableName="booking" indexName="FK3DB08591CC24034">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<createIndex tableName="booking" indexName="FK3DB0859FEE2C820">
+			<column name="period_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK3DB08598007F534" baseTableName="booking"
+			baseColumnNames="pupil_id" referencedTableName="person" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="FK3DB08591CC24034" baseTableName="booking"
+			baseColumnNames="teacher_id" referencedTableName="person" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="FK3DB0859FEE2C820" baseTableName="booking"
+			baseColumnNames="period_id" referencedTableName="period" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="baseline_table_message" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="message" />
+			</not>
+		</preConditions>
+		<createTable tableName="message">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="message_type" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="create_date" type="datetime">
+				<constraints nullable="true" />
+			</column>
+			<column name="subject" type="varchar(255)">
+				<constraints nullable="true" />
+			</column>
+			<column name="body" type="[text]">
+				<constraints nullable="true" />
+			</column>
+			<column name="sender" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="recipient" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="state" type="varchar(255)">
+				<constraints nullable="true" />
+			</column>
+			<column name="processing_date" type="datetime">
+				<constraints nullable="true" />
+			</column>
+			<column name="mail_type" type="varchar(255)">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="baseline_table_message_indexes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<foreignKeyConstraintExists foreignKeyName="FK38EB0007E0E4002A" />
+			</not>
+		</preConditions>
+		<createIndex tableName="message" indexName="FK38EB0007E0E4002A">
+			<column name="sender"></column>
+		</createIndex>
+		<createIndex tableName="message" indexName="IDX_MESSAGE_RECIPIENT">
+			<column name="recipient"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK38EB0007E0E4002A" baseTableName="message"
+			baseColumnNames="sender" referencedTableName="person" referencedColumnNames="id" />
+		<addForeignKeyConstraint constraintName="FK_MESSAGE_RECIPIENT_PERSON" baseTableName="message"
+			baseColumnNames="recipient" referencedTableName="person" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="baseline_table_application_configuration" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="application_configuration" />
+			</not>
+		</preConditions>
+		<createTable tableName="application_configuration">
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="value" type="mediumtext">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+</databaseChangeLog>
