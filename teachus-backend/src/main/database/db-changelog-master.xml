@@ -6,6 +6,6 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
 	<include file="db-changelog-baseline.xml" />
-<!-- 	<include file="db-changelog-old-db-cleanup.xml" /> -->
+	<include file="db-changelog-old-db-cleanup.xml" />
 
 </databaseChangeLog>
