@@ -31,6 +31,7 @@ import org.springframework.core.io.Resource;
 public class CreateMysqlTestDatabase {
 	
 	public CreateMysqlTestDatabase(Resource property) {
+		System.out.print("Ensuring database exists... ");
 		// Create connection
 		Connection connection = null;
 		try {
@@ -51,7 +52,10 @@ public class CreateMysqlTestDatabase {
 			// Create database if not exists
 			connection = DriverManager.getConnection("jdbc:mysql://"+jdbcHost+"/mysql", jdbcUser, jdbcPass);
 			Statement statement = connection.createStatement();
-			statement.executeUpdate("CREATE DATABASE IF NOT EXISTS "+jdbcDatabase);
+			statement.executeUpdate("DROP DATABASE "+jdbcDatabase);
+			statement.close();
+			statement = connection.createStatement();
+			statement.executeUpdate("CREATE DATABASE "+jdbcDatabase);
 			statement.close();
 			connection.close();
 			
@@ -91,6 +95,7 @@ public class CreateMysqlTestDatabase {
 					throw new RuntimeException(e);
 				}
 			}
+			System.out.println("Done");
 		}
 	}
 	

@@ -10,6 +10,11 @@ public class TeachUsMySQLTypeConverter extends MySQLTypeConverter {
 	}
 	
 	@Override
+	public int getPriority() {
+		return 100;
+	}
+	
+	@Override
 	public DataType getDataType(String columnTypeString, Boolean autoIncrement) {
 		if (columnTypeString.startsWith("[") && columnTypeString.endsWith("]")) {
 			return new CustomType(columnTypeString.substring(1, columnTypeString.length()-1), 0, 2);
