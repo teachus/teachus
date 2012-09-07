@@ -5,7 +5,7 @@
 	<groupId>dk.teachus</groupId>
 	<artifactId>teachus-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>1.59</version>
+	<version>1.60-SNAPSHOT</version>
 	<name>TeachUs Parent</name>
 	<description>Scheduling system for private teachers.</description>
 
@@ -360,11 +360,10 @@
 	</build>
 
 	<scm>
-		<connection>scm:git:git://github.com/teachus/teachus.git</connection>
-		<developerConnection>scm:git:git@github.com:teachus/teachus.git</developerConnection>
-		<url>http://github.com/teachus/teachus/tree/master</url>
-	  <tag>release-1.59</tag>
-  </scm>
+		<connection>scm:git:https://github.com/teachus/teachus.git</connection>
+		<developerConnection>scm:git:https://github.com/teachus/teachus.git</developerConnection>
+		<url>git@github.com/teachus/teachus.git</url>
+	</scm>
 
 	<developers>
 		<developer>
