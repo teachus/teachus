@@ -50,7 +50,7 @@ public class CreateMysqlTestDatabase {
 			Class.forName(driverClass);
 			
 			// Create database if not exists
-			connection = DriverManager.getConnection("jdbc:mysql://"+jdbcHost+"/mysql", jdbcUser, jdbcPass);
+			connection = DriverManager.getConnection("jdbc:mysql://"+jdbcHost+"/"+jdbcDatabase, jdbcUser, jdbcPass);
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("DROP DATABASE "+jdbcDatabase);
 			statement.close();
