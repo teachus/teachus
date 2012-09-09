@@ -5,4 +5,4 @@ jdk:
 before_script:
   - mysql -e "CREATE DATABASE IF NOT EXISTS teachus_test;"
   - mysql -e "CREATE USER 'teachus_build'@'localhost' IDENTIFIED BY 'teachus_build';"
-  - mysql -e "GRANT ALL ON teachus_test.* TO 'teachus_build'@'localhost';"
+  - mysql -e -u root "GRANT ALL ON teachus_test.* TO 'teachus_build'@'localhost';"
