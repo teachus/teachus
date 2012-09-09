@@ -1,4 +1,4 @@
-TeachUs
+TeachUs [![Build Status](https://secure.travis-ci.org/teachus/teachus.png)](http://travis-ci.org/teachus/teachus)
 =======
 
 Description
