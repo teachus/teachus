@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
+import org.hibernate.engine.SessionImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.DateMidnight;
@@ -42,7 +43,7 @@ public class PersistentDateMidnight implements EnhancedUserType, Serializable {
         return SQL_TYPES;
     }
 
-    public Class returnedClass() {
+    public Class<?> returnedClass() {
         return DateMidnight.class;
     }
 

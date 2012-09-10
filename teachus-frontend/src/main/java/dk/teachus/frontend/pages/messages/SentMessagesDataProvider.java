@@ -1,13 +1,15 @@
 package dk.teachus.frontend.pages.messages;
 
+import java.util.List;
+
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.impl.AbstractMessage;
 import dk.teachus.backend.domain.impl.PersonImpl;
-import dk.teachus.frontend.components.list.DateTimeComparator;
 import dk.teachus.frontend.components.list.DateFilter;
+import dk.teachus.frontend.components.list.DateTimeComparator;
 import dk.teachus.frontend.components.list.MessageStateComparator;
 import dk.teachus.frontend.components.list.SameObjectFilter;
 import dk.teachus.frontend.components.list.StringComparator;
@@ -17,7 +19,7 @@ import dk.teachus.frontend.components.list.TeachUsFilteredSortableDataProvider;
 public class SentMessagesDataProvider extends TeachUsFilteredSortableDataProvider<Message> {
 	private static final long serialVersionUID = 1L;
 
-	public SentMessagesDataProvider(IModel listModel) {
+	public SentMessagesDataProvider(IModel<List<Message>> listModel) {
 		super(listModel);
 		
 		StringComparator stringComparator = new StringComparator();

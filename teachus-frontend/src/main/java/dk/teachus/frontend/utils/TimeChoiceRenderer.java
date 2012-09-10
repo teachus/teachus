@@ -23,11 +23,11 @@ import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
-public class TimeChoiceRenderer extends ChoiceRenderer<Object> {
+public class TimeChoiceRenderer<T> extends ChoiceRenderer<T> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object getDisplayValue(Object object) {
+	public Object getDisplayValue(T object) {
 		String display = ""; //$NON-NLS-1$
 		
 		if (object != null) {

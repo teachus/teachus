@@ -8,13 +8,13 @@ import java.util.Map;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.lang.PropertyResolver;
 
-public abstract class TeachUsFilteredSortableDataProvider<O> extends TeachUsSortableDataProvider<O> implements TeachUsFilter {
+public abstract class TeachUsFilteredSortableDataProvider<O> extends TeachUsSortableDataProvider<O> implements TeachUsFilter<O> {
 	private static final long serialVersionUID = 1L;
 	
 	private O stateObject;
 	private Map<String, IFilter<?>> filters;
 	
-	public TeachUsFilteredSortableDataProvider(IModel listModel) {
+	public TeachUsFilteredSortableDataProvider(IModel<List<O>> listModel) {
 		super(listModel);
 		
 		stateObject = createStateObject();
@@ -35,17 +35,16 @@ public abstract class TeachUsFilteredSortableDataProvider<O> extends TeachUsSort
 		setFilterState(null);
 	}
 
-	public Object getFilterState() {
+	public O getFilterState() {
 		return stateObject;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void setFilterState(Object state) {
+	public void setFilterState(O state) {
 		if (state == null) {
 			state = createStateObject();
 		}
 		
-		this.stateObject = (O) state;
+		this.stateObject = state;
 	}
 	
 	protected void addFilter(String filterProperty, IFilter<?> filter) {
@@ -62,6 +61,7 @@ public abstract class TeachUsFilteredSortableDataProvider<O> extends TeachUsSort
 			boolean include = true;
 			
 			for (String filterProperty : filters.keySet()) {
+				@SuppressWarnings("rawtypes")
 				IFilter filter = filters.get(filterProperty);
 				
 				Object objectProperty = PropertyResolver.getValue(filterProperty, object);

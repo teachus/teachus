@@ -16,8 +16,8 @@
  */
 package dk.teachus.frontend.components.form;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -27,26 +27,26 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidator;
 
-public class PasswordFieldElement extends AbstractValidationInputElement {
+public class PasswordFieldElement extends AbstractValidationInputElement<String> {
 	private static final long serialVersionUID = 1L;
 
-	private IModel inputModel;
+	private IModel<String> inputModel;
 	private int size;
 	private PasswordTextField passwordTextField;
 	
-	public PasswordFieldElement(String label, IModel inputModel) {
+	public PasswordFieldElement(String label, IModel<String> inputModel) {
 		this(label, inputModel, false);
 	}
 
-	public PasswordFieldElement(String label, IModel inputModel, boolean required) {
+	public PasswordFieldElement(String label, IModel<String> inputModel, boolean required) {
 		this(label, inputModel, -1, required);
 	}
 	
-	public PasswordFieldElement(String label, IModel inputModel, int size) {
+	public PasswordFieldElement(String label, IModel<String> inputModel, int size) {
 		this(label, inputModel, size, false);
 	}
 	
-	public PasswordFieldElement(String label, IModel inputModel, int size, boolean required) {
+	public PasswordFieldElement(String label, IModel<String> inputModel, int size, boolean required) {
 		super(label, required);
 		
 		this.size = size;
@@ -74,9 +74,9 @@ public class PasswordFieldElement extends AbstractValidationInputElement {
 		passwordTextField.setRequired(required);
 		passwordTextField.setResetPassword(false);
 		passwordTextField.setOutputMarkupId(true);
-		passwordTextField.setLabel(new Model(label));
+		passwordTextField.setLabel(new Model<String>(label));
 		if (size > -1) {
-			passwordTextField.add(new SimpleAttributeModifier("size", ""+size));
+			passwordTextField.add(AttributeModifier.replace("size", ""+size));
 		}
 		inputPanel.add(passwordTextField);
 		
@@ -84,12 +84,12 @@ public class PasswordFieldElement extends AbstractValidationInputElement {
 	}
 	
 	@Override
-	protected void addValidator(IValidator validator) {
+	protected void addValidator(IValidator<String> validator) {
 		passwordTextField.add(validator);
 	}
 	
 	@Override
-	public FormComponent getFormComponent() {
+	public FormComponent<String> getFormComponent() {
 		return passwordTextField;
 	}
 	

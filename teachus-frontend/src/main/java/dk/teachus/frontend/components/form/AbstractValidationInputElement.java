@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
 
-public abstract class AbstractValidationInputElement<T> extends AbstractInputElement<T> implements ValidationProducer {
+public abstract class AbstractValidationInputElement<T> extends AbstractInputElement<T> implements ValidationProducer<T> {
 	private static final long serialVersionUID = 1L;
 
 	public AbstractValidationInputElement(String label) {

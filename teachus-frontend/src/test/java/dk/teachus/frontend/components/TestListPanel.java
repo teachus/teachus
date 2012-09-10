@@ -19,6 +19,7 @@ package dk.teachus.frontend.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -38,16 +39,16 @@ public class TestListPanel extends WicketTestCase {
 		
 		List<String> data = new ArrayList<String>(); 
 		
-		List<IColumn> columns = new ArrayList<IColumn>();
-		columns.add(new AbstractColumn(new Model("Header")) {
+		List<IColumn<String>> columns = new ArrayList<IColumn<String>>();
+		columns.add(new AbstractColumn<String>(new Model<String>("Header")) {
 			private static final long serialVersionUID = 1L;
 			
-			public void populateItem(Item cellItem, String componentId, IModel rowModel) {
+			public void populateItem(Item<ICellPopulator<String>> cellItem, String componentId, IModel<String> rowModel) {
 				cellItem.add(new Label(componentId, rowModel));
 			}
 		});
 		
-		tester.startComponentInPage(new ListPanel("panel", columns, data));
+		tester.startComponentInPage(new ListPanel<String>("panel", columns, data));
 				
 		
 		tester.assertComponent("panel", ListPanel.class);

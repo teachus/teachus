@@ -14,33 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.utils;
+package dk.teachus.frontend.components.form;
 
-import java.util.Locale;
-import java.util.Properties;
+import org.apache.wicket.model.IModel;
 
-import org.apache.wicket.markup.html.form.ChoiceRenderer;
-
-import dk.teachus.frontend.TeachUsSession;
-
-public class LocaleChoiceRenderer extends ChoiceRenderer<Locale> {
+public class StringTextFieldElement extends TextFieldElement<String> {
 	private static final long serialVersionUID = 1L;
-
-	@Override
-	public Object getDisplayValue(Locale locale) {
-		StringBuilder display= new StringBuilder();
-		
-		if (locale != null) {
-			display.append(locale.getDisplayLanguage(locale));
-			
-			if ("singers".equals(locale.getVariant())) {
-				display.append(" (");
-				Properties resourceBundle = TeachUsSession.get().createResourceBundle(locale);
-				display.append(resourceBundle.getProperty("General.pupils"));
-				display.append(")");
-			}
-		}
-		
-		return display;
+	
+	public StringTextFieldElement(String label, IModel<String> inputModel) {
+		super(label, inputModel);
 	}
+	
+	public StringTextFieldElement(String label, IModel<String> inputModel, int size) {
+		super(label, inputModel, size);
+	}
+	
+	public StringTextFieldElement(String label, IModel<String> inputModel, boolean required) {
+		super(label, inputModel, required);
+	}
+	
+	public StringTextFieldElement(String label, IModel<String> inputModel, boolean required, int size) {
+		super(label, inputModel, required, size);
+	}
+	
 }

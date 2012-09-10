@@ -32,7 +32,7 @@ public class PageExpiredPage extends SystemBasePage {
 		
 		add(new MultiLineLabel("pageExpired", TeachUsSession.get().getString("PageExpiredPage.discription")));
 		
-		Link link = new BookmarkablePageLink("link", TeachUsApplication.get().getHomePage());
+		Link<Void> link = new BookmarkablePageLink<Void>("link", TeachUsApplication.get().getHomePage());
 		add(link);
 		link.add(new Label("label", TeachUsSession.get().getString("PageExpiredPage.homePageLink")));
 	}

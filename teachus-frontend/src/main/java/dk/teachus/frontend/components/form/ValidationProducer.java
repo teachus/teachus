@@ -23,13 +23,13 @@ import org.apache.wicket.markup.html.form.FormComponent;
 
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
-public interface ValidationProducer extends Serializable {
+public interface ValidationProducer<T> extends Serializable {
 
 	Component[] inputValid();
 
 	Component[] inputInvalid();
 	
-	FormComponent getFormComponent();
+	FormComponent<T> getFormComponent();
 
 	void add(BehaviorAdder adder);
 

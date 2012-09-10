@@ -20,22 +20,18 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import dk.teachus.frontend.TeachUsSession;
 
-public class YesNoRenderer extends ChoiceRenderer {
+public class YesNoRenderer extends ChoiceRenderer<Boolean> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object getDisplayValue(Object object) {
+	public Object getDisplayValue(Boolean bool) {
 		String display = "";
 		
-		if (object != null) {
-			if (object instanceof Boolean) {
-				Boolean bool = (Boolean) object;
-				
-				if (bool) {
-					display = TeachUsSession.get().getString("General.yes");
-				} else {
-					display = TeachUsSession.get().getString("General.no");
-				}
+		if (bool != null) {
+			if (bool) {
+				display = TeachUsSession.get().getString("General.yes");
+			} else {
+				display = TeachUsSession.get().getString("General.no");
 			}
 		}
 		

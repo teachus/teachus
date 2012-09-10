@@ -28,7 +28,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.IValidator;
 
-public class TextFieldElement<T> extends AbstractValidationInputElement<T> {
+public abstract class TextFieldElement<T> extends AbstractValidationInputElement<T> {
 	private static final long serialVersionUID = 1L;
 
 	private IModel<T> inputModel;

@@ -21,7 +21,7 @@ import org.apache.wicket.util.string.Strings;
 
 import dk.teachus.frontend.TeachUsApplication;
 
-public class ApplicationConfigurationModel implements IModel {
+public class ApplicationConfigurationModel<T> implements IModel<T> {
 	private static final long serialVersionUID = 1L;
 	
 	private String configurationKey;
@@ -34,19 +34,20 @@ public class ApplicationConfigurationModel implements IModel {
 		this.configurationKey = configurationKey;
 	}
 
-	public Object getObject() {
+	public T getObject() {
 		return convertConfigurationValue(TeachUsApplication.get().getConfiguration().getConfiguration(configurationKey));
 	}
 	
-	protected Object convertConfigurationValue(String configurationValue) {
-		return configurationValue;
+	@SuppressWarnings("unchecked")
+	protected T convertConfigurationValue(String configurationValue) {
+		return (T) configurationValue;
 	}
 
-	public void setObject(Object object) {
+	public void setObject(T object) {
 		TeachUsApplication.get().getConfiguration().setConfiguration(configurationKey, convertModelValue(object));
 	}
 	
-	protected String convertModelValue(Object modelValue) {
+	protected String convertModelValue(T modelValue) {
 		return String.valueOf(modelValue);
 	}
 

@@ -31,23 +31,23 @@ import org.apache.wicket.validation.IValidator;
 
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
-public class CheckGroupElement extends AbstractChoiceElement {
+public class CheckGroupElement<T> extends AbstractChoiceElement<List<T>,T> {
 	private static final long serialVersionUID = 1L;
-	private CheckBoxMultipleChoice checkGroup;
+	private CheckBoxMultipleChoice<T> checkGroup;
 	
-	public CheckGroupElement(String label, IModel inputModel, List<?> choices) {
+	public CheckGroupElement(String label, IModel<List<T>> inputModel, List<? extends T> choices) {
 		this(label, inputModel, choices, null, false);
 	}
 	
-	public CheckGroupElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer) {
+	public CheckGroupElement(String label, IModel<List<T>> inputModel, List<? extends T> choices, IChoiceRenderer<? super T> choiceRenderer) {
 		this(label, inputModel, choices, choiceRenderer, false);
 	}
 	
-	public CheckGroupElement(String label, IModel inputModel, List<?> choices, boolean required) {
+	public CheckGroupElement(String label, IModel<List<T>> inputModel, List<? extends T> choices, boolean required) {
 		this(label, inputModel, choices, null, required);
 	}
 	
-	public CheckGroupElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer, boolean required) {
+	public CheckGroupElement(String label, IModel<List<T>> inputModel, List<? extends T> choices, IChoiceRenderer<? super T> choiceRenderer, boolean required) {
 		super(label, inputModel, choices, choiceRenderer, required);
 	}
 
@@ -58,7 +58,7 @@ public class CheckGroupElement extends AbstractChoiceElement {
 
 	@Override
 	protected Component newInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
-		checkGroup = new CheckBoxMultipleChoice(wicketId, inputModel, choices, choiceRenderer) {
+		checkGroup = new CheckBoxMultipleChoice<T>(wicketId, inputModel, choices, choiceRenderer) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -67,7 +67,7 @@ public class CheckGroupElement extends AbstractChoiceElement {
 			}
 		};
 		checkGroup.setRequired(required);
-		checkGroup.setLabel(new Model(label));
+		checkGroup.setLabel(new Model<String>(label));
 		return checkGroup;
 	}
 

@@ -53,7 +53,7 @@ public class BooleanType
 		return new String[] { getName(), boolean.class.getName(), Boolean.class.getName() };
 	}
 
-	public Class getPrimitiveClass() {
+	public Class<?> getPrimitiveClass() {
 		return boolean.class;
 	}
 

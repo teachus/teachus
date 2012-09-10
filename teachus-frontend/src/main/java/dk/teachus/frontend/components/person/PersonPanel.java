@@ -43,12 +43,12 @@ import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.DropDownElement;
 import dk.teachus.frontend.components.form.FormPanel;
+import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.components.form.IntegerFieldElement;
 import dk.teachus.frontend.components.form.PasswordFieldElement;
 import dk.teachus.frontend.components.form.ReadOnlyElement;
+import dk.teachus.frontend.components.form.StringTextFieldElement;
 import dk.teachus.frontend.components.form.TextAreaElement;
-import dk.teachus.frontend.components.form.TextFieldElement;
-import dk.teachus.frontend.components.form.FormPanel.FormValidator;
 import dk.teachus.frontend.ical.IcalUrlModel;
 import dk.teachus.frontend.models.PersonModel;
 import dk.teachus.frontend.pages.persons.PersonsPage;
@@ -72,21 +72,21 @@ public abstract class PersonPanel extends Panel {
 		add(formPanel);
 		
 		// Name
-		TextFieldElement nameField = new TextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel(personModel, "name"), true, 32); //$NON-NLS-1$ //$NON-NLS-2$
+		StringTextFieldElement nameField = new StringTextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel<String>(personModel, "name"), true, 32); //$NON-NLS-1$ //$NON-NLS-2$
 		nameField.add(StringValidator.lengthBetween(2, 100));
 		formPanel.addElement(nameField);
 		
 		// Email
-		TextFieldElement emailField = new TextFieldElement(TeachUsSession.get().getString("General.email"), new PropertyModel(personModel, "email"), true, 50); //$NON-NLS-1$ //$NON-NLS-2$
+		StringTextFieldElement emailField = new StringTextFieldElement(TeachUsSession.get().getString("General.email"), new PropertyModel<String>(personModel, "email"), true, 50); //$NON-NLS-1$ //$NON-NLS-2$
 		emailField.add(EmailAddressValidator.getInstance());
 		formPanel.addElement(emailField);
 		
 		// Phone number
-		formPanel.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.phoneNumber"), new PropertyModel(personModel, "phoneNumber"), 10)); //$NON-NLS-1$ //$NON-NLS-2$
+		formPanel.addElement(new IntegerFieldElement(TeachUsSession.get().getString("General.phoneNumber"), new PropertyModel<Integer>(personModel, "phoneNumber"), 10)); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Username
 		if (isUsernameEnabled()) {
-			TextFieldElement usernameField = new TextFieldElement(TeachUsSession.get().getString("General.username"), new PropertyModel(personModel, "username"), true); //$NON-NLS-1$ //$NON-NLS-2$
+			StringTextFieldElement usernameField = new StringTextFieldElement(TeachUsSession.get().getString("General.username"), new PropertyModel<String>(personModel, "username"), true); //$NON-NLS-1$ //$NON-NLS-2$
 			usernameField.add(StringValidator.lengthBetween(3, 50));
 
 			// Validate the username for correct content
@@ -94,7 +94,7 @@ public abstract class PersonPanel extends Panel {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public void error(IValidatable validatable) {
+				public void error(IValidatable<String> validatable) {
 					ValidationError validationError = new ValidationError();
 					validationError.setMessage(TeachUsSession.get().getString("PersonPanel.usernameCharacters"));
 					validatable.error(validationError); //$NON-NLS-1$
@@ -102,12 +102,12 @@ public abstract class PersonPanel extends Panel {
 			});
 			
 			// validate the username checking for dublicates
-			usernameField.add(new IValidator() {
+			usernameField.add(new IValidator<String>() {
 				private static final long serialVersionUID = 1L;
 
-				public void validate(IValidatable validatable) {
+				public void validate(IValidatable<String> validatable) {
 					PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-					String username = validatable.getValue().toString();
+					String username = validatable.getValue();
 					
 					Person existingPerson = personDAO.usernameExists(username);
 					
@@ -122,17 +122,17 @@ public abstract class PersonPanel extends Panel {
 			});
 			formPanel.addElement(usernameField);
 		} else {
-			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.username"), new PropertyModel(personModel, "username"))); //$NON-NLS-1$ //$NON-NLS-2$
+			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.username"), new PropertyModel<Object>(personModel, "username"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	
 		// Password 1
 		if (isPasswordVisible()) {
-			final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), personModel.getPersonId() == null); //$NON-NLS-1$ //$NON-NLS-2$
+			final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel<String>(this, "password1"), personModel.getPersonId() == null); //$NON-NLS-1$ //$NON-NLS-2$
 			password1Field.add(StringValidator.lengthBetween(4, 32));
 			formPanel.addElement(password1Field);
 			
 			// Password 2
-			final PasswordFieldElement password2Field = new PasswordFieldElement(TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel(this, "password2")); //$NON-NLS-1$ //$NON-NLS-2$
+			final PasswordFieldElement password2Field = new PasswordFieldElement(TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel<String>(this, "password2")); //$NON-NLS-1$ //$NON-NLS-2$
 			formPanel.addElement(password2Field);
 			
 			// Password validator
@@ -148,11 +148,11 @@ public abstract class PersonPanel extends Panel {
 		// Locale
 		if (isLocaleVisible()) {
 			List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
-			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.locale"), new PropertyModel(personModel, "locale"), availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+			formPanel.addElement(new DropDownElement<Locale>(TeachUsSession.get().getString("General.locale"), new PropertyModel<Locale>(personModel, "locale"), availableLocales, new LocaleChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		if (isCurrencyVisible()) {
-			TextFieldElement currencyField = new TextFieldElement(TeachUsSession.get().getString("General.currency"), new PropertyModel(personModel, "currency"), 4); //$NON-NLS-1$ //$NON-NLS-2$
+			StringTextFieldElement currencyField = new StringTextFieldElement(TeachUsSession.get().getString("General.currency"), new PropertyModel<String>(personModel, "currency"), 4); //$NON-NLS-1$ //$NON-NLS-2$
 			currencyField.add(StringValidator.lengthBetween(0, 10));
 			formPanel.addElement(currencyField); //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -160,12 +160,12 @@ public abstract class PersonPanel extends Panel {
 		// Theme
 		if (isThemeVisible()) {
 			List<Theme> themes = Arrays.asList(Theme.values());
-			formPanel.addElement(new DropDownElement(TeachUsSession.get().getString("General.theme"), new PropertyModel(personModel, "theme"), themes, new ThemeChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+			formPanel.addElement(new DropDownElement<Theme>(TeachUsSession.get().getString("General.theme"), new PropertyModel<Theme>(personModel, "theme"), themes, new ThemeChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		// Teacher
 		if (isTeacherVisible()) {
-			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel(personModel, "teacher.name"))); //$NON-NLS-1$ //$NON-NLS-2$
+			formPanel.addElement(new ReadOnlyElement(TeachUsSession.get().getString("General.teacher"), new PropertyModel<Object>(personModel, "teacher.name"))); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		
 		// iCalendar URL
@@ -176,7 +176,7 @@ public abstract class PersonPanel extends Panel {
 		
 		// Notes
 		if (isNotesVisible()) {
-			formPanel.addElement(new TextAreaElement("Notes", new PropertyModel(personModel, "notes")));
+			formPanel.addElement(new TextAreaElement("Notes", new PropertyModel<String>(personModel, "notes")));
 		}
 		
 		// Buttons

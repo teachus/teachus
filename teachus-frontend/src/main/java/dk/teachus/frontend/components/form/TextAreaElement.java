@@ -29,23 +29,23 @@ import org.apache.wicket.validation.IValidator;
 
 import dk.teachus.frontend.components.form.ElementModifier.BehaviorAdder;
 
-public class TextAreaElement extends FormElement implements ValidationProducer {
+public class TextAreaElement extends FormElement implements ValidationProducer<String> {
 	private static final long serialVersionUID = 1L;
-	private TextArea inputField;
+	private TextArea<String> inputField;
 	private FeedbackPanel feedbackPanel;
 
-	public TextAreaElement(String label, IModel inputModel) {
+	public TextAreaElement(String label, IModel<String> inputModel) {
 		this(label, inputModel, false);
 	}
 	
-	public TextAreaElement(String label, IModel inputModel, final boolean required) {
+	public TextAreaElement(String label, IModel<String> inputModel, final boolean required) {
 		add(new Label("label", label).setRenderBodyOnly(true));
 		
-		IModel requiredModel = new AbstractReadOnlyModel() {
+		IModel<String> requiredModel = new AbstractReadOnlyModel<String>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Object getObject() {
+			public String getObject() {
 				return required ? "*" : "&nbsp;";
 			}
 		};
@@ -55,9 +55,9 @@ public class TextAreaElement extends FormElement implements ValidationProducer {
 		feedbackPanel.setOutputMarkupId(true);
 		add(feedbackPanel);
 		
-		inputField = new TextArea("inputField", inputModel);
+		inputField = new TextArea<String>("inputField", inputModel);
 		inputField.setRequired(required);
-		inputField.setLabel(new Model(label));
+		inputField.setLabel(new Model<String>(label));
 		add(inputField);
 		
 		feedbackPanel.setFilter(new ComponentFeedbackMessageFilter(inputField));
@@ -70,7 +70,7 @@ public class TextAreaElement extends FormElement implements ValidationProducer {
 		add(new ElementModifier("onchange"));
 	}
 	
-	public Component add(IValidator validator) {
+	public Component add(IValidator<String> validator) {
 		return inputField.add(validator);
 	}
 
@@ -78,7 +78,7 @@ public class TextAreaElement extends FormElement implements ValidationProducer {
 		inputField.add(adder.createNewBehavior());
 	}
 
-	public FormComponent getFormComponent() {
+	public FormComponent<String> getFormComponent() {
 		return inputField;
 	}
 

@@ -17,6 +17,7 @@
 package dk.teachus.frontend.components.form;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.wicket.Component;
@@ -32,24 +33,24 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidator;
 
-public class DateElement extends AbstractValidationInputElement {
+public class DateElement extends AbstractValidationInputElement<Date> {
 	private static final long serialVersionUID = 1L;
 
-	private IModel inputModel;
+	private IModel<Date> inputModel;
 	private DateTextField dateField;
 	
-	public DateElement(String label, IModel inputModel) {
+	public DateElement(String label, IModel<Date> inputModel) {
 		this(label, inputModel, false);
 	}
 	
-	public DateElement(String label, IModel inputModel, boolean required) {
+	public DateElement(String label, IModel<Date> inputModel, boolean required) {
 		super(label, required);
 		
 		this.inputModel = inputModel;
 	}
 
 	@Override
-	protected void addValidator(IValidator validator) {
+	protected void addValidator(IValidator<Date> validator) {
 		dateField.add(validator);
 	}
 
@@ -59,7 +60,7 @@ public class DateElement extends AbstractValidationInputElement {
 	}
 
 	@Override
-	public FormComponent getFormComponent() {
+	public FormComponent<Date> getFormComponent() {
 		return dateField;
 	}
 
@@ -101,7 +102,7 @@ public class DateElement extends AbstractValidationInputElement {
 				return true;
 			}
 		});
-		dateField.setLabel(new Model(label));
+		dateField.setLabel(new Model<String>(label));
 		dateField.setRequired(required);
 		elementPanel.add(dateField);
 		

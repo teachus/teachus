@@ -20,12 +20,17 @@ import org.apache.wicket.Component;
 import org.apache.wicket.ajax.IAjaxCallDecorator;
 import org.apache.wicket.ajax.calldecorator.AjaxCallDecorator;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.model.IModel;
 
-public abstract class BlockingAjaxLink extends AjaxFallbackLink<Void> {
+public abstract class BlockingAjaxLink<T> extends AjaxFallbackLink<T> {
 	private static final long serialVersionUID = 1L;
 
 	public BlockingAjaxLink(String id) {
 		super(id);		
+	}
+	
+	public BlockingAjaxLink(String id, IModel<T> model) {
+		super(id, model);
 	}
 
 	@Override

@@ -47,11 +47,11 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 		
 		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
 		
-		final IModel messagesModel = new LoadableDetachableModel() {
+		final IModel<List<Message>> messagesModel = new LoadableDetachableModel<List<Message>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Object load() {
+			protected List<Message> load() {
 				Person person = TeachUsSession.get().getPerson();
 				
 				MessageDAO messageDAO = TeachUsApplication.get().getMessageDAO();
@@ -59,19 +59,18 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 			}
 		};
 		
-		List<IColumn> columns = new ArrayList<IColumn>();
-		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("Messages.subject")), "subject", "subject") { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		List<IColumn<Message>> columns = new ArrayList<IColumn<Message>>();
+		columns.add(new LinkPropertyColumn<Message>(new Model<String>(TeachUsSession.get().getString("Messages.subject")), "subject", "subject") { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				protected void onClick(Object rowModelObject) {
-					Message message = (Message) rowModelObject;
+				protected void onClick(Message message) {
 					getRequestCycle().setResponsePage(new EditMessagePage(message));
 				}
 				
 				@Override
-				public Component getFilter(String componentId, FilterForm form) {
-					return new TextFilter(componentId, new PropertyModel(form.getModel(), "subject"), form);
+				public Component getFilter(String componentId, FilterForm<?> form) {
+					return new TextFilter<String>(componentId, new PropertyModel<String>(form.getModel(), "subject"), form);
 				}
 			});
 		columns.add(createRecipientColumn(messagesModel));
@@ -80,21 +79,20 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 		
 		SentMessagesDataProvider dataProvider = new SentMessagesDataProvider(messagesModel);
 		
-		add(new ListPanel("sentMessages", columns, dataProvider, dataProvider)); //$NON-NLS-1$
+		add(new ListPanel<Message>("sentMessages", columns, dataProvider, dataProvider)); //$NON-NLS-1$
 	}
 
-	private RendererPropertyColumn createMessageStateColumn(final IModel messagesModel) {
-		return new RendererPropertyColumn(new Model(TeachUsSession.get().getString("Messages.state")), "state", "state", new MessageStateChoiceRenderer()) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private RendererPropertyColumn<Message,MessageState> createMessageStateColumn(final IModel<List<Message>> messagesModel) {
+		return new RendererPropertyColumn<Message, MessageState>(new Model<String>(TeachUsSession.get().getString("Messages.state")), "state", "state", new MessageStateChoiceRenderer()) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public Component getFilter(String componentId, FilterForm form) {
-				IModel statesModel = new LoadableDetachableModel() {
+			public Component getFilter(String componentId, FilterForm<?> form) {
+				IModel<List<? extends MessageState>> statesModel = new LoadableDetachableModel<List<? extends MessageState>>() {
 					private static final long serialVersionUID = 1L;
 
-					@SuppressWarnings("unchecked")
 					@Override
-					protected Object load() {
+					protected List<? extends MessageState> load() {
 						List<Message> messages = (List<Message>) messagesModel.getObject();
 						Set<MessageState> states = new HashSet<MessageState>();
 						
@@ -108,22 +106,21 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 					}
 				};
 				
-				return new ChoiceFilter(componentId, new PropertyModel(form.getModel(), "state"), form, statesModel, new MessageStateChoiceRenderer(), true);
+				return new ChoiceFilter<MessageState>(componentId, new PropertyModel<MessageState>(form.getModel(), "state"), form, statesModel, new MessageStateChoiceRenderer(), true);
 			}
 		};
 	}
 
-	private IColumn createRecipientColumn(final IModel messagesModel) {
-		return new FilteredPropertyColumn(new Model(TeachUsSession.get().getString("Messages.recipient")), "recipient.name", "recipient.name") { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private IColumn<Message> createRecipientColumn(final IModel<List<Message>> messagesModel) {
+		return new FilteredPropertyColumn<Message>(new Model<String>(TeachUsSession.get().getString("Messages.recipient")), "recipient.name", "recipient.name") { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			private static final long serialVersionUID = 1L;
 
-			public Component getFilter(String componentId, FilterForm form) {
-				IModel recipientsModel = new LoadableDetachableModel() {
+			public Component getFilter(String componentId, FilterForm<?> form) {
+				IModel<List<? extends String>> recipientsModel = new LoadableDetachableModel<List<? extends String>>() {
 					private static final long serialVersionUID = 1L;
 
-					@SuppressWarnings("unchecked")
 					@Override
-					protected Object load() {
+					protected List<? extends String> load() {
 						List<Message> messages = (List<Message>) messagesModel.getObject();
 						Set<String> recipients = new HashSet<String>();
 						
@@ -137,23 +134,22 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 					}
 				};
 				
-				return new ChoiceFilter(componentId, new PropertyModel(form.getModel(), "recipient.name"), form, recipientsModel, true);
+				return new ChoiceFilter<String>(componentId, new PropertyModel<String>(form.getModel(), "recipient.name"), form, recipientsModel, true);
 			}
 		};
 	}
 
-	private IColumn createProcessingDateColumn(final IModel messagesModel) {		
-		return new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "processingDate", "processingDate", new DateChoiceRenderer()) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	private IColumn<Message> createProcessingDateColumn(final IModel<List<Message>> messagesModel) {		
+		return new RendererPropertyColumn<Message,Date>(new Model<String>(TeachUsSession.get().getString("General.date")), "processingDate", "processingDate", new DateChoiceRenderer<Date>()) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Component getFilter(String componentId, FilterForm form) {
-				IModel datesModel = new LoadableDetachableModel() {
+			public Component getFilter(String componentId, FilterForm<?> form) {
+				IModel<List<? extends Date>> datesModel = new LoadableDetachableModel<List<? extends Date>>() {
 					private static final long serialVersionUID = 1L;
 					
-					@SuppressWarnings("unchecked")
 					@Override
-					protected Object load() {
+					protected List<? extends Date> load() {
 						List<Message> messages = (List<Message>) messagesModel.getObject();
 						Set<Date> dates = new HashSet<Date>();
 						for (Message message : messages) {
@@ -165,7 +161,7 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 					}			
 				};
 				
-				return new ChoiceFilter(componentId, new PropertyModel(form.getModel(), "processingDate"), form, datesModel, true);
+				return new ChoiceFilter<Date>(componentId, new PropertyModel<Date>(form.getModel(), "processingDate"), form, datesModel, true);
 			}
 		};
 	}

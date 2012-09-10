@@ -19,19 +19,16 @@ package dk.teachus.frontend.utils;
 import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateMidnight;
 
-public class MonthChoiceRenderer extends ChoiceRenderer {
+public class MonthChoiceRenderer extends ChoiceRenderer<Integer> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object getDisplayValue(Object object) {
+	public Object getDisplayValue(Integer monthIndex) {
 		String display = "";
 		
-		if (object != null) {
-			if (object instanceof Integer) {
-				Integer monthIndex = (Integer) object;
-				DateMidnight month = new DateMidnight().withMonthOfYear(monthIndex);
-				display = Formatters.getFormatOnlyMonth().print(month);
-			}
+		if (monthIndex != null) {
+			DateMidnight month = new DateMidnight().withMonthOfYear(monthIndex);
+			display = Formatters.getFormatOnlyMonth().print(month);
 		}
 		
 		return display;

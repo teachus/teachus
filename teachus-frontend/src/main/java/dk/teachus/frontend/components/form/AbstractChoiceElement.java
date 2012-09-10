@@ -21,26 +21,26 @@ import java.util.List;
 import org.apache.wicket.markup.html.form.IChoiceRenderer;
 import org.apache.wicket.model.IModel;
 
-public abstract class AbstractChoiceElement extends AbstractValidationInputElement {
+public abstract class AbstractChoiceElement<S,T> extends AbstractValidationInputElement<T> {
 	private static final long serialVersionUID = 1L;
 	
-	protected IModel inputModel;
-	protected List<?> choices;
-	protected IChoiceRenderer choiceRenderer;
+	protected IModel<S> inputModel;
+	protected List<? extends T> choices;
+	protected IChoiceRenderer<? super T> choiceRenderer;
 	
-	public AbstractChoiceElement(String label, IModel inputModel, List<?> choices) {
+	public AbstractChoiceElement(String label, IModel<S> inputModel, List<? extends T> choices) {
 		this(label, inputModel, choices, null, false);
 	}
 	
-	public AbstractChoiceElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer) {
+	public AbstractChoiceElement(String label, IModel<S> inputModel, List<? extends T> choices, IChoiceRenderer<? super T> choiceRenderer) {
 		this(label, inputModel, choices, choiceRenderer, false);
 	}
 	
-	public AbstractChoiceElement(String label, IModel inputModel, List<?> choices, boolean required) {
+	public AbstractChoiceElement(String label, IModel<S> inputModel, List<? extends T> choices, boolean required) {
 		this(label, inputModel, choices, null, required);
 	}
 	
-	public AbstractChoiceElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer, boolean required) {
+	public AbstractChoiceElement(String label, IModel<S> inputModel, List<? extends T> choices, IChoiceRenderer<? super T> choiceRenderer, boolean required) {
 		super(label, required);
 		
 		this.inputModel = inputModel;
