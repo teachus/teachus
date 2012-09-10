@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.Application;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -39,8 +37,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.util.cookies.CookieDefaults;
+import org.apache.wicket.util.cookies.CookieUtils;
 
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -109,7 +107,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		
 		user = new User();
 		
-		final Form signInForm = new Form("signInForm", new CompoundPropertyModel(user)) { //$NON-NLS-1$
+		final Form<User> signInForm = new Form<User>("signInForm", new CompoundPropertyModel<User>(user)) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -119,7 +117,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		};
 		add(signInForm);
 		
-		final TextField username = new TextField("username"); //$NON-NLS-1$
+		final TextField<String> username = new TextField<String>("username"); //$NON-NLS-1$
 		username.setOutputMarkupId(true);
 		username.setRequired(true);
 		username.add(new DefaultFocusBehavior());
@@ -132,31 +130,10 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		signInForm.add(new FormComponentLabel("passwordLabel", password).add(new Label("passwordLabel", TeachUsSession.get().getString("General.password")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		CheckBox remember = new CheckBox("remember");
-		remember.add(new AjaxFormComponentUpdatingBehavior("onclick") {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onUpdate(AjaxRequestTarget target) {
-//				username.setPersistent(user.isRemember());
-//				password.setPersistent(user.isRemember());
-				// TODO
-			}
-		});
 		signInForm.add(remember);
 		signInForm.add(new FormComponentLabel("rememberLabel", remember).add(new Label("rememberLabel", TeachUsSession.get().getString("General.remember")).setRenderBodyOnly(true)));
 		
-		signInForm.add(new Button("signIn", new Model("Log ind")));
-				
-		// See if we should load from cookies
-		RequestCycle requestCycle = RequestCycle.get();
-		WebRequest request = (WebRequest) requestCycle.getRequest();
-		Cookie cookie = request.getCookie(USERNAME_PATH);
-		if (cookie != null) {
-			user.setRemember(true);
-//			username.setPersistent(true);
-//			password.setPersistent(true);
-			// TODO
-		}
+		signInForm.add(new Button("signIn", new Model<String>("Log ind")));
 	}
 		
 	private void signin() {		
@@ -165,6 +142,15 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		teachUsSession.signIn(user.getUsername(), user.getPassword());
 		
 		if (teachUsSession.isAuthenticated()) {			
+			if (user.isRemember()) {
+				CookieDefaults settings = new CookieDefaults();
+				// 14 days
+				settings.setMaxAge(60*60*24*14);
+				CookieUtils cookieUtils = new CookieUtils(settings);
+				cookieUtils.save("username", user.getUsername());
+				cookieUtils.save("password", user.getPassword());
+			}
+			
 			if (continueToOriginalDestination() == false) {
 				throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 			}
@@ -174,7 +160,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 	private void createLocaleBox() {
 		add(new Label("localeLabel", TeachUsSession.get().getString("General.locale")));
 		
-		Form localeForm = new Form("localeForm") {
+		Form<Void> localeForm = new Form<Void>("localeForm") {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -188,7 +174,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		
 		List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
 		
-		DropDownChoice localeDropDown = new DropDownChoice("locale", new PropertyModel(this, "locale"), availableLocales, new LocaleChoiceRenderer());
+		DropDownChoice<Locale> localeDropDown = new DropDownChoice<Locale>("locale", new PropertyModel<Locale>(this, "locale"), availableLocales, new LocaleChoiceRenderer());
 		localeForm.add(localeDropDown);
 		
 		localeDropDown.add(new AjaxFormComponentUpdatingBehavior("onchange") {

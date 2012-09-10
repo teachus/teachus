@@ -23,14 +23,11 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import javax.servlet.http.Cookie;
-
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebSession;
 import org.apache.wicket.request.Request;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.http.WebRequest;
-import org.apache.wicket.request.http.WebResponse;
+import org.apache.wicket.util.cookies.CookieUtils;
+import org.apache.wicket.util.string.Strings;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
@@ -38,7 +35,6 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
-import dk.teachus.frontend.pages.UnAuthenticatedBasePage;
 import dk.teachus.utils.ClassUtils;
 
 public class TeachUsSession extends WebSession {
@@ -53,7 +49,14 @@ public class TeachUsSession extends WebSession {
 	public TeachUsSession(Request request) {
 		super(request);
 
-		changeLocale(getLocale());
+		CookieUtils cookieUtils = new CookieUtils();
+		String username = cookieUtils.load("username");
+		String password = cookieUtils.load("password");
+		if (false == Strings.isEmpty(username) && false == Strings.isEmpty(password)) {
+			signIn(username, password);
+		} else {
+			changeLocale(getLocale());
+		}
 	}
 
 	public boolean isAuthenticated() {
@@ -122,20 +125,11 @@ public class TeachUsSession extends WebSession {
 	}
 
 	public void signOut() {
-		WebRequest webRequest = (WebRequest) RequestCycle.get().getRequest();
-		WebResponse webResponse = (WebResponse) RequestCycle.get().getResponse();
-		List<Cookie> cookies = webRequest.getCookies();
-		
-		for (Cookie cookie : cookies) {
-			if (UnAuthenticatedBasePage.USERNAME_PATH.equals(cookie.getName())
-					|| UnAuthenticatedBasePage.PASSWORD_PATH.equals(cookie.getName())
-					|| UnAuthenticatedBasePage.REMEMBER_PATH.equals(cookie.getName())) {
-				webResponse.clearCookie(cookie);
-			}
-		}
-		
+		CookieUtils cookieUtils = new CookieUtils();
+		cookieUtils.remove("username");
+		cookieUtils.remove("password");
 		person = null;
-		invalidate();
+		invalidateNow();
 	}
 	
 	public Person getPerson() {

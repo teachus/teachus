@@ -29,6 +29,8 @@ public class SignedOutPage extends SystemBasePage {
 	private static final long serialVersionUID = 1L;
 
 	public SignedOutPage() {
+		TeachUsSession.get().signOut();
+		
 		WebComponent refresh = new WebComponent("refresh"); //$NON-NLS-1$
 		StringBuilder content = new StringBuilder();
 		content.append("1; url="); //$NON-NLS-1$
