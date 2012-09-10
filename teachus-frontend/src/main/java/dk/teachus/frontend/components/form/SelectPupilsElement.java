@@ -28,18 +28,18 @@ import org.apache.wicket.validation.IValidator;
 
 import dk.teachus.backend.domain.Pupil;
 
-public class SelectPupilsElement extends AbstractInputElement<Collection<Pupil>> {
+public class SelectPupilsElement<S extends Collection<Pupil>> extends AbstractInputElement<S> {
 	private static final long serialVersionUID = 1L;
-	private final IModel<Collection<Pupil>> inputModel;
+	private final IModel<S> inputModel;
 	private SelectPupilsPanel selectPupilsPanel;
 	
-	public SelectPupilsElement(String label, IModel<Collection<Pupil>> inputModel, boolean required) {
+	public SelectPupilsElement(String label, IModel<S> inputModel, boolean required) {
 		super(label, required);
 		this.inputModel = inputModel;
 	}
 
 	@Override
-	protected void addValidator(IValidator<Collection<Pupil>> validator) {
+	protected void addValidator(IValidator validator) {
 		selectPupilsPanel.getInputComponent().add(validator);
 	}
 	
@@ -48,7 +48,7 @@ public class SelectPupilsElement extends AbstractInputElement<Collection<Pupil>>
 		return new ComponentFeedbackMessageFilter(this);
 	}
 	
-	public FormComponent<Collection<Pupil>> getFormComponent() {
+	public FormComponent getFormComponent() {
 		return selectPupilsPanel.getInputComponent();
 	}
 	

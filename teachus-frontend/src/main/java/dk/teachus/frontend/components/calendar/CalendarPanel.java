@@ -22,11 +22,6 @@ import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AttributeAppender;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -34,10 +29,11 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -55,7 +51,7 @@ import dk.teachus.frontend.components.jquery.JQueryBehavior;
 public abstract class CalendarPanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public static final ResourceReference JS_CALENDAR = new JavascriptResourceReference(CalendarPanel.class, "calendar.js"); //$NON-NLS-1$
+	public static final ResourceReference JS_CALENDAR = new JavaScriptResourceReference(CalendarPanel.class, "calendar.js"); //$NON-NLS-1$
 
 	public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern("HH:mm"); //$NON-NLS-1$
 	private static final DateTimeFormatter HEADER_FORMAT = DateTimeFormat.forPattern("EE d/M"); //$NON-NLS-1$
@@ -90,14 +86,6 @@ public abstract class CalendarPanel<T> extends Panel {
 		super(id, weekDateModel);
 		
 		add(new JQueryBehavior());
-		add(new HeaderContributor(new IHeaderContributor() {
-			private static final long serialVersionUID = 1L;
-
-			public void renderHead(IHeaderResponse response) {
-				response.renderJavascriptReference(JS_CALENDAR);
-				response.renderOnDomReadyJavascript("layoutCalendar()"); //$NON-NLS-1$
-			}
-		}));
 
 		/*
 		 * Navigation
@@ -218,7 +206,7 @@ public abstract class CalendarPanel<T> extends Panel {
 						}
 					}
 				};
-				item.add(new AttributeAppender("class", true, appendModel, " ")); //$NON-NLS-1$ //$NON-NLS-2$
+				item.add(AttributeModifier.append("class", appendModel)); //$NON-NLS-1$
 			}
 		});
 
@@ -246,7 +234,7 @@ public abstract class CalendarPanel<T> extends Panel {
 								}
 							}
 						};
-						item.add(new AttributeAppender("class", true, appendModel, " ")); //$NON-NLS-1$ //$NON-NLS-2$
+						item.add(AttributeModifier.append("class", appendModel)); //$NON-NLS-1$
 					}
 				});
 				
@@ -276,7 +264,7 @@ public abstract class CalendarPanel<T> extends Panel {
 						double pixelEnd = minutesEnd/minutesPerDivider;
 						long height = Math.round(pixelEnd*dividerPixelHeight) - 1;
 						
-						timeSlotItem.add(new SimpleAttributeModifier("style", "left: 0; top: "+top+"px; height: "+height+"px;")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+						timeSlotItem.add(AttributeModifier.replace("style", "left: 0; top: "+top+"px; height: "+height+"px;")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 						
 						// Time slot content
 						IModel<List<String>> timeSlotContentModel = new LoadableDetachableModel<List<String>>() {
@@ -294,7 +282,7 @@ public abstract class CalendarPanel<T> extends Panel {
 							@Override
 							protected void populateItem(ListItem<String> item) {
 								item.add(new Label("content", item.getModel()));
-								item.add(new AttributeModifier("title", true, item.getModel()));
+								item.add(AttributeModifier.replace("title", item.getModel()));
 							}
 						});
 						
@@ -302,7 +290,7 @@ public abstract class CalendarPanel<T> extends Panel {
 						final Component dayTimeLessonDetails = createTimeSlotDetailsComponent("dayTimeLessonDetails", timeSlotItem.getModelObject());
 						dayTimeLessonDetails.setOutputMarkupId(true);
 						timeSlotItem.add(dayTimeLessonDetails);
-						timeSlotItem.add(new AttributeModifier("rel", true, new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
+						timeSlotItem.add(AttributeModifier.replace("rel", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
 							private static final long serialVersionUID = 1L;
 		
 							@Override
@@ -326,6 +314,12 @@ public abstract class CalendarPanel<T> extends Panel {
 				});
 			}
 		});
+	}
+	
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		response.renderJavaScriptReference(JS_CALENDAR);
+		response.renderOnDomReadyJavaScript("layoutCalendar()"); //$NON-NLS-1$
 	}
 	
 	private int calculateNumberOfCalendarHours() {

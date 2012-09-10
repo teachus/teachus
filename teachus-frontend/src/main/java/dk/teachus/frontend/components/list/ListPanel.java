@@ -16,6 +16,7 @@
  */
 package dk.teachus.frontend.components.list;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,32 +40,32 @@ import org.apache.wicket.model.IModel;
 
 import dk.teachus.frontend.TeachUsSession;
 
-public class ListPanel extends Panel {
+public class ListPanel<T extends Serializable> extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public ListPanel(String id, IColumn[] columns, ISortableDataProvider dataProvider) {
+	public ListPanel(String id, List<IColumn<T>> columns, ISortableDataProvider<T> dataProvider) {
 		this(id, columns, dataProvider, null);
 	}
 	
-	public ListPanel(String id, IColumn[] columns, ISortableDataProvider dataProvider, TeachUsFilter filterStateLocator) {
+	public ListPanel(String id, List<IColumn<T>> columns, ISortableDataProvider<T> dataProvider, TeachUsFilter<T> filterStateLocator) {
 		super(id);
 		
 		createList(columns, dataProvider, filterStateLocator);
 	}
 	
-	public ListPanel(String id, IColumn[] columns, List<?> data) {
+	public ListPanel(String id, List<IColumn<T>> columns, List<T> data) {
 		super(id);
 		
-		final IDataProvider listDataProvider = new ListDataProvider(data);
+		final IDataProvider<T> listDataProvider = new ListDataProvider<T>(data);
 			
-		ISortableDataProvider dataProvider = new SortableDataProvider() {
+		ISortableDataProvider<T> dataProvider = new SortableDataProvider<T>() {
 			private static final long serialVersionUID = 1L;
 
-			public Iterator<?> iterator(int first, int count) {
+			public Iterator<? extends T> iterator(int first, int count) {
 				return listDataProvider.iterator(first, count);
 			}
 
-			public IModel model(Object object) {
+			public IModel<T> model(T object) {
 				return listDataProvider.model(object);
 			}
 
@@ -76,11 +77,11 @@ public class ListPanel extends Panel {
 		createList(columns, dataProvider, null);
 	}
 
-	private void createList(IColumn[] columns, ISortableDataProvider dataProvider, final TeachUsFilter filterStateLocator) {
-		FilterForm form = null;
+	private void createList(List<IColumn<T>> columns, ISortableDataProvider<T> dataProvider, final TeachUsFilter<T> filterStateLocator) {
+		FilterForm<T> form = null;
 		MarkupContainer parent = null;
 		if (filterStateLocator != null) {
-			form = new FilterForm("filterForm", filterStateLocator) {
+			form = new FilterForm<T>("filterForm", filterStateLocator) {
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -92,16 +93,14 @@ public class ListPanel extends Panel {
 		} else {
 			parent = new WebMarkupContainer("filterForm");
 			parent.setRenderBodyOnly(true);
-			parent.add(new WebComponent("focus-tracker").setVisible(false));
-			parent.add(new WebComponent("focus-restore").setVisible(false));
 		}
 		add(parent);
 		
 		parent.add(createDataTable(columns, dataProvider, form, filterStateLocator));
 	}
 
-	private DataTable createDataTable(IColumn[] columns, ISortableDataProvider dataProvider, FilterForm form, TeachUsFilter filterStateLocator) {
-		DataTable dataTable = new DataTable("table", columns, dataProvider, 40);
+	private DataTable<T> createDataTable(List<IColumn<T>> columns, ISortableDataProvider<T> dataProvider, FilterForm<T> form, TeachUsFilter<T> filterStateLocator) {
+		DataTable<T> dataTable = new DataTable<T>("table", columns, dataProvider, 40);
 
 		if (form != null && filterStateLocator != null) {
 			dataTable.addTopToolbar(new FilterSubmitToolbar(dataTable, filterStateLocator));
@@ -114,20 +113,20 @@ public class ListPanel extends Panel {
 		return dataTable;
 	}
 
-	private AjaxNavigationToolbar createNavigationToolbar(DataTable dataTable) {
+	private AjaxNavigationToolbar createNavigationToolbar(DataTable<T> dataTable) {
 		return new AjaxNavigationToolbar(dataTable) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected WebComponent newNavigatorLabel(String navigatorId, final DataTable table) {
-				Label label = new Label(navigatorId, new AbstractReadOnlyModel() {
+			protected WebComponent newNavigatorLabel(String navigatorId, final DataTable<?> table) {
+				Label label = new Label(navigatorId, new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
+					public String getObject() {
 						int of = table.getRowCount();
-						int from = table.getCurrentPage() * table.getRowsPerPage();
-						int to = Math.min(of, from + table.getRowsPerPage());
+						int from = table.getCurrentPage() * table.getItemsPerPage();
+						int to = Math.min(of, from + table.getItemsPerPage());
 
 						from++;
 

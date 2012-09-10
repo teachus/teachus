@@ -1,10 +1,10 @@
 package dk.teachus.frontend.components.list;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior.Style;
@@ -30,7 +30,7 @@ public abstract class ImageFunctionItem<T> extends DefaultFunctionItem<T> {
 	
 	@Override
 	public void modifyLink(final Link<T> link) {
-		link.add(new AttributeAppender("class", true, new Model<String>("imglink"), " "));
+		link.add(AttributeModifier.append("class", new Model<String>("imglink")));
 		
 		link.add(new JQueryCluetipBehavior(Style.NO_HEADER) {
 			private static final long serialVersionUID = 1L;

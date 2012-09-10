@@ -22,44 +22,34 @@ import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.Strings;
 
-public class RenderingLabel extends Label {
+public class RenderingLabel<T> extends Label {
 	private static final long serialVersionUID = 1L;
 
 	private RenderingModel renderingModel;
-	private IChoiceRenderer renderer;
 	
-	public RenderingLabel(String id, IChoiceRenderer renderer) {
+	public RenderingLabel(String id, IModel<T> model, IChoiceRenderer<T> renderer) {
 		super(id);
-		this.renderer = renderer;
-	}
-	
-	public RenderingLabel(String id, IModel model, IChoiceRenderer renderer) {
-		super(id);
-		renderingModel = new RenderingModel(model);
-		this.renderer = renderer;
+		setDefaultModel(new RenderingModel(model, renderer));
 	}
 	
 	@Override
-	protected IModel initModel() {
-		if (renderingModel == null) {
-			IModel nestedModel = super.initModel();
-			renderingModel = new RenderingModel(nestedModel);
-		}
-		
+	protected IModel<String> initModel() {
 		return renderingModel;
 	}
 	
-	private class RenderingModel extends AbstractReadOnlyModel {
+	private class RenderingModel extends AbstractReadOnlyModel<String> {
 		private static final long serialVersionUID = 1L;
 
-		private IModel nestedModel;
+		private IModel<T> nestedModel;
+		private IChoiceRenderer<T> renderer;
 		
-		private RenderingModel(IModel nestedModel) {
+		private RenderingModel(IModel<T> nestedModel, IChoiceRenderer<T> renderer) {
 			this.nestedModel = nestedModel;
+			this.renderer = renderer;
 		}
 
 		@Override
-		public Object getObject() {
+		public String getObject() {
 			Object displayValue;
 			if (renderer != null) {
 				displayValue = renderer.getDisplayValue(nestedModel.getObject());
@@ -72,7 +62,7 @@ public class RenderingLabel extends Label {
 				setEscapeModelStrings(false);
 			}
 			
-			return displayValue;
+			return String.valueOf(displayValue);
 		}
 		
 	}

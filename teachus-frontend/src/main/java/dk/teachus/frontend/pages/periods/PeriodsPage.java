@@ -102,23 +102,22 @@ public class PeriodsPage extends AuthenticatedBasePage {
 			
 		});
 		
-		IColumn[] columns = new IColumn[] {
-				new LinkPropertyColumn<Period>(new Model<String>(TeachUsSession.get().getString("General.name")), "name", "name") { //$NON-NLS-1$ //$NON-NLS-2$
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new LinkPropertyColumn<Period>(new Model<String>(TeachUsSession.get().getString("General.name")), "name", "name") { //$NON-NLS-1$ //$NON-NLS-2$
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					protected void onClick(Period period) {
 						getRequestCycle().setResponsePage(new PeriodPage(period));
 					}					
-				},
-				new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.startDate")), "beginDate", "beginDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.endDate")), "endDate", "endDate", dateChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.startTime")), "startTime", "startTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.endTime")), "endTime", "endTime", timeChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.weekDays")), "weekDays", "weekDays", weekDayChoiceRenderer), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.price")), "price", "price", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new FunctionsColumn<Period>(new Model<String>(TeachUsSession.get().getString("General.functions")), functions) //$NON-NLS-1$
-		};
+				});
+		columns.add(new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.startDate")), "beginDate", "beginDate", dateChoiceRenderer)); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.endDate")), "endDate", "endDate", dateChoiceRenderer)); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.startTime")), "startTime", "startTime", timeChoiceRenderer)); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.endTime")), "endTime", "endTime", timeChoiceRenderer)); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.weekDays")), "weekDays", "weekDays", weekDayChoiceRenderer)); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn<Period,Object>(new Model<String>(TeachUsSession.get().getString("General.price")), "price", "price", new CurrencyChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new FunctionsColumn<Period>(new Model<String>(TeachUsSession.get().getString("General.functions")), functions)); //$NON-NLS-1$
 		
 		IModel<List<Period>> periodsModel = new LoadableDetachableModel<List<Period>>() {
 			private static final long serialVersionUID = 1L;

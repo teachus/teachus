@@ -52,12 +52,12 @@ public class RendererPropertyColumn<T,R> extends FilteredAbstractColumn<T> {
 	}
 
 	public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel) {
-		RenderingLabel renderingLabel = new RenderingLabel(componentId, new PropertyModel<String>(rowModel, propertyExpressions), renderer);
+		RenderingLabel<R> renderingLabel = new RenderingLabel<R>(componentId, new PropertyModel<R>(rowModel, propertyExpressions), renderer);
 		renderingLabel.setRenderBodyOnly(true);
 		cellItem.add(renderingLabel);
 	}
 	
-	public Component getFilter(String componentId, FilterForm form) {
+	public Component getFilter(String componentId, FilterForm<?> form) {
 		return null;
 	}
 }

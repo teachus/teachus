@@ -1,8 +1,8 @@
 package dk.teachus.frontend.ical;
 
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.Strings;
 
 import dk.teachus.backend.domain.Person;
@@ -12,7 +12,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.models.PersonModel;
 
-public class IcalUrlModel extends AbstractReadOnlyModel {
+public class IcalUrlModel extends AbstractReadOnlyModel<String> {
 	private static final long serialVersionUID = 1L;
 	
 	private PersonModel<? extends Person> personModel;
@@ -25,7 +25,7 @@ public class IcalUrlModel extends AbstractReadOnlyModel {
 	}
 
 	@Override
-	public Object getObject() {
+	public String getObject() {
 		String label = null;
 		
 		Person person = null;

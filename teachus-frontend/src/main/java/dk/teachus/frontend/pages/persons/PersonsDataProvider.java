@@ -1,5 +1,6 @@
 package dk.teachus.frontend.pages.persons;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Person;
@@ -20,7 +21,7 @@ public class PersonsDataProvider extends TeachUsFilteredSortableDataProvider<Per
 		addComparator("email", stringComparator);
 		addComparator("phoneNumber", stringComparator);
 		
-		setSort("name", true);
+		setSort("name", SortOrder.DESCENDING);
 		
 		StringFilter stringFilter = new StringFilter();
 		addFilter("name", stringFilter);

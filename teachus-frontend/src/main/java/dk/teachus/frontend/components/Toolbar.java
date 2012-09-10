@@ -19,16 +19,16 @@ package dk.teachus.frontend.components;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class Toolbar extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -43,10 +43,10 @@ public class Toolbar extends Panel {
 			WebMarkupContainer itemContainer = new WebMarkupContainer(itemsContainer.newChildId());
 			itemsContainer.add(itemContainer);
 			
-			Link link = null;
+			Link<Void> link = null;
 			if (item instanceof ToolbarItem) {
 				final ToolbarItem toolbarItem = (ToolbarItem) item;
-				link = new Link("link") {
+				link = new Link<Void>("link") {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -56,12 +56,12 @@ public class Toolbar extends Panel {
 				};
 			} else if (item instanceof BookmarkableToolbarItem) {
 				BookmarkableToolbarItem bookmarkableToolbarItem = (BookmarkableToolbarItem) item;
-				link = new BookmarkablePageLink("link", bookmarkableToolbarItem.getPageClass(), bookmarkableToolbarItem.getPageParameters());
+				link = new BookmarkablePageLink<Void>("link", bookmarkableToolbarItem.getPageClass(), bookmarkableToolbarItem.getPageParameters());
 			} else {
 				throw new IllegalArgumentException("Toolbar item not supported: "+item.getClass().getName());
 			}
 			
-			link.add(new SimpleAttributeModifier("class", "current") {
+			link.add(new AttributeModifier("class", "current") {
 				private static final long serialVersionUID = 1L;
 				
 				@Override

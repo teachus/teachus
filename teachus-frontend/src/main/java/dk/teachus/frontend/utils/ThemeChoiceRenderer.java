@@ -21,20 +21,16 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsSession;
 
-public class ThemeChoiceRenderer extends ChoiceRenderer {
+public class ThemeChoiceRenderer extends ChoiceRenderer<Theme> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object getDisplayValue(Object object) {
+	public Object getDisplayValue(Theme theme) {
 		String display = "";
 		
-		if (object != null) {
-			if (object instanceof Theme) {
-				Theme theme = (Theme) object;
-				
-				String localeString = "Theme."+theme.name().toLowerCase();
-				display = TeachUsSession.get().getString(localeString);
-			}
+		if (theme != null) {			
+			String localeString = "Theme."+theme.name().toLowerCase();
+			display = TeachUsSession.get().getString(localeString);
 		}
 		
 		return display;

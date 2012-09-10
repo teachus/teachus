@@ -32,7 +32,7 @@ public class InternalErrorPage extends SystemBasePage {
 		
 		add(new MultiLineLabel("errorDescription", TeachUsSession.get().getString("InternalErrorPage.discription")));
 		
-		Link link = new BookmarkablePageLink("link", TeachUsApplication.get().getHomePage());
+		Link<Void> link = new BookmarkablePageLink<Void>("link", TeachUsApplication.get().getHomePage());
 		add(link);
 		link.add(new Label("label", TeachUsSession.get().getString("InternalErrorPage.homePageLink")));
 	}

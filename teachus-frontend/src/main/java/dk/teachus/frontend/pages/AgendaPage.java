@@ -60,22 +60,22 @@ public class AgendaPage extends AuthenticatedBasePage {
 			}
 		});
 		
-		IColumn[] columns = new IColumn[] {
-				new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name") {
-					private static final long serialVersionUID = 1L;
-
-					@Override
-					protected void onClick(Object rowModelObject) {
-						PupilBooking booking = (PupilBooking) rowModelObject;
-						getRequestCycle().setResponsePage(new PupilPage(new PupilModel(booking.getPupil().getId())));
-					}
-				},
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "pupil.phoneNumber", "pupil.phoneNumber"),
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()),
-				new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions)
-		};
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name", "pupil.name") {
+			private static final long serialVersionUID = 1L;
+			
+			@Override
+			protected void onClick(Object rowModelObject) {
+				PupilBooking booking = (PupilBooking) rowModelObject;
+				getRequestCycle().setResponsePage(new PupilPage(new PupilModel(booking.getPupil().getId())));
+			}
+		});
+		
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()));
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.time")), "date", new TimeChoiceRenderer()));
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.phoneNumber")), "pupil.phoneNumber", "pupil.phoneNumber"));
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.price")), "period.price", "period.price", new CurrencyChoiceRenderer()));
+		columns.add(new FunctionsColumn(new Model(TeachUsSession.get().getString("General.functions")), functions));
 		
 		IModel bookingsModel = new LoadableDetachableModel() {
 			private static final long serialVersionUID = 1L;

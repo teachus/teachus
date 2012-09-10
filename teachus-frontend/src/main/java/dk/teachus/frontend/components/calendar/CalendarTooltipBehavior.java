@@ -37,6 +37,6 @@ public class CalendarTooltipBehavior extends AbstractJQueryCluetipBehavior {
 		tipConf.append("	arrows: true");
 		tipConf.append("})");
 		
-		response.renderOnDomReadyJavascript(tipConf.toString());
+		response.renderOnDomReadyJavaScript(tipConf.toString());
 	}
 }

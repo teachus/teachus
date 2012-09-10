@@ -17,7 +17,7 @@
 package dk.teachus.frontend.components.form;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WicketEventReference;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -25,13 +25,11 @@ import org.apache.wicket.markup.html.form.FormComponent;
 /**
  * 
  */
-public class DefaultFocusBehavior extends AbstractBehavior {
+public class DefaultFocusBehavior extends Behavior {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String NEWLINE = "\n";
 	
-	private Component component;
-
 	@Override
 	public void bind(Component component) {
 		if (component instanceof FormComponent == false) {
@@ -39,12 +37,11 @@ public class DefaultFocusBehavior extends AbstractBehavior {
 		}
 		
 		component.setOutputMarkupId(true);
-		this.component = component;
 	}
 	
 	@Override
-	public void renderHead(IHeaderResponse response) {
-		response.renderJavascriptReference(WicketEventReference.INSTANCE);
+	public void renderHead(Component component, IHeaderResponse response) {
+		response.renderJavaScriptReference(WicketEventReference.INSTANCE);
 		
 		StringBuilder b = new StringBuilder();
 		
@@ -52,7 +49,7 @@ public class DefaultFocusBehavior extends AbstractBehavior {
 		b.append("document.getElementById('").append(component.getMarkupId()).append("').focus();").append(NEWLINE);
 		b.append("});").append(NEWLINE);
 		
-		response.renderJavascript(b, "Wicket.defaultFormFieldFocus");
+		response.renderJavaScript(b, "Wicket.defaultFormFieldFocus");
 	}
 	
 }

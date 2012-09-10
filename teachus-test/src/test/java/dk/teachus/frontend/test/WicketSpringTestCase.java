@@ -16,9 +16,9 @@
  */
 package dk.teachus.frontend.test;
 
-import org.apache.wicket.Request;
-import org.apache.wicket.Response;
 import org.apache.wicket.Session;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.Response;
 import org.apache.wicket.util.tester.WicketTester;
 import org.springframework.context.ApplicationContext;
 

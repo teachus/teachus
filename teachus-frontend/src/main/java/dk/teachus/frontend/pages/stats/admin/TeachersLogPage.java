@@ -20,11 +20,11 @@ public class TeachersLogPage extends AbstractAdminStatisticsPage {
 	private static final long serialVersionUID = 1L;
 	
 	public TeachersLogPage() {
-		final IModel dateEntriesModel = new LoadableDetachableModel() {
+		final IModel<List<Entry>> dateEntriesModel = new LoadableDetachableModel<List<Entry>>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			protected Object load() {
+			protected List<Entry> load() {
 				List<Entry> entries = new ArrayList<Entry>();
 				
 				List<LogProvider> providers = new ArrayList<LogProvider>();
@@ -42,12 +42,11 @@ public class TeachersLogPage extends AbstractAdminStatisticsPage {
 			}
 		};
 		
-		IModel dateModel = new AbstractReadOnlyModel() {
+		IModel<List<DateMidnight>> dateModel = new AbstractReadOnlyModel<List<DateMidnight>>() {
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
 			@Override
-			public Object getObject() {
+			public List<DateMidnight> getObject() {
 				List<DateMidnight> dates = new ArrayList<DateMidnight>();
 				
 				List<Entry> entries = (List<Entry>) dateEntriesModel.getObject();
@@ -64,23 +63,22 @@ public class TeachersLogPage extends AbstractAdminStatisticsPage {
 			}
 		};
 		
-		add(new ListView("dates", dateModel) {
+		add(new ListView<DateMidnight>("dates", dateModel) {
 			private static final long serialVersionUID = 1L;
 
-			@SuppressWarnings("unchecked")
 			@Override
-			protected void populateItem(ListItem item) {
-				final DateMidnight date = (DateMidnight) item.getModelObject();
+			protected void populateItem(ListItem<DateMidnight> item) {
+				final DateMidnight date = item.getModelObject();
 				
 				DateTimeFormatter formatter = DateTimeFormat.forPattern(TeachUsSession.get().getString("TeachersLogPage.dateHeader"));
 				formatter = formatter.withLocale(TeachUsSession.get().getLocale());
 				item.add(new Label("date", formatter.print(date)));
 				
-				IModel entriesModel =  new AbstractReadOnlyModel() {
+				IModel<List<Entry>> entriesModel =  new AbstractReadOnlyModel<List<Entry>>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					public Object getObject() {
+					public List<Entry> getObject() {
 						List<Entry> filteredEntries = new ArrayList<Entry>();
 						
 						List<Entry> entries = (List<Entry>) dateEntriesModel.getObject();
@@ -94,12 +92,12 @@ public class TeachersLogPage extends AbstractAdminStatisticsPage {
 					}
 				};
 				
-				item.add(new ListView("entries", entriesModel) {
+				item.add(new ListView<Entry>("entries", entriesModel) {
 					private static final long serialVersionUID = 1L;
 
 					@Override
-					protected void populateItem(ListItem item) {
-						Entry entry = (Entry) item.getModelObject();
+					protected void populateItem(ListItem<Entry> item) {
+						Entry entry = item.getModelObject();
 						
 						item.add(new Label("text", entry.getText()));
 					}

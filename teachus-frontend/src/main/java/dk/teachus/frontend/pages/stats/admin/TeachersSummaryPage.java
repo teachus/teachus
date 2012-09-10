@@ -16,6 +16,7 @@
  */
 package dk.teachus.frontend.pages.stats.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -31,14 +32,13 @@ public class TeachersSummaryPage extends AbstractAdminStatisticsPage {
 	private static final long serialVersionUID = 1L;
 
 	public TeachersSummaryPage() {
-		IColumn[] columns = new IColumn[] {
-				new PropertyColumn(new Model(TeachUsSession.get().getString("General.teacher")), "teacher.name"), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfPupils")), "pupilCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfPeriods")), "periodCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfPupilBookings")), "pupilBookingCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfTeacherBookings")), "teacherBookingCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfBookings")), "totalBookingCount"), //$NON-NLS-1$ //$NON-NLS-2$
-		};
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("General.teacher")), "teacher.name")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfPupils")), "pupilCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfPeriods")), "periodCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfPupilBookings")), "pupilBookingCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfTeacherBookings")), "teacherBookingCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("TeachersSummaryPage.numberOfBookings")), "totalBookingCount")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		
 		

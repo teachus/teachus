@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
@@ -28,6 +27,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.TeachUsSession;
@@ -115,7 +115,7 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		
 		PersonsDataProvider dataProvider = new PersonsDataProvider(personsModel);
 		
-		add(new ListPanel("list", columns.toArray(new IColumn[columns.size()]), dataProvider, dataProvider)); //$NON-NLS-1$
+		add(new ListPanel("list", columns, dataProvider, dataProvider)); //$NON-NLS-1$
 	}
 
 	protected void fillToolbar(List<ToolbarItemInterface> items) {

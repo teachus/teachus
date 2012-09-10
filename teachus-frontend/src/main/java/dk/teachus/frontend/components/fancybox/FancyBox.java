@@ -20,15 +20,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.request.resource.ResourceReference;
 
 public class FancyBox extends Panel {
 	private static final long serialVersionUID = 1L;
@@ -79,21 +77,12 @@ public class FancyBox extends Panel {
 		
 	}
 	
-	private class ImageBoxConfiguration implements IHeaderContributor {
-		private static final long serialVersionUID = 1L;
-		
-		public void renderHead(IHeaderResponse response) {			
-			response.renderOnDomReadyJavascript("$('a.fancybox').fancybox({titlePosition:'over'})");
-		}
-	}
-	
 	public FancyBox(String id, List<ImageResource> images) {
 		super(id);
 		
 		setOutputMarkupId(true);
 		
 		add(new JQueryFancyboxBehavior());
-		add(new HeaderContributor(new ImageBoxConfiguration()));
 		add(JQueryFancyboxBehavior.CSS_FANCYBOX);
 	
 		add(new ListView<ImageResource>("images", images) {
@@ -101,7 +90,7 @@ public class FancyBox extends Panel {
 
 			@Override
 			protected void populateItem(final ListItem<ImageResource> item) {
-				item.add(new AttributeModifier("rel", true, new AbstractReadOnlyModel<String>() {
+				item.add(AttributeModifier.replace("rel", new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -110,16 +99,16 @@ public class FancyBox extends Panel {
 					}
 				}));
 
-				item.add(new AttributeModifier("href", true, new AbstractReadOnlyModel<CharSequence>() {
+				item.add(AttributeModifier.replace("href", new AbstractReadOnlyModel<CharSequence>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
 					public CharSequence getObject() {
-						return getRequestCycle().urlFor(item.getModelObject().getImage());
+						return getRequestCycle().urlFor(item.getModelObject().getImage(), null);
 					}
 				}));
 
-				item.add(new AttributeModifier("title", true, new AbstractReadOnlyModel<CharSequence>() {
+				item.add(AttributeModifier.replace("title", new AbstractReadOnlyModel<CharSequence>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override
@@ -132,5 +121,9 @@ public class FancyBox extends Panel {
 			}
 		});
 	}
-	
+
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		response.renderOnDomReadyJavaScript("$('a.fancybox').fancybox({titlePosition:'over'})");
+	}
 }
