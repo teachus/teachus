@@ -7,10 +7,9 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.wicket.Page;
-import org.apache.wicket.PageParameters;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.protocol.http.WebResponse;
+import org.apache.wicket.protocol.http.servlet.ServletWebResponse;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.Strings;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -37,16 +36,16 @@ public class IcalPage extends Page {
 	
 	public IcalPage(PageParameters pageParameters) {
 		// Get the username and the private key from the parameters
-		String username = pageParameters.getString("0");
-		String privateKey = pageParameters.getString("1");
+		String username = pageParameters.get(0).toString();
+		String privateKey = pageParameters.get(1).toString();
 		
 		TeachUsSession.get().signInWithPrivateKey(username, privateKey);
 	}
 	
 	@Override
-	protected void onRender(MarkupStream markupStream) {
+	protected void onRender() {
 		final RequestCycle cycle = getRequestCycle();
-		final WebResponse response = (WebResponse) cycle.getResponse();
+		final ServletWebResponse response = (ServletWebResponse) cycle.getResponse();
 		
 		TeachUsSession teachUsSession = TeachUsSession.get();
 		
@@ -150,14 +149,14 @@ public class IcalPage extends Page {
 			b.append("END:VCALENDAR").append(CRLF); 
 			
 			response.setContentType("text/calendar");
-			response.setCharacterEncoding("UTF-8");
 			response.setHeader("Content-Disposition", "attachment; filename="+person.getUsername()+".ics");
 			response.setContentLength(b.length());
+			response.getContainerResponse().setCharacterEncoding("UTF-8");
 			response.write(b);
 		} else {
-			response.getHttpServletResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.setContentType("text/plain");
-			response.setCharacterEncoding("UTF-8");
+			response.getContainerResponse().setCharacterEncoding("UTF-8");
 			response.write("");
 		}
 	}

@@ -63,12 +63,17 @@ public class FormPanel extends Panel {
 	}
 	
 	@Override
-	public void onAfterRender() {
-		super.onAfterRender();
+	protected void onBeforeRender() {
+		super.onBeforeRender();
 		
 		for (FormValidator formValidator : validators) {
 			form.add(formValidator.getFormValidator());
 		}
+	}
+	
+	@Override
+	public void onAfterRender() {
+		super.onAfterRender();
 	}
 	
 }

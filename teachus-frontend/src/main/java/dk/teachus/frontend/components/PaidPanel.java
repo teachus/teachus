@@ -17,60 +17,60 @@
 package dk.teachus.frontend.components;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.WebComponent;
-import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.utils.Resources;
 
-public class PaidPanel extends Panel {
+public class PaidPanel extends GenericPanel<PupilBooking> {
 	private static final long serialVersionUID = 1L;
-
-	public PaidPanel(String id, final IModel model) {
+	
+	public PaidPanel(String id, final IModel<PupilBooking> model) {
 		super(id, model);
 		
-		AjaxFallbackLink link = new BlockingAjaxLink("link") { //$NON-NLS-1$
+		AjaxFallbackLink<PupilBooking> link = new BlockingAjaxLink<PupilBooking>("link", model) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			public void onClick(AjaxRequestTarget target) {
-				PupilBooking pupilBooking = (PupilBooking) model.getObject();
+				PupilBooking pupilBooking = getModelObject();
 				
 				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
 				bookingDAO.changePaidStatus(pupilBooking);
 				
 				if (target != null) {
-					target.addComponent(this);
+					target.add(this);
 				}
 			}
 		};
 		link.setOutputMarkupId(true);
 		WebComponent image = new WebComponent("image"); //$NON-NLS-1$
-		image.add(new AttributeModifier("src", true, new ImageModel(model))); //$NON-NLS-1$
+		image.add(AttributeModifier.replace("src", new ImageModel(model))); //$NON-NLS-1$
 		link.add(image);
 		add(link);
 	}
 	
-	private static class ImageModel extends AbstractReadOnlyModel {
+	private static class ImageModel extends AbstractReadOnlyModel<CharSequence> {
 		private static final long serialVersionUID = 1L;
-
-		private IModel rowModel;
 		
-		public ImageModel(IModel rowModel) {
+		private IModel<PupilBooking> rowModel;
+		
+		public ImageModel(IModel<PupilBooking> rowModel) {
 			this.rowModel = rowModel;
 		}
-
+		
 		@Override
-		public Object getObject() {
-			PupilBooking pupilBooking = (PupilBooking) rowModel.getObject();
+		public CharSequence getObject() {
+			PupilBooking pupilBooking = rowModel.getObject();
 			ResourceReference icon;
 			if (pupilBooking.isPaid()) {
 				icon = Resources.PAID;
@@ -78,7 +78,7 @@ public class PaidPanel extends Panel {
 				icon = Resources.UNPAID;
 			}
 			
-			return RequestCycle.get().urlFor(icon);
-		}		
+			return RequestCycle.get().urlFor(icon, null);
+		}
 	}
 }

@@ -102,7 +102,7 @@ public class HibernatePersonDAO extends HibernateDaoSupport implements PersonDAO
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	public <P extends Person> List<P> getPersons(Class<P> personClass) {
-		Class clazz = null;
+		Class<? extends Person> clazz = null;
 		
 		if (Admin.class.equals(personClass)) {
 			clazz = AdminImpl.class;

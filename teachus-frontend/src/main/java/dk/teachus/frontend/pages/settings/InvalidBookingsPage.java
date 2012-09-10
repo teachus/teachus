@@ -3,6 +3,7 @@ package dk.teachus.frontend.pages.settings;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
@@ -56,16 +57,15 @@ public class InvalidBookingsPage extends AbstractSettingsPage {
 			addComparator("date", new DateTimeComparator());
 			addComparator("class", new BookingTypeComparator());
 
-			setSort("date", true);
+			setSort("date", SortOrder.DESCENDING);
 		}		
 	}
 	
 	public InvalidBookingsPage() {
-		IColumn<?>[] columns = new IColumn<?>[] {
-			new RendererPropertyColumn(new Model<String>(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()),
-			new RendererPropertyColumn(new Model<String>(TeachUsSession.get().getString("General.time")), "date", "date", new TimeChoiceRenderer()),
-			new RendererPropertyColumn(new Model<String>(TeachUsSession.get().getString("General.bookingType")), "class", "class", new BookingTypeRenderer())
-		};
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new RendererPropertyColumn(new Model<String>(TeachUsSession.get().getString("General.date")), "date", "date", new DateChoiceRenderer()));
+		columns.add(new RendererPropertyColumn(new Model<String>(TeachUsSession.get().getString("General.time")), "date", "date", new TimeChoiceRenderer()));
+		columns.add(new RendererPropertyColumn(new Model<String>(TeachUsSession.get().getString("General.bookingType")), "class", "class", new BookingTypeRenderer()));
 		
 		add(new ListPanel("list", columns, new InvalidBookingsDataProvider(new InvalidBookingsModel())));
 	}

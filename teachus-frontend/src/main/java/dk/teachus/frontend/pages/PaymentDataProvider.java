@@ -1,5 +1,6 @@
 package dk.teachus.frontend.pages;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.PupilBooking;
@@ -18,7 +19,7 @@ public class PaymentDataProvider extends TeachUsSortableDataProvider<PupilBookin
 		addComparator("date", new DateTimeComparator());
 		addComparator("period.price", new DoubleComparator());
 		
-		setSort("date", true);
+		setSort("date", SortOrder.DESCENDING);
 	}
 	
 }

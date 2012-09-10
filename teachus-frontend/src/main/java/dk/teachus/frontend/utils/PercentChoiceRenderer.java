@@ -22,18 +22,15 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 
 import dk.teachus.frontend.TeachUsSession;
 
-public class PercentChoiceRenderer extends ChoiceRenderer {
+public class PercentChoiceRenderer extends ChoiceRenderer<Double> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object getDisplayValue(Object object) {
+	public Object getDisplayValue(Double value) {
 		String display = "";
 		
-		if (object != null) {
-			if (object instanceof Double) {
-				Double value = (Double) object;
-				display = NumberFormat.getPercentInstance(TeachUsSession.get().getLocale()).format(value);
-			}
+		if (value != null) {
+			display = NumberFormat.getPercentInstance(TeachUsSession.get().getLocale()).format(value);
 		}
 		
 		return display;

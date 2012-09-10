@@ -61,7 +61,7 @@ public abstract class LinkPropertyColumn<T> extends FilteredAbstractColumn<T> {
 
 	protected abstract void onClick(T rowModelObject);
 	
-	public Component getFilter(String componentId, FilterForm form) {
+	public Component getFilter(String componentId, FilterForm<?> form) {
 		return null;
 	}
 }

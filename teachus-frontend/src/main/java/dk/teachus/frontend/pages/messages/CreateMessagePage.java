@@ -26,6 +26,7 @@ import dk.teachus.backend.dao.MessageDAO;
 import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
+import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -33,15 +34,15 @@ import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.FormPanel;
 import dk.teachus.frontend.components.form.SelectPupilsElement;
+import dk.teachus.frontend.components.form.StringTextFieldElement;
 import dk.teachus.frontend.components.form.TextAreaElement;
-import dk.teachus.frontend.components.form.TextFieldElement;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.pages.persons.PupilsPage;
 
 public class CreateMessagePage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
-	private Set<Person> recipients = new HashSet<Person>();
+	private Set<Pupil> recipients = new HashSet<Pupil>();
 	
 	public CreateMessagePage() {
 		super(UserLevel.TEACHER, true);
@@ -53,11 +54,11 @@ public class CreateMessagePage extends AuthenticatedBasePage {
 		FormPanel mailForm = new FormPanel("mailForm"); //$NON-NLS-1$
 		add(mailForm);
 		
-		mailForm.addElement(new SelectPupilsElement(TeachUsSession.get().getString("Messages.recipients"), new PropertyModel(this, "recipients"), true)); //$NON-NLS-1$ //$NON-NLS-2$
+		mailForm.addElement(new SelectPupilsElement<Set<Pupil>>(TeachUsSession.get().getString("Messages.recipients"), new PropertyModel<Set<Pupil>>(this, "recipients"), true)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		mailForm.addElement(new TextFieldElement(TeachUsSession.get().getString("Messages.subject"), new PropertyModel(messageTemplate, "subject"), true, 50)); //$NON-NLS-1$ //$NON-NLS-2$
+		mailForm.addElement(new StringTextFieldElement(TeachUsSession.get().getString("Messages.subject"), new PropertyModel<String>(messageTemplate, "subject"), true, 50)); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		TextAreaElement body = new TextAreaElement(TeachUsSession.get().getString("Messages.message"), new PropertyModel(messageTemplate, "body"), true); //$NON-NLS-1$ //$NON-NLS-2$
+		TextAreaElement body = new TextAreaElement(TeachUsSession.get().getString("Messages.message"), new PropertyModel<String>(messageTemplate, "body"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		mailForm.addElement(body);
 		
 		mailForm.addElement(new ButtonPanelElement(TeachUsSession.get().getString("Messages.sendMail")) { //$NON-NLS-1$
@@ -94,11 +95,11 @@ public class CreateMessagePage extends AuthenticatedBasePage {
 		return TeachUsSession.get().getString("Messages.sendMail"); //$NON-NLS-1$
 	}
 
-	public Set<Person> getRecipients() {
+	public Set<Pupil> getRecipients() {
 		return recipients;
 	}
 
-	public void setRecipients(Set<Person> recipients) {
+	public void setRecipients(Set<Pupil> recipients) {
 		this.recipients = recipients;
 	}
 	

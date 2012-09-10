@@ -108,11 +108,11 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 		Collections.sort(sumList, new PupilSummaryComparator());
 		
 		// Sheet
-		IColumn[] columns = new IColumn[] {
-				new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.percent")), "percent", new PercentChoiceRenderer()) //$NON-NLS-1$ //$NON-NLS-2$
-		};
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("General.pupil")), "pupil.name")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.percent")), "percent", new PercentChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+
 		
 		ListPanel pctDistributionSheet = new ListPanel("pctDistributionSheet", columns, sumList);
 		add(pctDistributionSheet);

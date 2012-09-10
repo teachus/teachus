@@ -72,11 +72,11 @@ public abstract class AbstractInputElement<T> extends FormElement {
 			Component label = newLabelComponent("label");
 			add(label);
 			
-			IModel requiredModel = new AbstractReadOnlyModel() {
+			IModel<String> requiredModel = new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
 
 				@Override
-				public Object getObject() {
+				public String getObject() {
 					return required ? "*" : "&nbsp;";
 				}
 			};
@@ -91,7 +91,7 @@ public abstract class AbstractInputElement<T> extends FormElement {
 			
 			feedbackPanel.setFilter(getFeedbackMessageFilter());
 			
-			for (IValidator validator : validators) {
+			for (IValidator<T> validator : validators) {
 				addValidator(validator);
 			}
 			
@@ -114,6 +114,6 @@ public abstract class AbstractInputElement<T> extends FormElement {
 	
 	protected abstract void addValidator(IValidator<T> validator);
 	
-	protected abstract FormComponent getFormComponent();
+	protected abstract FormComponent<T> getFormComponent();
 
 }

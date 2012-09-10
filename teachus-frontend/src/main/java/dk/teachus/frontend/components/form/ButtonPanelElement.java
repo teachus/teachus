@@ -29,6 +29,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.util.visit.IVisit;
+import org.apache.wicket.util.visit.IVisitor;
 
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.ConfirmClickBehavior;
@@ -73,8 +75,9 @@ public abstract class ButtonPanelElement extends FormElement {
 			
 			@Override
 			protected void onError(final AjaxRequestTarget target, Form form) {
-				associatedForm.visitChildren(ValidationProducer.class, new org.apache.wicket.Component.IVisitor() {
-					public Object component(Component component) {
+				associatedForm.visitChildren(ValidationProducer.class, new IVisitor<Component, Void>() {
+
+					public void component(Component component, IVisit<Void> visit) {
 						ValidationProducer validationProducer = (ValidationProducer) component;
 						
 						boolean hasErrorMessage = validationProducer.hasError();
@@ -91,12 +94,10 @@ public abstract class ButtonPanelElement extends FormElement {
 							
 							if (components != null) {
 								for (Component component2 : components) {
-									target.addComponent(component2);
+									target.add(component2);
 								}
 							}
 						}
-						
-						return CONTINUE_TRAVERSAL;
 					}
 				});
 			}
@@ -130,13 +131,11 @@ public abstract class ButtonPanelElement extends FormElement {
 		
 		associatedForm = (Form) findParent(Form.class);
 		
-		associatedForm.visitChildren(ValidationProducer.class, new IVisitor() {
-			public Object component(Component component) {
+		associatedForm.visitChildren(ValidationProducer.class, new IVisitor<Component, Void>() {
+			public void component(Component component, IVisit<Void> visit) {
 				ValidationProducer validationProducer = (ValidationProducer) component;
 				
 				errorStates.put(validationProducer, validationProducer.hasError());
-				
-				return CONTINUE_TRAVERSAL;
 			}
 		});
 	}

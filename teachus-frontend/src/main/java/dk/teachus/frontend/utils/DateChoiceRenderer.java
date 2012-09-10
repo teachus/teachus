@@ -22,11 +22,11 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
 import org.joda.time.ReadableInstant;
 
-public class DateChoiceRenderer extends ChoiceRenderer<Object> {
+public class DateChoiceRenderer<T extends Object> extends ChoiceRenderer<T> {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public Object getDisplayValue(Object object) {
+	public Object getDisplayValue(T object) {
 		String display = ""; //$NON-NLS-1$
 		
 		if (object != null) {

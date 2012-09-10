@@ -37,7 +37,7 @@ public abstract class GeneratePasswordElement extends FormElement {
 	public GeneratePasswordElement(String label, final String seed) {
 		add(new Label("label", label).setRenderBodyOnly(true)); //$NON-NLS-1$
 		
-		AjaxLink generatePasswordLink = new AjaxLink("generatePasswordLink") { //$NON-NLS-1$
+		AjaxLink<Void> generatePasswordLink = new AjaxLink<Void>("generatePasswordLink") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override

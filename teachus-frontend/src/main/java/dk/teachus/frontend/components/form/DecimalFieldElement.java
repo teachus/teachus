@@ -22,15 +22,15 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.convert.converters.DoubleConverter;
+import org.apache.wicket.util.convert.converter.DoubleConverter;
 
-public class DecimalFieldElement extends TextFieldElement {
+public class DecimalFieldElement extends TextFieldElement<Double> {
 	private static final long serialVersionUID = 1L;
 	
-	private class DecimalConverter implements IConverter {
+	private class DecimalConverter implements IConverter<Double> {
 		private static final long serialVersionUID = 1L;
 
-		public Object convertToObject(String value, Locale locale) {
+		public Double convertToObject(String value, Locale locale) {
 			Double doubleValue = (Double) DoubleConverter.INSTANCE.convertToObject(value, locale);
 			
 			if (doubleValue == null) {
@@ -40,7 +40,7 @@ public class DecimalFieldElement extends TextFieldElement {
 			return doubleValue;
 		}
 
-		public String convertToString(Object value, Locale locale) {
+		public String convertToString(Double value, Locale locale) {
 			return DoubleConverter.INSTANCE.convertToString(value, locale);
 		}
 		
@@ -48,31 +48,31 @@ public class DecimalFieldElement extends TextFieldElement {
 	
 	private Double defaultNullValue;
 
-	public DecimalFieldElement(String label, IModel inputModel) {
+	public DecimalFieldElement(String label, IModel<Double> inputModel) {
 		super(label, inputModel);
 	}
 	
-	public DecimalFieldElement(String label, IModel inputModel, int size) {
+	public DecimalFieldElement(String label, IModel<Double> inputModel, int size) {
 		super(label, inputModel, size);
 	}
 	
-	public DecimalFieldElement(String label, IModel inputModel, boolean required) {
+	public DecimalFieldElement(String label, IModel<Double> inputModel, boolean required) {
 		super(label, inputModel, required);
 	}
 	
-	public DecimalFieldElement(String label, IModel inputModel, boolean required, int size) {
+	public DecimalFieldElement(String label, IModel<Double> inputModel, boolean required, int size) {
 		super(label, inputModel, required, size);
 	}
 
 	@Override
-	protected TextField getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
-		TextField textField = super.getNewInputComponent(wicketId, feedbackPanel);
+	protected TextField<Double> getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
+		TextField<Double> textField = super.getNewInputComponent(wicketId, feedbackPanel);
 		textField.setType(Double.class);
 		return textField;
 	}
 	
 	@Override
-	protected IConverter getComponentConverter(Class<?> type) {
+	protected IConverter<Double> getComponentConverter(Class<Double> type) {
 		return new DecimalConverter();
 	}
 	

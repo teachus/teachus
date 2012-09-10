@@ -34,10 +34,10 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidator;
 
-public class DropDownElement extends AbstractChoiceElement {
+public class DropDownElement<T> extends AbstractChoiceElement<T,T> {
 	private static final long serialVersionUID = 1L;
 	
-	public static DropDownElement createTimeZoneElement(String label, IModel inputModel, boolean required) {
+	public static DropDownElement<TimeZone> createTimeZoneElement(String label, IModel<TimeZone> inputModel, boolean required) {
 		List<TimeZone> choices = new ArrayList<TimeZone>();
 		
 		for (String timeZoneId : TimeZone.getAvailableIDs()) {
@@ -51,33 +51,32 @@ public class DropDownElement extends AbstractChoiceElement {
 			}
 		});
 		
-		IChoiceRenderer choiceRenderer = new ChoiceRenderer() {
+		IChoiceRenderer<TimeZone> choiceRenderer = new ChoiceRenderer<TimeZone>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
-			public Object getDisplayValue(Object object) {
-				TimeZone timeZone = (TimeZone) object;
+			public Object getDisplayValue(TimeZone timeZone) {
 				return timeZone.getID();
 			}
 		};
-		return new DropDownElement(label, inputModel, choices, choiceRenderer, required);
+		return new DropDownElement<TimeZone>(label, inputModel, choices, choiceRenderer, required);
 	}
 	
-	private DropDownChoice dropDownChoice;
+	private DropDownChoice<T> dropDownChoice;
 	
-	public DropDownElement(String label, IModel inputModel, List<?> choices) {
+	public DropDownElement(String label, IModel<T> inputModel, List<T> choices) {
 		this(label, inputModel, choices, null, false);
 	}
 	
-	public DropDownElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer) {
+	public DropDownElement(String label, IModel<T> inputModel, List<T> choices, IChoiceRenderer<T> choiceRenderer) {
 		this(label, inputModel, choices, choiceRenderer, false);
 	}
 	
-	public DropDownElement(String label, IModel inputModel, List<?> choices, boolean required) {
+	public DropDownElement(String label, IModel<T> inputModel, List<T> choices, boolean required) {
 		this(label, inputModel, choices, null, required);
 	}
 	
-	public DropDownElement(String label, IModel inputModel, List<?> choices, IChoiceRenderer choiceRenderer, boolean required) {
+	public DropDownElement(String label, IModel<T> inputModel, List<T> choices, IChoiceRenderer<T> choiceRenderer, boolean required) {
 		super(label, inputModel, choices, choiceRenderer, required);
 	}
 	
@@ -91,7 +90,7 @@ public class DropDownElement extends AbstractChoiceElement {
 		DropDownElementPanel elementPanel = new DropDownElementPanel(wicketId);
 		elementPanel.setRenderBodyOnly(true);
 		
-		dropDownChoice = new DropDownChoice("dropDown", inputModel, choices, choiceRenderer) {
+		dropDownChoice = new DropDownChoice<T>("dropDown", inputModel, choices, choiceRenderer) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -99,7 +98,7 @@ public class DropDownElement extends AbstractChoiceElement {
 				return isReadOnly() == false;
 			}
 		};
-		dropDownChoice.setLabel(new Model(label));
+		dropDownChoice.setLabel(new Model<String>(label));
 		elementPanel.add(dropDownChoice);
 		dropDownChoice.setRequired(required);
 		dropDownChoice.setNullValid(required == false);
@@ -109,12 +108,12 @@ public class DropDownElement extends AbstractChoiceElement {
 	}
 	
 	@Override
-	protected void addValidator(IValidator validator) {
+	protected void addValidator(IValidator<T> validator) {
 		dropDownChoice.add(validator);
 	}
 	
 	@Override
-	public FormComponent getFormComponent() {
+	public FormComponent<T> getFormComponent() {
 		return dropDownChoice;
 	}
 

@@ -44,7 +44,7 @@ public class SelectPupilsPanel extends Panel {
 	
 	private CheckGroup<Pupil> selectGroup;
 	
-	public SelectPupilsPanel(String id, IModel<Collection<Pupil>> model) {
+	public SelectPupilsPanel(String id, IModel<? extends Collection<Pupil>> model) {
 		super(id, model);
 
 		selectGroup = new CheckGroup<Pupil>("selectGroup", getModel());
@@ -71,7 +71,7 @@ public class SelectPupilsPanel extends Panel {
 
 			@Override
 			protected void populateItem(final ListItem<Pupil> item) {
-				item.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() {
+				item.add(AttributeModifier.replace("class", new AbstractReadOnlyModel<String>() {
 					private static final long serialVersionUID = 1L;
 
 					@Override

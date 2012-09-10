@@ -16,19 +16,20 @@
  */
 package dk.teachus.frontend.components.jquery;
 
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.Component;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.request.resource.JavaScriptResourceReference;
+import org.apache.wicket.request.resource.ResourceReference;
 
-public class JQueryBehavior extends AbstractBehavior {
+public class JQueryBehavior extends Behavior {
 	private static final long serialVersionUID = 1L;
 
-	public static final ResourceReference JS_JQUERY = new JavascriptResourceReference(JQueryBehavior.class, "jquery-1.4.4.min.js"); //$NON-NLS-1$
+	public static final ResourceReference JS_JQUERY = new JavaScriptResourceReference(JQueryBehavior.class, "jquery-1.4.4.min.js"); //$NON-NLS-1$
 	
 	@Override
-	public final void renderHead(IHeaderResponse response) {
-		response.renderJavascriptReference(JS_JQUERY);
+	public final void renderHead(Component component, IHeaderResponse response) {
+		response.renderJavaScriptReference(JS_JQUERY);
 		
 		onRenderHead(response);
 	}

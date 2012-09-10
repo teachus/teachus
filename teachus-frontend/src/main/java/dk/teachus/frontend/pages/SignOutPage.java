@@ -18,7 +18,6 @@ package dk.teachus.frontend.pages;
 
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 
-import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 
 public class SignOutPage extends AuthenticatedBasePage {
@@ -26,8 +25,6 @@ public class SignOutPage extends AuthenticatedBasePage {
 
 	public SignOutPage() {
 		super(UserLevel.PUPIL);
-		
-		TeachUsSession.get().signOut();
 		
 		throw new RestartResponseAtInterceptPageException(SignedOutPage.class);
 	}

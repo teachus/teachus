@@ -2,6 +2,7 @@ package dk.teachus.frontend.pages.periods;
 
 import java.util.List;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Period;
@@ -26,7 +27,7 @@ public class PeriodsDataProvider extends TeachUsSortableDataProvider<Period> {
 		addComparator("weekDays", new WeekDayComparator());
 		addComparator("price", new DoubleComparator());
 		
-		setSort("weekDays", true);
+		setSort("weekDays", SortOrder.DESCENDING);
 	}
 	
 }

@@ -136,7 +136,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 
 	@Override
 	protected String getPagePath() {
-		return getRequestCycle().urlFor(this).toString();
+		return getRequestCycle().urlFor(this.getClass(), null).toString();
 	}
 
 	@Override

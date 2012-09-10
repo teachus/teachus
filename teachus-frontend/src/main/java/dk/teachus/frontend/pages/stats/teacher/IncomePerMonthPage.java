@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
@@ -33,6 +32,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.string.Strings;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -135,12 +135,7 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 	private static final long serialVersionUID = 1L;
 	
 	public IncomePerMonthPage(PageParameters pageParameters) {
-		int year = 0;
-		if (Strings.isEmpty(pageParameters.getString("0"))) {
-			year = new DateMidnight().getYear(); 
-		} else {
-			year = pageParameters.getInt("0");
-		}
+		int year = pageParameters.get(0).toInt(new DateMidnight().getYear());
 		
 		add(new Label("perMonth", TeachUsSession.get().getString("IncomePerMonthPage.perMonth"))); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -222,17 +217,16 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 		
 		
 		// Add list of data in static form
-		IColumn[] columns = new IColumn[] {
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.month")), "month", new MonthChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.paid")), "paid", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.paidBookings")), "paidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.unpaid")), "unpaid", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.unPaidBookings")), "unpaidLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.future")), "future", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.futureLessons")), "futureLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
-				new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer()), //$NON-NLS-1$ //$NON-NLS-2$
-				new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.totalLessons")), "totalLessonCount"), //$NON-NLS-1$ //$NON-NLS-2$
-		};
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.month")), "month", new MonthChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.paid")), "paid", new CurrencyChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.paidBookings")), "paidLessonCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.unpaid")), "unpaid", new CurrencyChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.unPaidBookings")), "unpaidLessonCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.future")), "future", new CurrencyChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.futureLessons")), "futureLessonCount")); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new RendererPropertyColumn(new Model(TeachUsSession.get().getString("General.total")), "total", new CurrencyChoiceRenderer())); //$NON-NLS-1$ //$NON-NLS-2$
+		columns.add(new PropertyColumn(new Model(TeachUsSession.get().getString("IncomePerMonthPage.totalLessons")), "totalLessonCount")); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		List<MonthIncome> data = new ArrayList<MonthIncome>();
 		

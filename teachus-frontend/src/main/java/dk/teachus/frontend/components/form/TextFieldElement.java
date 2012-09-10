@@ -16,8 +16,8 @@
  */
 package dk.teachus.frontend.components.form;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.form.FormComponent;
@@ -28,26 +28,26 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.convert.IConverter;
 import org.apache.wicket.validation.IValidator;
 
-public class TextFieldElement extends AbstractValidationInputElement {
+public abstract class TextFieldElement<T> extends AbstractValidationInputElement<T> {
 	private static final long serialVersionUID = 1L;
 
-	private IModel inputModel;
+	private IModel<T> inputModel;
 	private int size;
-	private TextField textField;
+	private TextField<T> textField;
 
-	public TextFieldElement(String label, IModel inputModel) {
+	public TextFieldElement(String label, IModel<T> inputModel) {
 		this(label, inputModel, false);
 	}
 	
-	public TextFieldElement(String label, IModel inputModel, int size) {
+	public TextFieldElement(String label, IModel<T> inputModel, int size) {
 		this(label, inputModel, false, size);
 	}
 	
-	public TextFieldElement(String label, IModel inputModel, boolean required) {
+	public TextFieldElement(String label, IModel<T> inputModel, boolean required) {
 		this(label, inputModel, required, -1);
 	}
 	
-	public TextFieldElement(String label, IModel inputModel, boolean required, int size) {
+	public TextFieldElement(String label, IModel<T> inputModel, boolean required, int size) {
 		super(label, required);
 		this.inputModel = inputModel;
 		this.size = size;
@@ -59,7 +59,7 @@ public class TextFieldElement extends AbstractValidationInputElement {
 		inputPanel.setRenderBodyOnly(true);
 		
 		textField = getNewInputComponent("inputField", feedbackPanel);
-		textField.setLabel(new Model(label));
+		textField.setLabel(new Model<String>(label));
 		textField.setRequired(required);
 		textField.setOutputMarkupId(true);
 		inputPanel.add(textField);
@@ -72,8 +72,8 @@ public class TextFieldElement extends AbstractValidationInputElement {
 		return new ComponentFeedbackMessageFilter(textField);
 	}
 
-	protected TextField getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
-		TextField textField = new TextField(wicketId, inputModel) {
+	protected TextField<T> getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
+		TextField<T> textField = new TextField<T>(wicketId, inputModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -83,23 +83,23 @@ public class TextFieldElement extends AbstractValidationInputElement {
 			
 			@SuppressWarnings("unchecked")
 			@Override
-			public IConverter getConverter(Class type) {
-				return getComponentConverter(type);
+			public <C> IConverter<C> getConverter(Class<C> type) {
+				return (IConverter<C>) getComponentConverter((Class<T>) type);
 			}
 		};
 		if (size > -1) {
-			textField.add(new SimpleAttributeModifier("size", ""+size));
+			textField.add(AttributeModifier.append("size", ""+size));
 		}
 		return textField;
 	}
 	
 	@Override
-	protected void addValidator(IValidator validator) {
+	protected void addValidator(IValidator<T> validator) {
 		textField.add(validator);
 	}
 	
 	@Override
-	public FormComponent getFormComponent() {
+	public FormComponent<T> getFormComponent() {
 		return textField;
 	}
 	
@@ -108,7 +108,7 @@ public class TextFieldElement extends AbstractValidationInputElement {
 		return "onchange";
 	}
 	
-	protected IConverter getComponentConverter(Class<?> type) {
+	protected IConverter<T> getComponentConverter(Class<T> type) {
 		return getApplication().getConverterLocator().getConverter(type);
 	}
 	

@@ -22,15 +22,15 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.convert.IConverter;
-import org.apache.wicket.util.convert.converters.IntegerConverter;
+import org.apache.wicket.util.convert.converter.IntegerConverter;
 
-public class IntegerFieldElement extends TextFieldElement {
+public class IntegerFieldElement extends TextFieldElement<Integer> {
 	private static final long serialVersionUID = 1L;
 	
-	private class LocalIntegerConverter implements IConverter {
+	private class LocalIntegerConverter implements IConverter<Integer> {
 		private static final long serialVersionUID = 1L;
 
-		public Object convertToObject(String value, Locale locale) {
+		public Integer convertToObject(String value, Locale locale) {
 			Integer intValue = (Integer) IntegerConverter.INSTANCE.convertToObject(value, locale);
 			
 			if (intValue == null) {
@@ -40,43 +40,39 @@ public class IntegerFieldElement extends TextFieldElement {
 			return intValue;
 		}
 
-		public String convertToString(Object value, Locale locale) {
-			if (value instanceof String) {
-				return (String) value;
-			} else {
-				return IntegerConverter.INSTANCE.convertToString(value, locale);
-			}
+		public String convertToString(Integer value, Locale locale) {
+			return IntegerConverter.INSTANCE.convertToString(value, locale);
 		}
 		
 	}
 	
 	private Integer defaultNullValue;
 	
-	public IntegerFieldElement(String label, IModel inputModel) {
+	public IntegerFieldElement(String label, IModel<Integer> inputModel) {
 		super(label, inputModel);
 	}
 	
-	public IntegerFieldElement(String label, IModel inputModel, int size) {
+	public IntegerFieldElement(String label, IModel<Integer> inputModel, int size) {
 		super(label, inputModel, size);
 	}
 	
-	public IntegerFieldElement(String label, IModel inputModel, boolean required) {
+	public IntegerFieldElement(String label, IModel<Integer> inputModel, boolean required) {
 		super(label, inputModel, required);
 	}
 	
-	public IntegerFieldElement(String label, IModel inputModel, boolean required, int size) {
+	public IntegerFieldElement(String label, IModel<Integer> inputModel, boolean required, int size) {
 		super(label, inputModel, required, size);
 	}
 
 	@Override
-	protected TextField getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
-		TextField textField = super.getNewInputComponent(wicketId, feedbackPanel);
+	protected TextField<Integer> getNewInputComponent(String wicketId, FeedbackPanel feedbackPanel) {
+		TextField<Integer> textField = super.getNewInputComponent(wicketId, feedbackPanel);
 		textField.setType(Integer.class);
 		return textField;
 	}
 	
 	@Override
-	protected IConverter getComponentConverter(Class<?> type) {
+	protected IConverter<Integer> getComponentConverter(Class<Integer> type) {
 		return new LocalIntegerConverter();
 	}
 	
