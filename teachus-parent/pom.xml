@@ -23,7 +23,7 @@
 	</modules>
 	
 	<properties>
-		<wicket.version>1.4.21</wicket.version>
+		<wicket.version>1.5.8</wicket.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<jetty.version>7.6.6.v20120903</jetty.version>
 		<jmock.version>2.5.1</jmock.version>
@@ -54,7 +54,7 @@
 			<!-- Runtime/Compile dependencies -->
 			<dependency>
 				<groupId>org.apache.wicket</groupId>
-				<artifactId>wicket</artifactId>
+				<artifactId>wicket-core</artifactId>
 				<version>${wicket.version}</version>
 			</dependency>
 			<dependency>

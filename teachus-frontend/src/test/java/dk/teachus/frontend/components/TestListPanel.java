@@ -23,11 +23,9 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColu
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.tester.TestPanelSource;
 
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.test.WicketTestCase;
@@ -38,27 +36,19 @@ public class TestListPanel extends WicketTestCase {
 	public void testRender() {
 		final TeachUsWicketTester tester = createTester();
 		
-		tester.startPanel(new TestPanelSource() {
+		List<String> data = new ArrayList<String>(); 
+		
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new AbstractColumn(new Model("Header")) {
 			private static final long serialVersionUID = 1L;
-
-			public Panel getTestPanel(String panelId) {
-				List<String> data = new ArrayList<String>(); 
-				
-				IColumn[] columns = new IColumn[] {
-					new AbstractColumn(new Model("Header")) {
-						private static final long serialVersionUID = 1L;
-
-						public void populateItem(Item cellItem, String componentId, IModel rowModel) {
-							cellItem.add(new Label(componentId, rowModel));
-						}
-					}
-				};
-				
-				return new ListPanel(panelId, columns, data);
+			
+			public void populateItem(Item cellItem, String componentId, IModel rowModel) {
+				cellItem.add(new Label(componentId, rowModel));
 			}
 		});
 		
-		
+		tester.startComponentInPage(new ListPanel("panel", columns, data));
+				
 		
 		tester.assertComponent("panel", ListPanel.class);
 		tester.assertComponent("panel:filterForm:table", DataTable.class);

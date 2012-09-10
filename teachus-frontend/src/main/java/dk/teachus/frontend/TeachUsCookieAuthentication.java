@@ -1,28 +1,29 @@
 package dk.teachus.frontend;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 
-import org.apache.wicket.RequestCycle;
+import org.apache.wicket.Page;
 import org.apache.wicket.authorization.strategies.page.AbstractPageAuthorizationStrategy;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
 import org.apache.wicket.util.string.Strings;
 
 import dk.teachus.frontend.pages.UnAuthenticatedBasePage;
 
 public class TeachUsCookieAuthentication extends AbstractPageAuthorizationStrategy {
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	protected boolean isPageAuthorized(Class pageClass) {
+	protected <T extends Page> boolean isPageAuthorized(Class<T> pageClass) {
 		if (TeachUsSession.get().isAuthenticated() == false) {
-			WebRequestCycle requestCycle = (WebRequestCycle) RequestCycle.get();
-			WebRequest request = requestCycle.getWebRequest();
+			RequestCycle requestCycle = RequestCycle.get();
+			WebRequest request = (WebRequest) requestCycle.getRequest();
 			
 			String username = null;
 			String password = null;
 			
-			Cookie[] cookies = request.getCookies();
+			List<Cookie> cookies = request.getCookies();
 
 			if (cookies != null) {
 				for (Cookie cookie : cookies) {

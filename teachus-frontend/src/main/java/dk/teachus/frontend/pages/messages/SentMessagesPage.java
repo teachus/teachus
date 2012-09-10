@@ -59,8 +59,8 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 			}
 		};
 		
-		IColumn[] columns = new IColumn[] {
-			new LinkPropertyColumn(new Model(TeachUsSession.get().getString("Messages.subject")), "subject", "subject") { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		List<IColumn> columns = new ArrayList<IColumn>();
+		columns.add(new LinkPropertyColumn(new Model(TeachUsSession.get().getString("Messages.subject")), "subject", "subject") { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				private static final long serialVersionUID = 1L;
 
 				@Override
@@ -73,11 +73,10 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 				public Component getFilter(String componentId, FilterForm form) {
 					return new TextFilter(componentId, new PropertyModel(form.getModel(), "subject"), form);
 				}
-			},
-			createRecipientColumn(messagesModel),
-			createProcessingDateColumn(messagesModel),
-			createMessageStateColumn(messagesModel)
-		};
+			});
+		columns.add(createRecipientColumn(messagesModel));
+		columns.add(createProcessingDateColumn(messagesModel));
+		columns.add(createMessageStateColumn(messagesModel));
 		
 		SentMessagesDataProvider dataProvider = new SentMessagesDataProvider(messagesModel);
 		

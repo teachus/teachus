@@ -18,11 +18,9 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
-import org.apache.wicket.behavior.HeaderContributor;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
-import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
@@ -49,13 +47,10 @@ public abstract class BasePage extends WebPage {
 	}
 
 	boolean attached = false;
+	private WebMarkupContainer ajaxLoader;
+	private Theme theme;
 	
 	public BasePage() {
-		add(HeaderContributor.forCss(JQueryCluetipBehavior.CSS_CLUETIP_JQUERY));
-		add(HeaderContributor.forCss(Resources.CSS_ANDREAS09));
-		add(HeaderContributor.forCss(Resources.CSS_SCREEN));
-		add(HeaderContributor.forCss(Resources.CSS_PRINT, "print"));
-			
 		Theme theme = getTheme();
 		
 		if (theme == null) {
@@ -73,30 +68,11 @@ public abstract class BasePage extends WebPage {
 		
 		add(new Label("copyright", "2006-"+new DateMidnight().getYear()+" TeachUs Booking Systems"));
 		
-		final WebMarkupContainer ajaxLoader = new WebMarkupContainer("ajaxLoader");
+		ajaxLoader = new WebMarkupContainer("ajaxLoader");
 		ajaxLoader.setOutputMarkupId(true);
 		add(ajaxLoader);
 		
 		ajaxLoader.add(new Image("loadingImage", Resources.DOT_INDICATOR));
-		
-		add(new HeaderContributor(new IHeaderContributor() {
-			private static final long serialVersionUID = 1L;
-
-			public void renderHead(IHeaderResponse response) {
-				StringBuilder b = new StringBuilder();
-				
-				b.append("wicketGlobalPreCallHandler = function() {").append("\n");
-				b.append("\t").append("wicketShow('"+ajaxLoader.getMarkupId()+"');").append("\n");
-				b.append("}").append("\n");
-				
-				b.append("wicketGlobalPostCallHandler = function() {").append("\n");
-				b.append("\t").append("wicketHide('"+ajaxLoader.getMarkupId()+"');").append("\n");
-				b.append("}").append("\n");
-				
-				response.renderJavascript(b, "ajaxLoadingIndicator");
-			}
-			
-		}));
 		
 		/*
 		 * Google Analytics
@@ -110,7 +86,7 @@ public abstract class BasePage extends WebPage {
 			}
 			
 			@Override
-			protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
+			public void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag) {
 				String content = markupStream.get().toCharSequence().toString();
 				
 				content = content.replace("UA-XXXXX-X", TeachUsApplication.get().getConfiguration().getConfiguration(ApplicationConfiguration.GOOGLE_ANALYTICS_WEB_PROPERTY_ID));
@@ -127,26 +103,47 @@ public abstract class BasePage extends WebPage {
 		add(new Label("newRelicTimingFooter", NewRelic.getBrowserTimingFooter()).setEscapeModelStrings(false).setRenderBodyOnly(true));
 	}
 	
-	private void setTheme(Theme theme) {
+	@Override
+	public void renderHead(IHeaderResponse response) {
+		StringBuilder b = new StringBuilder();
+		
+		b.append("wicketGlobalPreCallHandler = function() {").append("\n");
+		b.append("\t").append("wicketShow('"+ajaxLoader.getMarkupId()+"');").append("\n");
+		b.append("}").append("\n");
+		
+		b.append("wicketGlobalPostCallHandler = function() {").append("\n");
+		b.append("\t").append("wicketHide('"+ajaxLoader.getMarkupId()+"');").append("\n");
+		b.append("}").append("\n");
+		
+		response.renderJavaScript(b, "ajaxLoadingIndicator");
+		
+		response.renderCSSReference(Resources.CSS_ANDREAS09);
+		response.renderCSSReference(Resources.CSS_SCREEN);
+		response.renderCSSReference(Resources.CSS_PRINT, "print");
+		response.renderCSSReference(JQueryCluetipBehavior.CSS_CLUETIP_JQUERY);
 		switch (theme) {
 			case BLUE:
 				break;
 			case RED:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_RED));
+				response.renderCSSReference(Resources.CSS_ANDREAS09_RED);
 				break;
 			case ORANGE:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_ORANGE));
+				response.renderCSSReference(Resources.CSS_ANDREAS09_ORANGE);
 				break;
 			case BLACK:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_BLACK));
+				response.renderCSSReference(Resources.CSS_ANDREAS09_BLACK);
 				break;
 			case GREEN:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_GREEN));
+				response.renderCSSReference(Resources.CSS_ANDREAS09_GREEN);
 				break;
 			case PURPLE:
-				add(HeaderContributor.forCss(Resources.CSS_ANDREAS09_PURPLE));
+				response.renderCSSReference(Resources.CSS_ANDREAS09_PURPLE);
 				break;
 		}
+	}
+	
+	private void setTheme(Theme theme) {
+		this.theme = theme;
 	}
 
 	private void createMenu() {
@@ -159,11 +156,11 @@ public abstract class BasePage extends WebPage {
 				WebMarkupContainer menuItemContainer = new WebMarkupContainer(menuItems.newChildId());
 				menuItems.add(menuItemContainer);
 				
-				Link menuLink = new BookmarkablePageLink("menuLink", menuItem.getBookmarkablePage());
+				Link<Void> menuLink = new BookmarkablePageLink<Void>("menuLink", menuItem.getBookmarkablePage());
 				menuItemContainer.add(menuLink);
 				
 				if (menuItem.getPageCategory().equals(getPageCategory())) {
-					menuLink.add(new SimpleAttributeModifier("class", "current"));
+					menuLink.add(AttributeModifier.replace("class", "current"));
 				}
 				
 				menuLink.add(new Label("menuLabel", menuItem.getHelpText()));

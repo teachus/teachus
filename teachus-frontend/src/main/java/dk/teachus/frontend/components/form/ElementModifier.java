@@ -22,14 +22,13 @@ import org.apache.wicket.Component;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
-import org.apache.wicket.behavior.AbstractBehavior;
-import org.apache.wicket.behavior.IBehavior;
+import org.apache.wicket.behavior.Behavior;
 
-public class ElementModifier extends AbstractBehavior {
+public class ElementModifier extends Behavior {
 	private static final long serialVersionUID = 1L;
 
 	public static interface BehaviorAdder extends Serializable {
-		IBehavior createNewBehavior();
+		Behavior createNewBehavior();
 	}
 	
 	private String event;
@@ -51,7 +50,7 @@ public class ElementModifier extends AbstractBehavior {
 		validationProducer.add(new BehaviorAdder() {
 			private static final long serialVersionUID = 1L;
 
-			public IBehavior createNewBehavior() {
+			public Behavior createNewBehavior() {
 				return new AjaxFormComponentUpdatingBehavior(event) {
 					private static final long serialVersionUID = 1L;
 					
@@ -60,7 +59,7 @@ public class ElementModifier extends AbstractBehavior {
 						Component[] components = validationProducer.inputValid();
 						
 						for (Component component2 : components) {
-							target.addComponent(component2);
+							target.add(component2);
 						}
 					}		
 					
@@ -69,7 +68,7 @@ public class ElementModifier extends AbstractBehavior {
 						Component[] components = validationProducer.inputInvalid();
 						
 						for (Component component2 : components) {
-							target.addComponent(component2);
+							target.add(component2);
 						}
 					}
 				};

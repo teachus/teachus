@@ -1,5 +1,6 @@
 package dk.teachus.frontend.pages.messages;
 
+import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.model.IModel;
 
 import dk.teachus.backend.domain.Message;
@@ -25,7 +26,7 @@ public class SentMessagesDataProvider extends TeachUsFilteredSortableDataProvide
 		addComparator("state", new MessageStateComparator()); //$NON-NLS-1$
 		addComparator("subject", stringComparator); //$NON-NLS-1$
 		
-		setSort("processingDate", false); //$NON-NLS-1$
+		setSort("processingDate", SortOrder.ASCENDING); //$NON-NLS-1$
 		
 		addFilter("recipient.name", new StringFilter());
 		addFilter("state", new SameObjectFilter());

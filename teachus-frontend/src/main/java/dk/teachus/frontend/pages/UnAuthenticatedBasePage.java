@@ -24,7 +24,6 @@ import java.util.Locale;
 import javax.servlet.http.Cookie;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -40,8 +39,8 @@ import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.WebRequestCycle;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
 
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -127,14 +126,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		signInForm.add(username);
 		signInForm.add(new FormComponentLabel("usernameLabel", username).add(new Label("usernameLabel", TeachUsSession.get().getString("General.username")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		final PasswordTextField password = new PasswordTextField("password") {
-			private static final long serialVersionUID = 1L; //$NON-NLS-1$
-
-			@Override
-			protected boolean supportsPersistence() {
-				return true;
-			}
-		};
+		final PasswordTextField password = new PasswordTextField("password");
 		password.setResetPassword(false);
 		signInForm.add(password);
 		signInForm.add(new FormComponentLabel("passwordLabel", password).add(new Label("passwordLabel", TeachUsSession.get().getString("General.password")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
@@ -145,8 +137,9 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 
 			@Override
 			protected void onUpdate(AjaxRequestTarget target) {
-				username.setPersistent(user.isRemember());
-				password.setPersistent(user.isRemember());
+//				username.setPersistent(user.isRemember());
+//				password.setPersistent(user.isRemember());
+				// TODO
 			}
 		});
 		signInForm.add(remember);
@@ -155,13 +148,14 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		signInForm.add(new Button("signIn", new Model("Log ind")));
 				
 		// See if we should load from cookies
-		WebRequestCycle requestCycle = (WebRequestCycle) RequestCycle.get();
-		WebRequest request = requestCycle.getWebRequest();
+		RequestCycle requestCycle = RequestCycle.get();
+		WebRequest request = (WebRequest) requestCycle.getRequest();
 		Cookie cookie = request.getCookie(USERNAME_PATH);
 		if (cookie != null) {
 			user.setRemember(true);
-			username.setPersistent(true);
-			password.setPersistent(true);
+//			username.setPersistent(true);
+//			password.setPersistent(true);
+			// TODO
 		}
 	}
 		

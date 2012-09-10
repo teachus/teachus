@@ -25,12 +25,12 @@ import java.util.ResourceBundle;
 
 import javax.servlet.http.Cookie;
 
-import org.apache.wicket.Request;
-import org.apache.wicket.RequestCycle;
 import org.apache.wicket.Session;
-import org.apache.wicket.protocol.http.WebRequest;
-import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.protocol.http.WebSession;
+import org.apache.wicket.request.Request;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.http.WebResponse;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
@@ -124,7 +124,7 @@ public class TeachUsSession extends WebSession {
 	public void signOut() {
 		WebRequest webRequest = (WebRequest) RequestCycle.get().getRequest();
 		WebResponse webResponse = (WebResponse) RequestCycle.get().getResponse();
-		Cookie[] cookies = webRequest.getCookies();
+		List<Cookie> cookies = webRequest.getCookies();
 		
 		for (Cookie cookie : cookies) {
 			if (UnAuthenticatedBasePage.USERNAME_PATH.equals(cookie.getName())

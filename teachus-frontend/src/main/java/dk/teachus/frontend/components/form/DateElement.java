@@ -25,6 +25,7 @@ import org.apache.wicket.datetime.markup.html.form.DateTextField;
 import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
@@ -88,11 +89,10 @@ public class DateElement extends AbstractValidationInputElement {
 				return isReadOnly() == false;
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
-			protected void configure(Map widgetProperties) {
-				super.configure(widgetProperties);
-				
+			protected void configure(Map<String, Object> widgetProperties, IHeaderResponse response, Map<String, Object> initVariables) {
+				super.configure(widgetProperties, response, initVariables);
+
 				widgetProperties.put("START_WEEKDAY", Calendar.getInstance(getLocale()).getFirstDayOfWeek()-1);
 			}
 			

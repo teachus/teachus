@@ -18,13 +18,12 @@ package dk.teachus.frontend.components;
 
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.behavior.AbstractBehavior;
+import org.apache.wicket.behavior.Behavior;
 import org.apache.wicket.markup.ComponentTag;
-import org.apache.wicket.model.Model;
-import org.apache.wicket.util.string.JavascriptUtils;
+import org.apache.wicket.util.string.JavaScriptUtils;
 import org.apache.wicket.util.string.Strings;
 
-public class ConfirmClickBehavior extends AbstractBehavior {
+public class ConfirmClickBehavior extends Behavior {
 	private static final long serialVersionUID = 1L;
 	private final String confirmScript;
 
@@ -32,7 +31,7 @@ public class ConfirmClickBehavior extends AbstractBehavior {
 		if (Strings.isEmpty(confirmText) == false) {
 			StringBuilder b = new StringBuilder();
 			b.append("return confirm('");
-			b.append(JavascriptUtils.escapeQuotes(confirmText));
+			b.append(JavaScriptUtils.escapeQuotes(confirmText));
 			b.append("');");
 			
 			this.confirmScript = b.toString();
@@ -43,7 +42,7 @@ public class ConfirmClickBehavior extends AbstractBehavior {
 
 	@Override
 	public void onComponentTag(Component component, ComponentTag tag) {
-		tag.addBehavior(new AttributeModifier("onclick", true, new Model(confirmScript)));
+		tag.addBehavior(AttributeModifier.replace("onclick", confirmScript));
 	}
 	
 	@Override

@@ -17,12 +17,11 @@
 package dk.teachus.frontend.pages;
 
 import org.apache.wicket.Application;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.request.target.component.BookmarkablePageRequestTarget;
 
 import dk.teachus.frontend.TeachUsSession;
 
@@ -33,13 +32,13 @@ public class SignedOutPage extends SystemBasePage {
 		WebComponent refresh = new WebComponent("refresh"); //$NON-NLS-1$
 		StringBuilder content = new StringBuilder();
 		content.append("1; url="); //$NON-NLS-1$
-		content.append(getRequestCycle().urlFor(new BookmarkablePageRequestTarget(Application.get().getHomePage())));
-		refresh.add(new SimpleAttributeModifier("content", content)); //$NON-NLS-1$
+		content.append(getRequestCycle().urlFor(Application.get().getHomePage(), null));
+		refresh.add(AttributeModifier.replace("content", content)); //$NON-NLS-1$
 		add(refresh);
 		
 		add(new Label("signedOutText", TeachUsSession.get().getString("SignedOutPage.youAreNowLoggedOutOfTheSystem"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
-		Link homePageLink= new BookmarkablePageLink("homePageLink", Application.get().getHomePage()); //$NON-NLS-1$
+		Link<Void> homePageLink= new BookmarkablePageLink<Void>("homePageLink", Application.get().getHomePage()); //$NON-NLS-1$
 		add(homePageLink);
 		homePageLink.add(new Label("homePageLabel", TeachUsSession.get().getString("SignedOutPage.clickToGoToFrontPage"))); //$NON-NLS-1$ //$NON-NLS-2$
 	}

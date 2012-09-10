@@ -42,17 +42,17 @@ import dk.teachus.frontend.TeachUsSession;
 public class ListPanel extends Panel {
 	private static final long serialVersionUID = 1L;
 
-	public ListPanel(String id, IColumn[] columns, ISortableDataProvider dataProvider) {
+	public ListPanel(String id, List<IColumn> columns, ISortableDataProvider dataProvider) {
 		this(id, columns, dataProvider, null);
 	}
 	
-	public ListPanel(String id, IColumn[] columns, ISortableDataProvider dataProvider, TeachUsFilter filterStateLocator) {
+	public ListPanel(String id, List<IColumn> columns, ISortableDataProvider dataProvider, TeachUsFilter filterStateLocator) {
 		super(id);
 		
 		createList(columns, dataProvider, filterStateLocator);
 	}
 	
-	public ListPanel(String id, IColumn[] columns, List<?> data) {
+	public ListPanel(String id, List<IColumn> columns, List<?> data) {
 		super(id);
 		
 		final IDataProvider listDataProvider = new ListDataProvider(data);
@@ -76,7 +76,7 @@ public class ListPanel extends Panel {
 		createList(columns, dataProvider, null);
 	}
 
-	private void createList(IColumn[] columns, ISortableDataProvider dataProvider, final TeachUsFilter filterStateLocator) {
+	private void createList(List<IColumn> columns, ISortableDataProvider dataProvider, final TeachUsFilter filterStateLocator) {
 		FilterForm form = null;
 		MarkupContainer parent = null;
 		if (filterStateLocator != null) {
@@ -92,15 +92,13 @@ public class ListPanel extends Panel {
 		} else {
 			parent = new WebMarkupContainer("filterForm");
 			parent.setRenderBodyOnly(true);
-			parent.add(new WebComponent("focus-tracker").setVisible(false));
-			parent.add(new WebComponent("focus-restore").setVisible(false));
 		}
 		add(parent);
 		
 		parent.add(createDataTable(columns, dataProvider, form, filterStateLocator));
 	}
 
-	private DataTable createDataTable(IColumn[] columns, ISortableDataProvider dataProvider, FilterForm form, TeachUsFilter filterStateLocator) {
+	private DataTable createDataTable(List<IColumn> columns, ISortableDataProvider dataProvider, FilterForm form, TeachUsFilter filterStateLocator) {
 		DataTable dataTable = new DataTable("table", columns, dataProvider, 40);
 
 		if (form != null && filterStateLocator != null) {
@@ -126,8 +124,8 @@ public class ListPanel extends Panel {
 					@Override
 					public Object getObject() {
 						int of = table.getRowCount();
-						int from = table.getCurrentPage() * table.getRowsPerPage();
-						int to = Math.min(of, from + table.getRowsPerPage());
+						int from = table.getCurrentPage() * table.getItemsPerPage();
+						int to = Math.min(of, from + table.getItemsPerPage());
 
 						from++;
 

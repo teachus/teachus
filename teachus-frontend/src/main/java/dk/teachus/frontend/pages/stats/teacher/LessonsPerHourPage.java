@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
@@ -31,7 +30,7 @@ import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.string.Strings;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
@@ -47,12 +46,7 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 	private static final long serialVersionUID = 1L;
 	
 	public LessonsPerHourPage(PageParameters pageParameters) {
-		int year = 0;
-		if (Strings.isEmpty(pageParameters.getString("0"))) { //$NON-NLS-1$
-			year = new DateMidnight().getYear(); 
-		} else {
-			year = pageParameters.getInt("0"); //$NON-NLS-1$
-		}
+		int year = pageParameters.get(0).toInt(new DateMidnight().getYear());
 		
 		BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();		
 		

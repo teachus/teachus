@@ -17,14 +17,14 @@
 package dk.teachus.frontend.components;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.RequestCycle;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.resource.ResourceReference;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
@@ -78,7 +78,7 @@ public class PaidPanel extends Panel {
 				icon = Resources.UNPAID;
 			}
 			
-			return RequestCycle.get().urlFor(icon);
+			return RequestCycle.get().urlFor(icon, null);
 		}		
 	}
 }
