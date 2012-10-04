@@ -17,9 +17,9 @@
 	</licenses>
 
 	<modules>
-		<module>../teachus-backend</module>
-		<module>../teachus-frontend</module>
-		<module>../teachus-test</module>
+		<module>teachus-backend</module>
+		<module>teachus-frontend</module>
+		<module>teachus-test</module>
 	</modules>
 	
 	<properties>

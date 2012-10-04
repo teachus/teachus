@@ -7,7 +7,7 @@
 		<groupId>dk.teachus</groupId>
 		<artifactId>teachus-parent</artifactId>
 		<version>1.61-SNAPSHOT</version>
-		<relativePath>../teachus-parent/pom.xml</relativePath>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
 	<artifactId>teachus-test</artifactId>
