@@ -1,5 +1,5 @@
 language: java
-script: mvn -f teachus-parent/pom.xml test
+script: mvn test
 jdk:
   - openjdk6
 before_script:
