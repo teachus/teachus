@@ -19,7 +19,6 @@ package dk.teachus.frontend.components;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.behavior.Behavior;
-import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.util.string.JavaScriptUtils;
 import org.apache.wicket.util.string.Strings;
 
@@ -39,10 +38,10 @@ public class ConfirmClickBehavior extends Behavior {
 			this.confirmScript = null;
 		}
 	}
-
+	
 	@Override
-	public void onComponentTag(Component component, ComponentTag tag) {
-		tag.addBehavior(AttributeModifier.replace("onclick", confirmScript));
+	public void bind(Component component) {
+		component.add(AttributeModifier.replace("onclick", confirmScript));
 	}
 	
 	@Override
