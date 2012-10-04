@@ -27,7 +27,7 @@ public class PeriodsDataProvider extends TeachUsSortableDataProvider<Period> {
 		addComparator("weekDays", new WeekDayComparator());
 		addComparator("price", new DoubleComparator());
 		
-		setSort("weekDays", SortOrder.DESCENDING);
+		setSort("weekDays", SortOrder.ASCENDING);
 	}
 	
 }

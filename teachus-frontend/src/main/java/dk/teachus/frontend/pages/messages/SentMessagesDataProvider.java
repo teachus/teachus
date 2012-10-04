@@ -28,7 +28,7 @@ public class SentMessagesDataProvider extends TeachUsFilteredSortableDataProvide
 		addComparator("state", new MessageStateComparator()); //$NON-NLS-1$
 		addComparator("subject", stringComparator); //$NON-NLS-1$
 		
-		setSort("processingDate", SortOrder.ASCENDING); //$NON-NLS-1$
+		setSort("processingDate", SortOrder.DESCENDING); //$NON-NLS-1$
 		
 		addFilter("recipient.name", new StringFilter());
 		addFilter("state", new SameObjectFilter());

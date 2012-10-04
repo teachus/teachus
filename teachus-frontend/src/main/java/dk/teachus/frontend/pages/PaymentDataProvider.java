@@ -19,7 +19,7 @@ public class PaymentDataProvider extends TeachUsSortableDataProvider<PupilBookin
 		addComparator("date", new DateTimeComparator());
 		addComparator("period.price", new DoubleComparator());
 		
-		setSort("date", SortOrder.DESCENDING);
+		setSort("date", SortOrder.ASCENDING);
 	}
 	
 }

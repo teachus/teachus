@@ -21,7 +21,7 @@ public class PersonsDataProvider extends TeachUsFilteredSortableDataProvider<Per
 		addComparator("email", stringComparator);
 		addComparator("phoneNumber", stringComparator);
 		
-		setSort("name", SortOrder.DESCENDING);
+		setSort("name", SortOrder.ASCENDING);
 		
 		StringFilter stringFilter = new StringFilter();
 		addFilter("name", stringFilter);

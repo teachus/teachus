@@ -57,7 +57,7 @@ public class InvalidBookingsPage extends AbstractSettingsPage {
 			addComparator("date", new DateTimeComparator());
 			addComparator("class", new BookingTypeComparator());
 
-			setSort("date", SortOrder.DESCENDING);
+			setSort("date", SortOrder.ASCENDING);
 		}		
 	}
 	

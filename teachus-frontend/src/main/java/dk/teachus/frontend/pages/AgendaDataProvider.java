@@ -20,7 +20,7 @@ public class AgendaDataProvider extends TeachUsSortableDataProvider<PupilBooking
 		addComparator("pupil.phoneNumber", new StringComparator());
 		addComparator("period.price", new DoubleComparator());
 		
-		setSort("date", SortOrder.DESCENDING);
+		setSort("date", SortOrder.ASCENDING);
 	}
 	
 }
