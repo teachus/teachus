@@ -72,7 +72,7 @@ public abstract class DynamicDataImport {
 		MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
 		ds.setUrl("jdbc:mysql://localhost/teachus");
 		ds.setUser("root");
-		ds.setPassword("root");
+		ds.setPassword("");
 		
 		SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
 		contextBuilder.bind("java:comp/env/jdbc/teachus", ds);
@@ -438,12 +438,17 @@ public abstract class DynamicDataImport {
 	private static void deleteExistingData(SessionFactory sessionFactory) {
 		executeSql(sessionFactory, "UPDATE person SET teacher_id = NULL");
 
-		executeSql(sessionFactory, "TRUNCATE application_configuration");
-		executeSql(sessionFactory, "TRUNCATE booking");
-		executeSql(sessionFactory, "TRUNCATE period");
-		executeSql(sessionFactory, "TRUNCATE teacher_attribute");
-		executeSql(sessionFactory, "TRUNCATE message");
-		executeSql(sessionFactory, "TRUNCATE person");
+		executeSql(sessionFactory, "DELETE FROM application_configuration");
+		executeSql(sessionFactory, "DELETE FROM booking");
+		executeSql(sessionFactory, "ALTER TABLE booking AUTO_INCREMENT = 1");
+		executeSql(sessionFactory, "DELETE FROM period");
+		executeSql(sessionFactory, "ALTER TABLE period AUTO_INCREMENT = 1");
+		executeSql(sessionFactory, "DELETE FROM teacher_attribute");
+		executeSql(sessionFactory, "ALTER TABLE teacher_attribute AUTO_INCREMENT = 1");
+		executeSql(sessionFactory, "DELETE FROM message");
+		executeSql(sessionFactory, "ALTER TABLE message AUTO_INCREMENT = 1");
+		executeSql(sessionFactory, "DELETE FROM person");
+		executeSql(sessionFactory, "ALTER TABLE person AUTO_INCREMENT = 1");
 	}
 	
 	private static void executeSql(SessionFactory sessionFactory, String sql) {
