@@ -24,9 +24,6 @@ import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.repeater.RepeatingView;
 
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.fancybox.FancyBox;
-import dk.teachus.frontend.components.fancybox.FancyBox.ImageResource;
-import dk.teachus.frontend.utils.Resources;
 
 public class InfoPage extends UnAuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
@@ -35,8 +32,6 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		add(new MultiLineLabel("intro1", TeachUsSession.get().getString("InfoPage.intro1"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		createFeatures();
-		
-		createScreenShots();
 		
 		createOpenSourceDescription();
 	}
@@ -57,25 +52,6 @@ public class InfoPage extends UnAuthenticatedBasePage {
 		}
 		
 		add(new Label("sourceCode", TeachUsSession.get().getString("InfoPage.sourceCode"))); //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	private void createScreenShots() {
-		add(new Label("screenshotsHeader", TeachUsSession.get().getString("InfoPage.screenshots"))); //$NON-NLS-1$ //$NON-NLS-2$
-
-		List<ImageResource> images = new ArrayList<ImageResource>();
-		
-		images.add(new ImageResource(Resources.SCREENSHOT_11, Resources.SCREENSHOT_11_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle1"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_2, Resources.SCREENSHOT_2_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle2"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_13, Resources.SCREENSHOT_13_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle3"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_4, Resources.SCREENSHOT_4_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle4"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_10, Resources.SCREENSHOT_10_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle5"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_14, Resources.SCREENSHOT_14_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle6"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_12, Resources.SCREENSHOT_12_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle7"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_7, Resources.SCREENSHOT_7_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle8"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_8, Resources.SCREENSHOT_8_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle9"))); //$NON-NLS-1$
-		images.add(new ImageResource(Resources.SCREENSHOT_9, Resources.SCREENSHOT_9_THUMB, TeachUsSession.get().getString("InfoPage.screenshotTitle10"))); //$NON-NLS-1$
-		
-		add(new FancyBox("screenshots", images)); //$NON-NLS-1$
 	}
 
 	private void createFeatures() {

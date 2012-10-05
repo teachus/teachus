@@ -60,7 +60,6 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.calendar.CalendarPanel;
-import dk.teachus.frontend.components.fancybox.JQueryFancyboxBehavior;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
@@ -229,27 +228,6 @@ public class TeachUsApplication extends WebApplication {
 		mountResource("/images/asc.png", Resources.ASC); //$NON-NLS-1$
 		mountResource("/images/desc.png", Resources.DESC); //$NON-NLS-1$
 		
-		mountResource("/images/fancybox/fancybox.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCYBOX_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/blank.gif", JQueryFancyboxBehavior.IMG_FANCYBOX_BLANK_GIF); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancybox-x.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCYBOX_X_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancybox-y.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCYBOX_Y_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-title-main.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_MAIN_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-title-over.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_OVER_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-title-left.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_LEFT_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-title-right.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_TITLE_RIGHT_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-close.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_CLOSE_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-loading.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_LOADING_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-nav-left.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_NAV_LEFT_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-nav-right.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_NAV_RIGHT_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-e.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_E_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-n.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_N_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-ne.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_NE_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-nw.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_NW_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-s.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_S_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-se.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SE_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-sw.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_SW_PNG); //$NON-NLS-1$
-		mountResource("/images/fancybox/fancy-shadow-w.png", JQueryFancyboxBehavior.IMG_FANCYBOX_FANCY_SHADOW_W_PNG); //$NON-NLS-1$
-		
 		mountResource("/images/cluetip/arrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWDOWN_GIF); //$NON-NLS-1$
 		mountResource("/images/cluetip/arrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWLEFT_GIF); //$NON-NLS-1$
 		mountResource("/images/cluetip/arrowright.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWRIGHT_GIF); //$NON-NLS-1$
@@ -274,7 +252,6 @@ public class TeachUsApplication extends WebApplication {
 		mountResource("/js/wicket-event.js", WicketEventReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
 		mountResource("/js/jquery.js", JQueryBehavior.JS_JQUERY); //$NON-NLS-1$
 		mountResource("/js/jquery-cluetip.js", JQueryCluetipBehavior.JS_CLUETIP_JQUERY); //$NON-NLS-1$
-		mountResource("/js/fancybox.js", JQueryFancyboxBehavior.JS_FANCYBOX); //$NON-NLS-1$
 		mountResource("/js/calendar.js", CalendarPanel.JS_CALENDAR); //$NON-NLS-1$
 	}
 
