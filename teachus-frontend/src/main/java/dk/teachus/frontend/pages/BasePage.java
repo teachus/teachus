@@ -29,6 +29,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.joda.time.DateMidnight;
 
 import com.newrelic.api.agent.NewRelic;
@@ -100,7 +101,14 @@ public abstract class BasePage extends WebPage {
 		 * New Relic
 		 */
 		add(new Label("newRelicTimingHeader", NewRelic.getBrowserTimingHeader()).setEscapeModelStrings(false).setRenderBodyOnly(true));
-		add(new Label("newRelicTimingFooter", NewRelic.getBrowserTimingFooter()).setEscapeModelStrings(false).setRenderBodyOnly(true));
+		add(new Label("newRelicTimingFooter", new AbstractReadOnlyModel<String>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public String getObject() {
+				return NewRelic.getBrowserTimingFooter();
+			}
+		}).setEscapeModelStrings(false).setRenderBodyOnly(true));
 	}
 	
 	@Override
