@@ -27,7 +27,6 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.apache.wicket.request.resource.ResourceReference;
 
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.TeachUsSession;
@@ -37,7 +36,7 @@ import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.FunctionsColumn;
-import dk.teachus.frontend.components.list.ImageFunctionItem;
+import dk.teachus.frontend.components.list.LabelFunctionItem;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
@@ -143,33 +142,11 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 		return null;
 	}
 	
-	public abstract class PersonFunctionItem extends ImageFunctionItem {
+	public abstract class PersonFunctionItem extends LabelFunctionItem<P> {
 		private static final long serialVersionUID = 1L;
 
-		public PersonFunctionItem(ResourceReference imageReference) {
-			super(imageReference);
-		}
-
-		public PersonFunctionItem(ResourceReference imageReference, String title) {
-			super(imageReference, title);
-		}
-
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
-		@Override
-		public final void onEvent(Object object) {
-			onEvent((P) object);
-		}
-		
-		@SuppressWarnings("unchecked") //$NON-NLS-1$
-		@Override
-		public final String getClickConfirmText(Object object) {
-			return getClickConfirmText((P) object);
-		}
-		
-		public abstract void onEvent(P person);
-		
-		public String getClickConfirmText(P person) {
-			return null;
+		public PersonFunctionItem(String title) {
+			super(title);
 		}
 	}
 }

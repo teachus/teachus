@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
-import org.apache.wicket.Component;
 import org.apache.wicket.Page;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -28,6 +27,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class Toolbar extends Panel {
@@ -61,14 +61,18 @@ public class Toolbar extends Panel {
 				throw new IllegalArgumentException("Toolbar item not supported: "+item.getClass().getName());
 			}
 			
-			link.add(new AttributeModifier("class", "current") {
+			link.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() {
 				private static final long serialVersionUID = 1L;
-				
+
 				@Override
-				public boolean isEnabled(Component component) {
-					return item.isCurrent(Toolbar.this.getPage());
+				public String getObject() {
+					if (item.isCurrent(Toolbar.this.getPage())) {
+						return "btn-primary disabled";
+					}
+					
+					return null;
 				}
-			});
+			}));
 			itemContainer.add(link);
 			link.add(new Label("label", item.getLabel()).setRenderBodyOnly(true)); //$NON-NLS-1$
 		}

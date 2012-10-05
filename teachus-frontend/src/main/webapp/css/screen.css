@@ -1,0 +1,176 @@
+/*
+ * ****************************************************************************
+ *     CALENDAR v. 2
+ * ****************************************************************************
+ */
+.calendarnavigation {
+	text-align: right;
+	padding: 10px;
+}
+
+.headertable {
+	padding-right: 16px;
+	background: #0f8fba url(../images/list_header_back.png) repeat-x 50% 50%;
+}
+
+.headertable table {
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 0;
+}
+
+.headertable th {
+	text-align: center;
+	padding: 0;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background: #0f8fba url(../images/list_header_back.png) repeat-x 50% 50%;
+	color: white;
+}
+
+.bodytable {
+	height: 375px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.bodytable table {
+	width: 100%;
+	table-layout: fixed;
+	border-spacing: 0;
+	border-bottom: 1px solid #999;
+}
+
+.bodytable td {
+	padding: 0;
+}
+
+.timecol {
+	width: 62px;
+	background-color: #72C6E2;
+	font-size: 10px;
+	color: #333;
+}
+
+.timelabel {
+	border-top: 1px solid #72C6E2;
+	height: 24px;
+	text-align: right;
+}
+
+.timelabel span {
+	display: block;
+	padding-top: 2px;
+	padding-right: 2px;
+}
+
+.timehour {
+	border-top: 1px solid #999;
+}
+
+.timehour:first-child {
+	border: 0;
+}
+
+.dayv2 {
+	border-right: 1px solid #CCC;
+}
+
+.dayv2:last-child {
+	border-right: 0;
+}
+
+.daytime {
+	z-index: 5;
+	border-top: 1px dotted #CCC;
+	height: 24px;
+}
+
+.daytimehour {
+	border-top: 1px solid #CCC;
+}
+
+.daytime:nth-child(2) {
+	border: 0;
+}
+
+.daytimelessons {
+	position: relative;
+}
+
+.daytimelesson {
+	z-index: 10;
+	width: 100%;
+	position: absolute;
+}
+
+.daytimelesson .daytimelessoncontent {
+	margin-left: 3px;
+	margin-right: 3px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border: 1px solid #09C413;
+	background-color: #CBFFCD;
+	height: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	opacity: 0.7;
+}
+
+.daytimelesson .daytimelessoncontent:hover {
+	background-color: #A7E4AA;
+	color: black;
+	opacity: 0.9;
+}
+
+.daytimelesson .daytimelessoncontent .daytimelessoncontentinner {
+	padding: 2px;
+	padding-left: 7px;
+	font-size: 9px;
+}
+
+.pupilBooked .daytimelessoncontent {
+	border: 1px solid #090FC4;
+	background-color: #CBCBFF;
+}
+
+.pupilBooked .daytimelessoncontent:hover {
+	background-color: #A7A7E4;
+}
+
+.bookingLink .daytimelessoncontent:hover {
+	cursor: pointer;
+}
+
+.booked .daytimelessoncontent {
+	border: 1px solid #C40909;
+	background-color: #FFCBCB;
+}
+
+.booked .daytimelessoncontent:hover {
+	background-color: #E4A7A7;
+}
+
+.cluetip-calendar {
+	border-radius: 1px;
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	border: 1px solid #CCC;
+	background-color: #FFF;
+	text-align: left;
+}
+
+.clue-left-calendar .cluetip-arrows {
+  background-image: url(../images/cluetip/arrowright.gif);
+  left: 100%;
+  margin-right: -11px;
+}
+
+.clue-right-calendar .cluetip-arrows {
+  background-image: url(../images/cluetip/arrowleft.gif);
+}
+
+.cluetip-calendar .dayTimeLessonDetails {
+	font-size: 10px;
+}

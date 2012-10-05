@@ -37,14 +37,13 @@ import dk.teachus.frontend.components.Toolbar.ToolbarItem;
 import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.components.list.FunctionsColumn;
-import dk.teachus.frontend.components.list.ImageFunctionItem;
+import dk.teachus.frontend.components.list.LabelFunctionItem;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.CurrencyChoiceRenderer;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
-import dk.teachus.frontend.utils.Resources;
 import dk.teachus.frontend.utils.TimeChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer;
 import dk.teachus.frontend.utils.WeekDayChoiceRenderer.Format;
@@ -78,7 +77,7 @@ public class PeriodsPage extends AuthenticatedBasePage {
 		final WeekDayChoiceRenderer weekDayChoiceRenderer = new WeekDayChoiceRenderer(Format.SHORT);
 		
 		List<FunctionItem<Period>> functions = new ArrayList<FunctionItem<Period>>();
-		functions.add(new ImageFunctionItem<Period>(Resources.ICON_DELETE, TeachUsSession.get().getString("General.delete")) {
+		functions.add(new LabelFunctionItem<Period>(TeachUsSession.get().getString("General.delete")) {
 			private static final long serialVersionUID = 1L;
 
 			@Override

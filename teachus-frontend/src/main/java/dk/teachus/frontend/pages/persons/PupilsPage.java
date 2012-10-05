@@ -31,7 +31,6 @@ import dk.teachus.frontend.components.list.FunctionItem;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.messages.SendNewPasswordPage;
-import dk.teachus.frontend.utils.Resources;
 
 public class PupilsPage extends PersonsPage<Pupil> {
 	private static final long serialVersionUID = 1L;
@@ -86,7 +85,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	protected List<FunctionItem> getFunctions() {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 
-		functions.add(new PersonFunctionItem(Resources.ICON_CALENDAR, TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
+		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -95,7 +94,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			}
 		});
 		
-		functions.add(new PersonFunctionItem(Resources.ICON_EMAIL_NEW_PASSWORD, TeachUsSession.get().getString("PupilsPage.sendWelcomeMail")) { //$NON-NLS-1$
+		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("PupilsPage.sendWelcomeMail")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -104,7 +103,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 			}
 		});
 		
-		functions.add(new PersonFunctionItem(Resources.ICON_DELETE, TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
+		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override

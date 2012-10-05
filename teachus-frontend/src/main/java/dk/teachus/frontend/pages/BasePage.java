@@ -25,7 +25,6 @@ import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.repeater.RepeatingView;
@@ -39,7 +38,6 @@ import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
-import dk.teachus.frontend.utils.Resources;
 
 public abstract class BasePage extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -72,8 +70,6 @@ public abstract class BasePage extends WebPage {
 		ajaxLoader = new WebMarkupContainer("ajaxLoader");
 		ajaxLoader.setOutputMarkupId(true);
 		add(ajaxLoader);
-		
-		ajaxLoader.add(new Image("loadingImage", Resources.DOT_INDICATOR));
 		
 		/*
 		 * Google Analytics
@@ -125,29 +121,7 @@ public abstract class BasePage extends WebPage {
 		
 		response.renderJavaScript(b, "ajaxLoadingIndicator");
 		
-		response.renderCSSReference(Resources.CSS_ANDREAS09);
-		response.renderCSSReference(Resources.CSS_SCREEN);
-		response.renderCSSReference(Resources.CSS_PRINT, "print");
 		response.renderCSSReference(JQueryCluetipBehavior.CSS_CLUETIP_JQUERY);
-		switch (theme) {
-			case BLUE:
-				break;
-			case RED:
-				response.renderCSSReference(Resources.CSS_ANDREAS09_RED);
-				break;
-			case ORANGE:
-				response.renderCSSReference(Resources.CSS_ANDREAS09_ORANGE);
-				break;
-			case BLACK:
-				response.renderCSSReference(Resources.CSS_ANDREAS09_BLACK);
-				break;
-			case GREEN:
-				response.renderCSSReference(Resources.CSS_ANDREAS09_GREEN);
-				break;
-			case PURPLE:
-				response.renderCSSReference(Resources.CSS_ANDREAS09_PURPLE);
-				break;
-		}
 	}
 	
 	private void setTheme(Theme theme) {
@@ -168,7 +142,7 @@ public abstract class BasePage extends WebPage {
 				menuItemContainer.add(menuLink);
 				
 				if (menuItem.getPageCategory().equals(getPageCategory())) {
-					menuLink.add(AttributeModifier.replace("class", "current"));
+					menuItemContainer.add(AttributeModifier.replace("class", "active"));
 				}
 				
 				menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
@@ -181,8 +155,6 @@ public abstract class BasePage extends WebPage {
 		super.onBeforeRender();
 		
 		if (attached == false) {
-			add(new Label("pageLabel", getPageLabel())); //$NON-NLS-1$
-
 			NewRelic.setTransactionName(null, getPagePath());
 
 			attached = true;

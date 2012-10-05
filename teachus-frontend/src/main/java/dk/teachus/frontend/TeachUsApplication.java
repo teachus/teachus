@@ -59,7 +59,6 @@ import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
-import dk.teachus.frontend.components.calendar.CalendarPanel;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
@@ -89,7 +88,6 @@ import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
 import dk.teachus.frontend.pages.stats.teacher.LessonsPerHourPage;
-import dk.teachus.frontend.utils.Resources;
 
 public class TeachUsApplication extends WebApplication {
 	
@@ -156,77 +154,8 @@ public class TeachUsApplication extends WebApplication {
 		mountPage("/ical", IcalPage.class); //$NON-NLS-1$
 	}
 
-	private void mountResources() {		
-		mountResource("/images/screenshots/2.jpg", Resources.SCREENSHOT_2); //$NON-NLS-1$
-		mountResource("/images/screenshots/2_thumb.jpg", Resources.SCREENSHOT_2_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/4.jpg", Resources.SCREENSHOT_4); //$NON-NLS-1$
-		mountResource("/images/screenshots/4_thumb.jpg", Resources.SCREENSHOT_4_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/7.jpg", Resources.SCREENSHOT_7); //$NON-NLS-1$
-		mountResource("/images/screenshots/7_thumb.jpg", Resources.SCREENSHOT_7_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/8.jpg", Resources.SCREENSHOT_8); //$NON-NLS-1$
-		mountResource("/images/screenshots/8_thumb.jpg", Resources.SCREENSHOT_8_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/9.jpg", Resources.SCREENSHOT_9); //$NON-NLS-1$
-		mountResource("/images/screenshots/9_thumb.jpg", Resources.SCREENSHOT_9_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/10.jpg", Resources.SCREENSHOT_10); //$NON-NLS-1$
-		mountResource("/images/screenshots/10_thumb.jpg", Resources.SCREENSHOT_10_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/11.jpg", Resources.SCREENSHOT_11); //$NON-NLS-1$
-		mountResource("/images/screenshots/11_thumb.jpg", Resources.SCREENSHOT_11_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/12.jpg", Resources.SCREENSHOT_12); //$NON-NLS-1$
-		mountResource("/images/screenshots/12_thumb.jpg", Resources.SCREENSHOT_12_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/13.jpg", Resources.SCREENSHOT_13); //$NON-NLS-1$
-		mountResource("/images/screenshots/13_thumb.jpg", Resources.SCREENSHOT_13_THUMB); //$NON-NLS-1$
-		mountResource("/images/screenshots/14.jpg", Resources.SCREENSHOT_14); //$NON-NLS-1$
-		mountResource("/images/screenshots/14_thumb.jpg", Resources.SCREENSHOT_14_THUMB); //$NON-NLS-1$
-		
-		mountResource("/images/available.png", Resources.AVAILABLE); //$NON-NLS-1$
-		mountResource("/images/available_hover.png", Resources.AVAILABLE_HOVER); //$NON-NLS-1$
-		mountResource("/images/booked.png", Resources.BOOKED); //$NON-NLS-1$
-		mountResource("/images/booked_hover.png", Resources.BOOKED_HOVER); //$NON-NLS-1$
-		mountResource("/images/left.png", Resources.LEFT); //$NON-NLS-1$
-		mountResource("/images/right.png", Resources.RIGHT); //$NON-NLS-1$
-		mountResource("/images/occupied.png", Resources.OCCUPIED); //$NON-NLS-1$
-		mountResource("/images/paid.png", Resources.PAID); //$NON-NLS-1$
-		mountResource("/images/unpaid.png", Resources.UNPAID); //$NON-NLS-1$
-		mountResource("/images/toolbar.png", Resources.TOOLBAR); //$NON-NLS-1$
-		mountResource("/images/list_header_back.png", Resources.LIST_HEADER); //$NON-NLS-1$
-		mountResource("/images/empty.gif", Resources.EMPTY); //$NON-NLS-1$
-		mountResource("/images/calendar.png", Resources.ICON_CALENDAR); //$NON-NLS-1$
-		mountResource("/images/email_new_password.png", Resources.ICON_EMAIL_NEW_PASSWORD); //$NON-NLS-1$
-		mountResource("/images/delete.png", Resources.ICON_DELETE); //$NON-NLS-1$
-		mountResource("/images/username.png", Resources.ICON_USERNAME); //$NON-NLS-1$
-		mountResource("/images/password.png", Resources.ICON_PASSWORD); //$NON-NLS-1$
-		
-		mountResource("/images/bodybg.jpg", Resources.ANDREAS09_BODYBG); //$NON-NLS-1$
-		mountResource("/images/footerbg.jpg", Resources.ANDREAS09_FOOTERBG); //$NON-NLS-1$
-		mountResource("/images/menuhover.jpg", Resources.ANDREAS09_MENUHOVER); //$NON-NLS-1$
-		
-		mountResource("/images/bodybg-red.jpg", Resources.ANDREAS09_BODYBG_RED); //$NON-NLS-1$
-		mountResource("/images/menuhover-red.jpg", Resources.ANDREAS09_MENUHOVER_RED); //$NON-NLS-1$
-		mountResource("/images/bodybg-black.jpg", Resources.ANDREAS09_BODYBG_BLACK); //$NON-NLS-1$
-		mountResource("/images/menuhover-black.jpg", Resources.ANDREAS09_MENUHOVER_BLACK); //$NON-NLS-1$
-		mountResource("/images/bodybg-green.jpg", Resources.ANDREAS09_BODYBG_GREEN); //$NON-NLS-1$
-		mountResource("/images/menuhover-green.jpg", Resources.ANDREAS09_MENUHOVER_GREEN); //$NON-NLS-1$
-		mountResource("/images/bodybg-orange.jpg", Resources.ANDREAS09_BODYBG_ORANGE); //$NON-NLS-1$
-		mountResource("/images/menuhover-orange.jpg", Resources.ANDREAS09_MENUHOVER_ORANGE); //$NON-NLS-1$
-		mountResource("/images/bodybg-purple.jpg", Resources.ANDREAS09_BODYBG_PURPLE); //$NON-NLS-1$
-		mountResource("/images/menuhover-purple.jpg", Resources.ANDREAS09_MENUHOVER_PURPLE); //$NON-NLS-1$
-		
-		mountResource("/images/list_header_back_red.png", Resources.LIST_HEADER_RED); //$NON-NLS-1$
-		mountResource("/images/toolbar_red.png", Resources.TOOLBAR_RED); //$NON-NLS-1$
-		mountResource("/images/list_header_back_orange.png", Resources.LIST_HEADER_ORANGE); //$NON-NLS-1$
-		mountResource("/images/toolbar_orange.png", Resources.TOOLBAR_ORANGE); //$NON-NLS-1$
-		mountResource("/images/list_header_back_black.png", Resources.LIST_HEADER_BLACK); //$NON-NLS-1$
-		mountResource("/images/toolbar_black.png", Resources.TOOLBAR_BLACK); //$NON-NLS-1$
-		mountResource("/images/list_header_back_green.png", Resources.LIST_HEADER_GREEN); //$NON-NLS-1$
-		mountResource("/images/toolbar_green.png", Resources.TOOLBAR_GREEN); //$NON-NLS-1$
-		mountResource("/images/list_header_back_purple.png", Resources.LIST_HEADER_PURPLE); //$NON-NLS-1$
-		mountResource("/images/toolbar_purple.png", Resources.TOOLBAR_PURPLE); //$NON-NLS-1$
-		
+	private void mountResources() {
 		mountResource("/images/loading.gif", JFreeChartImage.LOADING_INDICATOR); //$NON-NLS-1$
-		mountResource("/images/loading_dots.gif", Resources.DOT_INDICATOR); //$NON-NLS-1$
-		
-		mountResource("/images/asc.png", Resources.ASC); //$NON-NLS-1$
-		mountResource("/images/desc.png", Resources.DESC); //$NON-NLS-1$
 		
 		mountResource("/images/cluetip/arrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWDOWN_GIF); //$NON-NLS-1$
 		mountResource("/images/cluetip/arrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWLEFT_GIF); //$NON-NLS-1$
@@ -238,21 +167,12 @@ public class TeachUsApplication extends WebApplication {
 		mountResource("/images/cluetip/darrowup.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWUP_GIF); //$NON-NLS-1$
 		mountResource("/images/cluetip/wait.gif", JQueryCluetipBehavior.IMG_CLUETIP_WAIT_GIF); //$NON-NLS-1$
 		
-		mountResource("/css/andreas09.css", Resources.CSS_ANDREAS09); //$NON-NLS-1$
-		mountResource("/css/andreas09_black.css", Resources.CSS_ANDREAS09_BLACK); //$NON-NLS-1$
-		mountResource("/css/andreas09_green.css", Resources.CSS_ANDREAS09_GREEN); //$NON-NLS-1$
-		mountResource("/css/andreas09_orange.css", Resources.CSS_ANDREAS09_ORANGE); //$NON-NLS-1$
-		mountResource("/css/andreas09_purple.css", Resources.CSS_ANDREAS09_PURPLE); //$NON-NLS-1$
-		mountResource("/css/andreas09_red.css", Resources.CSS_ANDREAS09_RED); //$NON-NLS-1$
-		mountResource("/css/screen.css", Resources.CSS_SCREEN); //$NON-NLS-1$
-		mountResource("/css/print.css", Resources.CSS_PRINT); //$NON-NLS-1$
 		mountResource("/css/jquery-cluetip.css", JQueryCluetipBehavior.CSS_CLUETIP_JQUERY); //$NON-NLS-1$
 		
 		mountResource("/js/wicket-ajax.js", WicketAjaxReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
 		mountResource("/js/wicket-event.js", WicketEventReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
 		mountResource("/js/jquery.js", JQueryBehavior.JS_JQUERY); //$NON-NLS-1$
 		mountResource("/js/jquery-cluetip.js", JQueryCluetipBehavior.JS_CLUETIP_JQUERY); //$NON-NLS-1$
-		mountResource("/js/calendar.js", CalendarPanel.JS_CALENDAR); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {

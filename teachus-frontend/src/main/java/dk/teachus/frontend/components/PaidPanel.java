@@ -23,13 +23,10 @@ import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.panel.GenericPanel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.request.cycle.RequestCycle;
-import org.apache.wicket.request.resource.ResourceReference;
 
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
-import dk.teachus.frontend.utils.Resources;
 
 public class PaidPanel extends GenericPanel<PupilBooking> {
 	private static final long serialVersionUID = 1L;
@@ -70,15 +67,16 @@ public class PaidPanel extends GenericPanel<PupilBooking> {
 		
 		@Override
 		public CharSequence getObject() {
-			PupilBooking pupilBooking = rowModel.getObject();
-			ResourceReference icon;
-			if (pupilBooking.isPaid()) {
-				icon = Resources.PAID;
-			} else {
-				icon = Resources.UNPAID;
-			}
-			
-			return RequestCycle.get().urlFor(icon, null);
+//			PupilBooking pupilBooking = rowModel.getObject();
+//			ResourceReference icon;
+//			if (pupilBooking.isPaid()) {
+//				icon = Resources.PAID;
+//			} else {
+//				icon = Resources.UNPAID;
+//			}
+//			
+//			return RequestCycle.get().urlFor(icon, null);
+			return "";
 		}
 	}
 }

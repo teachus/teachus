@@ -32,8 +32,6 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
-import org.apache.wicket.request.resource.JavaScriptResourceReference;
-import org.apache.wicket.request.resource.ResourceReference;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -50,8 +48,6 @@ import dk.teachus.frontend.components.jquery.JQueryBehavior;
  */
 public abstract class CalendarPanel<T> extends Panel {
 	private static final long serialVersionUID = 1L;
-
-	public static final ResourceReference JS_CALENDAR = new JavaScriptResourceReference(CalendarPanel.class, "calendar.js"); //$NON-NLS-1$
 
 	public static final DateTimeFormatter TIME_FORMAT = DateTimeFormat.forPattern("HH:mm"); //$NON-NLS-1$
 	private static final DateTimeFormatter HEADER_FORMAT = DateTimeFormat.forPattern("EE d/M"); //$NON-NLS-1$
@@ -302,14 +298,6 @@ public abstract class CalendarPanel<T> extends Panel {
 								}
 							}
 						}));
-						timeSlotItem.add(new CalendarTooltipBehavior() {
-							private static final long serialVersionUID = 1L;
-
-							@Override
-							public boolean isEnabled(Component component) {
-								return dayTimeLessonDetails.isVisible();
-							}
-						});
 					}
 				});
 			}
@@ -318,7 +306,6 @@ public abstract class CalendarPanel<T> extends Panel {
 	
 	@Override
 	public void renderHead(IHeaderResponse response) {
-		response.renderJavaScriptReference(JS_CALENDAR);
 		response.renderOnDomReadyJavaScript("layoutCalendar()"); //$NON-NLS-1$
 	}
 	

@@ -34,7 +34,7 @@ public abstract class DefaultFunctionItem<T> implements FunctionItem<T> {
 
 	public abstract void onEvent(T object);
 	
-	public abstract Component createLabelComponent(String wicketId, Object object);
+	public abstract Component createLabelComponent(String wicketId, T object);
 	
 	public Component createComponent(String wicketId, IModel<T> rowModel) {
 		return new DefaultFunctionPanel<T>(wicketId, this, rowModel);
