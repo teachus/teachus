@@ -34,6 +34,8 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidator;
 
+import dk.teachus.frontend.components.Select2Enabler;
+
 public class DropDownElement<T> extends AbstractChoiceElement<T,T> {
 	private static final long serialVersionUID = 1L;
 	
@@ -103,6 +105,7 @@ public class DropDownElement<T> extends AbstractChoiceElement<T,T> {
 		dropDownChoice.setRequired(required);
 		dropDownChoice.setNullValid(required == false);
 		dropDownChoice.setEnabled(isReadOnly() == false);
+		dropDownChoice.add(new Select2Enabler());
 				
 		return elementPanel;
 	}

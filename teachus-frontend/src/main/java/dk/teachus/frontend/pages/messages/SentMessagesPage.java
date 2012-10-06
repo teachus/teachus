@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
-import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.ChoiceFilter;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilteredPropertyColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.TextFilter;
@@ -32,6 +31,7 @@ import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.components.list.LinkPropertyColumn;
 import dk.teachus.frontend.components.list.ListPanel;
 import dk.teachus.frontend.components.list.RendererPropertyColumn;
+import dk.teachus.frontend.components.list.TeachUsChoiceFilter;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 import dk.teachus.frontend.utils.DateChoiceRenderer;
 import dk.teachus.frontend.utils.MessageStateChoiceRenderer;
@@ -106,7 +106,7 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 					}
 				};
 				
-				return new ChoiceFilter<MessageState>(componentId, new PropertyModel<MessageState>(form.getModel(), "state"), form, statesModel, new MessageStateChoiceRenderer(), true);
+				return new TeachUsChoiceFilter<MessageState>(componentId, new PropertyModel<MessageState>(form.getModel(), "state"), form, statesModel, new MessageStateChoiceRenderer(), true);
 			}
 		};
 	}
@@ -134,7 +134,7 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 					}
 				};
 				
-				return new ChoiceFilter<String>(componentId, new PropertyModel<String>(form.getModel(), "recipient.name"), form, recipientsModel, true);
+				return new TeachUsChoiceFilter<String>(componentId, new PropertyModel<String>(form.getModel(), "recipient.name"), form, recipientsModel, true);
 			}
 		};
 	}
@@ -161,7 +161,7 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 					}			
 				};
 				
-				return new ChoiceFilter<Date>(componentId, new PropertyModel<Date>(form.getModel(), "processingDate"), form, datesModel, true);
+				return new TeachUsChoiceFilter<Date>(componentId, new PropertyModel<Date>(form.getModel(), "processingDate"), form, datesModel, true);
 			}
 		};
 	}
