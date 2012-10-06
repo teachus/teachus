@@ -28,6 +28,7 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.list.FunctionItem;
+import dk.teachus.frontend.components.list.IconFunctionItem;
 import dk.teachus.frontend.models.PupilModel;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.messages.SendNewPasswordPage;
@@ -80,29 +81,29 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	protected List<FunctionItem> getFunctions() {
 		List<FunctionItem> functions = new ArrayList<FunctionItem>();
 
-		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("General.calendar")) { //$NON-NLS-1$
+		functions.add(new IconFunctionItem<Pupil>(TeachUsSession.get().getString("General.calendar"), "calendar") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onEvent(Pupil pupil) {
+			protected void onEvent(Pupil pupil) {
 				getRequestCycle().setResponsePage(new PupilCalendarPage(pupil));
 			}
 		});
 		
-		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("PupilsPage.sendWelcomeMail")) { //$NON-NLS-1$
+		functions.add(new IconFunctionItem<Pupil>(TeachUsSession.get().getString("PupilsPage.sendWelcomeMail"), "key") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onEvent(Pupil person) {				
+			protected void onEvent(Pupil person) {				
 				getRequestCycle().setResponsePage(new SendNewPasswordPage(person.getId()));
 			}
 		});
 		
-		functions.add(new PersonFunctionItem(TeachUsSession.get().getString("General.delete")) { //$NON-NLS-1$
+		functions.add(new IconFunctionItem<Pupil>(TeachUsSession.get().getString("General.delete"), "remove", "danger") { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public void onEvent(Pupil person) {
+			protected void onEvent(Pupil person) {
 				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 				personDAO.setInactive(person.getId());
 				

@@ -141,12 +141,4 @@ public abstract class PersonsPage<P extends Person> extends AuthenticatedBasePag
 	protected List<FunctionItem> getFunctions() {
 		return null;
 	}
-	
-	public abstract class PersonFunctionItem extends LabelFunctionItem<P> {
-		private static final long serialVersionUID = 1L;
-
-		public PersonFunctionItem(String title) {
-			super(title);
-		}
-	}
 }

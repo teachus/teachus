@@ -50,33 +50,29 @@ public class PaidPanel extends GenericPanel<PupilBooking> {
 			}
 		};
 		link.setOutputMarkupId(true);
-		WebComponent image = new WebComponent("image"); //$NON-NLS-1$
-		image.add(AttributeModifier.replace("src", new ImageModel(model))); //$NON-NLS-1$
+		WebComponent image = new WebComponent("icon"); //$NON-NLS-1$
+		image.add(AttributeModifier.replace("class", new IconModel(model))); //$NON-NLS-1$
 		link.add(image);
 		add(link);
 	}
 	
-	private static class ImageModel extends AbstractReadOnlyModel<CharSequence> {
+	private static class IconModel extends AbstractReadOnlyModel<CharSequence> {
 		private static final long serialVersionUID = 1L;
 		
 		private IModel<PupilBooking> rowModel;
 		
-		public ImageModel(IModel<PupilBooking> rowModel) {
+		public IconModel(IModel<PupilBooking> rowModel) {
 			this.rowModel = rowModel;
 		}
 		
 		@Override
 		public CharSequence getObject() {
-//			PupilBooking pupilBooking = rowModel.getObject();
-//			ResourceReference icon;
-//			if (pupilBooking.isPaid()) {
-//				icon = Resources.PAID;
-//			} else {
-//				icon = Resources.UNPAID;
-//			}
-//			
-//			return RequestCycle.get().urlFor(icon, null);
-			return "";
+			PupilBooking pupilBooking = rowModel.getObject();
+			if (pupilBooking.isPaid()) {
+				return "icon-ok";
+			} else {
+				return "icon-download-alt";
+			}
 		}
 	}
 }

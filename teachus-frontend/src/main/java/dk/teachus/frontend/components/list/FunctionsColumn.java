@@ -18,8 +18,6 @@ package dk.teachus.frontend.components.list;
 
 import java.util.List;
 
-import org.apache.wicket.Component;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.repeater.data.grid.ICellPopulator;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.AbstractColumn;
 import org.apache.wicket.markup.repeater.Item;
@@ -34,17 +32,8 @@ public class FunctionsColumn<T> extends AbstractColumn<T> {
 		super(displayModel);
 		this.functions = functions;
 	}
-	
-	@Override
-	public Component getHeader(String componentId) {
-		Component component = super.getHeader(componentId);
-		component.add(new SimpleAttributeModifier("class", "functions"));
-		return component;
-	}
 
 	public void populateItem(Item<ICellPopulator<T>> cellItem, String componentId, IModel<T> rowModel) {		
-		cellItem.add(new SimpleAttributeModifier("class", "functions"));
-		
 		cellItem.add(new FunctionColumnPanel<T>(componentId, functions, rowModel));
 	}
 

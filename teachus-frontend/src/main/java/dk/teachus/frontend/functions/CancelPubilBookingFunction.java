@@ -8,14 +8,13 @@ import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.list.DefaultFunctionItem;
-import dk.teachus.frontend.components.list.LabelFunctionItem;
+import dk.teachus.frontend.components.list.IconFunctionItem;
 
-public abstract class CancelPubilBookingFunction extends LabelFunctionItem<PupilBooking> {
+public abstract class CancelPubilBookingFunction extends IconFunctionItem<PupilBooking> {
 	private static final long serialVersionUID = 1L;
 
 	public CancelPubilBookingFunction() {
-		super(TeachUsSession.get().getString("General.cancelBooking"));
+		super(TeachUsSession.get().getString("General.cancelBooking"), "remove", "warning");
 	}
 	
 	@Override
