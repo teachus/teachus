@@ -50,6 +50,8 @@ import org.apache.wicket.util.string.Strings;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.vaynberg.wicket.select2.ApplicationSettings;
+
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.MessageDAO;
@@ -99,6 +101,8 @@ public class TeachUsApplication extends WebApplication {
 	@Override
 	protected void init() {
 		// Settings
+		ApplicationSettings.get().setIncludeJquery(false);
+		
 		CompoundAuthorizationStrategy authorizationStrategy = new CompoundAuthorizationStrategy();
 		authorizationStrategy.add(new TeachUsCookieAuthentication());
 		authorizationStrategy.add(new TeachUsAuthentication());

@@ -1,40 +1,30 @@
 <wicket:extend>
-	<div id="rightside">
+	<div class="row">
+	<div class="span9">
+		<wicket:child />
+	</div>
+	
+	<div class="span3">
 		<h1 wicket:id="signInLabel"></h1>
 		<span wicket:id="feedback" />
 		<form wicket:id="signInForm">
-			<table cellpadding="0" cellspacing="0" border="0" class="signin">
-				<tr>
-					<td>
-						<label wicket:id="usernameLabel"><span wicket:id="usernameLabel"></span></label><br />
-						<input type="text" class="inputText username" size="20" wicket:id="username" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<label wicket:id="passwordLabel"><span wicket:id="passwordLabel"></span></label><br />
-						<input type="password" class="inputText password" size="20" wicket:id="password" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="checkbox" wicket:id="remember" />
-						<label wicket:id="rememberLabel"><span wicket:id="rememberLabel"></span></label>
-					</td>
-				</tr>
-				<tr>
-					<td><input type="submit" wicket:id="signIn" /></td>
-				</tr>
-			</table>
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-user"></i></span>
+				<input type="text" wicket:id="username">
+			</div>
+			
+			<div class="input-prepend">
+				<span class="add-on"><i class="icon-key"></i></span>
+				<input type="password" wicket:id="password">
+			</div>
+		
+			<input type="submit" wicket:id="signIn" class="btn btn-primary" />
 		</form>
 	
 		<h1 wicket:id="localeLabel">Locale</h1>
 		<form wicket:id="localeForm">
-				<select wicket:id="locale" />
+				<select wicket:id="locale" style="width:100%" />
 		</form>
 	</div>
-
-	<div id="content">
-		<wicket:child />
 	</div>
 </wicket:extend>

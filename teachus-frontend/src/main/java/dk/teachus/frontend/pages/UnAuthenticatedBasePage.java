@@ -22,15 +22,14 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.wicket.Application;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
-import org.apache.wicket.markup.html.form.CheckBox;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.markup.html.form.FormComponentLabel;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -42,6 +41,7 @@ import org.apache.wicket.util.cookies.CookieUtils;
 
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.Select2Enabler;
 import dk.teachus.frontend.components.form.DefaultFocusBehavior;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 
@@ -62,15 +62,9 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		private String username;
 
 		private String password;
-		
-		private boolean remember;
 
 		public boolean isRemember() {
-			return remember;
-		}
-
-		public void setRemember(boolean remember) {
-			this.remember = remember;
+			return true;
 		}
 
 		public String getPassword() {
@@ -121,17 +115,13 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		username.setOutputMarkupId(true);
 		username.setRequired(true);
 		username.add(new DefaultFocusBehavior());
+		username.add(AttributeModifier.replace("placeholder", TeachUsSession.get().getString("General.username")));
 		signInForm.add(username);
-		signInForm.add(new FormComponentLabel("usernameLabel", username).add(new Label("usernameLabel", TeachUsSession.get().getString("General.username")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		final PasswordTextField password = new PasswordTextField("password");
 		password.setResetPassword(false);
+		password.add(AttributeModifier.replace("placeholder", TeachUsSession.get().getString("General.password")));
 		signInForm.add(password);
-		signInForm.add(new FormComponentLabel("passwordLabel", password).add(new Label("passwordLabel", TeachUsSession.get().getString("General.password")).setRenderBodyOnly(true))); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		CheckBox remember = new CheckBox("remember");
-		signInForm.add(remember);
-		signInForm.add(new FormComponentLabel("rememberLabel", remember).add(new Label("rememberLabel", TeachUsSession.get().getString("General.remember")).setRenderBodyOnly(true)));
 		
 		signInForm.add(new Button("signIn", new Model<String>("Log ind")));
 	}
@@ -175,6 +165,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 		List<Locale> availableLocales = TeachUsApplication.get().getAvailableLocales();
 		
 		DropDownChoice<Locale> localeDropDown = new DropDownChoice<Locale>("locale", new PropertyModel<Locale>(this, "locale"), availableLocales, new LocaleChoiceRenderer());
+		localeDropDown.add(new Select2Enabler());
 		localeForm.add(localeDropDown);
 		
 		localeDropDown.add(new AjaxFormComponentUpdatingBehavior("onchange") {
