@@ -60,10 +60,5 @@ public class WelcomeMailSettingsPage extends AbstractSettingsPage {
 			}
 		});
 	}
-	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("TeacherSettingsPage.introductionMailText");
-	}
 
 }

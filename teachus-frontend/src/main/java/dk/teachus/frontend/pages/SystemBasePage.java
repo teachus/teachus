@@ -36,9 +36,4 @@ public class SystemBasePage extends BasePage {
 		return null;
 	}
 
-	@Override
-	protected String getPageLabel() {
-		return null;
-	}
-
 }

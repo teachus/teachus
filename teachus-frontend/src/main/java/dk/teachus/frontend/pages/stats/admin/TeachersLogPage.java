@@ -106,9 +106,4 @@ public class TeachersLogPage extends AbstractAdminStatisticsPage {
 		});
 	}
 	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.teachersLog");
-	}
-	
 }

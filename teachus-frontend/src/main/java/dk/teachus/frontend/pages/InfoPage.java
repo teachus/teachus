@@ -85,10 +85,4 @@ public class InfoPage extends UnAuthenticatedBasePage {
 	protected UnAuthenticatedPageCategory getPageCategory() {
 		return UnAuthenticatedPageCategory.INFO;
 	}
-
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.info"); //$NON-NLS-1$
-	}
-
 }

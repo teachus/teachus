@@ -167,8 +167,6 @@ public abstract class BasePage extends WebPage {
 
 	protected abstract String getPagePath();
 
-	protected abstract String getPageLabel();
-
 	protected abstract PageCategory getPageCategory();
 	
 	protected abstract List<MenuItem> createMenuItems();

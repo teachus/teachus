@@ -36,11 +36,6 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	}
 
 	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.teachers"); //$NON-NLS-1$
-	}
-
-	@Override
 	protected List<Teacher> getPersons() {
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		return personDAO.getPersons(Teacher.class);

@@ -25,20 +25,12 @@ import dk.teachus.frontend.pages.AuthenticatedBasePage;
 public abstract class PersonPage<P extends PersonModel<? extends Person>> extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
-	private P personModel;
-	
 	public PersonPage(UserLevel userLevel, final P personModel) {
 		super(userLevel);
-		
-		this.personModel = personModel;
 		
 		add(createPersonPanel("personPanel", personModel));
 	}
 	
 	protected abstract PersonPanel createPersonPanel(String wicketId, P personModel);
 	
-	@Override
-	protected String getPageLabel() {
-		return personModel.getObject().getName();
-	}
 }

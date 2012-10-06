@@ -171,9 +171,4 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 		return AuthenticatedPageCategory.MESSAGES;
 	}
 	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.messages"); //$NON-NLS-1$
-	}
-	
 }

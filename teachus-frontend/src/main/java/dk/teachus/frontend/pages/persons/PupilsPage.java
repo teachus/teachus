@@ -40,11 +40,6 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	}
 
 	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.pupils"); //$NON-NLS-1$
-	}
-
-	@Override
 	protected List<Pupil> getPersons() {
 		List<Pupil> persons = null;
 		

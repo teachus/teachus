@@ -21,7 +21,6 @@ import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.model.Model;
 import org.joda.time.DateMidnight;
 
-import dk.teachus.backend.domain.Teacher;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.calendar.TeacherPeriodsCalendarPanel;
@@ -29,8 +28,6 @@ import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public class TeacherCalendarPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
-
-	private Teacher teacher;
 	
 	public TeacherCalendarPage() {
 		this(new DateMidnight());
@@ -43,14 +40,7 @@ public class TeacherCalendarPage extends AuthenticatedBasePage {
 			throw new RestartResponseAtInterceptPageException(Application.get().getHomePage());
 		}
 		
-		teacher = TeachUsSession.get().getTeacher();
-		
 		add(new TeacherPeriodsCalendarPanel("calendar", new Model<DateMidnight>(pageDate)));
-	}
-
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.calendarFor")+" "+teacher.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

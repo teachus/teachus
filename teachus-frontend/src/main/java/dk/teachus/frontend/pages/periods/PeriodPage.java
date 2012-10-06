@@ -313,73 +313,11 @@ public class PeriodPage extends AuthenticatedBasePage {
 		};
 		periodsCalendarPanel.setOutputMarkupId(true);
 		return periodsCalendarPanel;
-		
-//		final WebMarkupContainer preview = new WebMarkupContainer("preview"); //$NON-NLS-1$
-//		preview.setOutputMarkupId(true);
-//		
-//		final RepeatingView weekDays = new RepeatingView("weekDays"); //$NON-NLS-1$
-//		preview.add(weekDays);
-//		
-//		final Periods periods = new PeriodsImpl();
-//		final ArrayList<Period> periodList = new ArrayList<Period>();
-//		periodList.add(period);
-//		periods.setPeriods(periodList);
-//		
-//		TeachUsDate beginDate = period.getBeginDate();
-//		if (beginDate == null) {
-//			beginDate = TeachUsSession.get().createNewDate(new DateTime());
-//		}
-//		final int weekDayCount = period.getWeekDays().size();
-//		final List<DatePeriod> dates = periods.generateDates(beginDate, weekDayCount);
-//		if (dates.size() < weekDayCount) {
-//			beginDate = beginDate.plusWeeks(1).withDayOfWeek(DateTimeConstants.MONDAY);
-//			final int diff = weekDayCount - dates.size();
-//			dates.addAll(periods.generateDates(beginDate, diff, true));
-//		}
-//		
-//		for (final DatePeriod datePeriod : dates) {
-//			final WebMarkupContainer weekDay = new WebMarkupContainer(weekDays.newChildId());
-//			weekDays.add(weekDay);
-//			
-//			TeachUsDate date = datePeriod.getDate();
-//			
-//			weekDay.add(new PeriodDateComponent("weekDay", period, date) { //$NON-NLS-1$
-//				private static final long serialVersionUID = 1L;
-//				
-//				@Override
-//				protected int getRowSpanForTimeContent(final Period period, final TeachUsDate time) {
-//					return 0;
-//				}
-//				
-//				@Override
-//				protected Component getTimeContent(final String wicketId, final Period period, final TeachUsDate time, final MarkupContainer contentContainer) {
-//					return null;
-//				}
-//				
-//				@Override
-//				protected boolean shouldDisplayTimeContent(final Period period, final TeachUsDate time) {
-//					return false;
-//				}
-//				
-//				@Override
-//				protected boolean shouldHideEmptyContent(final Period period, final TeachUsDate time) {
-//					return false;
-//				}
-//				
-//			});
-//		}
-//		
-//		return preview;
 	}
 	
 	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.PERIODS;
-	}
-	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.periods"); //$NON-NLS-1$
 	}
 	
 }

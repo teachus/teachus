@@ -29,8 +29,6 @@ import dk.teachus.frontend.pages.AuthenticatedBasePage;
 public class PupilCalendarPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
-	private Pupil pupil;
-	
 	public PupilCalendarPage() {
 		this(null);
 	}
@@ -45,15 +43,8 @@ public class PupilCalendarPage extends AuthenticatedBasePage {
 		if (pupil == null) {
 			pupil = (Pupil) TeachUsSession.get().getPerson();
 		}
-		
-		this.pupil = pupil;
 				
 		add(new PupilPeriodsCalendarPanel("calendar", new Model<DateMidnight>(pageDate), pupil));
-	}
-	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.calendarFor")+" "+pupil.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	@Override

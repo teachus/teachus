@@ -47,9 +47,4 @@ public class TeachersSummaryPage extends AbstractAdminStatisticsPage {
 		add(new ListPanel("teachersSummary", columns, data)); //$NON-NLS-1$
 	}
 
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.teachersSummary"); //$NON-NLS-1$
-	}
-
 }

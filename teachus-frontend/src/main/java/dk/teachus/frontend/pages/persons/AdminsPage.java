@@ -33,11 +33,6 @@ public class AdminsPage extends PersonsPage<Admin> {
 	}
 
 	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.administrators"); //$NON-NLS-1$
-	}
-
-	@Override
 	protected List<Admin> getPersons() {
 		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		return personDAO.getPersons(Admin.class);

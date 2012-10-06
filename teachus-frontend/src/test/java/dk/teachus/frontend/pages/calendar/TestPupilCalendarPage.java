@@ -36,7 +36,6 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
-import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.PupilPeriodsCalendarPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -76,8 +75,6 @@ public class TestPupilCalendarPage extends WicketTestCase {
 		tester.assertRenderedPage(PupilCalendarPage.class);
 		
 		tester.assertComponent("calendar", PupilPeriodsCalendarPanel.class);
-		
-		tester.assertContains(pupil.getName());
 	}
 	
 	public void testRender_pupil() {
@@ -106,8 +103,6 @@ public class TestPupilCalendarPage extends WicketTestCase {
 		tester.assertRenderedPage(PupilCalendarPage.class);
 		
 		tester.assertComponent("calendar", PupilPeriodsCalendarPanel.class);
-		
-		tester.assertContains(TeachUsSession.get().getPerson().getName());
 	}
 	
 	public void testPupilBooked() {

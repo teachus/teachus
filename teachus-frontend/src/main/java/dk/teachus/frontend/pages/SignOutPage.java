@@ -30,11 +30,6 @@ public class SignOutPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected String getPageLabel() {
-		return null;
-	}
-
-	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.SIGNOUT;
 	}

@@ -148,9 +148,4 @@ public class LessonsPerHourPage extends AbstractTeacherStatisticsPage {
 		return dataset;
 	}
 
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.lessonsPerHour"); //$NON-NLS-1$
-	}
-
 }

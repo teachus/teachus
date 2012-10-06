@@ -161,12 +161,7 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.MESSAGES;
 	}
-
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("SendNewPasswordPage.sendNewPassword"); //$NON-NLS-1$
-	}
-
+	
 	public String getPassword1() {
 		return password1;
 	}

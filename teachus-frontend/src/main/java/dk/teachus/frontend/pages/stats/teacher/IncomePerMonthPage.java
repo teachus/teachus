@@ -33,7 +33,6 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.string.Strings;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 
@@ -299,11 +298,6 @@ public class IncomePerMonthPage extends AbstractTeacherStatisticsPage {
 			data.add(monthIncome);
 		}
 		return monthIncome;
-	}
-
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.incomePerMonth"); //$NON-NLS-1$
 	}
 
 }

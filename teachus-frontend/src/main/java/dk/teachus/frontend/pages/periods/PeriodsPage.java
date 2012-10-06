@@ -133,11 +133,6 @@ public class PeriodsPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.periods"); //$NON-NLS-1$
-	}
-
-	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.PERIODS;
 	}

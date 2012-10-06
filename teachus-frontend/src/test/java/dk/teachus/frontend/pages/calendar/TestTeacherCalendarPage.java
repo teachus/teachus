@@ -37,7 +37,6 @@ import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
-import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.TeacherPeriodsCalendarPanel;
 import dk.teachus.frontend.test.WicketTestCase;
 
@@ -76,8 +75,6 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 		tester.assertRenderedPage(TeacherCalendarPage.class);
 		
 		tester.assertComponent("calendar", TeacherPeriodsCalendarPanel.class);
-		
-		tester.assertContains(TeachUsSession.get().getPerson().getName());
 	}
 	
 	public void testBookTeacher() {

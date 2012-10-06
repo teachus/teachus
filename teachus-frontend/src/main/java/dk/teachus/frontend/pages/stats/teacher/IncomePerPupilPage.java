@@ -126,11 +126,6 @@ public class IncomePerPupilPage extends AbstractTeacherStatisticsPage {
 		add(new JFreeChartImage("pctDistributionChart", new PieChartResource(600, 300, pieDataset))); //$NON-NLS-1$
 	}
 
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.incomePerPupil"); //$NON-NLS-1$
-	}
-
 	public DateMidnight getEndDate() {
 		return endDate;
 	}

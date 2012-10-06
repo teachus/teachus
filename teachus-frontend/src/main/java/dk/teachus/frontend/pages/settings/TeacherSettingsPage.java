@@ -35,9 +35,4 @@ public class TeacherSettingsPage extends AbstractSettingsPage {
 		});
 	}
 
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("Settings.personalInformation");
-	}
-
 }

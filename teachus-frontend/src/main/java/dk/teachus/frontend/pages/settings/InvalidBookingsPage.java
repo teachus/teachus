@@ -70,9 +70,4 @@ public class InvalidBookingsPage extends AbstractSettingsPage {
 		add(new ListPanel("list", columns, new InvalidBookingsDataProvider(new InvalidBookingsModel())));
 	}
 	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("Settings.invalidBookings");
-	}
-	
 }

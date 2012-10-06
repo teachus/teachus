@@ -83,9 +83,4 @@ public class EditMessagePage extends AuthenticatedBasePage {
 		return AuthenticatedPageCategory.MESSAGES;
 	}
 	
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("Messages.sendMail"); //$NON-NLS-1$
-	}
-	
 }

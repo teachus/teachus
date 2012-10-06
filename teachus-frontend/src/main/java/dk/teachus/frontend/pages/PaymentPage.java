@@ -99,12 +99,7 @@ public class PaymentPage extends AuthenticatedBasePage {
 
 		add(new ListPanel("list", columns, new PaymentDataProvider(bookingsModel)));
 	}
-
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.payment"); //$NON-NLS-1$
-	}
-
+	
 	@Override
 	protected AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.PAYMENT;

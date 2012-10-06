@@ -88,9 +88,4 @@ public class ApplicationConfigurationPage extends AuthenticatedBasePage {
 		return AuthenticatedPageCategory.GLOBAL_CONFIGURATION;
 	}
 
-	@Override
-	protected String getPageLabel() {
-		return TeachUsSession.get().getString("General.globalConfiguration"); //$NON-NLS-1$
-	}
-
 }
