@@ -129,6 +129,8 @@ public abstract class BasePage extends WebPage {
 	}
 
 	private void createMenu() {
+		add(new BookmarkablePageLink<Void>("homePageLink", TeachUsApplication.get().getHomePage()));
+		
 		RepeatingView menuItems = new RepeatingView("menuItems"); //$NON-NLS-1$
 		add(menuItems);
 		
