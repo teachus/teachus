@@ -1,8 +1,9 @@
 <wicket:panel>
-	<td class="label"><span wicket:id="label"></span></td>
-	<td class="required" wicket:id="required"></td>
-	<td class="input" colspan="2">
-		<textarea wicket:id="inputField"></textarea>
-		<span wicket:id="feedback"></span>
-	</td>
+	<div class="control-group">
+		<label class="control-label"><span wicket:id="label"></span><span wicket:id="required"></span></label>
+		<div class="controls">
+			<textarea wicket:id="inputField"></textarea>
+			<span wicket:id="feedback" class="help-block"></span>
+		</div>
+	</div>
 </wicket:panel>

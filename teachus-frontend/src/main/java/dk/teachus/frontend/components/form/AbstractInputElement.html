@@ -1,6 +1,8 @@
-<wicket:panel>
-	<td class="label"><span wicket:id="label"></span></td>
-	<td class="required" wicket:id="required"></td>
-	<td class="input"><span wicket:id="input"></span></td>
-	<td class="feedback"><span wicket:id="feedback"></span></td>
+<wicket:panel xmlns:wicket="http://wicket.apache.org">
+	<div class="control-group">
+		<label class="control-label"><span wicket:id="label"></span><span wicket:id="required"></span></label>
+		<div class="controls">
+			<span wicket:id="input"></span><span wicket:id="feedback" class="help-inline"></span>
+		</div>
+	</div>
 </wicket:panel>

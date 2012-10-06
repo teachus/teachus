@@ -51,6 +51,7 @@ public class FormPanel extends Panel {
 	
 	public MarkupContainer addElement(FormElement element) {
 		WebMarkupContainer elementContainer = new WebMarkupContainer(elements.newChildId());
+		elementContainer.setRenderBodyOnly(true);
 		elements.add(elementContainer);
 		
 		elementContainer.add(element);
