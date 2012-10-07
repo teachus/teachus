@@ -130,6 +130,10 @@
 	font-size: 9px;
 }
 
+.daytimelesson .dayTimeLessonDetails {
+	display: none;
+}
+
 .pupilBooked .daytimelessoncontent {
 	border: 1px solid #090FC4;
 	background-color: #CBCBFF;
@@ -152,25 +156,9 @@
 	background-color: #E4A7A7;
 }
 
-.cluetip-calendar {
-	border-radius: 1px;
-	-webkit-border-radius: 1px;
-	-moz-border-radius: 1px;
-	border: 1px solid #CCC;
-	background-color: #FFF;
-	text-align: left;
-}
-
-.clue-left-calendar .cluetip-arrows {
-  background-image: url(../images/cluetip/arrowright.gif);
-  left: 100%;
-  margin-right: -11px;
-}
-
-.clue-right-calendar .cluetip-arrows {
-  background-image: url(../images/cluetip/arrowleft.gif);
-}
-
-.cluetip-calendar .dayTimeLessonDetails {
-	font-size: 10px;
+.calendar-notes {
+	width: 100%;
+	max-height: 100px;
+	overflow: scroll;
+	overflow-x: hidden;
 }

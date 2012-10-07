@@ -244,7 +244,7 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 			protected void onEvent(AjaxRequestTarget target) {
 				onTimeSlotClicked(timeSlot, timeSlot.getStartTime().toDateTime(date), target);
 				
-				target.addComponent(timeSlotItem);
+				target.add(timeSlotItem);
 			}
 			
 			@Override
@@ -253,21 +253,14 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 			}
 		});
 		
-		timeSlotItem.add(new AttributeModifier("class", true, new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
+		timeSlotItem.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public String getObject() {
 				return getTimeSlotClass(timeSlot);
 			}
-		}) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected String newValue(String currentValue, String replacementValue) {
-				return "daytimelesson" + (replacementValue != null ? " "+replacementValue : ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			}
-		});
+		}));
 		
 		List<String> contentLines = new ArrayList<String>();
 		Period period = timeSlot.getPayload().getPeriod();

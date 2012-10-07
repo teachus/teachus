@@ -286,7 +286,18 @@ public abstract class CalendarPanel<T> extends Panel {
 						final Component dayTimeLessonDetails = createTimeSlotDetailsComponent("dayTimeLessonDetails", timeSlotItem.getModelObject());
 						dayTimeLessonDetails.setOutputMarkupId(true);
 						timeSlotItem.add(dayTimeLessonDetails);
-						timeSlotItem.add(AttributeModifier.replace("rel", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
+						timeSlotItem.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public String getObject() {
+								if (dayTimeLessonDetails.isVisible()) {
+									return "popover-external";
+								}
+								return null;
+							}
+						}));
+						timeSlotItem.add(AttributeModifier.replace("data-content-id", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
 							private static final long serialVersionUID = 1L;
 		
 							@Override
