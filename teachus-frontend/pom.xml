@@ -34,10 +34,6 @@
 			<artifactId>wicket-datetime</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.vaynberg.wicket.select2</groupId>
-			<artifactId>wicket-select2</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 		</dependency>

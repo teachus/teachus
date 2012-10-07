@@ -34,6 +34,7 @@ public class TeachUsChoiceFilter<T> extends ChoiceFilter<T> {
 	protected DropDownChoice<T> newDropDownChoice(String id, IModel<T> model, IModel<List<? extends T>> choices, IChoiceRenderer<T> renderer) {
 		DropDownChoice<T> dropDownChoice = super.newDropDownChoice(id, model, choices, renderer);
 		dropDownChoice.add(new Select2Enabler());
+		dropDownChoice.setNullValid(true);
 		dropDownChoice.add(AttributeModifier.replace("style", "width:100%"));
 		return dropDownChoice;
 	}
