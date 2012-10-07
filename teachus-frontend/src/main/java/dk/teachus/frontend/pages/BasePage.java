@@ -22,6 +22,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.IHeaderResponse;
+import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
@@ -152,7 +153,16 @@ public abstract class BasePage extends WebPage {
 					item.add(AttributeModifier.replace("class", "active"));
 				}
 				
-				menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
+				if (menuItem.getIcon() == null) {
+					menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
+				} else {
+					WebComponent icon = new WebComponent("menuLabel");
+					menuLink.add(AttributeModifier.replace("title", menuItem.getHelpText()));
+					menuLink.add(AttributeModifier.replace("rel", "tooltip"));
+					menuLink.add(AttributeModifier.replace("data-placement", "bottom"));
+					icon.add(AttributeModifier.replace("class", "icon-"+menuItem.getIcon()));
+					menuLink.add(icon);
+				}
 			}
 		});
 	}

@@ -193,7 +193,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 	public List<MenuItem> getMenuItems() {
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-		menuItems.add(new MenuItem(InfoPage.class, TeachUsSession.get().getString("General.info"), UnAuthenticatedPageCategory.INFO));
+		menuItems.add(MenuItem.createWithText(InfoPage.class, TeachUsSession.get().getString("General.info"), UnAuthenticatedPageCategory.INFO));
 		
 		return menuItems;
 	}
