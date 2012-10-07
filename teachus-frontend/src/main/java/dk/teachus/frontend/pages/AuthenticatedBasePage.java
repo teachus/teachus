@@ -97,7 +97,7 @@ public abstract class AuthenticatedBasePage extends BasePage {
 	}
 
 	@Override
-	protected List<MenuItem> createMenuItems() {
+	public List<MenuItem> getMenuItems() {
 		TeachUsSession teachUsSession = TeachUsSession.get();
 		
 		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
@@ -127,6 +127,16 @@ public abstract class AuthenticatedBasePage extends BasePage {
 				menuItemsList.add(new MenuItem(PaymentPage.class, teachUsSession.getString("General.payment"), AuthenticatedPageCategory.PAYMENT)); //$NON-NLS-1$
 			}
 		}
+		
+		return menuItemsList;
+	}
+	
+	@Override
+	public List<MenuItem> getRightMenuItems() {
+		TeachUsSession teachUsSession = TeachUsSession.get();
+		
+		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
+		
 		if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
 			menuItemsList.add(new MenuItem(SignOutPage.class, teachUsSession.getString("AuthenticatedBasePage.signOut"), AuthenticatedPageCategory.SIGNOUT)); //$NON-NLS-1$
 		}

@@ -27,7 +27,12 @@ public class SystemBasePage extends BasePage {
 	}
 
 	@Override
-	protected List<MenuItem> createMenuItems() {
+	public List<MenuItem> getMenuItems() {
+		return null;
+	}
+	
+	@Override
+	public List<MenuItem> getRightMenuItems() {
 		return null;
 	}
 

@@ -190,12 +190,17 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 	}
 	
 	@Override
-	protected List<MenuItem> createMenuItems() {
+	public List<MenuItem> getMenuItems() {
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
 		menuItems.add(new MenuItem(InfoPage.class, TeachUsSession.get().getString("General.info"), UnAuthenticatedPageCategory.INFO));
 		
 		return menuItems;
+	}
+	
+	@Override
+	public List<MenuItem> getRightMenuItems() {
+		return null;
 	}
 	
 	@Override

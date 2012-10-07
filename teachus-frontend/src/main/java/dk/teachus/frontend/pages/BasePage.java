@@ -27,8 +27,11 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.repeater.RepeatingView;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.PropertyModel;
 import org.joda.time.DateMidnight;
 
 import com.newrelic.api.agent.NewRelic;
@@ -129,27 +132,29 @@ public abstract class BasePage extends WebPage {
 	}
 
 	private void createMenu() {
-		add(new BookmarkablePageLink<Void>("homePageLink", TeachUsApplication.get().getHomePage()));
+		add(new BookmarkablePageLink<Void>("brandLink", TeachUsApplication.get().getHomePage()));
 		
-		RepeatingView menuItems = new RepeatingView("menuItems"); //$NON-NLS-1$
-		add(menuItems);
-		
-		List<MenuItem> menuItemsList = createMenuItems();
-		if (menuItemsList != null) {
-			for (MenuItem menuItem : menuItemsList) {
-				WebMarkupContainer menuItemContainer = new WebMarkupContainer(menuItems.newChildId());
-				menuItems.add(menuItemContainer);
-				
+		addMenu("menuItems", new PropertyModel<List<MenuItem>>(this, "menuItems"));
+		addMenu("rightMenuItems", new PropertyModel<List<MenuItem>>(this, "rightMenuItems"));
+	}
+	
+	private void addMenu(String wicketId, IModel<List<MenuItem>> menuItemsModel) {
+		add(new ListView<MenuItem>(wicketId, menuItemsModel) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected void populateItem(ListItem<MenuItem> item) {
+				MenuItem menuItem = item.getModelObject();
 				Link<Void> menuLink = new BookmarkablePageLink<Void>("menuLink", menuItem.getBookmarkablePage());
-				menuItemContainer.add(menuLink);
+				item.add(menuLink);
 				
 				if (menuItem.getPageCategory().equals(getPageCategory())) {
-					menuItemContainer.add(AttributeModifier.replace("class", "active"));
+					item.add(AttributeModifier.replace("class", "active"));
 				}
 				
 				menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
 			}
-		}
+		});
 	}
 
 	@Override
@@ -171,5 +176,7 @@ public abstract class BasePage extends WebPage {
 
 	protected abstract PageCategory getPageCategory();
 	
-	protected abstract List<MenuItem> createMenuItems();
+	public abstract List<MenuItem> getMenuItems();
+	
+	public abstract List<MenuItem> getRightMenuItems();
 }
