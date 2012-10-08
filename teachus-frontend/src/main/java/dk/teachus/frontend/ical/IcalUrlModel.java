@@ -42,10 +42,10 @@ public class IcalUrlModel extends AbstractReadOnlyModel<String> {
 			if ((person instanceof Pupil || person instanceof Teacher) 
 					&& Strings.isEmpty(person.getUsername()) == false) {
 				PageParameters pp = new PageParameters();
-				pp.add("0", person.getUsername());
-				pp.add("1", person.getPassword());
+				pp.set(0, person.getUsername());
+				pp.set(1, person.getPassword());
 				
-				String url = RequestCycle.get().urlFor(IcalPage.class, pp).toString();
+				String url = RequestCycle.get().urlFor(IcalResource.RESOURCE, pp).toString();
 				
 				// Lets clean up the URL
 				url = url.replace("../", "");

@@ -44,6 +44,8 @@ import org.apache.wicket.protocol.http.servlet.ServletWebRequest;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.RequestCycle;
+import org.apache.wicket.request.mapper.ResourceMapper;
+import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.response.filter.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.string.Strings;
@@ -62,7 +64,7 @@ import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
-import dk.teachus.frontend.ical.IcalPage;
+import dk.teachus.frontend.ical.IcalResource;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
 import dk.teachus.frontend.pages.InfoPage;
@@ -151,7 +153,7 @@ public class TeachUsApplication extends WebApplication {
 		mountPage("/messages", SentMessagesPage.class); //$NON-NLS-1$
 		mountPage("/messages/create", CreateMessagePage.class); //$NON-NLS-1$
 		
-		mountPage("/ical", IcalPage.class); //$NON-NLS-1$
+		mount(new ResourceMapper("/ical", IcalResource.RESOURCE, new PageParametersEncoder()));
 	}
 
 	private void mountResources() {
