@@ -41,7 +41,6 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.jquery.JQueryBehavior;
 
 /**
  * @param <T> TimeSlot payload
@@ -80,8 +79,6 @@ public abstract class CalendarPanel<T> extends Panel {
 	
 	public CalendarPanel(String id, IModel<DateMidnight> weekDateModel) {
 		super(id, weekDateModel);
-		
-		add(new JQueryBehavior());
 
 		/*
 		 * Navigation

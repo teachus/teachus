@@ -62,7 +62,6 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
-import dk.teachus.frontend.components.jquery.JQueryBehavior;
 import dk.teachus.frontend.ical.IcalResource;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
@@ -160,7 +159,6 @@ public class TeachUsApplication extends WebApplication {
 		
 		mountResource("/js/wicket-ajax.js", WicketAjaxReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
 		mountResource("/js/wicket-event.js", WicketEventReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
-		mountResource("/js/jquery.js", JQueryBehavior.JS_JQUERY); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {
