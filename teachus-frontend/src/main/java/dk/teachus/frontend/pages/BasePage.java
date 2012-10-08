@@ -41,7 +41,6 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
-import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 
 public abstract class BasePage extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -51,7 +50,6 @@ public abstract class BasePage extends WebPage {
 
 	boolean attached = false;
 	private WebMarkupContainer ajaxLoader;
-	private Theme theme;
 	
 	public BasePage() {
 		Theme theme = getTheme();
@@ -59,8 +57,6 @@ public abstract class BasePage extends WebPage {
 		if (theme == null) {
 			theme = Theme.BLUE;
 		}
-		
-		setTheme(theme);
 		
 		StringBuilder sb = new StringBuilder(TeachUsSession.get().getString("General.teachUsTitle")); //$NON-NLS-1$
 		sb.append(" "); //$NON-NLS-1$
@@ -124,12 +120,6 @@ public abstract class BasePage extends WebPage {
 		b.append("}").append("\n");
 		
 		response.renderJavaScript(b, "ajaxLoadingIndicator");
-		
-		response.renderCSSReference(JQueryCluetipBehavior.CSS_CLUETIP_JQUERY);
-	}
-	
-	private void setTheme(Theme theme) {
-		this.theme = theme;
 	}
 
 	private void createMenu() {

@@ -63,7 +63,6 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.components.jfreechart.JFreeChartImage;
 import dk.teachus.frontend.components.jquery.JQueryBehavior;
-import dk.teachus.frontend.components.jquery.cluetip.JQueryCluetipBehavior;
 import dk.teachus.frontend.ical.IcalResource;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
@@ -159,22 +158,9 @@ public class TeachUsApplication extends WebApplication {
 	private void mountResources() {
 		mountResource("/images/loading.gif", JFreeChartImage.LOADING_INDICATOR); //$NON-NLS-1$
 		
-		mountResource("/images/cluetip/arrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWDOWN_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/arrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWLEFT_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/arrowright.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWRIGHT_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/arrowup.gif", JQueryCluetipBehavior.IMG_CLUETIP_ARROWUP_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/darrowdown.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWDOWN_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/darrowleft.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWLEFT_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/darrowright.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWRIGHT_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/darrowup.gif", JQueryCluetipBehavior.IMG_CLUETIP_DARROWUP_GIF); //$NON-NLS-1$
-		mountResource("/images/cluetip/wait.gif", JQueryCluetipBehavior.IMG_CLUETIP_WAIT_GIF); //$NON-NLS-1$
-		
-		mountResource("/css/jquery-cluetip.css", JQueryCluetipBehavior.CSS_CLUETIP_JQUERY); //$NON-NLS-1$
-		
 		mountResource("/js/wicket-ajax.js", WicketAjaxReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
 		mountResource("/js/wicket-event.js", WicketEventReference.INSTANCE); //$NON-NLS-1$ //$NON-NLS-2$
 		mountResource("/js/jquery.js", JQueryBehavior.JS_JQUERY); //$NON-NLS-1$
-		mountResource("/js/jquery-cluetip.js", JQueryCluetipBehavior.JS_CLUETIP_JQUERY); //$NON-NLS-1$
 	}
 
 	public PersonDAO getPersonDAO() {
