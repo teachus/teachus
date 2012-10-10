@@ -42,10 +42,6 @@
 			<artifactId>joda-time</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.newrelic</groupId>
 			<artifactId>newrelic-api</artifactId>
 		</dependency>
