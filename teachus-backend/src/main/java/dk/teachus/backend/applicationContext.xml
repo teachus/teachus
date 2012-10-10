@@ -57,6 +57,8 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 			<ref local="hibernatePropertiesBean" />
 		</property>
 	</bean>
+	
+	<bean id="dynamicDataImport" class="dk.teachus.backend.testdatagenerator.DynamicDataImport" />
 
 	<bean id="txManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.backend.database;
+package dk.teachus.backend.testdatagenerator;
 
 import java.util.ArrayList;
 import java.util.List;

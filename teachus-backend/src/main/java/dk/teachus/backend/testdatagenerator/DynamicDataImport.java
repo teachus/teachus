@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.backend.database;
+package dk.teachus.backend.testdatagenerator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,8 +25,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.naming.NamingException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
@@ -39,11 +37,6 @@ import org.hibernate.criterion.Restrictions;
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.ApplicationConfiguration;
@@ -65,69 +58,55 @@ import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 
-public abstract class DynamicDataImport {
+public class DynamicDataImport {
 	private static final Log log = LogFactory.getLog(DynamicDataImport.class);
 	
-	public static void main(String[] args) {
-		MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
-		ds.setUrl("jdbc:mysql://localhost/teachus");
-		ds.setUser("root");
-		ds.setPassword("");
-		
-		SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
-		contextBuilder.bind("java:comp/env/jdbc/teachus", ds);
-		try {
-			contextBuilder.activate();
-		} catch (IllegalStateException e) {
-			throw new RuntimeException(e);
-		} catch (NamingException e) {
-			throw new RuntimeException(e);
-		}
-		
-		ApplicationContext context = new ClassPathXmlApplicationContext(new String[] {
-				"/dk/teachus/backend/applicationContext.xml",
-				"/dk/teachus/backend/database/applicationContext-dynamicDataImport.xml"
-		});
-
-		SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-		
+	private SessionFactory sessionFactory;
+	
+	public void doImport() {
 		TimeZone timeZone = TimeZone.getDefault();
 
 		DateMidnight startDate = new DateMidnight().minusYears(3).withMonthOfYear(1).withDayOfMonth(10);
 		DateMidnight endDate = new DateMidnight().withMonthOfYear(12).withDayOfMonth(31);
 
-		deleteExistingData(sessionFactory);
+		deleteExistingData();
 		
-		createVersion(sessionFactory);
+		createVersion();
 		
-		createDefaultTimezone(sessionFactory, timeZone);
+		createDefaultTimezone(timeZone);
 		
-		createAdmin(sessionFactory);
+		createAdmin();
 		
 		int numberOfTeachers = 1;
 		
 		for (int i = 1; i <= numberOfTeachers; i++) {
 			log.info("Creating teacher number " + i + " of " + numberOfTeachers);
 			
-			Teacher teacher = createTeacher(sessionFactory, i);
+			Teacher teacher = createTeacher(i);
 			
-			createTeacherAttribute(sessionFactory, teacher);
+			createTeacherAttribute(teacher);
 			
-			createPupils(sessionFactory, teacher, i);
+			createPupils(teacher, i);
 			
-			createPeriods(sessionFactory, teacher, startDate);
+			createPeriods(teacher, startDate);
 			
-			createBookings(sessionFactory, teacher, startDate, endDate);
+			createBookings(teacher, startDate, endDate);
 			
-			verify(sessionFactory, teacher);
+			verify(teacher);
 		}
 		
 		log.info("Done");
-		
-		System.exit(0);
 	}
 	
-	private static void createVersion(SessionFactory sessionFactory) {
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+	
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
+	private void createVersion() {
 		// Parse the pom file to get the version
 		File file = new File("pom.xml");
 		
@@ -156,7 +135,7 @@ public abstract class DynamicDataImport {
 		}
 	}
 	
-	private static void createDefaultTimezone(SessionFactory sessionFactory, TimeZone timeZone) {
+	private void createDefaultTimezone(TimeZone timeZone) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -167,7 +146,7 @@ public abstract class DynamicDataImport {
 		session.close();
 	}
 
-	private static void createTeacherAttribute(SessionFactory sessionFactory, Teacher teacher) {
+	private void createTeacherAttribute(Teacher teacher) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -185,7 +164,7 @@ public abstract class DynamicDataImport {
 		session.close();
 	}
 	
-	private static void verify(SessionFactory sessionFactory, Teacher teacher) {
+	private void verify(Teacher teacher) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -201,7 +180,7 @@ public abstract class DynamicDataImport {
 		session.close();		
 	}
 	
-	private static void createBookings(SessionFactory sessionFactory, Teacher teacher, DateMidnight startDate, DateMidnight endDate) {
+	private void createBookings(Teacher teacher, DateMidnight startDate, DateMidnight endDate) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -285,7 +264,7 @@ public abstract class DynamicDataImport {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static List<Pupil> getPupils(Teacher teacher, Session session) {
+	private List<Pupil> getPupils(Teacher teacher, Session session) {
 		Criteria criteria = session.createCriteria(PupilImpl.class);
 		criteria.add(Restrictions.eq("teacher", teacher));
 		List<Pupil> pupils = criteria.list();
@@ -293,14 +272,14 @@ public abstract class DynamicDataImport {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static List<Period> getPeriods(Teacher teacher, Session session) {
+	private List<Period> getPeriods(Teacher teacher, Session session) {
 		Criteria criteria = session.createCriteria(PeriodImpl.class);
 		criteria.add(Restrictions.eq("teacher", teacher));
 		List<Period> periods = criteria.list();
 		return periods;
 	}
 	
-	private static void createPeriods(SessionFactory sessionFactory, Teacher teacher, DateMidnight startDate) {
+	private void createPeriods(Teacher teacher, DateMidnight startDate) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -348,7 +327,7 @@ public abstract class DynamicDataImport {
 		session.close();
 	}
 	
-	private static Admin createAdmin(SessionFactory sessionFactory) {
+	private Admin createAdmin() {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -366,7 +345,7 @@ public abstract class DynamicDataImport {
 		return admin;
 	}
 
-	private static void createPupils(SessionFactory sessionFactory, Teacher teacher, int number) {
+	private void createPupils(Teacher teacher, int number) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -403,7 +382,7 @@ public abstract class DynamicDataImport {
 		session.close();
 	}
 
-	private static Teacher createTeacher(SessionFactory sessionFactory, int number) {
+	private Teacher createTeacher(int number) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		
@@ -435,23 +414,23 @@ public abstract class DynamicDataImport {
 		return teacher;
 	}
 
-	private static void deleteExistingData(SessionFactory sessionFactory) {
-		executeSql(sessionFactory, "UPDATE person SET teacher_id = NULL");
+	private void deleteExistingData() {
+		executeSql("UPDATE person SET teacher_id = NULL");
 
-		executeSql(sessionFactory, "DELETE FROM application_configuration");
-		executeSql(sessionFactory, "DELETE FROM booking");
-		executeSql(sessionFactory, "ALTER TABLE booking AUTO_INCREMENT = 1");
-		executeSql(sessionFactory, "DELETE FROM period");
-		executeSql(sessionFactory, "ALTER TABLE period AUTO_INCREMENT = 1");
-		executeSql(sessionFactory, "DELETE FROM teacher_attribute");
-		executeSql(sessionFactory, "ALTER TABLE teacher_attribute AUTO_INCREMENT = 1");
-		executeSql(sessionFactory, "DELETE FROM message");
-		executeSql(sessionFactory, "ALTER TABLE message AUTO_INCREMENT = 1");
-		executeSql(sessionFactory, "DELETE FROM person");
-		executeSql(sessionFactory, "ALTER TABLE person AUTO_INCREMENT = 1");
+		executeSql("DELETE FROM application_configuration");
+		executeSql("DELETE FROM booking");
+		executeSql("ALTER TABLE booking AUTO_INCREMENT = 1");
+		executeSql("DELETE FROM period");
+		executeSql("ALTER TABLE period AUTO_INCREMENT = 1");
+		executeSql("DELETE FROM teacher_attribute");
+		executeSql("ALTER TABLE teacher_attribute AUTO_INCREMENT = 1");
+		executeSql("DELETE FROM message");
+		executeSql("ALTER TABLE message AUTO_INCREMENT = 1");
+		executeSql("DELETE FROM person");
+		executeSql("ALTER TABLE person AUTO_INCREMENT = 1");
 	}
 	
-	private static void executeSql(SessionFactory sessionFactory, String sql) {
+	private void executeSql(String sql) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		

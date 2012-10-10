@@ -61,6 +61,7 @@ import dk.teachus.backend.dao.StatisticsDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
+import dk.teachus.backend.testdatagenerator.DynamicDataImport;
 import dk.teachus.frontend.ical.IcalResource;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
@@ -96,6 +97,10 @@ public class TeachUsApplication extends WebApplication {
 	
 	@Override
 	protected void init() {
+		if (getServletContext().getInitParameter("doDynamicDataImport") != null) {
+			getDynamicDataImport().doImport();
+		}
+		
 		// Settings
 		CompoundAuthorizationStrategy authorizationStrategy = new CompoundAuthorizationStrategy();
 		authorizationStrategy.add(new TeachUsCookieAuthentication());
@@ -179,6 +184,10 @@ public class TeachUsApplication extends WebApplication {
 	
 	public MessageDAO getMessageDAO() {
 		return (MessageDAO) getApplicationContext().getBean("messageDao"); //$NON-NLS-1$
+	}
+	
+	public DynamicDataImport getDynamicDataImport() {
+		return (DynamicDataImport) getApplicationContext().getBean("dynamicDataImport"); //$NON-NLS-1$
 	}
 	
 	protected ApplicationContext getApplicationContext() {
