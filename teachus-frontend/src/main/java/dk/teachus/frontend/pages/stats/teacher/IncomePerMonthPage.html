@@ -1,9 +1,7 @@
-<wicket:extend>
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
 <h1 wicket:id="perMonth"></h1>
-<form wicket:id="form" style="padding-left: 10px;"><select wicket:id="years" /></form>
-<p align="center">
-	<img wicket:id="perMonthChart" />
-</p>
+<form wicket:id="form"><select wicket:id="years"></select></form>
+<div wicket:id="chart" class="span12" style="height:500px"></div>
 
-<span wicket:id="list" />
+<span wicket:id="list"></span>
 </wicket:extend>
