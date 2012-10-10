@@ -87,7 +87,6 @@ import dk.teachus.frontend.pages.stats.admin.TeachersLogPage;
 import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
-import dk.teachus.frontend.pages.stats.teacher.LessonsPerHourPage;
 
 public class TeachUsApplication extends WebApplication {
 	
@@ -143,7 +142,6 @@ public class TeachUsApplication extends WebApplication {
 		mountPage("/payment", PaymentPage.class); //$NON-NLS-1$
 		mountPage("/stats/incomeperpupil", IncomePerPupilPage.class);
 		mountPage("/stats/incomepermonth", IncomePerMonthPage.class); //$NON-NLS-1$
-		mountPage("/stats/lessonsperhour", LessonsPerHourPage.class); //$NON-NLS-1$
 		mountPage("/stats/teacherssummary", TeachersSummaryPage.class); //$NON-NLS-1$
 		mountPage("/stats/teacherslog", TeachersLogPage.class); //$NON-NLS-1$
 		mountPage("/info", InfoPage.class); //$NON-NLS-1$

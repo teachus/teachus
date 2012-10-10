@@ -39,7 +39,6 @@ public abstract class AbstractTeacherStatisticsPage extends AbstractStatisticsPa
 		
 		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("General.incomePerPupil"), IncomePerPupilPage.class)); //$NON-NLS-1$
 		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("General.incomePerMonth"), IncomePerMonthPage.class)); //$NON-NLS-1$
-		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("General.lessonsPerHour"), LessonsPerHourPage.class)); //$NON-NLS-1$
 		
 		return items;
 	}
