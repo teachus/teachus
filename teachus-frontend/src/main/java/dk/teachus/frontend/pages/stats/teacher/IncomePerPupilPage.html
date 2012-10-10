@@ -1,19 +1,21 @@
-<wicket:extend>
-<form wicket:id="form">
-	<table cellspacing="10" cellpadding="0" border="0" align="center">
-		<tr>
-			<td wicket:id="startDateLabel"></td>
-			<td><span wicket:id="startDate" /></td>
-			<td wicket:id="endDateLabel"></td>
-			<td><span wicket:id="endDate" /></td>
-			<td><input type="submit" wicket:id="execute" /></td>
-		</tr>
-	</table>
+<wicket:extend xmlns:wicket="http://wicket.apache.org">
+<h1 wicket:id="pctDistribution"></h1>
+
+<form wicket:id="form" class="form-inline">
+	<label>
+		<span wicket:id="startDateLabel"></span>
+		<span wicket:id="startDate"></span>
+	</label>
+	
+	<label>
+		<span wicket:id="endDateLabel"></span>
+		<span wicket:id="endDate"></span>
+	</label>
+
+	<input type="submit" wicket:id="execute" class="btn" />
 </form>
 
-<h1 wicket:id="pctDistribution"></h1>
-<p align="center">
-	<img wicket:id="pctDistributionChart" />
-</p>
-<span wicket:id="pctDistributionSheet" />
+<div wicket:id="chart" class="span12" style="height:500px"></div>
+
+<span wicket:id="pctDistributionSheet"></span>
 </wicket:extend>
