@@ -16,14 +16,8 @@
  */
 package dk.teachus.frontend.pages.stats.teacher;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.Toolbar.BookmarkableToolbarItem;
-import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
 import dk.teachus.frontend.pages.stats.AbstractStatisticsPage;
 
 public abstract class AbstractTeacherStatisticsPage extends AbstractStatisticsPage<Teacher> {
@@ -31,16 +25,6 @@ public abstract class AbstractTeacherStatisticsPage extends AbstractStatisticsPa
 
 	public AbstractTeacherStatisticsPage() {
 		super(UserLevel.TEACHER);
-	}
-	
-	@Override
-	protected List<ToolbarItemInterface> getToolbarItems() {
-		List<ToolbarItemInterface> items = new ArrayList<ToolbarItemInterface>();
-		
-		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("General.incomePerPupil"), IncomePerPupilPage.class)); //$NON-NLS-1$
-		items.add(new BookmarkableToolbarItem(TeachUsSession.get().getString("General.incomePerMonth"), IncomePerMonthPage.class)); //$NON-NLS-1$
-		
-		return items;
 	}
 
 }

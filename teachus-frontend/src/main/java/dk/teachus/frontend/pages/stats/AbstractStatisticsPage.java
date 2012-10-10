@@ -16,47 +16,21 @@
  */
 package dk.teachus.frontend.pages.stats;
 
-import java.awt.Color;
-import java.awt.Paint;
-import java.util.List;
-
 import dk.teachus.backend.domain.Person;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.Toolbar;
-import dk.teachus.frontend.components.Toolbar.ToolbarItemInterface;
-import dk.teachus.frontend.components.jfreechart.PaintedDefaultCategoryDataset;
 import dk.teachus.frontend.pages.AuthenticatedBasePage;
 
 public abstract class AbstractStatisticsPage<P extends Person> extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
 	
-	protected static final Color COLOR_BLUE = new Color(25, 25, 204);
-	protected static final Color COLOR_RED = Color.RED;
-	protected static final Color COLOR_GREEN = new Color(25, 204, 25);
-
 	public AbstractStatisticsPage(UserLevel userLevel) {
 		super(userLevel, true);
-		
-		List<ToolbarItemInterface> items = getToolbarItems();
-		
-		add(new Toolbar("toolbar", items)); //$NON-NLS-1$
 	}
-	
-	protected abstract List<ToolbarItemInterface> getToolbarItems();
 	
 	@SuppressWarnings("unchecked")
 	protected P getPerson() {
 		return (P) TeachUsSession.get().getPerson();
-	}
-
-	protected void appendDataset(PaintedDefaultCategoryDataset toDataset, PaintedDefaultCategoryDataset fromDataset) {
-		for (int i = 0; i < fromDataset.getColumnCount(); i++) {
-			Comparable<?> columnKey = fromDataset.getColumnKey(i);
-			Comparable<?> rowKey = fromDataset.getRowKey(0);
-			Paint paint = fromDataset.getPaint(rowKey);
-			toDataset.addValue(fromDataset.getValue(rowKey, columnKey), rowKey, columnKey, paint);
-		}
 	}
 	
 	@Override

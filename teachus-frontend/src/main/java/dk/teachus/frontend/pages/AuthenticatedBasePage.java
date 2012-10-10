@@ -32,6 +32,7 @@ import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
 import dk.teachus.frontend.components.menu.MenuItem;
+import dk.teachus.frontend.components.menu.MenuItemContainer;
 import dk.teachus.frontend.components.menu.MenuItemPageLink;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
@@ -43,7 +44,10 @@ import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.ApplicationConfigurationPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
+import dk.teachus.frontend.pages.stats.admin.TeachersLogPage;
+import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
+import dk.teachus.frontend.pages.stats.teacher.IncomePerPupilPage;
 
 public abstract class AuthenticatedBasePage extends BasePage {
 	private static final long serialVersionUID = 1L;
@@ -106,7 +110,10 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		if (UserLevel.ADMIN.authorized(teachUsSession.getUserLevel())) {
 			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.ADMINS, teachUsSession.getString("General.administrators"), AdminsPage.class));
 			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.TEACHERS, teachUsSession.getString("General.teachers"), TeachersPage.class));
-			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.TEACHERS, teachUsSession.getString("General.statistics"), TeachersPage.class));
+			MenuItemContainer statItem = new MenuItemContainer(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.statistics"));
+			statItem.addSubMenuItem(new MenuItemPageLink(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.teachersSummary"), TeachersSummaryPage.class));
+			statItem.addSubMenuItem(new MenuItemPageLink(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.teachersLog"), TeachersLogPage.class));
+			menuItemsList.add(statItem);
 			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.GLOBAL_CONFIGURATION, teachUsSession.getString("General.globalConfiguration"), ApplicationConfigurationPage.class));
 		}
 		if (UserLevel.ADMIN != teachUsSession.getUserLevel()) {
@@ -116,7 +123,10 @@ public abstract class AuthenticatedBasePage extends BasePage {
 				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.SETTINGS, teachUsSession.getString("General.settings"), TeacherSettingsPage.class));
 				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.PERIODS, teachUsSession.getString("General.periods"), PeriodsPage.class));
 				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.AGENDA, teachUsSession.getString("General.agenda"), AgendaPage.class));
-				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.statistics"), IncomePerMonthPage.class));
+				MenuItemContainer statItem = new MenuItemContainer(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.statistics"));
+				statItem.addSubMenuItem(new MenuItemPageLink(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.incomePerPupil"), IncomePerPupilPage.class));
+				statItem.addSubMenuItem(new MenuItemPageLink(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.incomePerMonth"), IncomePerMonthPage.class));
+				menuItemsList.add(statItem);
 			}
 			if (UserLevel.PUPIL == teachUsSession.getUserLevel()) {
 				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.CALENDAR, teachUsSession.getString("General.calendar"), PupilCalendarPage.class));
