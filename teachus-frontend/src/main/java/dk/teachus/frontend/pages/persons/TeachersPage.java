@@ -57,7 +57,7 @@ public class TeachersPage extends PersonsPage<Teacher> {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.TEACHERS;
 	}
 	

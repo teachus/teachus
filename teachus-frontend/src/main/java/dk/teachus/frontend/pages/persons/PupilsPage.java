@@ -122,7 +122,7 @@ public class PupilsPage extends PersonsPage<Pupil> {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.PUPILS;
 	}
 	

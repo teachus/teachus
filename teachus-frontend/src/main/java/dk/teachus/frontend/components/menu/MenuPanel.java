@@ -14,28 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.pages.persons;
+package dk.teachus.frontend.components.menu;
 
-import dk.teachus.frontend.UserLevel;
-import dk.teachus.frontend.components.person.AdminPanel;
-import dk.teachus.frontend.components.person.PersonPanel;
-import dk.teachus.frontend.models.AdminModel;
+import java.util.List;
 
-public class AdminPage extends PersonPage<AdminModel> {
+import org.apache.wicket.Application;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
+import org.apache.wicket.markup.html.panel.GenericPanel;
+import org.apache.wicket.model.IModel;
+
+import dk.teachus.frontend.pages.BasePage.PageCategory;
+
+public class MenuPanel extends GenericPanel<PageCategory> {
 	private static final long serialVersionUID = 1L;
 	
-	public AdminPage(AdminModel adminModel) {
-		super(UserLevel.ADMIN, adminModel);
-	}
-
-	@Override
-	public AuthenticatedPageCategory getPageCategory() {
-		return AuthenticatedPageCategory.ADMINS;
-	}
-
-	@Override
-	protected PersonPanel createPersonPanel(String wicketId, AdminModel adminModel) {
-		return new AdminPanel(wicketId, adminModel);
+	public MenuPanel(String id, IModel<List<MenuItem>> itemsModel, IModel<List<MenuItem>> rightItemsModel, final IModel<PageCategory> activeMenuItemModel) {
+		super(id);
+		
+		add(new BookmarkablePageLink<Void>("homeLink", Application.get().getHomePage()));
+		
+		add(new MenuItemsPanel("menuItems", itemsModel, activeMenuItemModel).setRenderBodyOnly(true));
+		add(new MenuItemsPanel("rightMenuItems", rightItemsModel, activeMenuItemModel).setRenderBodyOnly(true));
 	}
 	
 }

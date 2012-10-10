@@ -31,6 +31,8 @@ import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
+import dk.teachus.frontend.components.menu.MenuItem;
+import dk.teachus.frontend.components.menu.MenuItemPageLink;
 import dk.teachus.frontend.pages.calendar.PupilCalendarPage;
 import dk.teachus.frontend.pages.calendar.TeacherCalendarPage;
 import dk.teachus.frontend.pages.messages.SentMessagesPage;
@@ -41,7 +43,6 @@ import dk.teachus.frontend.pages.persons.PupilsPage;
 import dk.teachus.frontend.pages.persons.TeachersPage;
 import dk.teachus.frontend.pages.settings.ApplicationConfigurationPage;
 import dk.teachus.frontend.pages.settings.TeacherSettingsPage;
-import dk.teachus.frontend.pages.stats.admin.TeachersSummaryPage;
 import dk.teachus.frontend.pages.stats.teacher.IncomePerMonthPage;
 
 public abstract class AuthenticatedBasePage extends BasePage {
@@ -103,28 +104,28 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
 		
 		if (UserLevel.ADMIN.authorized(teachUsSession.getUserLevel())) {
-			menuItemsList.add(MenuItem.createWithText(AdminsPage.class, teachUsSession.getString("General.administrators"), AuthenticatedPageCategory.ADMINS)); //$NON-NLS-1$
-			menuItemsList.add(MenuItem.createWithText(TeachersPage.class, teachUsSession.getString("General.teachers"), AuthenticatedPageCategory.TEACHERS)); //$NON-NLS-1$
-			menuItemsList.add(MenuItem.createWithText(TeachersSummaryPage.class, teachUsSession.getString("General.statistics"), AuthenticatedPageCategory.STATISTICS)); //$NON-NLS-1$
-			menuItemsList.add(MenuItem.createWithText(ApplicationConfigurationPage.class, teachUsSession.getString("General.globalConfiguration"), AuthenticatedPageCategory.GLOBAL_CONFIGURATION)); //$NON-NLS-1$
+			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.ADMINS, teachUsSession.getString("General.administrators"), AdminsPage.class));
+			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.TEACHERS, teachUsSession.getString("General.teachers"), TeachersPage.class));
+			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.TEACHERS, teachUsSession.getString("General.statistics"), TeachersPage.class));
+			menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.GLOBAL_CONFIGURATION, teachUsSession.getString("General.globalConfiguration"), ApplicationConfigurationPage.class));
 		}
 		if (UserLevel.ADMIN != teachUsSession.getUserLevel()) {
 			if (UserLevel.TEACHER.authorized(teachUsSession.getUserLevel())) {
-				menuItemsList.add(MenuItem.createWithText(PupilsPage.class, teachUsSession.getString("General.pupils"), AuthenticatedPageCategory.PUPILS)); //$NON-NLS-1$
-				menuItemsList.add(MenuItem.createWithText(SentMessagesPage.class, teachUsSession.getString("General.messages"), AuthenticatedPageCategory.MESSAGES)); //$NON-NLS-1$
-				menuItemsList.add(MenuItem.createWithText(TeacherSettingsPage.class, teachUsSession.getString("General.settings"), AuthenticatedPageCategory.SETTINGS)); //$NON-NLS-1$
-				menuItemsList.add(MenuItem.createWithText(PeriodsPage.class, teachUsSession.getString("General.periods"), AuthenticatedPageCategory.PERIODS)); //$NON-NLS-1$
-				menuItemsList.add(MenuItem.createWithText(AgendaPage.class, teachUsSession.getString("General.agenda"), AuthenticatedPageCategory.AGENDA)); //$NON-NLS-1$
-				menuItemsList.add(MenuItem.createWithText(IncomePerMonthPage.class, teachUsSession.getString("General.statistics"), AuthenticatedPageCategory.STATISTICS)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.PUPILS, teachUsSession.getString("General.pupils"), PupilsPage.class));
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.MESSAGES, teachUsSession.getString("General.messages"), SentMessagesPage.class));
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.SETTINGS, teachUsSession.getString("General.settings"), TeacherSettingsPage.class));
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.PERIODS, teachUsSession.getString("General.periods"), PeriodsPage.class));
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.AGENDA, teachUsSession.getString("General.agenda"), AgendaPage.class));
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.STATISTICS, teachUsSession.getString("General.statistics"), IncomePerMonthPage.class));
 			}
 			if (UserLevel.PUPIL == teachUsSession.getUserLevel()) {
-				menuItemsList.add(MenuItem.createWithText(PupilCalendarPage.class, teachUsSession.getString("General.calendar"), AuthenticatedPageCategory.CALENDAR)); //$NON-NLS-1$
-				menuItemsList.add(MenuItem.createWithText(PupilPage.class, teachUsSession.getString("General.settings"), AuthenticatedPageCategory.SETTINGS)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.CALENDAR, teachUsSession.getString("General.calendar"), PupilCalendarPage.class));
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.SETTINGS, teachUsSession.getString("General.settings"), PupilPage.class));
 			} else if (UserLevel.TEACHER == teachUsSession.getUserLevel()) {
-				menuItemsList.add(MenuItem.createWithText(TeacherCalendarPage.class, teachUsSession.getString("General.calendar"), AuthenticatedPageCategory.CALENDAR)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.CALENDAR, teachUsSession.getString("General.calendar"), TeacherCalendarPage.class));
 			}
 			if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
-				menuItemsList.add(MenuItem.createWithText(PaymentPage.class, teachUsSession.getString("General.payment"), AuthenticatedPageCategory.PAYMENT)); //$NON-NLS-1$
+				menuItemsList.add(new MenuItemPageLink(AuthenticatedPageCategory.PAYMENT, teachUsSession.getString("General.payment"), PaymentPage.class));
 			}
 		}
 		
@@ -138,7 +139,9 @@ public abstract class AuthenticatedBasePage extends BasePage {
 		List<MenuItem> menuItemsList = new ArrayList<MenuItem>();
 		
 		if (UserLevel.PUPIL.authorized(teachUsSession.getUserLevel())) {
-			menuItemsList.add(MenuItem.createWithIcon(SignOutPage.class, teachUsSession.getString("AuthenticatedBasePage.signOut"), "signout", AuthenticatedPageCategory.SIGNOUT)); //$NON-NLS-1$
+			MenuItemPageLink signOutItem = new MenuItemPageLink(AuthenticatedPageCategory.SIGNOUT, teachUsSession.getString("AuthenticatedBasePage.signOut"), SignOutPage.class);
+			signOutItem.setIcon("signout");
+			menuItemsList.add(signOutItem);
 		}
 		
 		return menuItemsList;
@@ -150,7 +153,8 @@ public abstract class AuthenticatedBasePage extends BasePage {
 	}
 
 	@Override
-	protected abstract AuthenticatedPageCategory getPageCategory();
+	public
+	abstract AuthenticatedPageCategory getPageCategory();
 	
 	@Override
 	protected Theme getTheme() {

@@ -82,7 +82,7 @@ public class InfoPage extends UnAuthenticatedBasePage {
 	}
 
 	@Override
-	protected UnAuthenticatedPageCategory getPageCategory() {
+	public UnAuthenticatedPageCategory getPageCategory() {
 		return UnAuthenticatedPageCategory.INFO;
 	}
 }

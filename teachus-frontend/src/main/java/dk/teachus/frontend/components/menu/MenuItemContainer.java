@@ -14,33 +14,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.pages;
+package dk.teachus.frontend.components.menu;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import dk.teachus.frontend.components.menu.MenuItem;
+import dk.teachus.frontend.pages.BasePage.PageCategory;
 
-public class SystemBasePage extends BasePage {
+public class MenuItemContainer implements MenuItem, Serializable {
 	private static final long serialVersionUID = 1L;
-
-	@Override
-	protected String getPagePath() {
-		return "/errors";
-	}
-
-	@Override
-	public List<MenuItem> getMenuItems() {
-		return null;
+	
+	private PageCategory menuItemType;
+	private String label;
+	private List<MenuItem> subMenuItems = new ArrayList<MenuItem>();
+	private String icon;
+	
+	public MenuItemContainer(PageCategory menuItemType, String label) {
+		this.menuItemType = menuItemType;
+		this.label = label;
 	}
 	
 	@Override
-	public List<MenuItem> getRightMenuItems() {
-		return null;
+	public String getLabel() {
+		return label;
 	}
-
+	
 	@Override
-	public PageCategory getPageCategory() {
-		return null;
+	public PageCategory getMenuItemType() {
+		return menuItemType;
 	}
-
+	
+	public void addSubMenuItem(MenuItem subMenuItem) {
+		subMenuItems.add(subMenuItem);
+	}
+	
+	public List<MenuItem> getSubMenuItems() {
+		return subMenuItems;
+	}
+	
+	public String getIconName() {
+		return icon;
+	}
+	
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	
 }

@@ -35,7 +35,7 @@ public class PupilPage extends PersonPage<PupilModel> {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		if (TeachUsSession.get().getUserLevel() == UserLevel.PUPIL) {
 			return AuthenticatedPageCategory.SETTINGS;
 		} else {

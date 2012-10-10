@@ -18,18 +18,12 @@ package dk.teachus.frontend.pages;
 
 import java.util.List;
 
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.IHeaderResponse;
-import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.BookmarkablePageLink;
-import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.PropertyModel;
@@ -41,6 +35,8 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
+import dk.teachus.frontend.components.menu.MenuItem;
+import dk.teachus.frontend.components.menu.MenuPanel;
 
 public abstract class BasePage extends WebPage {
 	private static final long serialVersionUID = 1L;
@@ -63,7 +59,10 @@ public abstract class BasePage extends WebPage {
 		sb.append(TeachUsApplication.get().getVersion());
 		add(new Label("title", sb.toString())); //$NON-NLS-1$
 		
-		createMenu();		
+		IModel<List<MenuItem>> itemsModel = new PropertyModel<List<MenuItem>>(this, "menuItems");
+		IModel<List<MenuItem>> rightItemsModel = new PropertyModel<List<MenuItem>>(this, "rightMenuItems");
+		IModel<PageCategory> activeMenuItemModel = new PropertyModel<PageCategory>(this, "pageCategory");
+		add(new MenuPanel("menu", itemsModel, rightItemsModel, activeMenuItemModel));	
 		
 		add(new Label("copyright", "2006-"+new DateMidnight().getYear()+" TeachUs Booking Systems"));
 		
@@ -122,40 +121,40 @@ public abstract class BasePage extends WebPage {
 		response.renderJavaScript(b, "ajaxLoadingIndicator");
 	}
 
-	private void createMenu() {
-		add(new BookmarkablePageLink<Void>("brandLink", TeachUsApplication.get().getHomePage()));
-		
-		addMenu("menuItems", new PropertyModel<List<MenuItem>>(this, "menuItems"));
-		addMenu("rightMenuItems", new PropertyModel<List<MenuItem>>(this, "rightMenuItems"));
-	}
+//	private void createMenu() {
+//		add(new BookmarkablePageLink<Void>("brandLink", TeachUsApplication.get().getHomePage()));
+//		
+//		addMenu("menuItems", new PropertyModel<List<MenuItem>>(this, "menuItems"));
+//		addMenu("rightMenuItems", new PropertyModel<List<MenuItem>>(this, "rightMenuItems"));
+//	}
 	
-	private void addMenu(String wicketId, IModel<List<MenuItem>> menuItemsModel) {
-		add(new ListView<MenuItem>(wicketId, menuItemsModel) {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void populateItem(ListItem<MenuItem> item) {
-				MenuItem menuItem = item.getModelObject();
-				Link<Void> menuLink = new BookmarkablePageLink<Void>("menuLink", menuItem.getBookmarkablePage());
-				item.add(menuLink);
-				
-				if (menuItem.getPageCategory().equals(getPageCategory())) {
-					item.add(AttributeModifier.replace("class", "active"));
-				}
-				
-				if (menuItem.getIcon() == null) {
-					menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
-				} else {
-					WebComponent icon = new WebComponent("menuLabel");
-					menuLink.add(AttributeModifier.replace("title", menuItem.getHelpText()));
-					menuLink.add(AttributeModifier.replace("rel", "tooltip"));
-					menuLink.add(AttributeModifier.replace("data-placement", "bottom"));
-					icon.add(AttributeModifier.replace("class", "icon-"+menuItem.getIcon()));
-					menuLink.add(icon);
-				}
-			}
-		});
-	}
+//	private void addMenu(String wicketId, IModel<List<MenuItem>> menuItemsModel) {
+//		add(new ListView<MenuItem>(wicketId, menuItemsModel) {
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			protected void populateItem(ListItem<MenuItem> item) {
+//				MenuItem menuItem = item.getModelObject();
+//				Link<Void> menuLink = new BookmarkablePageLink<Void>("menuLink", menuItem.getBookmarkablePage());
+//				item.add(menuLink);
+//				
+//				if (menuItem.getPageCategory().equals(getPageCategory())) {
+//					item.add(AttributeModifier.replace("class", "active"));
+//				}
+//				
+//				if (menuItem.getIcon() == null) {
+//					menuLink.add(new Label("menuLabel", menuItem.getHelpText()));
+//				} else {
+//					WebComponent icon = new WebComponent("menuLabel");
+//					menuLink.add(AttributeModifier.replace("title", menuItem.getHelpText()));
+//					menuLink.add(AttributeModifier.replace("rel", "tooltip"));
+//					menuLink.add(AttributeModifier.replace("data-placement", "bottom"));
+//					icon.add(AttributeModifier.replace("class", "icon-"+menuItem.getIcon()));
+//					menuLink.add(icon);
+//				}
+//			}
+//		});
+//	}
 
 	@Override
 	protected void onBeforeRender() {
@@ -174,7 +173,7 @@ public abstract class BasePage extends WebPage {
 
 	protected abstract String getPagePath();
 
-	protected abstract PageCategory getPageCategory();
+	public abstract PageCategory getPageCategory();
 	
 	public abstract List<MenuItem> getMenuItems();
 	

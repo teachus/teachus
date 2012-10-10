@@ -84,7 +84,7 @@ public class ApplicationConfigurationPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.GLOBAL_CONFIGURATION;
 	}
 

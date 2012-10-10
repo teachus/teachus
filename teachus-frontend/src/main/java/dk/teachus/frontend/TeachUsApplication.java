@@ -105,6 +105,7 @@ public class TeachUsApplication extends WebApplication {
 		getApplicationSettings().setPageExpiredErrorPage(PageExpiredPage.class);
 		getApplicationSettings().setInternalErrorPage(InternalErrorPage.class);
 		getExceptionSettings().setUnexpectedExceptionDisplay(IExceptionSettings.SHOW_INTERNAL_ERROR_PAGE);
+		getMarkupSettings().setStripWicketTags(true);
 		
 		if (getConfigurationType() == RuntimeConfigurationType.DEVELOPMENT) {
 			getRequestCycleSettings().addResponseFilter(new AjaxServerAndClientTimeFilter());

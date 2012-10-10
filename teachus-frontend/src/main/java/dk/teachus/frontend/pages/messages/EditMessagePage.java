@@ -79,7 +79,7 @@ public class EditMessagePage extends AuthenticatedBasePage {
 	}
 	
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.MESSAGES;
 	}
 	

@@ -167,7 +167,7 @@ public class SentMessagesPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.MESSAGES;
 	}
 	

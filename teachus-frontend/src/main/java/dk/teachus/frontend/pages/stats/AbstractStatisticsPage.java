@@ -60,7 +60,7 @@ public abstract class AbstractStatisticsPage<P extends Person> extends Authentic
 	}
 	
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.STATISTICS;
 	}
 

@@ -14,33 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package dk.teachus.frontend.pages;
+package dk.teachus.frontend.components.menu;
 
-import java.util.List;
+import dk.teachus.frontend.pages.BasePage.PageCategory;
 
-import dk.teachus.frontend.components.menu.MenuItem;
-
-public class SystemBasePage extends BasePage {
-	private static final long serialVersionUID = 1L;
-
-	@Override
-	protected String getPagePath() {
-		return "/errors";
-	}
-
-	@Override
-	public List<MenuItem> getMenuItems() {
-		return null;
-	}
+public interface MenuItem {
 	
-	@Override
-	public List<MenuItem> getRightMenuItems() {
-		return null;
-	}
-
-	@Override
-	public PageCategory getPageCategory() {
-		return null;
-	}
-
+	String getLabel();
+	
+	PageCategory getMenuItemType();
+	
+	/**
+	 * @return The icon name, as taken from http://fortawesome.github.com/Font-Awesome/#all-icons WITHOUT icon- in the
+	 *         beginning
+	 */
+	String getIconName();
+	
 }

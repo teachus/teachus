@@ -30,7 +30,7 @@ public class SignOutPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.SIGNOUT;
 	}
 

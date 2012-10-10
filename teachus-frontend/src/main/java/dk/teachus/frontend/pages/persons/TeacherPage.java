@@ -29,7 +29,7 @@ public class TeacherPage extends PersonPage<TeacherModel> {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.TEACHERS;
 	}
 

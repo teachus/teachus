@@ -43,6 +43,8 @@ import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.Select2Enabler;
 import dk.teachus.frontend.components.form.DefaultFocusBehavior;
+import dk.teachus.frontend.components.menu.MenuItem;
+import dk.teachus.frontend.components.menu.MenuItemPageLink;
 import dk.teachus.frontend.utils.LocaleChoiceRenderer;
 
 public abstract class UnAuthenticatedBasePage extends BasePage {
@@ -193,7 +195,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 	public List<MenuItem> getMenuItems() {
 		List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-		menuItems.add(MenuItem.createWithText(InfoPage.class, TeachUsSession.get().getString("General.info"), UnAuthenticatedPageCategory.INFO));
+		menuItems.add(new MenuItemPageLink(UnAuthenticatedPageCategory.INFO, TeachUsSession.get().getString("General.info"), InfoPage.class));
 		
 		return menuItems;
 	}
@@ -204,6 +206,7 @@ public abstract class UnAuthenticatedBasePage extends BasePage {
 	}
 	
 	@Override
-	protected abstract UnAuthenticatedPageCategory getPageCategory();
+	public
+	abstract UnAuthenticatedPageCategory getPageCategory();
 
 }

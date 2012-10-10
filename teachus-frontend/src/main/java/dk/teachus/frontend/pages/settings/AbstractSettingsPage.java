@@ -41,7 +41,7 @@ public abstract class AbstractSettingsPage extends AuthenticatedBasePage {
 	}
 
 	@Override
-	protected AuthenticatedPageCategory getPageCategory() {
+	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.SETTINGS;
 	}
 
