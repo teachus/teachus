@@ -20,7 +20,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigation;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxFallbackHeadersToolbar;
 import org.apache.wicket.extensions.ajax.markup.html.repeater.data.table.AjaxNavigationToolbar;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -32,11 +36,17 @@ import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvid
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.navigation.paging.IPageable;
+import org.apache.wicket.markup.html.navigation.paging.IPagingLabelProvider;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigation;
+import org.apache.wicket.markup.html.navigation.paging.PagingNavigator;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.markup.repeater.data.ListDataProvider;
 import org.apache.wicket.model.AbstractReadOnlyModel;
 import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 
 import dk.teachus.frontend.TeachUsSession;
 
@@ -146,6 +156,92 @@ public class ListPanel<T extends Serializable> extends Panel {
 				});
 				label.setRenderBodyOnly(true);
 				return label;
+			}
+			
+			@Override
+			protected PagingNavigator newPagingNavigator(String navigatorId, DataTable<?> table) {
+				return new AjaxPagingNavigator(navigatorId, table) {
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void onAjaxEvent(final AjaxRequestTarget target) {
+						target.add(getTable());
+					}
+					
+					@Override
+					protected Link<?> newPagingNavigationLink(String id, IPageable pageable, final int pageNumber) {
+						final Link<?> pagingNavigationLink = super.newPagingNavigationLink(id, pageable, pageNumber);
+						pagingNavigationLink.setBody(Model.of(""));
+						pagingNavigationLink.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public String getObject() {
+								String cls = "btn btn-mini";
+								if (pageNumber == 0) {
+									cls += " icon-fast-backward";
+								} else {
+									cls += " icon-fast-forward";
+								}
+								if (false == pagingNavigationLink.isEnabled()) {
+									cls += " disabled";
+								}
+								return cls;
+							}
+						}));
+						return pagingNavigationLink;
+					}
+					
+					@Override
+					protected Link<?> newPagingNavigationIncrementLink(String id, IPageable pageable, final int increment) {
+						final Link<?> pagingNavigationIncrementLink = super.newPagingNavigationIncrementLink(id, pageable, increment);
+						pagingNavigationIncrementLink.setBody(Model.of(""));
+						pagingNavigationIncrementLink.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() {
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public String getObject() {
+								String cls = "btn btn-mini";
+								if (increment < 0) {
+									cls += " icon-backward";
+								} else {
+									cls += " icon-forward";
+								}
+								if (false == pagingNavigationIncrementLink.isEnabled()) {
+									cls += " disabled";
+								}
+								return cls;
+							}
+						}));
+						return pagingNavigationIncrementLink;
+					}
+					
+					@Override
+					protected PagingNavigation newNavigation(String id, IPageable pageable, IPagingLabelProvider labelProvider) {
+						return new AjaxPagingNavigation(id, pageable, labelProvider) {
+							private static final long serialVersionUID = 1L;
+							
+							@Override
+							protected Link<?> newPagingNavigationLink(String id, IPageable pageable, int pageIndex) {
+								final Link<?> pagingNavigationLink = super.newPagingNavigationLink(id, pageable, pageIndex);
+								pagingNavigationLink.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() {
+									private static final long serialVersionUID = 1L;
+
+									@Override
+									public String getObject() {
+										StringBuilder cls = new StringBuilder();
+										cls.append("btn btn-mini");
+										if (false == pagingNavigationLink.isEnabled()) {
+											cls.append(" btn-primary disabled");
+										}
+										return cls.toString();
+									}
+								}));
+								return pagingNavigationLink;
+							}
+						};
+					}
+				};
 			}
 		};
 	}
