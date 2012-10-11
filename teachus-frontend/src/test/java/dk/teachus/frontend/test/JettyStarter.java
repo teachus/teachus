@@ -49,6 +49,8 @@ public class JettyStarter {
 				JettyWebXmlConfiguration.class.getName()
 		});
 		
+		webAppContext.setInitParameter("doDynamicDataImport", "true");
+		
 		MysqlConnectionPoolDataSource dataSource = new MysqlConnectionPoolDataSource();
 		dataSource.setUrl("jdbc:mysql://localhost/teachus");
 		dataSource.setUser("root");
