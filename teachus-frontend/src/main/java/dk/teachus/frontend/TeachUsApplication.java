@@ -33,6 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.Application;
+import org.apache.wicket.ConverterLocator;
+import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.Page;
 import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
@@ -49,6 +51,7 @@ import org.apache.wicket.request.mapper.parameter.PageParametersEncoder;
 import org.apache.wicket.response.filter.AjaxServerAndClientTimeFilter;
 import org.apache.wicket.settings.IExceptionSettings;
 import org.apache.wicket.util.string.Strings;
+import org.joda.time.DateMidnight;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -62,6 +65,7 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.Theme;
 import dk.teachus.backend.testdatagenerator.DynamicDataImport;
+import dk.teachus.frontend.components.form.DateMidnightConverter;
 import dk.teachus.frontend.ical.IcalResource;
 import dk.teachus.frontend.pages.AgendaPage;
 import dk.teachus.frontend.pages.HomePage;
@@ -120,6 +124,13 @@ public class TeachUsApplication extends WebApplication {
 		mountPages();
 		
 		mountResources();
+	}
+	
+	@Override
+	protected IConverterLocator newConverterLocator() {
+		ConverterLocator converterLocator = new ConverterLocator();
+		converterLocator.set(DateMidnight.class, new DateMidnightConverter());
+		return converterLocator;
 	}
 	
 	private void loadConfiguration() {

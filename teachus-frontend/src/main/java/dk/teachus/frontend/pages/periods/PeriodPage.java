@@ -18,7 +18,6 @@ package dk.teachus.frontend.pages.periods;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -52,7 +51,6 @@ import dk.teachus.frontend.components.calendar.PeriodsCalendarPanel;
 import dk.teachus.frontend.components.form.ButtonPanelElement;
 import dk.teachus.frontend.components.form.CheckGroupElement;
 import dk.teachus.frontend.components.form.DateElement;
-import dk.teachus.frontend.components.form.DateModel;
 import dk.teachus.frontend.components.form.DecimalFieldElement;
 import dk.teachus.frontend.components.form.DropDownElement;
 import dk.teachus.frontend.components.form.FormPanel;
@@ -114,20 +112,18 @@ public class PeriodPage extends AuthenticatedBasePage {
 		form.addElement(nameElement);
 		
 		// Begin date
-		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new DateModel(new PropertyModel<DateMidnight>(period, "beginDate"))); //$NON-NLS-1$ //$NON-NLS-2$
+		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel<DateMidnight>(period, "beginDate")); //$NON-NLS-1$ //$NON-NLS-2$
 		beginDateElement.setReadOnly(period.getStatus() != Status.DRAFT);
 		form.addElement(beginDateElement);
 		
 		// End date
-		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new DateModel(new PropertyModel<DateMidnight>(period, "endDate"))); //$NON-NLS-1$ //$NON-NLS-2$
-		endDateElement.add(new IValidator<Date>() {
+		final DateElement endDateElement = new DateElement(TeachUsSession.get().getString("General.endDate"), new PropertyModel<DateMidnight>(period, "endDate")); //$NON-NLS-1$ //$NON-NLS-2$
+		endDateElement.add(new IValidator<DateMidnight>() {
 			private static final long serialVersionUID = 1L;
 			
-			public void validate(IValidatable<Date> validatable) {
-				Date value = validatable.getValue();
-				if (value != null) {
-					DateTime date = new DateTime(value);
-					
+			public void validate(IValidatable<DateMidnight> validatable) {
+				DateMidnight date = validatable.getValue();
+				if (date != null) {
 					// Check if the end date conflicts with some bookings
 					if (period.getId() != null) {
 						BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();

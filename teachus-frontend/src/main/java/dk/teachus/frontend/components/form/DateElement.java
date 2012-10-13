@@ -16,41 +16,34 @@
  */
 package dk.teachus.frontend.components.form;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-
 import org.apache.wicket.Component;
-import org.apache.wicket.datetime.PatternDateConverter;
-import org.apache.wicket.datetime.markup.html.form.DateTextField;
-import org.apache.wicket.extensions.yui.calendar.DatePicker;
 import org.apache.wicket.feedback.ComponentFeedbackMessageFilter;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
-import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.form.FormComponent;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.validation.IValidator;
+import org.joda.time.DateMidnight;
 
-public class DateElement extends AbstractValidationInputElement<Date> {
+public class DateElement extends AbstractValidationInputElement<DateMidnight> {
 	private static final long serialVersionUID = 1L;
 
-	private IModel<Date> inputModel;
-	private DateTextField dateField;
+	private IModel<DateMidnight> inputModel;
+	private DateField<DateMidnight> dateField;
 	
-	public DateElement(String label, IModel<Date> inputModel) {
+	public DateElement(String label, IModel<DateMidnight> inputModel) {
 		this(label, inputModel, false);
 	}
 	
-	public DateElement(String label, IModel<Date> inputModel, boolean required) {
+	public DateElement(String label, IModel<DateMidnight> inputModel, boolean required) {
 		super(label, required);
 		
 		this.inputModel = inputModel;
 	}
 
 	@Override
-	protected void addValidator(IValidator<Date> validator) {
+	protected void addValidator(IValidator<DateMidnight> validator) {
 		dateField.add(validator);
 	}
 
@@ -60,7 +53,7 @@ public class DateElement extends AbstractValidationInputElement<Date> {
 	}
 
 	@Override
-	public FormComponent<Date> getFormComponent() {
+	public FormComponent<DateMidnight> getFormComponent() {
 		return dateField;
 	}
 
@@ -74,7 +67,7 @@ public class DateElement extends AbstractValidationInputElement<Date> {
 		DateElementPanel elementPanel = new DateElementPanel(wicketId);
 		elementPanel.setRenderBodyOnly(true);
 		
-		dateField = new DateTextField("dateField", inputModel, new PatternDateConverter("yyyy-MM-dd", false)) {
+		dateField = new DateField<DateMidnight>("dateField", inputModel) {
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -82,26 +75,6 @@ public class DateElement extends AbstractValidationInputElement<Date> {
 				return isReadOnly() == false;
 			}
 		};
-		dateField.add(new DatePicker() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public boolean isEnabled(Component component) {
-				return isReadOnly() == false;
-			}
-			
-			@Override
-			protected void configure(Map<String, Object> widgetProperties, IHeaderResponse response, Map<String, Object> initVariables) {
-				super.configure(widgetProperties, response, initVariables);
-
-				widgetProperties.put("START_WEEKDAY", Calendar.getInstance(getLocale()).getFirstDayOfWeek()-1);
-			}
-			
-			@Override
-			protected boolean enableMonthYearSelection() {
-				return true;
-			}
-		});
 		dateField.setLabel(new Model<String>(label));
 		dateField.setRequired(required);
 		elementPanel.add(dateField);
