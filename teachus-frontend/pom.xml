@@ -22,6 +22,10 @@
 			<artifactId>teachus-backend</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>dk.teachus</groupId>
+			<artifactId>teachus-backend-hibernate</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-core</artifactId>
 		</dependency>

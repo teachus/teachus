@@ -18,6 +18,7 @@
 
 	<modules>
 		<module>teachus-backend</module>
+		<module>teachus-backend-hibernate</module>
 		<module>teachus-frontend</module>
 		<module>teachus-test</module>
 	</modules>
@@ -35,6 +36,12 @@
 			<dependency>
 				<groupId>dk.teachus</groupId>
 				<artifactId>teachus-backend</artifactId>
+				<version>${project.version}</version>
+				<type>jar</type>
+			</dependency>
+			<dependency>
+				<groupId>dk.teachus</groupId>
+				<artifactId>teachus-backend-hibernate</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>

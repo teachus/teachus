@@ -1,5 +1,6 @@
 .metadata
 teachus-backend/target
+teachus-backend-hibernate/target
 teachus-frontend/target
 teachus-test/target
 /.project
