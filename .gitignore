@@ -1,6 +1,7 @@
 .metadata
 teachus-backend/target
 teachus-frontend/target
-teachus-test/target
+teachus-gae/target
+teachus-gae/datanucleus.log
 /.project
 .DS_Store

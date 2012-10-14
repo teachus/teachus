@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
+
+	<!-- Override beans not needed -->
+	<bean id="placeholderConfig" />
+	<bean id="hibernatePropertiesBean" />
+	<bean id="dataSource" />
+	<bean id="liquibase" />
+	<bean id="sessionFactory" />
+	<bean id="dynamicDataImport" />
+
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref local="sessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="txProxyTemplate" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+		</property>
+	</bean>
+	
+	<!-- ===================== -->
+	<!--         BEANS         -->
+	<!-- ===================== -->
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.smtp}"/>
+	</bean>   
+		
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+	
+	<bean id="velocityBean" class="dk.teachus.backend.bean.impl.SpringVelocityBean">
+		<constructor-arg ref="velocityEngine" />
+	</bean>   
+	
+	<bean id="mailBean" class="dk.teachus.backend.bean.impl.SpringMailBean">
+		<constructor-arg ref="mailSender" />
+	</bean>
+
+	<!-- Notification bean -->
+	<bean id="notificationBean" class="dk.teachus.backend.bean.impl.VelocityNotificationBean">
+		<constructor-arg ref="bookingDao" />
+		<constructor-arg ref="personDao" />
+		<constructor-arg ref="velocityBean" />	
+		<constructor-arg ref="messageDao" />
+	</bean>
+
+	<!-- ==================== -->
+	<!--         DAOS         -->
+	<!-- ==================== -->
+		
+	<bean id="personDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernatePersonDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="periodDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernatePeriodDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="bookingDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernateBookingDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="statisticsDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernateStatisticsDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="applicationDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernateApplicationDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="messageDao" parent="txProxyTemplate">
+		<property name="target">
+			<bean
+				class="dk.teachus.backend.dao.hibernate.HibernateMessageDAO">
+				<property name="sessionFactory">
+					<ref bean="sessionFactory" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+</beans>
