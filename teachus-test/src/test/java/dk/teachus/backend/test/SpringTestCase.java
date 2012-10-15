@@ -62,28 +62,28 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	private static boolean useMysql = false;
 	
 	static {
-		String mysql = System.getProperty("teachus.test.use.mysql");
+		final String mysql = System.getProperty("teachus.test.use.mysql");
 		if (mysql != null && mysql.length() > 0) {
-			useMysql = true;
+			SpringTestCase.useMysql = true;
 		}
 	}
 	
 	public SpringTestCase() {
-		setDefaultRollback(false);	
+		setDefaultRollback(false);
 	}
 	
-	protected Long createPupilBooking(long periodId, long pupilId, DateTime dateTime, DateTime createDate) {
-		BookingDAO bookingDAO = getBookingDAO();
-		PersonDAO personDAO = getPersonDAO();
-		PeriodDAO periodDAO = getPeriodDAO();
+	protected Long createPupilBooking(final long periodId, final long pupilId, final DateTime dateTime, final DateTime createDate) {
+		final BookingDAO bookingDAO = getBookingDAO();
+		final PersonDAO personDAO = getPersonDAO();
+		final PeriodDAO periodDAO = getPeriodDAO();
 		
-		Period period = periodDAO.get(periodId);
+		final Period period = periodDAO.get(periodId);
 		endTransaction();
 		
-		Pupil pupil = (Pupil) personDAO.getPerson(pupilId);
+		final Pupil pupil = (Pupil) personDAO.getPerson(pupilId);
 		endTransaction();
 		
-		PupilBooking pupilBooking = bookingDAO.createPupilBookingObject();
+		final PupilBooking pupilBooking = bookingDAO.createPupilBookingObject();
 		pupilBooking.setPeriod(period);
 		pupilBooking.setPupil(pupil);
 		pupilBooking.setTeacher(pupil.getTeacher());
@@ -98,22 +98,22 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		return pupilBooking.getId();
 	}
 	
-	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date) {
+	protected Long createTeacherBooking(final long periodId, final long teacherId, final DateTime date) {
 		return createTeacherBooking(periodId, teacherId, date, new DateTime());
 	}
 	
-	protected Long createTeacherBooking(long periodId, long teacherId, DateTime date, DateTime createDate) {
-		BookingDAO bookingDAO = getBookingDAO();
-		PersonDAO personDAO = getPersonDAO();
-		PeriodDAO periodDAO = getPeriodDAO();
+	protected Long createTeacherBooking(final long periodId, final long teacherId, final DateTime date, final DateTime createDate) {
+		final BookingDAO bookingDAO = getBookingDAO();
+		final PersonDAO personDAO = getPersonDAO();
+		final PeriodDAO periodDAO = getPeriodDAO();
 		
-		Period period = periodDAO.get(periodId);
+		final Period period = periodDAO.get(periodId);
 		endTransaction();
 		
-		Teacher teacher = (Teacher) personDAO.getPerson(teacherId);
+		final Teacher teacher = (Teacher) personDAO.getPerson(teacherId);
 		endTransaction();
 		
-		TeacherBooking teacherBooking = bookingDAO.createTeacherBookingObject();
+		final TeacherBooking teacherBooking = bookingDAO.createTeacherBookingObject();
 		teacherBooking.setCreateDate(createDate);
 		teacherBooking.setDate(date);
 		teacherBooking.setPeriod(period);
@@ -124,16 +124,18 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		
 		return teacherBooking.getId();
 	}
-
+	
 	@Override
 	protected String[] getConfigLocations() {
-		List<String> configLocations = new ArrayList<String>();
+		final List<String> configLocations = new ArrayList<String>();
 		
 		configLocations.add("/dk/teachus/backend/applicationContext.xml");
+		configLocations.add("/dk/teachus/backend/dao/hibernate/applicationContext-hibernate.xml");
+		configLocations.add("/dk/teachus/frontend/applicationContext-frontend.xml");
 		
 		DataSource dataSource = null;
-		if (useMysql) {
-			MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
+		if (SpringTestCase.useMysql) {
+			final MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
 			ds.setUrl("jdbc:mysql://localhost/teachus_test");
 			ds.setUser("teachus_build");
 			ds.setPassword("teachus_build");
@@ -144,13 +146,13 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 			configLocations.add("/dk/teachus/backend/test/applicationContext-test-hsqldb.xml");
 		}
 		
-		SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
+		final SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
 		contextBuilder.bind("java:comp/env/jdbc/teachus", dataSource);
 		try {
 			contextBuilder.activate();
-		} catch (IllegalStateException e) {
+		} catch (final IllegalStateException e) {
 			throw new RuntimeException(e);
-		} catch (NamingException e) {
+		} catch (final NamingException e) {
 			throw new RuntimeException(e);
 		}
 		
@@ -159,30 +161,30 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		return configLocations.toArray(new String[configLocations.size()]);
 	}
 	
-	protected void addConfigLocations(List<String> configLocations) {
+	protected void addConfigLocations(final List<String> configLocations) {
 	}
 	
 	@Override
 	protected void onSetUpBeforeTransaction() throws Exception {
-		Connection connection = getSessionFactory().openSession().connection();
+		final Connection connection = getSessionFactory().openSession().connection();
 		new StaticDataImport(connection);
 		
-		DataSource dataSource = (DataSource) applicationContext.getBean("dataSource");
+		final DataSource dataSource = (DataSource) applicationContext.getBean("dataSource");
 		setDataSource(dataSource);
 	}
-
+	
 	public BookingDAO getBookingDAO() {
 		return (BookingDAO) applicationContext.getBean("bookingDao");
 	}
-
+	
 	public PeriodDAO getPeriodDAO() {
 		return (PeriodDAO) applicationContext.getBean("periodDao");
 	}
-
+	
 	public PersonDAO getPersonDAO() {
 		return (PersonDAO) applicationContext.getBean("personDao");
 	}
-
+	
 	public StatisticsDAO getStatisticsDAO() {
 		return (StatisticsDAO) applicationContext.getBean("statisticsDao");
 	}
@@ -194,25 +196,25 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 	public MessageDAO getMessageDAO() {
 		return (MessageDAO) applicationContext.getBean("messageDao");
 	}
-
+	
 	public SessionFactory getSessionFactory() {
 		return (SessionFactory) applicationContext.getBean("sessionFactory");
 	}
-
-	protected Pupil createPupil(Teacher teacher, int pupilNumber) {
-		Pupil pupil = new PupilImpl();
-		pupil.setName("Test pupil "+pupilNumber);
+	
+	protected Pupil createPupil(final Teacher teacher, final int pupilNumber) {
+		final Pupil pupil = new PupilImpl();
+		pupil.setName("Test pupil " + pupilNumber);
 		pupil.setActive(true);
-		pupil.setEmail("pupil"+pupilNumber+"@teachus.dk");
-		pupil.setUsername("pupil"+pupilNumber);
+		pupil.setEmail("pupil" + pupilNumber + "@teachus.dk");
+		pupil.setUsername("pupil" + pupilNumber);
 		pupil.setTeacher(teacher);
 		getPersonDAO().save(pupil);
 		endTransaction();
 		return pupil;
 	}
-
+	
 	protected Teacher createTeacher() {
-		Teacher teacher = new TeacherImpl();
+		final Teacher teacher = new TeacherImpl();
 		teacher.setName("Test name");
 		teacher.setActive(true);
 		teacher.setEmail("test@teachus.dk");
@@ -222,10 +224,10 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		return teacher;
 	}
 	
-	protected Object loadObject(Class<?> objectClass, Serializable objectId) {
+	protected Object loadObject(final Class<?> objectClass, final Serializable objectId) {
 		Object object = null;
 		
-		org.hibernate.Session session = getSessionFactory().openSession();
+		final org.hibernate.Session session = getSessionFactory().openSession();
 		session.beginTransaction();
 		
 		object = session.get(objectClass, objectId);
@@ -235,9 +237,9 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		
 		return object;
 	}
-
+	
 	protected Teacher inactivateTeacher() {
-		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
+		final Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
 		endTransaction();
 		
 		teacher.setActive(false);
@@ -246,15 +248,15 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		endTransaction();
 		return teacher;
 	}
-
+	
 	protected Teacher getTeacher() {
-		Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
+		final Teacher teacher = (Teacher) getPersonDAO().getPerson(2L);
 		endTransaction();
 		return teacher;
 	}
 	
 	protected ApplicationConfiguration createDummyConfiguration() {
-		ApplicationConfigurationImpl conf = new ApplicationConfigurationImpl(null);
+		final ApplicationConfigurationImpl conf = new ApplicationConfigurationImpl(null);
 		
 		conf.setConfiguration(ApplicationConfiguration.SERVER_URL, "http://localhost:8080/");
 		

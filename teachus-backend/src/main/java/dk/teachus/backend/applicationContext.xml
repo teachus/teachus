@@ -5,78 +5,6 @@
        xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
-
-	<bean id="placeholderConfig"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="/WEB-INF/teachus.properties" />
-	</bean>
-
-	<bean id="hibernatePropertiesBean"
-		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-		<property name="location" value="/WEB-INF/teachus.properties" />
-	</bean>
-
-	<!-- Data source -->
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/teachus"/>
-
-	<!-- LiquiBase Database Schema Evolution Management -->
-	<bean id="liquibase" class="dk.teachus.backend.db.TeachUsSpringLiquibase">
-		<property name="dataSource" ref="dataSource" />
-		<property name="changeLog" value="classpath:db-changelog-master.xml" />
-	</bean>
-
-	<!-- Hibernate SessionFactory -->
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource">
-			<ref local="dataSource" />
-		</property>
-		<property name="mappingResources">
-			<list>
-				<value>
-					dk/teachus/backend/dao/hibernate/Person.hbm.xml
-				</value>
-				<value>
-					dk/teachus/backend/dao/hibernate/Period.hbm.xml
-				</value>
-				<value>
-					dk/teachus/backend/dao/hibernate/Booking.hbm.xml
-				</value>
-				<value>
-					dk/teachus/backend/dao/hibernate/TeacherAttribute.hbm.xml
-				</value>
-				<value>
-					dk/teachus/backend/dao/hibernate/ApplicationConfiguration.hbm.xml
-				</value>
-				<value>
-					dk/teachus/backend/dao/hibernate/Message.hbm.xml
-				</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<ref local="hibernatePropertiesBean" />
-		</property>
-	</bean>
-	
-	<bean id="dynamicDataImport" class="dk.teachus.backend.testdatagenerator.DynamicDataImport">
-		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-
-	<bean id="txManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory">
-			<ref local="sessionFactory" />
-		</property>
-	</bean>
-
-	<bean id="txProxyTemplate" abstract="true"
-		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="txManager" />
-		<property name="transactionAttributeSource">
-			<bean
-				class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-		</property>
-	</bean>
 	
 	<!-- ===================== -->
 	<!--         BEANS         -->
@@ -110,75 +38,21 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 		<constructor-arg ref="velocityBean" />	
 		<constructor-arg ref="messageDao" />
 	</bean>
-
-	<!-- ==================== -->
-	<!--         DAOS         -->
-	<!-- ==================== -->
-		
-	<bean id="personDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.backend.dao.hibernate.HibernatePersonDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
 	
-	<bean id="periodDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.backend.dao.hibernate.HibernatePeriodDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
+	<!-- ===================== -->
+	<!--          DAO          -->
+	<!-- ===================== -->
 	
-	<bean id="bookingDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.backend.dao.hibernate.HibernateBookingDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
+	<bean id="personDao" />
 	
-	<bean id="statisticsDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.backend.dao.hibernate.HibernateStatisticsDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
+	<bean id="periodDao" />
 	
-	<bean id="applicationDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.backend.dao.hibernate.HibernateApplicationDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
+	<bean id="bookingDao" />
 	
-	<bean id="messageDao" parent="txProxyTemplate">
-		<property name="target">
-			<bean
-				class="dk.teachus.backend.dao.hibernate.HibernateMessageDAO">
-				<property name="sessionFactory">
-					<ref bean="sessionFactory" />
-				</property>
-			</bean>
-		</property>
-	</bean>
+	<bean id="statisticsDao" />
+	
+	<bean id="applicationDao" />
+	
+	<bean id="messageDao" />
 
 </beans>
