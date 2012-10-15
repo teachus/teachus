@@ -106,7 +106,7 @@ public class TeacherPeriodsCalendarPanel extends PeriodsCalendarPanel {
 			teacherBooking.setPeriod(payload.getPeriod());
 			teacherBooking.setTeacher(TeachUsSession.get().getTeacher());
 			teacherBooking.setCreateDate(new DateTime());
-			TeachUsApplication.get().getBookingDAO().book(teacherBooking);
+			TeachUsApplication.get().getBookingDAO().saveBooking(teacherBooking);
 			payload.setBooking(teacherBooking);
 		}
 	}

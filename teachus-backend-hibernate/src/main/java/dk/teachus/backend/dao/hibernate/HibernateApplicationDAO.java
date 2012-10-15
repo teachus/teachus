@@ -28,7 +28,7 @@ import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationEntry;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional(propagation=Propagation.MANDATORY)
 public class HibernateApplicationDAO extends HibernateDaoSupport implements ApplicationDAO {
 
 	@SuppressWarnings("unchecked")

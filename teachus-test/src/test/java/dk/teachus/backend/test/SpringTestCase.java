@@ -92,7 +92,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		pupilBooking.setCreateDate(createDate);
 		pupilBooking.setDate(dateTime);
 		
-		bookingDAO.book(pupilBooking);
+		bookingDAO.saveBooking(pupilBooking);
 		endTransaction();
 		
 		return pupilBooking.getId();
@@ -119,7 +119,7 @@ public abstract class SpringTestCase extends AbstractAnnotationAwareTransactiona
 		teacherBooking.setPeriod(period);
 		teacherBooking.setTeacher(teacher);
 		
-		bookingDAO.book(teacherBooking);
+		bookingDAO.saveBooking(teacherBooking);
 		endTransaction();
 		
 		return teacherBooking.getId();

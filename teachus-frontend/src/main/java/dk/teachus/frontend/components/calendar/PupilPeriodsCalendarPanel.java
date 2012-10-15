@@ -126,7 +126,7 @@ public class PupilPeriodsCalendarPanel extends PeriodsCalendarPanel {
 			pupilBooking.setTeacher(pupil.getTeacher());
 			pupilBooking.setPupil(pupil);
 			pupilBooking.setCreateDate(new DateTime());
-			TeachUsApplication.get().getBookingDAO().book(pupilBooking);
+			TeachUsApplication.get().getBookingDAO().saveBooking(pupilBooking);
 			payload.setBooking(pupilBooking);
 		}
 	}

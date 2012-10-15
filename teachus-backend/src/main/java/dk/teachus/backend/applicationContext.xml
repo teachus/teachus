@@ -54,5 +54,11 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 	<bean id="applicationDao" />
 	
 	<bean id="messageDao" />
+	
+	<!-- ===================== -->
+	<!--        SERVICES       -->
+	<!-- ===================== -->
+	
+	
 
 </beans>

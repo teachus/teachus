@@ -46,46 +46,13 @@ import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
 
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional(propagation=Propagation.MANDATORY)
 public class HibernateBookingDAO extends HibernateDaoSupport implements BookingDAO {
 	private static final long serialVersionUID = 1L;
 
-	public void book(Booking booking) {
-		// Validate the booking
-		Period period = booking.getPeriod();
-		DateTime date = booking.getDate();
-		
-		if (period.getStatus() != Status.FINAL) {
-			throw new IllegalArgumentException("Can only book in active periods");
-		}
-		
-		if (period.hasDate(date) == false) {
-			throw new IllegalArgumentException("The period can not be booked on this date");
-		}
-		
-		if (booking instanceof PupilBooking) {
-			PupilBooking pupilBooking = (PupilBooking) booking;
-			if (pupilBooking.getPupil().isActive() == false) {
-				throw new IllegalArgumentException("Can only book for active pupils");
-			}
-			
-			if (pupilBooking.getCreateDate() == null) {
-				throw new IllegalArgumentException("Pupil bookings must have a create date");
-			}
-			
-			// Ensure that the teacher property is set
-			if (pupilBooking.getTeacher() == null) {
-				pupilBooking.setTeacher(pupilBooking.getPupil().getTeacher());
-			}
-		}
-		
-		getHibernateTemplate().save(booking);
+	public void saveBooking(Booking booking) {
+		getHibernateTemplate().saveOrUpdate(booking);
 		getHibernateTemplate().flush();
-	}
-
-	@Transactional(readOnly=true)
-	public PupilBooking createPupilBookingObject() {
-		return new PupilBookingImpl();
 	}
 	
 	@Transactional(readOnly=true)
@@ -257,10 +224,6 @@ public class HibernateBookingDAO extends HibernateDaoSupport implements BookingD
 	}
 	
 	public void changePaidStatus(PupilBooking pupilBooking) {
-		if (pupilBooking.isActive() == false) {
-			throw new IllegalArgumentException("Can only change paid status on active bookings");
-		}
-		
 		pupilBooking.setPaid(pupilBooking.isPaid() == false);
 		// TODO Can we get the real timezone somehow?
 		pupilBooking.setUpdateDate(new DateTime());

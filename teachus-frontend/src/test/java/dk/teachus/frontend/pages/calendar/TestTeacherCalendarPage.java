@@ -108,7 +108,7 @@ public class TestTeacherCalendarPage extends WicketTestCase {
 			one(personDAO).getAttributes(teacher);
 			will(returnValue(new ArrayList<TeacherAttribute>()));
 			
-			one(bookingDAO).book(with(aNonNull(Booking.class)));
+			one(bookingDAO).saveBooking(with(aNonNull(Booking.class)));
 			
 			exactly(2).of(bookingDAO).getBookings(with(aNonNull(Teacher.class)), with(aNonNull(DateMidnight.class)), with(aNonNull(DateMidnight.class)));
 			TeacherBookingImpl teacherBooking = new TeacherBookingImpl();
