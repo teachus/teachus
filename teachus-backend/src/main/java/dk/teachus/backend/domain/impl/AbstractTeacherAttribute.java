@@ -22,7 +22,7 @@ import java.util.Set;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 
-public abstract class AbstractTeacherAttribute extends AbstractHibernateObject implements TeacherAttribute {
+public abstract class AbstractTeacherAttribute extends AbstractJpaObject implements TeacherAttribute {
 	private static final long serialVersionUID = 1L;
 
 	private Set<ValueChangeListener> valueChangeListeners;

@@ -33,7 +33,7 @@ import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.utils.DateUtils;
 
-public class PeriodImpl extends AbstractHibernateObject implements Serializable, Period {
+public class PeriodImpl extends AbstractJpaObject implements Serializable, Period {
 	public static enum WeekDay {
 		MONDAY(DateTimeConstants.MONDAY),
 		TUESDAY(DateTimeConstants.TUESDAY),

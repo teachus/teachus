@@ -18,89 +18,113 @@ package dk.teachus.backend.domain.impl;
 
 import java.util.Locale;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
 
-public abstract class PersonImpl extends AbstractHibernateObject implements Person {
+@Entity
+@Table(name = "person")
+public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	private static final long serialVersionUID = 1L;
-
+	
 	private String name;
-
+	
 	private String username;
-
+	
 	private String password;
-
+	
 	private String email;
-
+	
 	private String phoneNumber;
-
+	
 	private Locale locale;
 	
+	@Enumerated(EnumType.STRING)
 	private Theme theme;
 	
 	private boolean active = true;
-
+	
+	@Override
 	public String getEmail() {
 		return email;
 	}
-
+	
+	@Override
 	public Locale getLocale() {
 		return locale;
 	}
-
+	
+	@Override
 	public String getName() {
 		return name;
 	}
-
+	
+	@Override
 	public String getPassword() {
 		return password;
 	}
-
+	
+	@Override
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-
+	
+	@Override
 	public String getUsername() {
 		return username;
 	}
-
+	
+	@Override
 	public boolean isActive() {
 		return active;
 	}
-
-	public void setActive(boolean active) {
+	
+	@Override
+	public void setActive(final boolean active) {
 		this.active = active;
 	}
-
-	public void setEmail(String email) {
+	
+	@Override
+	public void setEmail(final String email) {
 		this.email = email;
 	}
-
-	public void setLocale(Locale locale) {
+	
+	@Override
+	public void setLocale(final Locale locale) {
 		this.locale = locale;
 	}
-
-	public void setName(String name) {
+	
+	@Override
+	public void setName(final String name) {
 		this.name = name;
 	}
-
-	public void setPassword(String password) {
+	
+	@Override
+	public void setPassword(final String password) {
 		this.password = password;
 	}
-
-	public void setPhoneNumber(String phoneNumber) {
+	
+	@Override
+	public void setPhoneNumber(final String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-
-	public void setUsername(String username) {
+	
+	@Override
+	public void setUsername(final String username) {
 		this.username = username;
 	}
-
+	
+	@Override
 	public Theme getTheme() {
 		return theme;
 	}
-
-	public void setTheme(Theme theme) {
+	
+	@Override
+	public void setTheme(final Theme theme) {
 		this.theme = theme;
 	}
 }
