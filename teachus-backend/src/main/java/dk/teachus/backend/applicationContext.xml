@@ -38,21 +38,5 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 		<constructor-arg ref="velocityBean" />	
 		<constructor-arg ref="messageDao" />
 	</bean>
-	
-	<!-- ===================== -->
-	<!--          DAO          -->
-	<!-- ===================== -->
-	
-	<bean id="personDao" />
-	
-	<bean id="periodDao" />
-	
-	<bean id="bookingDao" />
-	
-	<bean id="statisticsDao" />
-	
-	<bean id="applicationDao" />
-	
-	<bean id="messageDao" />
 
 </beans>
