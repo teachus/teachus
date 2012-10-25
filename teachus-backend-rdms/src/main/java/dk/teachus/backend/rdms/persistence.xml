@@ -2,6 +2,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	version="2.0">
-	<persistence-unit name="org.hibernate.tutorial.jpa">
+	<persistence-unit name="teachus-default">
+		<class>dk.teachus.backend.domain.impl.ApplicationConfigurationEntry</class>
 	</persistence-unit>
 </persistence>
