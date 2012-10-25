@@ -60,7 +60,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 	<bean id="applicationDao" class="dk.teachus.backend.dao.jpa.JpaApplicationDAO" />
 
-	<!-- <bean id="personDao" /> -->
+	<bean id="personDao" class="dk.teachus.backend.dao.jpa.JpaPersonDAO" />
 
 	<!-- <bean id="periodDao" /> -->
 

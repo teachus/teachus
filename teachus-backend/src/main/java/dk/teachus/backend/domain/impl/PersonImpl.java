@@ -18,9 +18,13 @@ package dk.teachus.backend.domain.impl;
 
 import java.util.Locale;
 
+import javax.persistence.Enumerated;
+import javax.persistence.MappedSuperclass;
+
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
 
+@MappedSuperclass
 public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	private static final long serialVersionUID = 1L;
 	
@@ -34,8 +38,9 @@ public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	
 	private String phoneNumber;
 	
-	private Locale locale;
+	private String locale;
 	
+	@Enumerated
 	private Theme theme;
 	
 	private boolean active = true;
@@ -47,7 +52,7 @@ public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	
 	@Override
 	public Locale getLocale() {
-		return locale;
+		return new Locale(locale);
 	}
 	
 	@Override
@@ -87,7 +92,7 @@ public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	
 	@Override
 	public void setLocale(final Locale locale) {
-		this.locale = locale;
+		this.locale = locale.toString();
 	}
 	
 	@Override

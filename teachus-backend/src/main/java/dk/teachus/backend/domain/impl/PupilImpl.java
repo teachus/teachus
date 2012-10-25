@@ -16,31 +16,43 @@
  */
 package dk.teachus.backend.domain.impl;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
 
-
+@Entity
+@Table(name = "pupil")
 public class PupilImpl extends PersonImpl implements Pupil {
 	private static final long serialVersionUID = 1L;
 	
+	@OneToOne
+	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
+	
 	private String notes;
-
+	
+	@Override
 	public Teacher getTeacher() {
 		return teacher;
 	}
-
-	public void setTeacher(Teacher teacher) {
+	
+	@Override
+	public void setTeacher(final Teacher teacher) {
 		this.teacher = teacher;
 	}
-
+	
+	@Override
 	public String getNotes() {
 		return notes;
 	}
-
-	public void setNotes(String notes) {
+	
+	@Override
+	public void setNotes(final String notes) {
 		this.notes = notes;
 	}
 	
 }
- 

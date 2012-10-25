@@ -5,36 +5,16 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 
-import javax.sql.DataSource;
-
-import org.hsqldb.jdbcDriver;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 
 import dk.teachus.backend.dao.ApplicationDAO;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationEntry;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
+import dk.teachus.backend.rdms.test.AbstractSpringTests;
 
-@ContextConfiguration(locations = {
-		"/dk/teachus/backend/applicationContext.xml",
-		"/dk/teachus/backend/rdms/applicationContext-rdms.xml",
-		"/dk/teachus/backend/rdms/test/applicationContext-rdms.xml" })
-public class TestJpaApplicationDAO extends AbstractTransactionalJUnit4SpringContextTests {
-
-	@BeforeClass
-	public static void setupDataSource() throws Exception {
-		final DataSource dataSource = new SimpleDriverDataSource(new jdbcDriver(), "jdbc:hsqldb:mem:teachus", "sa", "");
-
-		final SimpleNamingContextBuilder contextBuilder = new SimpleNamingContextBuilder();
-		contextBuilder.bind("java:comp/env/jdbc/teachus", dataSource);
-		contextBuilder.activate();
-	}
+public class TestJpaApplicationDAO extends AbstractSpringTests {
 
 	@Autowired
 	private ApplicationDAO applicationDAO;
