@@ -23,7 +23,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dk.teachus</groupId>
-			<artifactId>teachus-backend-hibernate</artifactId>
+			<artifactId>teachus-backend-rdms</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>

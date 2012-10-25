@@ -18,16 +18,9 @@ package dk.teachus.backend.domain.impl;
 
 import java.util.Locale;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
 
-@Entity
-@Table(name = "person")
 public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	private static final long serialVersionUID = 1L;
 	
@@ -43,7 +36,6 @@ public abstract class PersonImpl extends AbstractJpaObject implements Person {
 	
 	private Locale locale;
 	
-	@Enumerated(EnumType.STRING)
 	private Theme theme;
 	
 	private boolean active = true;

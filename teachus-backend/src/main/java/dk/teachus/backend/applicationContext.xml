@@ -7,9 +7,9 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<!-- ===================== -->
+	<!-- ===== -->
 	<!-- BEANS -->
-	<!-- ===================== -->
+	<!-- ===== -->
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${mail.smtp}" />
@@ -34,28 +34,41 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<!-- Notification bean -->
-	<bean id="notificationBean" class="dk.teachus.backend.bean.impl.VelocityNotificationBean">
-		<constructor-arg ref="bookingDao" />
-		<constructor-arg ref="personDao" />
-		<constructor-arg ref="velocityBean" />
-		<constructor-arg ref="messageDao" />
-	</bean>
+<!-- 	<bean id="notificationBean" class="dk.teachus.backend.bean.impl.VelocityNotificationBean"> -->
+<!-- 		<constructor-arg ref="bookingDao" /> -->
+<!-- 		<constructor-arg ref="personDao" /> -->
+<!-- 		<constructor-arg ref="velocityBean" /> -->
+<!-- 		<constructor-arg ref="messageDao" /> -->
+<!-- 	</bean> -->
 
-	<!-- +========================+ -->
-	<!-- | Transaction management | -->
-	<!-- +========================+ -->
+	<!-- +====================+ -->
+	<!-- | JPA & Transactions | -->
+	<!-- +====================+ -->
+	
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/teachus" />
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 
-	<bean id="entityManagerFactory" />
-
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="persistenceUnitName" value="teachus-default"/>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+			</bean>
+		</property>
+	</bean>
+	
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<bean id="persistenceAnnotation" class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
 	<!-- +=====+ -->
 	<!-- | DAO | -->
 	<!-- +=====+ -->
+
+	<bean id="applicationDao" class="dk.teachus.backend.dao.jpa.JpaApplicationDAO" />
 
 <!-- 	<bean id="personDao" /> -->
 
