@@ -18,32 +18,26 @@ package dk.teachus.backend.domain.impl;
 
 import java.io.Serializable;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Version;
+import javax.jdo.annotations.VersionStrategy;
 
-@MappedSuperclass
-public abstract class AbstractJpaObject implements Serializable {
+@PersistenceCapable
+@Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
+@Version(strategy = VersionStrategy.VERSION_NUMBER, column = "version")
+public abstract class AbstractJdoObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
 	
-	@Version
-	private int version;
-	
-	public AbstractJpaObject() {
-	}
-	
-	public int getVersion() {
-		return version;
-	}
-	
-	public void setVersion(final int version) {
-		this.version = version;
+	public AbstractJdoObject() {
 	}
 	
 	public Long getId() {
@@ -54,12 +48,10 @@ public abstract class AbstractJpaObject implements Serializable {
 		this.id = id;
 	}
 	
-	protected AbstractJpaObject(final AbstractJpaObject o) {
+	protected AbstractJdoObject(final AbstractJdoObject o) {
 		if (o.id != null) {
 			id = new Long(o.id);
 		}
-		
-		version = o.version;
 	}
 	
 }

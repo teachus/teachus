@@ -18,23 +18,23 @@ package dk.teachus.backend.domain.impl;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Version;
+import javax.jdo.annotations.VersionStrategy;
 
-@Entity
-@Table(name = "application_configuration")
+@PersistenceCapable(table = "application_configuration")
+@Version(strategy = VersionStrategy.VERSION_NUMBER, column = "version")
 public class ApplicationConfigurationEntry implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@PrimaryKey
+	@Persistent(column = "name")
 	private String key;
 	
+	@Persistent
 	private String value;
-	
-	@Version
-	protected int version;
 	
 	protected ApplicationConfigurationEntry() {
 	}

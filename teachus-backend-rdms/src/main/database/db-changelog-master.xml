@@ -7,5 +7,6 @@
 
 	<include file="db-changelog-baseline.xml" />
 	<include file="db-changelog-old-db-cleanup.xml" />
+	<include file="db-changelog-jdo.xml" />
 
 </databaseChangeLog>

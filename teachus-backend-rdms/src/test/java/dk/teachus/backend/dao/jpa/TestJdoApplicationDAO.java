@@ -14,7 +14,7 @@ import dk.teachus.backend.domain.impl.ApplicationConfigurationEntry;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 import dk.teachus.backend.rdms.test.AbstractSpringTests;
 
-public class TestJpaApplicationDAO extends AbstractSpringTests {
+public class TestJdoApplicationDAO extends AbstractSpringTests {
 
 	@Autowired
 	private ApplicationDAO applicationDAO;

@@ -18,31 +18,41 @@ package dk.teachus.backend.domain.impl;
 
 import java.util.Locale;
 
-import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
 
-@MappedSuperclass
-public abstract class PersonImpl extends AbstractJpaObject implements Person {
+@PersistenceCapable
+@Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
+public abstract class PersonImpl extends AbstractJdoObject implements Person {
 	private static final long serialVersionUID = 1L;
 	
+	@Persistent
 	private String name;
 	
+	@Persistent
 	private String username;
 	
+	@Persistent
 	private String password;
 	
+	@Persistent
 	private String email;
 	
+	@Persistent(column = "phone_number")
 	private String phoneNumber;
 	
+	@Persistent
 	private String locale;
 	
-	@Enumerated
+	@Persistent
 	private Theme theme;
 	
+	@Persistent
 	private boolean active = true;
 	
 	@Override

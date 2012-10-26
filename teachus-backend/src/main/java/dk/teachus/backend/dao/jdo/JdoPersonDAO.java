@@ -1,11 +1,9 @@
-package dk.teachus.backend.dao.jpa;
+package dk.teachus.backend.dao.jdo;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.springframework.transaction.annotation.Transactional;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
@@ -14,18 +12,25 @@ import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.AdminImpl;
+import dk.teachus.backend.domain.impl.PersonImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 
-public class JpaPersonDAO implements PersonDAO {
+public class JdoPersonDAO implements PersonDAO {
 	private static final long serialVersionUID = 1L;
 	
-	private EntityManager entityManager;
+	private PersistenceManagerFactory persistenceManagerFactory;
 	
-	@Transactional
 	@Override
 	public void save(final Person person) {
-		entityManager.persist(person);
+		final PersistenceManager pm = persistenceManagerFactory.getPersistenceManager();
+		pm.makePersistent(person);
+	}
+	
+	@Override
+	public Person getPerson(final Long personId) {
+		final PersistenceManager pm = persistenceManagerFactory.getPersistenceManager();
+		return pm.getObjectById(PersonImpl.class, personId);
 	}
 	
 	@Override
@@ -48,12 +53,6 @@ public class JpaPersonDAO implements PersonDAO {
 	
 	@Override
 	public List<Pupil> getPupils(final Teacher teacher) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
-	public Person getPerson(final Long personId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -109,9 +108,8 @@ public class JpaPersonDAO implements PersonDAO {
 		
 	}
 	
-	@PersistenceContext
-	public void setEntityManager(final EntityManager entityManager) {
-		this.entityManager = entityManager;
+	public void setPersistenceManagerFactory(final PersistenceManagerFactory persistenceManagerFactory) {
+		this.persistenceManagerFactory = persistenceManagerFactory;
 	}
 	
 }

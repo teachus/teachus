@@ -45,22 +45,27 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<!-- | JPA & Transactions | -->
 	<!-- +====================+ -->
 
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	<bean id="transactionManager" class="org.springframework.orm.jdo.JdoTransactionManager">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactory" />
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<bean id="persistenceAnnotation"
-		class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<bean id="persistenceManagerFactoryTx" class="org.springframework.orm.jdo.TransactionAwarePersistenceManagerFactoryProxy">
+		<property name="targetPersistenceManagerFactory" ref="persistenceManagerFactory" />
+	</bean>
 
 	<!-- +=====+ -->
 	<!-- | DAO | -->
 	<!-- +=====+ -->
 
-	<bean id="applicationDao" class="dk.teachus.backend.dao.jpa.JpaApplicationDAO" />
+	<bean id="applicationDao" class="dk.teachus.backend.dao.jdo.JdoApplicationDAO">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
+	</bean>
 
-	<bean id="personDao" class="dk.teachus.backend.dao.jpa.JpaPersonDAO" />
+	<bean id="personDao" class="dk.teachus.backend.dao.jdo.JdoPersonDAO">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
+	</bean>
 
 	<!-- <bean id="periodDao" /> -->
 

@@ -16,16 +16,16 @@
  */
 package dk.teachus.backend.domain.impl;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 
 import dk.teachus.backend.domain.Teacher;
 
-@Entity
-@Table(name = "teacher")
+@PersistenceCapable(table = "teacher")
 public class TeacherImpl extends PersonImpl implements Teacher {
 	private static final long serialVersionUID = 1L;
 	
+	@Persistent
 	private String currency;
 	
 	@Override

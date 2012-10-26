@@ -14,18 +14,13 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 		<property name="changeLog" value="classpath:db-changelog-master.xml" />
 	</bean>
 
-	<bean id="jpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-		<property name="showSql" value="false" />
-		<property name="generateDdl" value="false" />
-		<property name="databasePlatform" value="org.hibernate.dialect.MySQL5Dialect" />
-	</bean>
-			
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceXmlLocation"
-			value="classpath:/dk/teachus/backend/rdms/persistence.xml" />
-		<property name="dataSource" ref="dataSource" />
-		<property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
+	<bean id="persistenceManagerFactory" class="org.datanucleus.api.jdo.JDOPersistenceManagerFactory" destroy-method="close">
+		<property name="connectionFactory" ref="dataSource" />
+		<property name="persistenceProperties">
+			<map>
+				<entry key="datanucleus.identifier.case" value="PreserveCase" />
+			</map>
+		</property>
 	</bean>
 
 </beans>
