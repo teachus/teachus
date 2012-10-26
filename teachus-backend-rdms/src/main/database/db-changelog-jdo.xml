@@ -3,6 +3,74 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+         
+	<changeSet id="split_admin_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<createTable tableName="admin_users">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="username" type="varchar(50)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="password" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="email" type="varchar(250)">
+				<constraints nullable="true" />
+			</column>
+			<column name="phone_number" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="theme" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="active" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="currency" type="varchar(10)">
+				<constraints nullable="true" />
+			</column>
+			<column name="notes" type="mediumtext">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="move_admin_users_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<sql>
+			INSERT INTO
+				admin_users
+				SELECT
+					id, 
+					version,
+					name,
+					username,
+					password,
+					email,
+					phone_number,
+					locale,
+					theme,
+					active,
+					currency,
+					notes
+				FROM
+					person 
+				WHERE
+					person_type = 'ADMIN'
+		</sql>
+	</changeSet>
 
 	<changeSet id="split_teacher_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
 		<createTable tableName="teacher">
