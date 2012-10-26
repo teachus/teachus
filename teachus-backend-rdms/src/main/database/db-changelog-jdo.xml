@@ -220,4 +220,70 @@
 		</sql>
 	</changeSet>
 	
+	<changeSet id="change_teacher_attribute_person_fk" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<dropForeignKeyConstraint constraintName="FKD49E7E7F1CC24034" baseTableName="teacher_attribute" />
+		<dropIndex tableName="teacher_attribute" indexName="FKD49E7E7F1CC24034"/>
+		
+		<createIndex tableName="teacher_attribute" indexName="IDX_TEACHER_ATTRIBUTE_TEACHER">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_TEACHER_ATTRIBUTE_TEACHER" baseTableName="teacher_attribute"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+	</changeSet>
+	
+	<changeSet id="change_period_teacher_person_fk" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">	
+		<dropForeignKeyConstraint constraintName="FKC4E375C11CC24034" baseTableName="period" />
+		<dropIndex tableName="period" indexName="FKC4E375C11CC24034"/>
+		
+		<createIndex tableName="period" indexName="IDX_PERIOD_TEACHER">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_PERIOD_TEACHER" baseTableName="period"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+	</changeSet>
+	
+	<changeSet id="change_booking_person_fks" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<dropForeignKeyConstraint constraintName="FK3DB08598007F534" baseTableName="booking" />
+		<dropIndex tableName="booking" indexName="FK3DB08598007F534"/>
+		
+		<dropForeignKeyConstraint constraintName="FK3DB08591CC24034" baseTableName="booking" />
+		<dropIndex tableName="booking" indexName="FK3DB08591CC24034"/>
+		
+		<createIndex tableName="booking" indexName="IDX_BOOKING_TEACHER">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_BOOKING_TEACHER" baseTableName="booking"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+		
+		<createIndex tableName="booking" indexName="IDX_BOOKING_PUPIL">
+			<column name="pupil_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_BOOKING_PUPIL" baseTableName="booking"
+			baseColumnNames="pupil_id" referencedTableName="pupil" referencedColumnNames="id" />
+	</changeSet>
+	
+<!-- 	<changeSet id="drop_message_person_fks" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql"> -->
+<!-- 		<dropForeignKeyConstraint constraintName="FK_MESSAGE_RECIPIENT_PERSON" baseTableName="message" /> -->
+<!-- 		<dropForeignKeyConstraint constraintName="FK38EB0007E0E4002A" baseTableName="message" /> -->
+		
+<!-- 		<dropIndex tableName="message" indexName="FK38EB0007E0E4002A"/> -->
+<!-- 	</changeSet> -->
+	
+<!-- 	<changeSet id="create_message_teacher_pupil_fks" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql"> -->
+<!-- 		<addForeignKeyConstraint constraintName="FK_MESSAGE_RECIPIENT_PUPIL" baseTableName="message" -->
+<!-- 			baseColumnNames="recipient" referencedTableName="pupil" referencedColumnNames="id" /> -->
+		
+<!-- 		<createIndex tableName="message" indexName="IDX_MESSAGE_SENDER_TEACHER"> -->
+<!-- 			<column name="sender"></column> -->
+<!-- 		</createIndex> -->
+<!-- 		<addForeignKeyConstraint constraintName="FK_MESSAGE_SENDER_TEACHER" baseTableName="message" -->
+<!-- 			baseColumnNames="sender" referencedTableName="teacher" referencedColumnNames="id" /> -->
+<!-- 	</changeSet> -->
+	
+<!-- 	<changeSet id="drop_person_table" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql"> -->
+<!-- 		<dropForeignKeyConstraint constraintName="FKC4E39B551CC24034" baseTableName="person" /> -->
+	
+<!-- 		<dropTable tableName="person" /> -->
+<!-- 	</changeSet> -->
+	
 </databaseChangeLog>
