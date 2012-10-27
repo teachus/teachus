@@ -20,11 +20,13 @@ import java.util.Locale;
 
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Theme;
+import dk.teachus.utils.HashUtils;
 
 @PersistenceCapable
 @Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
@@ -37,8 +39,11 @@ public abstract class PersonImpl extends AbstractJdoObject implements Person {
 	@Persistent
 	private String username;
 	
-	@Persistent
+	@NotPersistent
 	private String password;
+	
+	@Persistent(column = "password")
+	private String hashedPassword;
 	
 	@Persistent
 	private String email;
@@ -73,6 +78,11 @@ public abstract class PersonImpl extends AbstractJdoObject implements Person {
 	@Override
 	public String getPassword() {
 		return password;
+	}
+	
+	@Override
+	public String getHashedPassword() {
+		return hashedPassword;
 	}
 	
 	@Override
@@ -113,6 +123,10 @@ public abstract class PersonImpl extends AbstractJdoObject implements Person {
 	@Override
 	public void setPassword(final String password) {
 		this.password = password;
+		
+		if (password != null) {
+			hashedPassword = HashUtils.hash(password);
+		}
 	}
 	
 	@Override

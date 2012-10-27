@@ -1,46 +1,16 @@
 package dk.teachus.backend.domain;
 
-import java.util.TimeZone;
-
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import dk.teachus.backend.domain.TeacherAttribute.TeacherAttributeProperty;
 import dk.teachus.backend.domain.TeacherAttribute.ValueChangeListener;
-import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
+import dk.teachus.backend.domain.impl.TeacherAttributeImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
-import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 
 public class TestTeacherAttributes extends TestCase {
 	
-	public void testCalendarNarrowTimesTeacherAttribute() {
-		final CalendarNarrowTimesTeacherAttribute a = new CalendarNarrowTimesTeacherAttribute();
-		a.setId(1L);
-		final TeacherImpl teacher = new TeacherImpl();
-		a.setTeacher(teacher);
-		a.setBooleanValue(true);
-		
-		Assert.assertEquals(new Long(1), a.getId());
-		Assert.assertSame(teacher, a.getTeacher());
-		Assert.assertTrue(a.getBooleanValue());
-	}
-	
-	public void testTimeZoneAttribute() {
-		final TimeZoneAttribute a = new TimeZoneAttribute();
-		a.setId(1L);
-		final TeacherImpl teacher = new TeacherImpl();
-		a.setTeacher(teacher);
-		
-		Assert.assertNull(a.getTimeZone());
-		
-		a.setTimeZone(TimeZone.getDefault());
-		
-		Assert.assertEquals(new Long(1), a.getId());
-		Assert.assertSame(teacher, a.getTeacher());
-		Assert.assertEquals(TimeZone.getDefault(), a.getTimeZone());
-	}
-	
 	public void testListeners() {
-		final WelcomeIntroductionTeacherAttribute a = new WelcomeIntroductionTeacherAttribute();
+		final TeacherAttributeImpl a = new TeacherAttributeImpl();
 		final MockListener listener = new MockListener();
 		
 		a.setId(1L);
@@ -52,24 +22,24 @@ public class TestTeacherAttributes extends TestCase {
 		Assert.assertNull(listener.getOldValue());
 		Assert.assertNull(listener.getNewValue());
 		
-		a.setValue("something");
+		a.setWelcomeIntroduction("something");
 		
 		Assert.assertNull(listener.getOldValue());
 		Assert.assertEquals("something", listener.getNewValue());
 		
-		a.setValue("another");
+		a.setWelcomeIntroduction("another");
 		
 		Assert.assertEquals("something", listener.getOldValue());
 		Assert.assertEquals("another", listener.getNewValue());
 		
-		a.setValue(null);
+		a.setWelcomeIntroduction(null);
 		
 		Assert.assertEquals("another", listener.getOldValue());
 		Assert.assertNull(listener.getNewValue());
 		
 		a.removeValueChangeListener(listener);
 		
-		a.setValue("new");
+		a.setWelcomeIntroduction("new");
 		
 		Assert.assertEquals("another", listener.getOldValue());
 		Assert.assertNull(listener.getNewValue());
@@ -90,7 +60,7 @@ public class TestTeacherAttributes extends TestCase {
 		}
 		
 		@Override
-		public void onValueChanged(final TeacherAttribute teacherAttribute, final String oldValue, final String newValue) {
+		public void onValueChanged(final TeacherAttributeProperty property, final String oldValue, final String newValue) {
 			this.oldValue = oldValue;
 			this.newValue = newValue;
 		}

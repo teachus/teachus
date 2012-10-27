@@ -17,22 +17,38 @@
 package dk.teachus.backend.domain;
 
 import java.io.Serializable;
+import java.util.TimeZone;
 
 public interface TeacherAttribute extends Serializable {
-
+	
+	public static enum TeacherAttributeProperty {
+		WELCOME_INTRODUCTION, TIMEZONE, CALENDAR_NARROW_TIMES
+	}
+	
 	public static interface ValueChangeListener extends Serializable {
-		void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue);
+		void onValueChanged(TeacherAttributeProperty teacherAttributeProperty, String oldValue, String newValue);
 	}
 	
 	Long getId();
 	
 	Teacher getTeacher();
+	
 	void setTeacher(Teacher teacher);
 	
-	String getValue();
-	void setValue(String value);
+	String getWelcomeIntroduction();
+	
+	void setWelcomeIntroduction(String welcomeIntroduction);
+	
+	TimeZone getTimeZone();
+	
+	void setTimeZone(TimeZone timeZone);
+	
+	boolean getCalendarNarrowTimes();
+	
+	void setCalendarNarrowTimes(boolean calendarNarrowTimes);
 	
 	void addValueChangeListener(ValueChangeListener valueChangeListener);
+	
 	void removeValueChangeListener(ValueChangeListener valueChangeListener);
 	
 }

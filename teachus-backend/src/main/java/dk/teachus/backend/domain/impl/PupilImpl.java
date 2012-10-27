@@ -16,7 +16,7 @@
  */
 package dk.teachus.backend.domain.impl;
 
-import javax.jdo.annotations.Column;
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
@@ -27,7 +27,8 @@ import dk.teachus.backend.domain.Teacher;
 public class PupilImpl extends PersonImpl implements Pupil {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "teacher_id")
+	@Persistent(column = "teacher_id")
+	@Extension(vendorName = "datanucleus", key = "implementation-classes", value = "dk.teachus.backend.domain.impl.TeacherImpl")
 	private Teacher teacher;
 	
 	@Persistent

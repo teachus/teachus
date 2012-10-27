@@ -1,4 +1,4 @@
-package dk.teachus.backend.db;
+package dk.teachus.backend.rdms.db;
 
 import liquibase.database.typeconversion.TypeConverter;
 import liquibase.integration.spring.SpringLiquibase;
@@ -11,7 +11,8 @@ import liquibase.servicelocator.ServiceLocator;
 public class TeachUsSpringLiquibase extends SpringLiquibase {
 	
 	public TeachUsSpringLiquibase() {
-		ServiceLocator.getInstance().addPackageToScan("dk.teachus.backend.db");
+		String packageName = TeachUsSpringLiquibase.class.getPackage().getName();
+		ServiceLocator.getInstance().addPackageToScan(packageName);
 	}
 	
 }

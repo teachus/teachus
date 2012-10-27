@@ -16,9 +16,12 @@
  */
 package dk.teachus.backend.domain.impl;
 
+import javax.jdo.annotations.PersistenceCapable;
+
 import dk.teachus.backend.domain.Admin;
 
+@PersistenceCapable(table = "admin_users")
 public class AdminImpl extends PersonImpl implements Admin {
 	private static final long serialVersionUID = 1L;
-
+	
 }

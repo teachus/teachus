@@ -1,4 +1,4 @@
-package dk.teachus.backend.db;
+package dk.teachus.backend.rdms.db;
 
 import liquibase.database.structure.type.CustomType;
 import liquibase.database.structure.type.DataType;

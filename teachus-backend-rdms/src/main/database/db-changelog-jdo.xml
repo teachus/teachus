@@ -285,5 +285,56 @@
 	
 <!-- 		<dropTable tableName="person" /> -->
 <!-- 	</changeSet> -->
+
+	<changeSet id="flatten_teacher_attribute_table" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<addColumn tableName="teacher_attribute">
+			<column name="welcome_introduction" type="[text]">
+				<constraints nullable="true" />
+			</column>
+			<column name="timezone" type="varchar(30)">
+				<constraints nullable="true" />
+			</column>
+			<column name="calendar_narrow_times" type="tinyint(1)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<dropNotNullConstraint tableName="teacher_attribute" columnName="attribute" columnDataType="varchar(255)" />
+		<dropNotNullConstraint tableName="teacher_attribute" columnName="value" columnDataType="text" />
+		<sql>
+			INSERT INTO
+				teacher_attribute
+				(
+					version,
+					teacher_id,
+					welcome_introduction,
+					timezone,
+					calendar_narrow_times
+				)
+				SELECT
+					0,
+					t.teacher_id,
+					t1.value,
+					t2.value,
+					IF(t3.value='false',0,1)
+				FROM
+					teacher_attribute AS t
+					LEFT JOIN
+					teacher_attribute AS t1 ON t.teacher_id=t1.teacher_id AND t1.attribute='WELCOME_INTRODUCTION'
+					LEFT JOIN
+					teacher_attribute AS t2 ON t.teacher_id=t2.teacher_id AND t2.attribute='TIMEZONE'
+					LEFT JOIN
+					teacher_attribute AS t3 ON t.teacher_id=t3.teacher_id AND t3.attribute='CALENDARNARROWTIMES'
+				GROUP BY
+					t.teacher_id
+		</sql>
+		<sql>
+			DELETE FROM
+				teacher_attribute
+			WHERE
+				attribute IS NOT NULL
+		</sql>
+		<dropColumn tableName="teacher_attribute" columnName="attribute"/>
+		<dropColumn tableName="teacher_attribute" columnName="value"/>
+	</changeSet>
 	
 </databaseChangeLog>

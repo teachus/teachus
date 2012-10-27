@@ -20,7 +20,7 @@
 		<module>teachus-backend</module>
 		<module>teachus-backend-rdms</module>
 		<module>teachus-frontend</module>
-		<module>teachus-test</module>
+		
 	</modules>
 	
 	<properties>
@@ -50,12 +50,6 @@
 				<artifactId>teachus-frontend</artifactId>
 				<version>${project.version}</version>
 				<type>war</type>
-			</dependency>
-			<dependency>
-				<groupId>dk.teachus</groupId>
-				<artifactId>teachus-test</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
 			</dependency>
 
 			<!-- Runtime/Compile dependencies -->
