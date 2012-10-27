@@ -23,36 +23,28 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.frontend.TeachUsSession;
 
 public class WelcomeMailSettingsPage extends AbstractSettingsPage {
 	private static final long serialVersionUID = 1L;
-
-	public WelcomeMailSettingsPage() {		
+	
+	public WelcomeMailSettingsPage() {
 		createIntroductionMailForm();
 	}
-
+	
 	private void createIntroductionMailForm() {
-		Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
+		final Teacher teacher = (Teacher) TeachUsSession.get().getPerson();
 		
-		WelcomeIntroductionTeacherAttribute welcomeAttribute = TeachUsSession.get().getTeacherAttribute(WelcomeIntroductionTeacherAttribute.class);
-		if (welcomeAttribute == null) {
-			welcomeAttribute = new WelcomeIntroductionTeacherAttribute();
-			welcomeAttribute.setTeacher(teacher);
-		}
+		final TeacherAttribute attribute = TeachUsSession.get().getTeacherAttribute(teacher);
 		
-		// Introduction mail text
-		final WelcomeIntroductionTeacherAttribute attribute = welcomeAttribute;
-		
-		
-		Form form = new Form("form");
+		final Form<Void> form = new Form<Void>("form");
 		add(form);
 		
-		form.add(new TextArea("introductionMailText", new PropertyModel(attribute, "value")));
-		form.add(new Button("save", new Model(TeachUsSession.get().getString("General.save"))) {
+		form.add(new TextArea<String>("introductionMailText", new PropertyModel<String>(attribute, "welcomeIntroduction")));
+		form.add(new Button("save", new Model<String>(TeachUsSession.get().getString("General.save"))) {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			public void onSubmit() {
 				TeachUsSession.get().saveNewTeacherAttribute(attribute);
@@ -60,5 +52,5 @@ public class WelcomeMailSettingsPage extends AbstractSettingsPage {
 			}
 		});
 	}
-
+	
 }

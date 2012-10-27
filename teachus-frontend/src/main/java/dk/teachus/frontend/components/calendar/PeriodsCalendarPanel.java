@@ -42,7 +42,6 @@ import dk.teachus.backend.domain.DatePeriod;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Periods;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.calendar.PeriodsCalendarPanel.PeriodBookingTimeSlotPayload;
@@ -61,7 +60,7 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 			return period;
 		}
 		
-		public void setPeriod(Period period) {
+		public void setPeriod(final Period period) {
 			this.period = period;
 		}
 		
@@ -69,14 +68,14 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 			return booking;
 		}
 		
-		public void setBooking(Booking booking) {
+		public void setBooking(final Booking booking) {
 			this.booking = booking;
 		}
 	}
 	
 	private class DefaultPeriodsModel extends LoadableDetachableModel<Periods> {
 		private static final long serialVersionUID = 1L;
-
+		
 		@Override
 		protected Periods load() {
 			return TeachUsApplication.get().getPeriodDAO().getPeriods(getTeacher(), true);
@@ -84,14 +83,14 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 	}
 	
 	private IModel<List<DatePeriod>> datePeriodsModel;
-
+	
 	private IModel<Bookings> bookingsModel;
-
-	public PeriodsCalendarPanel(String id, IModel<DateMidnight> weekDateModel) {
+	
+	public PeriodsCalendarPanel(final String id, final IModel<DateMidnight> weekDateModel) {
 		this(id, weekDateModel, null);
 	}
 	
-	public PeriodsCalendarPanel(String id, IModel<DateMidnight> weekDateModel, IModel<Periods> periodsModel) {
+	public PeriodsCalendarPanel(final String id, final IModel<DateMidnight> weekDateModel, final IModel<Periods> periodsModel) {
 		super(id, weekDateModel);
 		
 		final IModel<Periods> thePeriodsModel;
@@ -101,15 +100,16 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 			thePeriodsModel = periodsModel;
 		}
 		
-		this.datePeriodsModel = new LoadableDetachableModel<List<DatePeriod>>() {
+		datePeriodsModel = new LoadableDetachableModel<List<DatePeriod>>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			protected List<DatePeriod> load() {
-				Periods periods = thePeriodsModel.getObject();
+				final Periods periods = thePeriodsModel.getObject();
 				return periods.generateDatesForWeek(PeriodsCalendarPanel.this.getModelObject());
 			}
 			
+			@Override
 			protected void onDetach() {
 				thePeriodsModel.detach();
 			}
@@ -117,11 +117,11 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 		
 		bookingsModel = new LoadableDetachableModel<Bookings>() {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			protected Bookings load() {
-				BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-				Bookings bookings = bookingDAO.getBookings(getTeacher(), getFromDate(), getToDate());
+				final BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+				final Bookings bookings = bookingDAO.getBookings(getTeacher(), getFromDate(), getToDate());
 				return bookings;
 			}
 		};
@@ -130,15 +130,15 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 	@Override
 	protected LocalTime getCalendarStartTime() {
 		LocalTime calendarStartTime = super.getCalendarStartTime();
-
-		CalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class);
-		if (narrowTimes != null && narrowTimes.getBooleanValue()) {
+		
+		final boolean narrowTimes = TeachUsSession.get().getTeacherAttribute().getCalendarNarrowTimes();
+		if (narrowTimes) {
 			LocalTime earliestStart = new LocalTime(23, 59, 59, 999);
-			List<DatePeriod> periods = datePeriodsModel.getObject();
-			for (DatePeriod datePeriod : periods) {
-				List<Period> periodList = datePeriod.getPeriods();
-				for (Period period : periodList) {
-					LocalTime periodStartTime = period.getStartTime();
+			final List<DatePeriod> periods = datePeriodsModel.getObject();
+			for (final DatePeriod datePeriod : periods) {
+				final List<Period> periodList = datePeriod.getPeriods();
+				for (final Period period : periodList) {
+					final LocalTime periodStartTime = period.getStartTime();
 					if (periodStartTime.isBefore(earliestStart)) {
 						earliestStart = periodStartTime;
 					}
@@ -153,15 +153,15 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 	@Override
 	protected LocalTime getCalendarEndTime() {
 		LocalTime calendarEndTime = super.getCalendarEndTime();
-
-		CalendarNarrowTimesTeacherAttribute narrowTimes = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class);
-		if (narrowTimes != null && narrowTimes.getBooleanValue()) {
+		
+		final boolean narrowTimes = TeachUsSession.get().getTeacherAttribute().getCalendarNarrowTimes();
+		if (narrowTimes) {
 			LocalTime latestEnd = new LocalTime(0, 0, 0, 0);
-			List<DatePeriod> periods = datePeriodsModel.getObject();
-			for (DatePeriod datePeriod : periods) {
-				List<Period> periodList = datePeriod.getPeriods();
-				for (Period period : periodList) {
-					LocalTime periodEndTime = period.getEndTime();
+			final List<DatePeriod> periods = datePeriodsModel.getObject();
+			for (final DatePeriod datePeriod : periods) {
+				final List<Period> periodList = datePeriod.getPeriods();
+				for (final Period period : periodList) {
+					final LocalTime periodEndTime = period.getEndTime();
 					if (periodEndTime.isAfter(latestEnd)) {
 						latestEnd = periodEndTime;
 					}
@@ -180,18 +180,18 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 	private DateMidnight getToDate() {
 		return getModelObject().withDayOfWeek(DateTimeConstants.SUNDAY);
 	}
-
+	
 	@Override
-	protected IModel<List<TimeSlot<PeriodBookingTimeSlotPayload>>> getTimeSlotModel(final DateMidnight date) {		
+	protected IModel<List<TimeSlot<PeriodBookingTimeSlotPayload>>> getTimeSlotModel(final DateMidnight date) {
 		return new AbstractReadOnlyModel<List<TimeSlot<PeriodBookingTimeSlotPayload>>>() {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
 			public List<TimeSlot<PeriodBookingTimeSlotPayload>> getObject() {
-				List<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlots = new ArrayList<TimeSlot<PeriodBookingTimeSlotPayload>>();
-				List<DatePeriod> periods = datePeriodsModel.getObject();
+				final List<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlots = new ArrayList<TimeSlot<PeriodBookingTimeSlotPayload>>();
+				final List<DatePeriod> periods = datePeriodsModel.getObject();
 				DatePeriod currentDatePeriod = null;
-				for (DatePeriod datePeriod : periods) {
+				for (final DatePeriod datePeriod : periods) {
 					if (datePeriod.getDate().equals(date)) {
 						currentDatePeriod = datePeriod;
 						break;
@@ -199,24 +199,25 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 				}
 				
 				if (currentDatePeriod != null) {
-					List<Period> periodsList = currentDatePeriod.getPeriods();
-					for (Period period : periodsList) {
-						DateTime startTime = period.getStartTime().toDateTime(date);
-						DateTime endTime = period.getEndTime().toDateTime(date);
+					final List<Period> periodsList = currentDatePeriod.getPeriods();
+					for (final Period period : periodsList) {
+						final DateTime startTime = period.getStartTime().toDateTime(date);
+						final DateTime endTime = period.getEndTime().toDateTime(date);
 						
 						DateTime time = startTime;
 						while (time.isBefore(endTime)) {
 							/*
 							 * Booking
 							 */
-							Bookings bookings = bookingsModel.getObject();
-							Booking booking = bookings.getBooking(period, time);
+							final Bookings bookings = bookingsModel.getObject();
+							final Booking booking = bookings.getBooking(period, time);
 							
-							PeriodBookingTimeSlotPayload payload = new PeriodBookingTimeSlotPayload();
+							final PeriodBookingTimeSlotPayload payload = new PeriodBookingTimeSlotPayload();
 							payload.setPeriod(period);
 							payload.setBooking(booking);
 							
-							timeSlots.add(new TimeSlot<PeriodBookingTimeSlotPayload>(time.toLocalTime(), time.toLocalTime().plusMinutes(period.getLessonDuration()), payload));
+							timeSlots.add(new TimeSlot<PeriodBookingTimeSlotPayload>(time.toLocalTime(), time.toLocalTime().plusMinutes(
+									period.getLessonDuration()), payload));
 							
 							time = time.plusMinutes(period.getIntervalBetweenLessonStart());
 						}
@@ -233,45 +234,47 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 			}
 		};
 	}
-
+	
 	@Override
-	protected final List<String> getTimeSlotContent(final DateMidnight date, final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, final ListItem<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlotItem) {
+	protected final List<String> getTimeSlotContent(final DateMidnight date, final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot,
+			final ListItem<TimeSlot<PeriodBookingTimeSlotPayload>> timeSlotItem) {
 		// Click action
 		timeSlotItem.add(new AjaxEventBehavior("onclick") { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onEvent(AjaxRequestTarget target) {
-				onTimeSlotClicked(timeSlot, timeSlot.getStartTime().toDateTime(date), target);
-				
-				target.add(timeSlotItem);
-			}
-			
-			@Override
-			public boolean isEnabled(Component component) {
-				return isTimeSlotBookable(timeSlot);
-			}
-		});
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void onEvent(final AjaxRequestTarget target) {
+						onTimeSlotClicked(timeSlot, timeSlot.getStartTime().toDateTime(date), target);
+						
+						target.add(timeSlotItem);
+					}
+					
+					@Override
+					public boolean isEnabled(final Component component) {
+						return isTimeSlotBookable(timeSlot);
+					}
+				});
 		
 		timeSlotItem.add(AttributeModifier.append("class", new AbstractReadOnlyModel<String>() { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String getObject() {
-				return getTimeSlotClass(timeSlot);
-			}
-		}));
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					public String getObject() {
+						return getTimeSlotClass(timeSlot);
+					}
+				}));
 		
-		List<String> contentLines = new ArrayList<String>();
-		Period period = timeSlot.getPayload().getPeriod();
+		final List<String> contentLines = new ArrayList<String>();
+		final Period period = timeSlot.getPayload().getPeriod();
 		
 		// Time line
-		DateTime startTime = timeSlot.getStartTime().toDateTime(date);
-		DateTime endTime = timeSlot.getEndTime().toDateTime(date);
-		org.joda.time.Period minutesDuration = new org.joda.time.Period(startTime, endTime, PeriodType.minutes());
-		String timePriceLine = TIME_FORMAT.print(startTime) + "-" + TIME_FORMAT.print(endTime) + " - "+Math.round(minutesDuration.getMinutes())+"m"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		final DateTime startTime = timeSlot.getStartTime().toDateTime(date);
+		final DateTime endTime = timeSlot.getEndTime().toDateTime(date);
+		final org.joda.time.Period minutesDuration = new org.joda.time.Period(startTime, endTime, PeriodType.minutes());
+		String timePriceLine = CalendarPanel.TIME_FORMAT.print(startTime)
+				+ "-" + CalendarPanel.TIME_FORMAT.print(endTime) + " - " + Math.round(minutesDuration.getMinutes()) + "m"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		if (period.getPrice() > 0) {
-			timePriceLine += " - "+Formatters.getFormatCurrency().format(period.getPrice()); //$NON-NLS-1$
+			timePriceLine += " - " + Formatters.getFormatCurrency().format(period.getPrice()); //$NON-NLS-1$
 		}
 		contentLines.add(timePriceLine);
 		
@@ -279,7 +282,7 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 		if (Strings.isEmpty(period.getLocation()) == false) {
 			contentLines.add(period.getLocation());
 		}
-
+		
 		appendToTimeSlotContent(contentLines, timeSlot);
 		
 		return contentLines;
@@ -289,18 +292,18 @@ public abstract class PeriodsCalendarPanel extends CalendarPanel<PeriodBookingTi
 	
 	protected abstract boolean isTimeSlotBookable(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot);
 	
-	protected void appendToTimeSlotContent(List<String> contentLines, TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
+	protected void appendToTimeSlotContent(final List<String> contentLines, final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
 	}
 	
 	/**
 	 * @param timeSlot
 	 * @return CSS class or classes (separated by space), which is added to the timeslot UI item for additional UI
 	 */
-	protected String getTimeSlotClass(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
+	protected String getTimeSlotClass(final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot) {
 		return null;
 	}
 	
-	protected void onTimeSlotClicked(TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, DateTime date, AjaxRequestTarget target) {
+	protected void onTimeSlotClicked(final TimeSlot<PeriodBookingTimeSlotPayload> timeSlot, final DateTime date, final AjaxRequestTarget target) {
 	}
 	
 }

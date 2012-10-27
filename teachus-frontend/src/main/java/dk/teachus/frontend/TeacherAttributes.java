@@ -2,53 +2,41 @@ package dk.teachus.frontend;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.Teacher;
 import dk.teachus.backend.domain.TeacherAttribute;
+import dk.teachus.backend.domain.TeacherAttribute.TeacherAttributeProperty;
 import dk.teachus.backend.domain.TeacherAttribute.ValueChangeListener;
 
 public class TeacherAttributes implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	private Map<Long,List<TeacherAttribute>> teacherAttributes = new HashMap<Long, List<TeacherAttribute>>();
-
-	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Person person) {
-		List<TeacherAttribute> attributes = getTeacherAttributes(person);
-		
-		return getTeacherAttribute(attributes, attributeClass);
+	private final Map<Long, TeacherAttribute> teacherAttributes = new HashMap<Long, TeacherAttribute>();
+	
+	public TeacherAttribute getTeacherAttribute() {
+		return getTeacherAttribute(TeachUsSession.get().getPerson());
 	}
 	
-	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
-		List<TeacherAttribute> attributes = getTeacherAttributes(teacher);
-		
-		return getTeacherAttribute(attributes, attributeClass);
-	}
-	
-	public List<TeacherAttribute> getTeacherAttributes() {
-		return getTeacherAttributes(TeachUsSession.get().getPerson());
-	}
-	
-	public List<TeacherAttribute> getTeacherAttributes(Person person) {
+	public TeacherAttribute getTeacherAttribute(final Person person) {
 		if (person == null) {
 			throw new IllegalArgumentException("Person must not be null");
 		}
 		
 		if (person instanceof Teacher) {
-			Teacher teacher = (Teacher) person;
+			final Teacher teacher = (Teacher) person;
 			return getTeacherAttributes(teacher);
 		} else if (person instanceof Pupil) {
-			Pupil pupil = (Pupil) person;
+			final Pupil pupil = (Pupil) person;
 			return getTeacherAttributes(pupil.getTeacher());
 		}
 		
-		throw new IllegalArgumentException("Unsupported person type: "+person);
+		throw new IllegalArgumentException("Unsupported person type: " + person);
 	}
 	
-	public List<TeacherAttribute> getTeacherAttributes(Teacher teacher) {
+	public TeacherAttribute getTeacherAttributes(final Teacher teacher) {
 		if (teacher == null) {
 			throw new IllegalArgumentException("Teacher must not be null.");
 		}
@@ -57,21 +45,19 @@ public class TeacherAttributes implements Serializable {
 			throw new IllegalArgumentException("Teacher must have been persisted. (Id must not be null).");
 		}
 		
-		List<TeacherAttribute> attributes = teacherAttributes.get(teacher.getId());
-		if (attributes == null) {
-			attributes = TeachUsApplication.get().getPersonDAO().getAttributes(teacher);
-			if (attributes != null) {
-				for (TeacherAttribute teacherAttribute : attributes) {
-					addValueChangeListener(teacherAttribute);
-				}
+		TeacherAttribute attribute = teacherAttributes.get(teacher.getId());
+		if (attribute == null) {
+			attribute = TeachUsApplication.get().getPersonDAO().getAttribute(teacher);
+			if (attribute != null) {
+				addValueChangeListener(attribute);
 			}
-			teacherAttributes.put(teacher.getId(), attributes);
+			teacherAttributes.put(teacher.getId(), attribute);
 		}
 		
-		return attributes;
+		return attribute;
 	}
 	
-	public void refreshAttributes(Teacher teacher) {
+	public void refreshAttributes(final Teacher teacher) {
 		if (teacher == null) {
 			throw new IllegalArgumentException("Teacher must not be null.");
 		}
@@ -82,31 +68,16 @@ public class TeacherAttributes implements Serializable {
 		
 		teacherAttributes.remove(teacher.getId());
 	}
-
-	private void addValueChangeListener(TeacherAttribute teacherAttribute) {
+	
+	private void addValueChangeListener(final TeacherAttribute teacherAttribute) {
 		teacherAttribute.addValueChangeListener(new ValueChangeListener() {
 			private static final long serialVersionUID = 1L;
 			
-			public void onValueChanged(TeacherAttribute teacherAttribute, String oldValue, String newValue) {
+			@Override
+			public void onValueChanged(final TeacherAttributeProperty property, final String oldValue, final String newValue) {
 				TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
 			}
 		});
-	}
-
-	@SuppressWarnings("unchecked")
-	private <A extends TeacherAttribute> A getTeacherAttribute(List<TeacherAttribute> attributes, Class<A> attributeClass) {
-		A foundAttribute = null;
-		
-		if (attributes != null) {
-			for (TeacherAttribute teacherAttribute : attributes) {
-				if (attributeClass.isInstance(teacherAttribute)) {
-					foundAttribute = (A) teacherAttribute;
-					break;
-				}
-			}
-		}
-		
-		return foundAttribute;
 	}
 	
 }

@@ -30,7 +30,6 @@ import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.impl.MailMessage;
-import dk.teachus.backend.domain.impl.WelcomeIntroductionTeacherAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.UserLevel;
@@ -46,12 +45,12 @@ import dk.teachus.frontend.pages.persons.PupilsPage;
 
 public class SendNewPasswordPage extends AuthenticatedBasePage {
 	private static final long serialVersionUID = 1L;
-
+	
 	private String password1;
 	private String password2;
 	private String introMessage;
 	
-	public SendNewPasswordPage(Long pupilId) {
+	public SendNewPasswordPage(final Long pupilId) {
 		super(UserLevel.TEACHER, true);
 		
 		if (pupilId == null) {
@@ -61,102 +60,105 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		final PupilModel pupilModel = new PupilModel(pupilId);
 		
 		// Find intro message from teachers attributes
-		WelcomeIntroductionTeacherAttribute welcomeIntroduction = TeachUsSession.get().getTeacherAttribute(WelcomeIntroductionTeacherAttribute.class);
+		final String welcomeIntroduction = TeachUsSession.get().getTeacherAttribute().getWelcomeIntroduction();
 		if (welcomeIntroduction != null) {
-			setIntroMessage(welcomeIntroduction.getValue());
+			setIntroMessage(welcomeIntroduction);
 		}
 		
 		String title = TeachUsSession.get().getString("SendNewPasswordPage.title"); //$NON-NLS-1$
 		title = title.replace("{pupilname}", pupilModel.getObject().getName()); //$NON-NLS-1$
 		add(new Label("newPasswordTitle", title)); //$NON-NLS-1$
 		
-		FormPanel formPanel = new FormPanel("passwordForm"); //$NON-NLS-1$
+		final FormPanel formPanel = new FormPanel("passwordForm"); //$NON-NLS-1$
 		add(formPanel);
 		
 		// Password 1
-		final PasswordFieldElement password1Field = new PasswordFieldElement(TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), true); //$NON-NLS-1$ //$NON-NLS-2$
+		final PasswordFieldElement password1Field = new PasswordFieldElement(
+				TeachUsSession.get().getString("General.password"), new PropertyModel(this, "password1"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		password1Field.add(StringValidator.lengthBetween(4, 32));
 		formPanel.addElement(password1Field);
 		
 		// Password 2
-		final PasswordFieldElement password2Field = new PasswordFieldElement(TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel(this, "password2"), true); //$NON-NLS-1$ //$NON-NLS-2$
+		final PasswordFieldElement password2Field = new PasswordFieldElement(
+				TeachUsSession.get().getString("PersonPanel.repeatPassword"), new PropertyModel(this, "password2"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		formPanel.addElement(password2Field);
 		
 		// Password validator
 		formPanel.addValidator(new FormValidator() {
 			private static final long serialVersionUID = 1L;
-
+			
+			@Override
 			public IFormValidator getFormValidator() {
 				return new EqualInputValidator(password1Field.getFormComponent(), password2Field.getFormComponent());
-			}			
+			}
 		});
 		
 		// Password generator
 		formPanel.addElement(new GeneratePasswordElement("", pupilModel.getObject().getUsername()) { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void passwordGenerated(AjaxRequestTarget target, String password) {
-				setPassword1(password);
-				setPassword2(password);
-				
-				target.addComponent(password1Field.getFormComponent());
-				target.addComponent(password1Field.getFeedbackPanel());
-				target.addComponent(password2Field.getFormComponent());
-				target.addComponent(password2Field.getFeedbackPanel());
-			}			
-		});
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void passwordGenerated(final AjaxRequestTarget target, final String password) {
+						setPassword1(password);
+						setPassword2(password);
+						
+						target.addComponent(password1Field.getFormComponent());
+						target.addComponent(password1Field.getFeedbackPanel());
+						target.addComponent(password2Field.getFormComponent());
+						target.addComponent(password2Field.getFeedbackPanel());
+					}
+				});
 		
 		// Text
 		formPanel.addElement(new TextAreaElement(TeachUsSession.get().getString("SendNewPasswordPage.introMessage"), new PropertyModel(this, "introMessage"))); //$NON-NLS-1$ //$NON-NLS-2$
 		
 		// Buttons
 		formPanel.addElement(new ButtonPanelElement(TeachUsSession.get().getString("General.send")) { //$NON-NLS-1$
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			protected void onCancel() {
-				getRequestCycle().setResponsePage(PupilsPage.class);
-			}
-
-			@Override
-			protected void onSave(AjaxRequestTarget target) {
-				PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-				MessageDAO messageDAO = TeachUsApplication.get().getMessageDAO();
-				
-				// Update pupil
-				final Pupil pupil = pupilModel.getObject();
-				pupil.setPassword(getPassword1());
-				personDAO.save(pupil);
-				
-				// Create mail message
-				Message message = new MailMessage();
-				message.setSender(pupil.getTeacher());
-				message.setRecipient(pupil);
-				message.setState(MessageState.FINAL);
-				
-				String subject = TeachUsSession.get().getString("NewPasswordMail.subject"); //$NON-NLS-1$
-				message.setSubject(subject);
-				
-				String body = TeachUsSession.get().getString("NewPasswordMail.body"); //$NON-NLS-1$
-				body = body.replace("${username}", pupil.getUsername()); //$NON-NLS-1$
-				body = body.replace("${password}", getPassword1()); //$NON-NLS-1$
-				String serverUrl = TeachUsApplication.get().getServerUrl();
-				body = body.replace("${server}", serverUrl); //$NON-NLS-1$
-				String im = getIntroMessage();
-				if (Strings.isEmpty(im) == false) {
-					im += "\n\n"; //$NON-NLS-1$
-				}
-				body = body.replace("${introMessage}", im); //$NON-NLS-1$
-				message.setBody(body);
-				
-				messageDAO.save(message);
-				
-				getRequestCycle().setResponsePage(PupilsPage.class);
-			}			
-		});
+					private static final long serialVersionUID = 1L;
+					
+					@Override
+					protected void onCancel() {
+						getRequestCycle().setResponsePage(PupilsPage.class);
+					}
+					
+					@Override
+					protected void onSave(final AjaxRequestTarget target) {
+						final PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+						final MessageDAO messageDAO = TeachUsApplication.get().getMessageDAO();
+						
+						// Update pupil
+						final Pupil pupil = pupilModel.getObject();
+						pupil.setPassword(getPassword1());
+						personDAO.save(pupil);
+						
+						// Create mail message
+						final Message message = new MailMessage();
+						message.setSender(pupil.getTeacher());
+						message.setRecipient(pupil);
+						message.setState(MessageState.FINAL);
+						
+						final String subject = TeachUsSession.get().getString("NewPasswordMail.subject"); //$NON-NLS-1$
+						message.setSubject(subject);
+						
+						String body = TeachUsSession.get().getString("NewPasswordMail.body"); //$NON-NLS-1$
+						body = body.replace("${username}", pupil.getUsername()); //$NON-NLS-1$
+						body = body.replace("${password}", getPassword1()); //$NON-NLS-1$
+						final String serverUrl = TeachUsApplication.get().getServerUrl();
+						body = body.replace("${server}", serverUrl); //$NON-NLS-1$
+						String im = getIntroMessage();
+						if (Strings.isEmpty(im) == false) {
+							im += "\n\n"; //$NON-NLS-1$
+						}
+						body = body.replace("${introMessage}", im); //$NON-NLS-1$
+						message.setBody(body);
+						
+						messageDAO.save(message);
+						
+						getRequestCycle().setResponsePage(PupilsPage.class);
+					}
+				});
 	}
-
+	
 	@Override
 	public AuthenticatedPageCategory getPageCategory() {
 		return AuthenticatedPageCategory.MESSAGES;
@@ -165,25 +167,25 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 	public String getPassword1() {
 		return password1;
 	}
-
-	public void setPassword1(String password1) {
+	
+	public void setPassword1(final String password1) {
 		this.password1 = password1;
 	}
-
+	
 	public String getPassword2() {
 		return password2;
 	}
-
-	public void setPassword2(String password2) {
+	
+	public void setPassword2(final String password2) {
 		this.password2 = password2;
 	}
 	
 	public String getIntroMessage() {
 		return introMessage;
 	}
-
-	public void setIntroMessage(String introMessage) {
+	
+	public void setIntroMessage(final String introMessage) {
 		this.introMessage = introMessage;
 	}
-
+	
 }
