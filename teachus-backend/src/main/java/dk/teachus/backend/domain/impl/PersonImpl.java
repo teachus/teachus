@@ -67,7 +67,7 @@ public abstract class PersonImpl extends AbstractJdoObject implements Person {
 	
 	@Override
 	public Locale getLocale() {
-		return new Locale(locale);
+		return locale != null ? new Locale(locale) : null;
 	}
 	
 	@Override

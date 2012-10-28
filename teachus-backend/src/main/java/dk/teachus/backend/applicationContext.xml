@@ -66,6 +66,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean id="personDao" class="dk.teachus.backend.dao.jdo.JdoPersonDAO">
 		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
 	</bean>
+	
+	<bean id="periodDao" class="dk.teachus.backend.dao.jdo.JdoPeriodDAO">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
+	</bean>
 
 	<!-- <bean id="periodDao" /> -->
 

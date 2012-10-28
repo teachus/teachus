@@ -10,7 +10,6 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
 import dk.teachus.backend.domain.impl.TeacherBookingImpl;
@@ -64,7 +63,7 @@ public class TestBookings extends TestCase {
 		period.setLocation("Location 1");
 		period.setPrice(350.0);
 		period.setRepeatEveryWeek(1);
-		period.setStatus(Status.FINAL);
+		period.setStatus(PeriodStatus.FINAL);
 		period.setTeacher(teacher);
 		return period;
 	}

@@ -29,6 +29,7 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Pupil;
+import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.MailMessage;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -60,9 +61,9 @@ public class SendNewPasswordPage extends AuthenticatedBasePage {
 		final PupilModel pupilModel = new PupilModel(pupilId);
 		
 		// Find intro message from teachers attributes
-		final String welcomeIntroduction = TeachUsSession.get().getTeacherAttribute().getWelcomeIntroduction();
-		if (welcomeIntroduction != null) {
-			setIntroMessage(welcomeIntroduction);
+		final TeacherAttribute teacherAttribute = TeachUsSession.get().getTeacherAttribute();
+		if (teacherAttribute != null) {
+			setIntroMessage(teacherAttribute.getWelcomeIntroduction());
 		}
 		
 		String title = TeachUsSession.get().getString("SendNewPasswordPage.title"); //$NON-NLS-1$

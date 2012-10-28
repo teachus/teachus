@@ -24,9 +24,7 @@ import junit.framework.TestCase;
 import org.joda.time.DateMidnight;
 import org.joda.time.LocalTime;
 
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.impl.PeriodImpl;
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 
@@ -267,7 +265,7 @@ public class TestPeriods extends TestCase {
 		period.setEndTime(new LocalTime(18, 0, 0, 0));
 		period.setName("Test with no begin date");
 		period.addWeekDay(WeekDay.MONDAY);
-		period.setStatus(Status.FINAL);
+		period.setStatus(PeriodStatus.FINAL);
 		period.setTeacher(new TeacherImpl());
 		periods.addPeriod(period);
 		

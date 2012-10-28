@@ -30,32 +30,35 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.TeacherAttribute;
 import dk.teachus.backend.domain.impl.BookingsImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
+import dk.teachus.backend.domain.impl.TeacherAttributeImpl;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestPeriodPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
-
+	
 	public void testRenderNewPeriod() {
 		final TeachUsWicketTester tester = createTester();
 		
-		checking(new Expectations() {{
-			PersonDAO personDAO = createPersonDAO();
-			
-			one(personDAO).getPerson(2L);
-			will(returnValue(createTeacher(2L)));
-			
-			tester.setPersonDAO(personDAO);
-		}});
-			
+		checking(new Expectations() {
+			{
+				final PersonDAO personDAO = createPersonDAO();
+				
+				one(personDAO).getPerson(2L);
+				will(Expectations.returnValue(createTeacher(2L)));
+				
+				tester.setPersonDAO(personDAO);
+			}
+		});
+		
 		final Period period = new PeriodImpl();
 		period.setTeacher(createTeacher(2L));
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
-
+			
+			@Override
 			public Page getTestPage() {
 				return new PeriodPage(period);
 			}
@@ -63,35 +66,38 @@ public class TestPeriodPage extends WicketTestCase {
 		
 		tester.assertRenderedPage(PeriodPage.class);
 	}
-
+	
 	public void testRenderExistingPeriod() {
 		final TeachUsWicketTester tester = createTester();
 		
-		checking(new Expectations() {{
-			PersonDAO personDAO = createPersonDAO();
-			
-			one(personDAO).getPerson(2L);
-			Teacher teacher = createTeacher(2L);
-			will(returnValue(teacher));
-			
-			one(personDAO).getAttributes(teacher);
-			will(returnValue(new ArrayList<TeacherAttribute>()));
-			
-			tester.setPersonDAO(personDAO);
-			
-			BookingDAO bookingDAO = createBookingDAO();
-			
-			exactly(1).of(bookingDAO).getBookings(teacher, new DateMidnight(2007, 1, 1), new DateMidnight(2007, 1, 7));
-			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
-			
-			tester.setBookingDAO(bookingDAO);
-		}});
-			
+		checking(new Expectations() {
+			{
+				final PersonDAO personDAO = createPersonDAO();
+				
+				one(personDAO).getPerson(2L);
+				final Teacher teacher = createTeacher(2L);
+				will(Expectations.returnValue(teacher));
+				
+				one(personDAO).getAttribute(teacher);
+				will(Expectations.returnValue(new TeacherAttributeImpl()));
+				
+				tester.setPersonDAO(personDAO);
+				
+				final BookingDAO bookingDAO = createBookingDAO();
+				
+				exactly(1).of(bookingDAO).getBookings(teacher, new DateMidnight(2007, 1, 1), new DateMidnight(2007, 1, 7));
+				will(Expectations.returnValue(new BookingsImpl(new ArrayList<Booking>())));
+				
+				tester.setBookingDAO(bookingDAO);
+			}
+		});
+		
 		final Period period = createPeriod();
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
-
+			
+			@Override
 			public Page getTestPage() {
 				return new PeriodPage(period);
 			}
@@ -106,40 +112,41 @@ public class TestPeriodPage extends WicketTestCase {
 		final TeachUsWicketTester tester = createTester();
 		final Period period = createPeriod();
 		
-		checking(new Expectations() {{
-			PersonDAO personDAO = createPersonDAO();
-			
-			one(personDAO).getPerson(2L);
-			Teacher teacher = createTeacher(2L);
-			will(returnValue(teacher));
-			
-			one(personDAO).getAttributes(teacher);
-			will(returnValue(new ArrayList<TeacherAttribute>()));
-			
-			tester.setPersonDAO(personDAO);
-			
-			
-			BookingDAO bookingDAO = createBookingDAO();
-			
-			one(bookingDAO).getLastBookingDate(period);
-			will(returnValue(new DateTime()));
-			
-			exactly(2).of(bookingDAO).getBookings(teacher, new DateMidnight(2007, 1, 1), new DateMidnight(2007, 1, 7));
-			will(returnValue(new BookingsImpl(new ArrayList<Booking>())));
-			
-			tester.setBookingDAO(bookingDAO);
-		}});
-		
+		checking(new Expectations() {
+			{
+				final PersonDAO personDAO = createPersonDAO();
+				
+				one(personDAO).getPerson(2L);
+				final Teacher teacher = createTeacher(2L);
+				will(Expectations.returnValue(teacher));
+				
+				one(personDAO).getAttribute(teacher);
+				will(Expectations.returnValue(new TeacherAttributeImpl()));
+				
+				tester.setPersonDAO(personDAO);
+				
+				final BookingDAO bookingDAO = createBookingDAO();
+				
+				one(bookingDAO).getLastBookingDate(period);
+				will(Expectations.returnValue(new DateTime()));
+				
+				exactly(2).of(bookingDAO).getBookings(teacher, new DateMidnight(2007, 1, 1), new DateMidnight(2007, 1, 7));
+				will(Expectations.returnValue(new BookingsImpl(new ArrayList<Booking>())));
+				
+				tester.setBookingDAO(bookingDAO);
+			}
+		});
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
-
+			
+			@Override
 			public Page getTestPage() {
 				return new PeriodPage(period);
 			}
 		});
 		
-		FormTester formTester = tester.newFormTester("form:form", false);
+		final FormTester formTester = tester.newFormTester("form:form", false);
 		formTester.setValue("elements:11:element:input:inputField", "");
 		
 		// Test that submitting an empty form works

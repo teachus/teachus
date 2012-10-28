@@ -22,7 +22,7 @@ import org.apache.wicket.markup.html.form.ChoiceRenderer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormatter;
 
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
+import dk.teachus.backend.domain.WeekDay;
 
 public class WeekDayChoiceRenderer extends ChoiceRenderer<Object> {
 	private static final long serialVersionUID = 1L;

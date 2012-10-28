@@ -42,7 +42,7 @@ public class TeacherAttributes implements Serializable {
 		}
 		
 		if (teacher.getId() == null) {
-			throw new IllegalArgumentException("Teacher must have been persisted. (Id must not be null).");
+			return null;
 		}
 		
 		TeacherAttribute attribute = teacherAttributes.get(teacher.getId());

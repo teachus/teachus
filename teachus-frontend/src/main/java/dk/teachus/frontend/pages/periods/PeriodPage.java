@@ -39,10 +39,10 @@ import org.joda.time.LocalTime;
 import dk.teachus.backend.dao.BookingDAO;
 import dk.teachus.backend.dao.PeriodDAO;
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Periods;
+import dk.teachus.backend.domain.PeriodStatus;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
+import dk.teachus.backend.domain.WeekDay;
 import dk.teachus.backend.domain.impl.PeriodsImpl;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
@@ -108,12 +108,12 @@ public class PeriodPage extends AuthenticatedBasePage {
 		// Name
 		final StringTextFieldElement nameElement = new StringTextFieldElement(TeachUsSession.get().getString("General.name"), new PropertyModel<String>(period, "name"), true); //$NON-NLS-1$ //$NON-NLS-2$
 		nameElement.add(StringValidator.maximumLength(100));
-		nameElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		nameElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(nameElement);
 		
 		// Begin date
 		final DateElement beginDateElement = new DateElement(TeachUsSession.get().getString("General.startDate"), new PropertyModel<DateMidnight>(period, "beginDate")); //$NON-NLS-1$ //$NON-NLS-2$
-		beginDateElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		beginDateElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(beginDateElement);
 		
 		// End date
@@ -157,56 +157,56 @@ public class PeriodPage extends AuthenticatedBasePage {
 		// Start time
 		final DropDownElement<Integer> startTimeElement = new DropDownElement<Integer>(TeachUsSession.get().getString("General.startTime"), new TimeModel(new PropertyModel<LocalTime>( //$NON-NLS-1$
 				period, "startTime")), hours, timeChoiceRenderer, true); //$NON-NLS-1$
-		startTimeElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		startTimeElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(startTimeElement);
 		
 		// End time
 		final DropDownElement<Integer> endTimeElement = new DropDownElement<Integer>(TeachUsSession.get().getString("General.endTime"), new TimeModel(new PropertyModel<LocalTime>(period, //$NON-NLS-1$
 				"endTime")), hours, timeChoiceRenderer, true); //$NON-NLS-1$
-		endTimeElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		endTimeElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(endTimeElement);
 		
 		// Location
 		final StringTextFieldElement locationElement = new StringTextFieldElement(TeachUsSession.get().getString("General.location"), new PropertyModel<String>(period, "location")); //$NON-NLS-1$ //$NON-NLS-2$
 		locationElement.add(StringValidator.maximumLength(100));
-		locationElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		locationElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(locationElement);
 		
 		// Price
 		final DecimalFieldElement priceElement = new DecimalFieldElement(TeachUsSession.get().getString("General.price"), new PropertyModel<Double>(period, "price"), 6); //$NON-NLS-1$ //$NON-NLS-2$
-		priceElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		priceElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		priceElement.setDefaultNullValue(0.0);
 		form.addElement(priceElement);
 		
 		// Lesson duration
 		final IntegerFieldElement lessonDurationElement = new IntegerFieldElement(TeachUsSession.get().getString("General.lessonDuration"), new PropertyModel<Integer>( //$NON-NLS-1$
 				period, "lessonDuration"), true, 4); //$NON-NLS-1$
-		lessonDurationElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		lessonDurationElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(lessonDurationElement);
 		
 		// Interval Between Lesson Start
 		final IntegerFieldElement intervalBetweenLessonStartElement = new IntegerFieldElement(TeachUsSession.get().getString(
 				"General.intervalBetweenLessonStart"), new PropertyModel<Integer>(period, "intervalBetweenLessonStart"), true, 4); //$NON-NLS-1$ //$NON-NLS-2$
-		intervalBetweenLessonStartElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		intervalBetweenLessonStartElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(intervalBetweenLessonStartElement);
 		
 		// Week days
 		final CheckGroupElement<WeekDay> weekDaysElement = new CheckGroupElement<WeekDay>(TeachUsSession.get().getString("General.weekDays"), new PropertyModel<List<WeekDay>>(period, //$NON-NLS-1$
 				"weekDays"), Arrays.asList(WeekDay.values()), new WeekDayChoiceRenderer(Format.LONG), true); //$NON-NLS-1$
-		weekDaysElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		weekDaysElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(weekDaysElement);
 		
 		// Repeat every week
 		final IntegerFieldElement repeatEveryWeekElement = new IntegerFieldElement(TeachUsSession.get().getString("General.repeatEveryWeek"), //$NON-NLS-1$
 				new PropertyModel<Integer>(period, "repeatEveryWeek")); //$NON-NLS-1$
-		repeatEveryWeekElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		repeatEveryWeekElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 //		repeatEveryWeekElement.setDefaultNullValue(1);
 		form.addElement(repeatEveryWeekElement);
 		
 		// Status
-		final List<Status> statusList = Arrays.asList(Status.values());
-		final DropDownElement<Status> statusElement = new DropDownElement<Status>(TeachUsSession.get().getString("General.status"), new PropertyModel<Status>(period, "status"), statusList, new PeriodStatusRenderer()); //$NON-NLS-1$ //$NON-NLS-2$
-		statusElement.setReadOnly(period.getStatus() != Status.DRAFT);
+		final List<PeriodStatus> statusList = Arrays.asList(PeriodStatus.values());
+		final DropDownElement<PeriodStatus> statusElement = new DropDownElement<PeriodStatus>(TeachUsSession.get().getString("General.status"), new PropertyModel<PeriodStatus>(period, "status"), statusList, new PeriodStatusRenderer()); //$NON-NLS-1$ //$NON-NLS-2$
+		statusElement.setReadOnly(period.getStatus() != PeriodStatus.DRAFT);
 		form.addElement(statusElement);
 		
 		// Buttons

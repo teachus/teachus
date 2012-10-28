@@ -38,15 +38,15 @@ import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.ApplicationConfiguration;
 import dk.teachus.backend.domain.Period;
-import dk.teachus.backend.domain.Period.Status;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
+import dk.teachus.backend.domain.PeriodStatus;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.WeekDay;
 import dk.teachus.backend.domain.impl.AdminImpl;
 import dk.teachus.backend.domain.impl.ApplicationConfigurationImpl;
 import dk.teachus.backend.domain.impl.PeriodImpl;
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 import dk.teachus.backend.domain.impl.PupilBookingImpl;
 import dk.teachus.backend.domain.impl.PupilImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
@@ -337,7 +337,7 @@ public abstract class WicketTestCase extends MockObjectTestCase implements Seria
 	protected Period createPeriod(Long periodId, Teacher teacher, DateMidnight beginDate, DateMidnight endDate, LocalTime startTime, LocalTime endTime) {
 		PeriodImpl period = new PeriodImpl();
 		period.setId(periodId);
-		period.setStatus(Status.FINAL);
+		period.setStatus(PeriodStatus.FINAL);
 		period.setBeginDate(beginDate);
 		period.setEndDate(endDate);
 		period.setStartTime(startTime);

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
+import dk.teachus.backend.domain.WeekDay;
 
 public class WeekDayComparator implements Comparator<List<WeekDay>>, Serializable {
 	private static final long serialVersionUID = 1L;

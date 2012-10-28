@@ -22,16 +22,9 @@ import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
-import dk.teachus.backend.domain.impl.PeriodImpl.WeekDay;
 
 public interface Period {
 
-	public static enum Status {
-		DRAFT,
-		FINAL,
-		DELETED
-	}
-	
 	Long getId();
 	
 	String getName();
@@ -52,7 +45,7 @@ public interface Period {
 	
 	double getPrice();
 	
-	Status getStatus();
+	PeriodStatus getStatus();
 	
 	/**
 	 * @return The duration of a lesson in minutes
@@ -89,7 +82,7 @@ public interface Period {
 	
 	void setRepeatEveryWeek(int repeatEveryWeek);
 	
-	void setStatus(Status status);
+	void setStatus(PeriodStatus status);
 
 	/*
 	 * Utility methods

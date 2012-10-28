@@ -16,35 +16,35 @@
  */
 package dk.teachus.frontend.pages.settings;
 
-import java.util.ArrayList;
-
 import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.TeacherAttribute;
+import dk.teachus.backend.domain.impl.TeacherAttributeImpl;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestTeacherSettingsPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
-
+	
 	public void testRender() {
 		final TeachUsWicketTester tester = createTester();
 		
-		checking(new Expectations() {{
-			Teacher teacher = createTeacher();
-			
-			PersonDAO personDAO = createPersonDAO();
-			
-			exactly(2).of(personDAO).getPerson(2L);
-			will(returnValue(teacher));
-			
-			one(personDAO).getAttributes(teacher);
-			will(returnValue(new ArrayList<TeacherAttribute>()));
-			
-			tester.setPersonDAO(personDAO);
-		}});
-			
+		checking(new Expectations() {
+			{
+				final Teacher teacher = createTeacher();
+				
+				final PersonDAO personDAO = createPersonDAO();
+				
+				exactly(2).of(personDAO).getPerson(2L);
+				will(Expectations.returnValue(teacher));
+				
+				one(personDAO).getAttribute(teacher);
+				will(Expectations.returnValue(new TeacherAttributeImpl()));
+				
+				tester.setPersonDAO(personDAO);
+			}
+		});
+		
 		tester.startPage(TeacherSettingsPage.class);
 		
 		tester.assertRenderedPage(TeacherSettingsPage.class);
