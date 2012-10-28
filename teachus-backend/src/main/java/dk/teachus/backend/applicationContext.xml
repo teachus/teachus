@@ -12,11 +12,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<!-- ===== -->
 
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="${mail.smtp}" />
-	</bean>
-
-	<bean id="velocityEngine"
-		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="host" value="${mail.smtp}"/>
+	</bean>   
+		
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
 				resource.loader=class
@@ -24,11 +23,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 			</value>
 		</property>
 	</bean>
-
+	
 	<bean id="velocityBean" class="dk.teachus.backend.bean.impl.SpringVelocityBean">
 		<constructor-arg ref="velocityEngine" />
-	</bean>
-
+	</bean>   
+	
 	<bean id="mailBean" class="dk.teachus.backend.bean.impl.SpringMailBean">
 		<constructor-arg ref="mailSender" />
 	</bean>
