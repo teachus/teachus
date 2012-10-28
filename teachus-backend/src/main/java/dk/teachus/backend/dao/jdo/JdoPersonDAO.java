@@ -3,7 +3,6 @@ package dk.teachus.backend.dao.jdo;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
 import dk.teachus.backend.dao.PersonDAO;
@@ -18,10 +17,8 @@ import dk.teachus.backend.domain.impl.TeacherAttributeImpl;
 import dk.teachus.backend.domain.impl.TeacherImpl;
 import dk.teachus.utils.HashUtils;
 
-public class JdoPersonDAO implements PersonDAO {
+public class JdoPersonDAO extends AbstractJdoDAO implements PersonDAO {
 	private static final long serialVersionUID = 1L;
-	
-	private PersistenceManagerFactory persistenceManagerFactory;
 	
 	@Override
 	public void save(final Person person) {
@@ -31,13 +28,12 @@ public class JdoPersonDAO implements PersonDAO {
 	
 	@Override
 	public Person getPerson(final Long personId) {
-		final PersistenceManager pm = persistenceManagerFactory.getPersistenceManager();
-		Person foundPerson = pm.getObjectById(PupilImpl.class, personId);
+		Person foundPerson = findObjectById(PupilImpl.class, personId);
 		if (foundPerson == null) {
-			foundPerson = pm.getObjectById(TeacherImpl.class, personId);
+			foundPerson = findObjectById(TeacherImpl.class, personId);
 		}
 		if (foundPerson == null) {
-			foundPerson = pm.getObjectById(AdminImpl.class, personId);
+			foundPerson = findObjectById(AdminImpl.class, personId);
 		}
 		return foundPerson;
 	}
@@ -217,10 +213,6 @@ public class JdoPersonDAO implements PersonDAO {
 	@Override
 	public Pupil createPupilObject() {
 		return new PupilImpl();
-	}
-	
-	public void setPersistenceManagerFactory(final PersistenceManagerFactory persistenceManagerFactory) {
-		this.persistenceManagerFactory = persistenceManagerFactory;
 	}
 	
 }

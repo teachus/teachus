@@ -7,7 +7,7 @@
 		<version>1.61-SNAPSHOT</version>
 	</parent>
 	<artifactId>teachus-backend-rdms</artifactId>
-	<name>TeachUs Hibernate Backend</name>
+	<name>TeachUs Relational Database Backend</name>
 	<dependencies>
 		<dependency>
 			<groupId>dk.teachus</groupId>
