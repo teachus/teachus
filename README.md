@@ -1,13 +1,19 @@
 TeachUs [![Build Status](https://secure.travis-ci.org/teachus/teachus.png)](http://travis-ci.org/teachus/teachus)
 =======
 
+CAVEAT
+------
+
+This project is not being developed on any longer as the old deployment, teachus.dk has been shut down
+due to lack of interest.
+
 Description
 -----------
 Booking system focused on teachers doing one-to-one tuition.
 
 Technical
 ---------
-This is the code base used for [teachus.dk][teachusdk]. It is a Java web 
+This is the code base used for TeachUs. It is a Java web 
 application build upon open source frameworks such as:
 
 * [Apache Wicket][wicket]
@@ -16,7 +22,6 @@ application build upon open source frameworks such as:
 * ... [and][joda] [many][jquery] [others][mysql].
 
 
-[teachusdk]: http://www.teachus.dk
 [wicket]: http://wicket.apache.org
 [spring]: http://www.springsource.org
 [hibernate]: http://www.hibernate.org
