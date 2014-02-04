@@ -43,7 +43,7 @@ public interface PersonDAO extends Serializable {
 	
 	void saveAttribute(TeacherAttribute attribute);
 	
-	List<TeacherAttribute> getAttributes(Teacher teacher);
+	TeacherAttribute getAttribute(Teacher teacher);
 
 	Person usernameExists(String username);
 	

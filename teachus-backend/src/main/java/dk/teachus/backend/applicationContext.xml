@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jee="http://www.springframework.org/schema/jee"
-       xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
-	
-	<!-- ===================== -->
-	<!--         BEANS         -->
-	<!-- ===================== -->
-	
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- ===== -->
+	<!-- BEANS -->
+	<!-- ===== -->
+
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="${mail.smtp}"/>
 	</bean>   
@@ -32,11 +33,51 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 	</bean>
 
 	<!-- Notification bean -->
-	<bean id="notificationBean" class="dk.teachus.backend.bean.impl.VelocityNotificationBean">
-		<constructor-arg ref="bookingDao" />
-		<constructor-arg ref="personDao" />
-		<constructor-arg ref="velocityBean" />	
-		<constructor-arg ref="messageDao" />
+	<!-- <bean id="notificationBean" class="dk.teachus.backend.bean.impl.VelocityNotificationBean"> -->
+	<!-- <constructor-arg ref="bookingDao" /> -->
+	<!-- <constructor-arg ref="personDao" /> -->
+	<!-- <constructor-arg ref="velocityBean" /> -->
+	<!-- <constructor-arg ref="messageDao" /> -->
+	<!-- </bean> -->
+
+	<!-- +====================+ -->
+	<!-- | JPA & Transactions | -->
+	<!-- +====================+ -->
+
+	<bean id="transactionManager" class="org.springframework.orm.jdo.JdoTransactionManager">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactory" />
 	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="persistenceManagerFactoryTx" class="org.springframework.orm.jdo.TransactionAwarePersistenceManagerFactoryProxy">
+		<property name="targetPersistenceManagerFactory" ref="persistenceManagerFactory" />
+	</bean>
+
+	<!-- +=====+ -->
+	<!-- | DAO | -->
+	<!-- +=====+ -->
+
+	<bean id="applicationDao" class="dk.teachus.backend.dao.jdo.JdoApplicationDAO">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
+	</bean>
+
+	<bean id="personDao" class="dk.teachus.backend.dao.jdo.JdoPersonDAO">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
+	</bean>
+	
+	<bean id="periodDao" class="dk.teachus.backend.dao.jdo.JdoPeriodDAO">
+		<property name="persistenceManagerFactory" ref="persistenceManagerFactoryTx" />
+	</bean>
+
+	<!-- <bean id="periodDao" /> -->
+
+	<!-- <bean id="bookingDao" /> -->
+
+	<!-- <bean id="statisticsDao" /> -->
+
+	<!-- <bean id="applicationDao" /> -->
+
+	<!-- <bean id="messageDao" /> -->
 
 </beans>

@@ -25,7 +25,6 @@ import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Pupil;
 import dk.teachus.backend.domain.PupilBooking;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
 import dk.teachus.frontend.TeachUsApplication;
 import dk.teachus.frontend.TeachUsSession;
 
@@ -37,7 +36,7 @@ public class IcalResource extends ResourceReference {
 	private static final String CRLF = "\r\n";
 	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormat.forPattern("yyyyMMdd'T'HHmmss'Z'");
 	
-	private IcalResource(String name) {
+	private IcalResource(final String name) {
 		super(name);
 	}
 	
@@ -45,26 +44,26 @@ public class IcalResource extends ResourceReference {
 	public IResource getResource() {
 		return new IResource() {
 			private static final long serialVersionUID = 1L;
-
+			
 			@Override
-			public void respond(Attributes attributes) {
-				PageParameters pageParameters = attributes.getParameters();
-				WebResponse response = (WebResponse) attributes.getResponse();
+			public void respond(final Attributes attributes) {
+				final PageParameters pageParameters = attributes.getParameters();
+				final WebResponse response = (WebResponse) attributes.getResponse();
 				
-				String username = pageParameters.get(0).toString();
-				String privateKey = pageParameters.get(1).toString();
+				final String username = pageParameters.get(0).toString();
+				final String privateKey = pageParameters.get(1).toString();
 				
-				TeachUsSession teachUsSession = TeachUsSession.get();
+				final TeachUsSession teachUsSession = TeachUsSession.get();
 				teachUsSession.signInWithPrivateKey(username, privateKey);
 				if (teachUsSession.isAuthenticated()) {
-					Person person = teachUsSession.getPerson();
+					final Person person = teachUsSession.getPerson();
 					
 					// Create response
-					StringBuilder b = new StringBuilder();
+					final StringBuilder b = new StringBuilder();
 					
-					b.append("BEGIN:VCALENDAR").append(CRLF);
-					b.append("PRODID:-//TeachUs////EN").append(CRLF);
-					b.append("VERSION:2.0").append(CRLF);
+					b.append("BEGIN:VCALENDAR").append(IcalResource.CRLF);
+					b.append("PRODID:-//TeachUs////EN").append(IcalResource.CRLF);
+					b.append("VERSION:2.0").append(IcalResource.CRLF);
 					
 					// Calendar name
 					String calendarName = "";
@@ -72,69 +71,69 @@ public class IcalResource extends ResourceReference {
 						calendarName = teachUsSession.getString("Ical.teacherCalendarName");
 						calendarName = calendarName.replace("{teacherName}", person.getName());
 					} else if (person instanceof Pupil) {
-						Pupil pupil = (Pupil) person;
+						final Pupil pupil = (Pupil) person;
 						calendarName = teachUsSession.getString("Ical.pupilCalendarName");
 						calendarName = calendarName.replace("{teacherName}", pupil.getTeacher().getName());
 					}
-					b.append("X-WR-CALNAME:").append(calendarName).append(CRLF);
-				
+					b.append("X-WR-CALNAME:").append(calendarName).append(IcalResource.CRLF);
+					
 					// Search for upcoming events for this person
-					BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
-					List<PupilBooking> pupilBookings = new ArrayList<PupilBooking>();
+					final BookingDAO bookingDAO = TeachUsApplication.get().getBookingDAO();
+					final List<PupilBooking> pupilBookings = new ArrayList<PupilBooking>();
 					if (person instanceof Pupil) {
-						Pupil pupil = (Pupil) person;
-						Bookings bookings = bookingDAO.getBookings(pupil, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
-						List<Booking> bookingList = bookings.getBookingList();
-						for (Booking booking : bookingList) {
+						final Pupil pupil = (Pupil) person;
+						final Bookings bookings = bookingDAO.getBookings(pupil, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
+						final List<Booking> bookingList = bookings.getBookingList();
+						for (final Booking booking : bookingList) {
 							if (booking instanceof PupilBooking && booking.isActive()) {
-								PupilBooking pupilBooking = (PupilBooking) booking;
+								final PupilBooking pupilBooking = (PupilBooking) booking;
 								pupilBookings.add(pupilBooking);
 							}
 						}
 					} else if (person instanceof Teacher) {
-						Teacher teacher = (Teacher) person;
-						Bookings bookings = bookingDAO.getBookings(teacher, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
-						List<Booking> bookingList = bookings.getBookingList();
-						for (Booking booking : bookingList) {
+						final Teacher teacher = (Teacher) person;
+						final Bookings bookings = bookingDAO.getBookings(teacher, new DateMidnight().minusWeeks(1), new DateMidnight().plusYears(1));
+						final List<Booking> bookingList = bookings.getBookingList();
+						for (final Booking booking : bookingList) {
 							if (booking instanceof PupilBooking && booking.isActive()) {
-								PupilBooking pupilBooking = (PupilBooking) booking;
+								final PupilBooking pupilBooking = (PupilBooking) booking;
 								pupilBookings.add(pupilBooking);
 							}
 						}
 					}
 					
-					for (PupilBooking pupilBooking : pupilBookings) {
-						b.append("BEGIN:VEVENT").append(CRLF);
+					for (final PupilBooking pupilBooking : pupilBookings) {
+						b.append("BEGIN:VEVENT").append(IcalResource.CRLF);
 						
 						DateTime startTime = pupilBooking.getDate();
-						TimeZone teacherTimeZone = teachUsSession.getTeacherAttribute(TimeZoneAttribute.class).getTimeZone();
+						final TimeZone teacherTimeZone = teachUsSession.getTeacherAttribute().getTimeZone();
 						startTime = startTime.withZoneRetainFields(DateTimeZone.forTimeZone(teacherTimeZone));
 						startTime = startTime.withZone(DateTimeZone.UTC);
 						
 						// UID
-						b.append("UID:");		
-						b.append(DATE_FORMAT.print(startTime));
+						b.append("UID:");
+						b.append(IcalResource.DATE_FORMAT.print(startTime));
 						b.append("-");
 						b.append(pupilBooking.getId());
 						b.append("@TeachUs");
-						b.append(CRLF);
+						b.append(IcalResource.CRLF);
 						
 						// Date start
 						b.append("DTSTART:");
-						b.append(DATE_FORMAT.print(startTime));
-						b.append(CRLF);
+						b.append(IcalResource.DATE_FORMAT.print(startTime));
+						b.append(IcalResource.CRLF);
 						
-						// Date end		
+						// Date end
 						b.append("DTEND:");
-						DateTime endTime = startTime.plusMinutes(pupilBooking.getPeriod().getLessonDuration());
-						b.append(DATE_FORMAT.print(endTime));
-						b.append(CRLF);
-
-						// Location 
+						final DateTime endTime = startTime.plusMinutes(pupilBooking.getPeriod().getLessonDuration());
+						b.append(IcalResource.DATE_FORMAT.print(endTime));
+						b.append(IcalResource.CRLF);
+						
+						// Location
 						if (Strings.isEmpty(pupilBooking.getPeriod().getLocation()) == false) {
 							b.append("LOCATION:");
 							b.append(pupilBooking.getPeriod().getLocation());
-							b.append(CRLF);
+							b.append(IcalResource.CRLF);
 						}
 						
 						// Summary
@@ -148,20 +147,20 @@ public class IcalResource extends ResourceReference {
 							summary = summary.replace("{teacherName}", pupilBooking.getTeacher().getName());
 						}
 						b.append(summary);
-						b.append(CRLF);
+						b.append(IcalResource.CRLF);
 						
-						b.append("END:VEVENT").append(CRLF);
+						b.append("END:VEVENT").append(IcalResource.CRLF);
 					}
 					
-					b.append("END:VCALENDAR").append(CRLF); 
+					b.append("END:VCALENDAR").append(IcalResource.CRLF);
 					
 					response.setContentType("text/calendar; charset=UTF-8");
-					response.setHeader("Content-Disposition", "attachment; filename="+person.getUsername()+".ics");
+					response.setHeader("Content-Disposition", "attachment; filename=" + person.getUsername() + ".ics");
 					try {
-						byte[] bytes = b.toString().getBytes("UTF-8");
+						final byte[] bytes = b.toString().getBytes("UTF-8");
 						response.setContentLength(bytes.length);
 						response.write(bytes);
-					} catch (UnsupportedEncodingException e) {
+					} catch (final UnsupportedEncodingException e) {
 						throw new RuntimeException(e);
 					}
 				} else {

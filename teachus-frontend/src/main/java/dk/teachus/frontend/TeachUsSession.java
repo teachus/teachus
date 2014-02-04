@@ -17,7 +17,6 @@
 package dk.teachus.frontend;
 
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
@@ -44,61 +43,62 @@ public class TeachUsSession extends WebSession {
 	protected Person person;
 	private Properties resourceBundle;
 	
-	private TeacherAttributes teacherAttributes = new TeacherAttributes();
+	private final TeacherAttributes teacherAttributes = new TeacherAttributes();
 	
-	public TeachUsSession(Request request) {
+	public TeachUsSession(final Request request) {
 		super(request);
-
-		CookieUtils cookieUtils = new CookieUtils();
-		String username = cookieUtils.load("username");
-		String password = cookieUtils.load("password");
+		
+		final CookieUtils cookieUtils = new CookieUtils();
+		final String username = cookieUtils.load("username");
+		final String password = cookieUtils.load("password");
 		if (false == Strings.isEmpty(username) && false == Strings.isEmpty(password)) {
 			signIn(username, password);
 		} else {
 			changeLocale(getLocale());
 		}
 	}
-
+	
 	public boolean isAuthenticated() {
 		return getPerson() != null;
 	}
 	
-	public void signIn(String username, String password) {
-		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
-
+	public void signIn(final String username, final String password) {
+		final PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+		
 		person = personDAO.authenticatePerson(username, password);
-
+		
 		setLocale();
 	}
 	
-	public void signInWithPrivateKey(String username, String privateKey) {
-		PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
+	public void signInWithPrivateKey(final String username, final String privateKey) {
+		final PersonDAO personDAO = TeachUsApplication.get().getPersonDAO();
 		
 		person = personDAO.authenticatePersonWithPrivateKey(username, privateKey);
-
+		
 		setLocale();
 	}
-
+	
 	private void setLocale() {
-		Person p = getPerson();
+		final Person p = getPerson();
 		if (p != null) {
 			if (p.getLocale() != null) {
 				setLocale(p.getLocale());
 			} else if (p instanceof Pupil) {
-				Pupil pupil = (Pupil) p;
+				final Pupil pupil = (Pupil) p;
 				setLocale(pupil.getTeacher().getLocale());
 			}
 		}
 		
 		changeLocale(getLocale());
 	}
-
+	
 	/**
 	 * Should only be used for an Admin to be able to login as a teacher to see his/hers settings.
 	 * 
-	 * @param teacher The teacher to authenticate as.
+	 * @param teacher
+	 *            The teacher to authenticate as.
 	 */
-	public void setAuthenticatedPerson(Teacher teacher) {
+	public void setAuthenticatedPerson(final Teacher teacher) {
 		if (getUserLevel() == UserLevel.ADMIN) {
 			person = teacher;
 		}
@@ -106,26 +106,26 @@ public class TeachUsSession extends WebSession {
 		// We don't set any locale because the teacher might not have the same as the admin.
 	}
 	
-	public void changeLocale(Locale locale) {
+	public void changeLocale(final Locale locale) {
 		setLocale(locale);
 		resourceBundle = createResourceBundle(locale);
 	}
 	
-	public Properties createResourceBundle(Locale locale) {
-		Properties properties = new Properties();
+	public Properties createResourceBundle(final Locale locale) {
+		final Properties properties = new Properties();
 		
-		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
-		Enumeration<String> keys = bundle.getKeys();
-		while(keys.hasMoreElements()) {
-			String key = keys.nextElement();
+		final ResourceBundle bundle = ResourceBundle.getBundle(TeachUsSession.BUNDLE_NAME, locale);
+		final Enumeration<String> keys = bundle.getKeys();
+		while (keys.hasMoreElements()) {
+			final String key = keys.nextElement();
 			properties.setProperty(key, bundle.getString(key));
 		}
 		
 		return properties;
 	}
-
+	
 	public void signOut() {
-		CookieUtils cookieUtils = new CookieUtils();
+		final CookieUtils cookieUtils = new CookieUtils();
 		cookieUtils.remove("username");
 		cookieUtils.remove("password");
 		person = null;
@@ -140,20 +140,16 @@ public class TeachUsSession extends WebSession {
 		return (Teacher) getPerson();
 	}
 	
-	public List<TeacherAttribute> getTeacherAttributes() {
-		Person p = getPerson();
-		return teacherAttributes.getTeacherAttributes(p);
+	public TeacherAttribute getTeacherAttribute() {
+		final Person p = getPerson();
+		return teacherAttributes.getTeacherAttribute(p);
 	}
 	
-	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass) {
-		return teacherAttributes.getTeacherAttribute(attributeClass, getPerson());
-	}
-
-	public <A extends TeacherAttribute> A getTeacherAttribute(Class<A> attributeClass, Teacher teacher) {
-		return teacherAttributes.getTeacherAttribute(attributeClass, teacher);
+	public TeacherAttribute getTeacherAttribute(final Teacher teacher) {
+		return teacherAttributes.getTeacherAttribute(teacher);
 	}
 	
-	public void saveNewTeacherAttribute(TeacherAttribute teacherAttribute) {
+	public void saveNewTeacherAttribute(final TeacherAttribute teacherAttribute) {
 		if (teacherAttribute != null && teacherAttribute.getId() == null) {
 			TeachUsApplication.get().getPersonDAO().saveAttribute(teacherAttribute);
 			
@@ -172,17 +168,17 @@ public class TeachUsSession extends WebSession {
 			} else if (person instanceof Pupil) {
 				userLevel = UserLevel.PUPIL;
 			} else {
-				throw new IllegalStateException("Unsupported person in user: "+person.getClass().getName()); //$NON-NLS-1$
+				throw new IllegalStateException("Unsupported person in user: " + person.getClass().getName()); //$NON-NLS-1$
 			}
 		}
 		
 		return userLevel;
 	}
-
-	public String getString(String key) {
+	
+	public String getString(final String key) {
 		try {
 			return resourceBundle.getProperty(key);
-		} catch (MissingResourceException e) {
+		} catch (final MissingResourceException e) {
 			return '!' + key + '!';
 		}
 	}

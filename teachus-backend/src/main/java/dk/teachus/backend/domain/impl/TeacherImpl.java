@@ -16,18 +16,25 @@
  */
 package dk.teachus.backend.domain.impl;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+
 import dk.teachus.backend.domain.Teacher;
 
+@PersistenceCapable(table = "teacher")
 public class TeacherImpl extends PersonImpl implements Teacher {
 	private static final long serialVersionUID = 1L;
 	
+	@Persistent
 	private String currency;
-
+	
+	@Override
 	public String getCurrency() {
 		return currency;
 	}
-
-	public void setCurrency(String currency) {
+	
+	@Override
+	public void setCurrency(final String currency) {
 		this.currency = currency;
 	}
 	

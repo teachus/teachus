@@ -18,36 +18,46 @@ package dk.teachus.backend.domain.impl;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Version;
+import javax.jdo.annotations.VersionStrategy;
+
+@PersistenceCapable(table = "application_configuration")
+@Version(strategy = VersionStrategy.VERSION_NUMBER, column = "version")
 public class ApplicationConfigurationEntry implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	protected int version;
 	
+	@PrimaryKey
+	@Persistent(column = "name")
 	private String key;
+	
+	@Persistent
 	private String value;
-
+	
 	protected ApplicationConfigurationEntry() {
 	}
-
-	public ApplicationConfigurationEntry(String key, String value) {
+	
+	public ApplicationConfigurationEntry(final String key, final String value) {
 		this.key = key;
 		this.value = value;
 	}
-
+	
 	public String getKey() {
 		return key;
 	}
-
+	
 	public String getValue() {
 		return value;
 	}
-
-	public void setKey(String key) {
+	
+	public void setKey(final String key) {
 		this.key = key;
 	}
-
-	public void setValue(String value) {
+	
+	public void setValue(final String value) {
 		this.value = value;
 	}
-
+	
 }

@@ -24,8 +24,8 @@ import org.apache.wicket.model.Model;
 import dk.teachus.backend.domain.Admin;
 import dk.teachus.backend.domain.Person;
 import dk.teachus.backend.domain.Teacher;
-import dk.teachus.backend.domain.impl.CalendarNarrowTimesTeacherAttribute;
-import dk.teachus.backend.domain.impl.TimeZoneAttribute;
+import dk.teachus.backend.domain.TeacherAttribute;
+import dk.teachus.backend.domain.impl.TeacherAttributeImpl;
 import dk.teachus.frontend.TeachUsSession;
 import dk.teachus.frontend.components.form.CheckBoxElement;
 import dk.teachus.frontend.components.form.DropDownElement;
@@ -35,10 +35,9 @@ import dk.teachus.frontend.pages.persons.TeachersPage;
 
 public class TeacherPanel extends PersonPanel {
 	private static final long serialVersionUID = 1L;
-	private TimeZoneAttribute timeZoneAttribute;
-	private CalendarNarrowTimesTeacherAttribute calendarNarrowTimesAttribute;
-
-	public TeacherPanel(String id, TeacherModel teacherModel) {
+	private TeacherAttribute teacherAttribute;
+	
+	public TeacherPanel(final String id, final TeacherModel teacherModel) {
 		super(id, teacherModel);
 	}
 	
@@ -46,9 +45,9 @@ public class TeacherPanel extends PersonPanel {
 	protected Class<TeachersPage> getPersonsPageClass() {
 		return TeachersPage.class;
 	}
-
+	
 	@Override
-	protected boolean allowUserEditing(Person loggedInPerson, Person editPerson) {
+	protected boolean allowUserEditing(final Person loggedInPerson, final Person editPerson) {
 		boolean allow = false;
 		
 		if (loggedInPerson instanceof Admin) {
@@ -61,19 +60,17 @@ public class TeacherPanel extends PersonPanel {
 	}
 	
 	@Override
-	protected final void onSave(Person person) {
-		Teacher teacher = (Teacher) person;
+	protected final void onSave(final Person person) {
+		final Teacher teacher = (Teacher) person;
 		
-		timeZoneAttribute.setTeacher(teacher);
-		calendarNarrowTimesAttribute.setTeacher(teacher);
+		teacherAttribute.setTeacher(teacher);
 		
-		TeachUsSession.get().saveNewTeacherAttribute(timeZoneAttribute);
-		TeachUsSession.get().saveNewTeacherAttribute(calendarNarrowTimesAttribute);
+		TeachUsSession.get().saveNewTeacherAttribute(teacherAttribute);
 		
 		onSave(teacher);
 	}
 	
-	protected void onSave(Teacher teacher) {
+	protected void onSave(final Teacher teacher) {
 		
 	}
 	
@@ -88,35 +85,21 @@ public class TeacherPanel extends PersonPanel {
 	}
 	
 	@Override
-	protected void appendElements(FormPanel formPanel) {
+	protected void appendElements(final FormPanel formPanel) {
 		/*
 		 * TimeZone
 		 */
-		IModel<TimeZone> inputModel = new Model<TimeZone>() {
+		final IModel<TimeZone> inputModel = new Model<TimeZone>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public TimeZone getObject() {
-				Teacher teacher = (Teacher) getModelObject();
-				
-				if (timeZoneAttribute == null && teacher.getId() != null) {
-					timeZoneAttribute = TeachUsSession.get().getTeacherAttribute(TimeZoneAttribute.class, teacher);
-				}
-				
-				if (timeZoneAttribute == null) {
-					timeZoneAttribute = new TimeZoneAttribute();
-				}
-				
-				return timeZoneAttribute.getTimeZone();
+				return getTeacherAttribute().getTimeZone();
 			}
 			
 			@Override
-			public void setObject(TimeZone timeZone) {
-				if (timeZone != null) {
-					timeZoneAttribute.setTimeZone(timeZone);
-				} else { 
-					timeZoneAttribute.setValue(null);
-				}
+			public void setObject(final TimeZone timeZone) {
+				getTeacherAttribute().setTimeZone(timeZone);
 			}
 		};
 		
@@ -125,31 +108,17 @@ public class TeacherPanel extends PersonPanel {
 		/*
 		 * In the calendar, use narrow calendar time span (from start period to end period)
 		 */
-		IModel<Boolean> newCalendarNarrowTimesModel = new Model<Boolean>() {
+		final IModel<Boolean> newCalendarNarrowTimesModel = new Model<Boolean>() {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
 			public Boolean getObject() {
-				Teacher teacher = (Teacher) getModelObject();
-				
-				if (calendarNarrowTimesAttribute == null && teacher.getId() != null) {
-					calendarNarrowTimesAttribute = TeachUsSession.get().getTeacherAttribute(CalendarNarrowTimesTeacherAttribute.class, teacher);
-				}
-				
-				if (calendarNarrowTimesAttribute == null) {
-					calendarNarrowTimesAttribute = new CalendarNarrowTimesTeacherAttribute();
-				}
-				
-				return calendarNarrowTimesAttribute.getBooleanValue();
+				return getTeacherAttribute().getCalendarNarrowTimes();
 			}
 			
 			@Override
-			public void setObject(Boolean bool) {
-				if (bool != null) {
-					calendarNarrowTimesAttribute.setBooleanValue(bool);
-				} else { 
-					calendarNarrowTimesAttribute.setValue(null);
-				}
+			public void setObject(final Boolean bool) {
+				getTeacherAttribute().setCalendarNarrowTimes(bool);
 			}
 		};
 		
@@ -159,5 +128,15 @@ public class TeacherPanel extends PersonPanel {
 	public Teacher getModelObject() {
 		return (Teacher) getDefaultModelObject();
 	}
-
+	
+	private TeacherAttribute getTeacherAttribute() {
+		if (teacherAttribute == null) {
+			teacherAttribute = TeachUsSession.get().getTeacherAttribute(getModelObject());
+		}
+		if (teacherAttribute == null) {
+			teacherAttribute = new TeacherAttributeImpl();
+		}
+		return teacherAttribute;
+	}
+	
 }

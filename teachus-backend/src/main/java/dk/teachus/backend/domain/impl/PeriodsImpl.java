@@ -30,25 +30,36 @@ import dk.teachus.backend.domain.Periods;
 
 public class PeriodsImpl implements Periods {
 	private static final long serialVersionUID = 1L;
-
+	
 	private List<Period> periods = new ArrayList<Period>();
-
+	
+	public PeriodsImpl() {
+	}
+	
+	public PeriodsImpl(final List<Period> periods) {
+		this.periods = periods;
+	}
+	
+	@Override
 	public List<Period> getPeriods() {
 		return periods;
 	}
-
-	public void setPeriods(List<Period> periods) {
+	
+	@Override
+	public void setPeriods(final List<Period> periods) {
 		this.periods = periods;
 	}
-
-	public void addPeriod(Period period) {		
+	
+	@Override
+	public void addPeriod(final Period period) {
 		periods.add(period);
 	}
 	
-	public boolean hasDate(DateMidnight date) {
+	@Override
+	public boolean hasDate(final DateMidnight date) {
 		boolean hasDate = false;
 		
-		for (Period period : getValidPeriods()) {
+		for (final Period period : getValidPeriods()) {
 			if (period.hasDate(date)) {
 				hasDate = true;
 				break;
@@ -58,10 +69,11 @@ public class PeriodsImpl implements Periods {
 		return hasDate;
 	}
 	
-	public boolean containsDate(DateMidnight date) {
+	@Override
+	public boolean containsDate(final DateMidnight date) {
 		boolean contains = false;
 		
-		for (Period period : getValidPeriods()) {
+		for (final Period period : getValidPeriods()) {
 			if (period.dateIntervalContains(date)) {
 				contains = true;
 				break;
@@ -71,11 +83,12 @@ public class PeriodsImpl implements Periods {
 		return contains;
 	}
 	
-	public boolean hasPeriodBefore(DateMidnight dateMidnight) {
+	@Override
+	public boolean hasPeriodBefore(final DateMidnight dateMidnight) {
 		boolean hasPeriodBefore = false;
 		
-		for (Period period : getValidPeriods()) {
-			DateMidnight beginDate = period.getBeginDate();
+		for (final Period period : getValidPeriods()) {
+			final DateMidnight beginDate = period.getBeginDate();
 			if (beginDate == null) {
 				hasPeriodBefore = true;
 				break;
@@ -90,15 +103,16 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodBefore;
 	}
 	
-	public boolean hasPeriodAfter(DateMidnight dateMidnight) {
+	@Override
+	public boolean hasPeriodAfter(final DateMidnight dateMidnight) {
 		boolean hasPeriodAfter = false;
 		
-		for (Period period : getValidPeriods()) {
+		for (final Period period : getValidPeriods()) {
 			if (period.getEndDate() == null) {
 				hasPeriodAfter = true;
 				break;
 			} else {
-				DateMidnight endDate = period.getEndDate();
+				final DateMidnight endDate = period.getEndDate();
 				if (endDate.isAfter(dateMidnight) || endDate.isEqual(dateMidnight)) {
 					hasPeriodAfter = true;
 					break;
@@ -109,17 +123,18 @@ public class PeriodsImpl implements Periods {
 		return hasPeriodAfter;
 	}
 	
-	public List<DatePeriod> generateDatesForWeek(DateMidnight startDate) {
-		List<DatePeriod> dates = new ArrayList<DatePeriod>();
+	@Override
+	public List<DatePeriod> generateDatesForWeek(final DateMidnight startDate) {
+		final List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		DateMidnight sd = startDate.withDayOfWeek(DateTimeConstants.MONDAY);
-		int week = sd.getWeekOfWeekyear();
+		final int week = sd.getWeekOfWeekyear();
 		
-		while(week == sd.getWeekOfWeekyear()) {			
+		while (week == sd.getWeekOfWeekyear()) {
 			DatePeriod datePeriod = null;
-			for (Period period : getValidPeriods()) {
+			for (final Period period : getValidPeriods()) {
 				// Check if this period can handle the date at all
-				if (period.dateIntervalContains(sd)) {				
-					DateMidnight date = period.generateDate(sd);
+				if (period.dateIntervalContains(sd)) {
+					final DateMidnight date = period.generateDate(sd);
 					if (date != null) {
 						if (datePeriod == null) {
 							datePeriod = new DatePeriodImpl(date);
@@ -135,7 +150,8 @@ public class PeriodsImpl implements Periods {
 		}
 		
 		Collections.sort(dates, new Comparator<DatePeriod>() {
-			public int compare(DatePeriod o1, DatePeriod o2) {
+			@Override
+			public int compare(final DatePeriod o1, final DatePeriod o2) {
 				return o1.getDate().compareTo(o2.getDate());
 			}
 		});
@@ -143,18 +159,20 @@ public class PeriodsImpl implements Periods {
 		return dates;
 	}
 	
-	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays) {
+	@Override
+	public List<DatePeriod> generateDates(final DateMidnight weekDate, final int numberOfDays) {
 		return generateDates(weekDate, numberOfDays, false);
 	}
-
-	public List<DatePeriod> generateDates(DateMidnight weekDate, int numberOfDays, boolean explicitNumberOfDays) {
+	
+	@Override
+	public List<DatePeriod> generateDates(DateMidnight weekDate, final int numberOfDays, final boolean explicitNumberOfDays) {
 		weekDate = weekDate.withDayOfWeek(DateTimeConstants.MONDAY);
 		
-		List<DatePeriod> dates = new ArrayList<DatePeriod>();
+		final List<DatePeriod> dates = new ArrayList<DatePeriod>();
 		List<DatePeriod> weekDates = generateDatesForWeek(weekDate);
 		if (numberOfDays > 0) {
 			do {
-				for (DatePeriod datePeriod : weekDates) {
+				for (final DatePeriod datePeriod : weekDates) {
 					dates.add(datePeriod);
 					
 					if (explicitNumberOfDays) {
@@ -165,18 +183,18 @@ public class PeriodsImpl implements Periods {
 				}
 				weekDate = weekDate.plusWeeks(1);
 				weekDates = generateDatesForWeek(weekDate);
-			} while(dates.size()+weekDates.size() <= numberOfDays
-					&& hasPeriodAfter(weekDate));
+			} while (dates.size() + weekDates.size() <= numberOfDays && hasPeriodAfter(weekDate));
 		}
 		
 		return dates;
 	}
 	
-	public int numberOfWeeksBack(DateMidnight lastDate, int numberOfDays) {
+	@Override
+	public int numberOfWeeksBack(DateMidnight lastDate, final int numberOfDays) {
 		int numberOfWeeks = 0;
 		
 		int dates = 0;
-		while(hasPeriodBefore(lastDate) && dates < numberOfDays) {
+		while (hasPeriodBefore(lastDate) && dates < numberOfDays) {
 			lastDate = lastDate.minusWeeks(1);
 			dates += generateDatesForWeek(lastDate).size();
 			
@@ -189,10 +207,10 @@ public class PeriodsImpl implements Periods {
 	}
 	
 	private List<Period> getValidPeriods() {
-		List<Period> validPeriods = new ArrayList<Period>();
+		final List<Period> validPeriods = new ArrayList<Period>();
 		
 		if (periods != null) {
-			for (Period period : periods) {
+			for (final Period period : periods) {
 				if (period.isValid()) {
 					validPeriods.add(period);
 				}

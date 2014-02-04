@@ -22,7 +22,7 @@ import dk.teachus.backend.domain.Message;
 import dk.teachus.backend.domain.MessageState;
 import dk.teachus.backend.domain.Person;
 
-public abstract class AbstractMessage extends AbstractHibernateObject implements Message {
+public abstract class AbstractMessage extends AbstractJdoObject implements Message {
 	private static final long serialVersionUID = 1L;
 	
 	private DateTime createDate;
@@ -37,7 +37,7 @@ public abstract class AbstractMessage extends AbstractHibernateObject implements
 	}
 	
 	protected AbstractMessage(AbstractMessage m) {
-		super((AbstractHibernateObject) m);
+		super((AbstractJdoObject) m);
 		
 		if (m.body != null) {
 			this.body = m.body.intern();

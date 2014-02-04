@@ -26,29 +26,32 @@ import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestSendNewPasswordPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
-
+	
 	public void testRender() {
 		final TeachUsWicketTester tester = createTester();
 		
-		checking(new Expectations() {{
-			PersonDAO personDAO = createPersonDAO();
-			
-			one(personDAO).getPerson(2L);
-			Teacher teacher = createTeacher();
-			will(returnValue(teacher));
-			
-			one(personDAO).getPerson(4L);
-			will(returnValue(createPupil(4L)));
-			
-			one(personDAO).getAttributes(with(aNonNull(Teacher.class)));
-			will(returnValue(null));
-			
-			tester.setPersonDAO(personDAO);
-		}});
+		checking(new Expectations() {
+			{
+				final PersonDAO personDAO = createPersonDAO();
+				
+				one(personDAO).getPerson(2L);
+				final Teacher teacher = createTeacher();
+				will(Expectations.returnValue(teacher));
+				
+				one(personDAO).getPerson(4L);
+				will(Expectations.returnValue(createPupil(4L)));
+				
+				one(personDAO).getAttribute(with(Expectations.aNonNull(Teacher.class)));
+				will(Expectations.returnValue(null));
+				
+				tester.setPersonDAO(personDAO);
+			}
+		});
 		
 		tester.startPage(new ITestPageSource() {
 			private static final long serialVersionUID = 1L;
-
+			
+			@Override
 			public Page getTestPage() {
 				return new SendNewPasswordPage(4L);
 			}

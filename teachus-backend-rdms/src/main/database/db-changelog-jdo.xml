@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+         
+	<changeSet id="split_admin_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<createTable tableName="admin_users">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="username" type="varchar(50)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="password" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="email" type="varchar(250)">
+				<constraints nullable="true" />
+			</column>
+			<column name="phone_number" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="theme" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="active" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="currency" type="varchar(10)">
+				<constraints nullable="true" />
+			</column>
+			<column name="notes" type="mediumtext">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="move_admin_users_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<sql>
+			INSERT INTO
+				admin_users
+				SELECT
+					id, 
+					version,
+					name,
+					username,
+					password,
+					email,
+					phone_number,
+					locale,
+					theme,
+					active,
+					currency,
+					notes
+				FROM
+					person 
+				WHERE
+					person_type = 'ADMIN'
+		</sql>
+	</changeSet>
+
+	<changeSet id="split_teacher_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<createTable tableName="teacher">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="username" type="varchar(50)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="password" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="email" type="varchar(250)">
+				<constraints nullable="true" />
+			</column>
+			<column name="phone_number" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="theme" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="active" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="currency" type="varchar(10)">
+				<constraints nullable="true" />
+			</column>
+			<column name="notes" type="mediumtext">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="move_teachers_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<sql>
+			INSERT INTO
+				teacher
+				SELECT
+					id, 
+					version,
+					name,
+					username,
+					password,
+					email,
+					phone_number,
+					locale,
+					theme,
+					active,
+					currency,
+					notes
+				FROM
+					person 
+				WHERE
+					person_type = 'TEACHER'
+		</sql>
+	</changeSet>
+
+	<changeSet id="split_pupil_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<createTable tableName="pupil">
+			<column name="id" autoIncrement="true" type="bigint">
+				<constraints nullable="false" primaryKey="true" />
+			</column>
+			<column name="version" type="int" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(100)">
+				<constraints nullable="true" />
+			</column>
+			<column name="username" type="varchar(50)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="password" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="email" type="varchar(250)">
+				<constraints nullable="true" />
+			</column>
+			<column name="phone_number" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="locale" type="varchar(20)">
+				<constraints nullable="true" />
+			</column>
+			<column name="theme" type="varchar(40)">
+				<constraints nullable="true" />
+			</column>
+			<column name="active" type="tinyint(1)">
+				<constraints nullable="true" />
+			</column>
+			<column name="currency" type="varchar(10)">
+				<constraints nullable="true" />
+			</column>
+			<column name="teacher_id" type="bigint">
+				<constraints nullable="true" />
+			</column>
+			<column name="notes" type="mediumtext">
+				<constraints nullable="true" />
+			</column>
+		</createTable>
+		<modifySql>
+			<append value=" engine innodb" />
+		</modifySql>
+	</changeSet>
+
+	<changeSet id="split_pupil_from_person_indexes" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<createIndex tableName="pupil" indexName="IDX_PUPIL_TEACHER_ID">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_PUPIL_TEACHER_ID" baseTableName="pupil"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+	</changeSet>
+
+	<changeSet id="move_pupil_from_person" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<sql>
+			INSERT INTO
+				pupil
+				SELECT
+					id, 
+					version,
+					name,
+					username,
+					password,
+					email,
+					phone_number,
+					locale,
+					theme,
+					active,
+					currency,
+					teacher_id,
+					notes
+				FROM
+					person 
+				WHERE
+					person_type = 'PUPIL'
+		</sql>
+	</changeSet>
+	
+	<changeSet id="change_teacher_attribute_person_fk" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<dropForeignKeyConstraint constraintName="FKD49E7E7F1CC24034" baseTableName="teacher_attribute" />
+		<dropIndex tableName="teacher_attribute" indexName="FKD49E7E7F1CC24034"/>
+		
+		<createIndex tableName="teacher_attribute" indexName="IDX_TEACHER_ATTRIBUTE_TEACHER">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_TEACHER_ATTRIBUTE_TEACHER" baseTableName="teacher_attribute"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+	</changeSet>
+	
+	<changeSet id="change_period_teacher_person_fk" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">	
+		<dropForeignKeyConstraint constraintName="FKC4E375C11CC24034" baseTableName="period" />
+		<dropIndex tableName="period" indexName="FKC4E375C11CC24034"/>
+		
+		<createIndex tableName="period" indexName="IDX_PERIOD_TEACHER">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_PERIOD_TEACHER" baseTableName="period"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+	</changeSet>
+	
+	<changeSet id="change_booking_person_fks" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<dropForeignKeyConstraint constraintName="FK3DB08598007F534" baseTableName="booking" />
+		<dropIndex tableName="booking" indexName="FK3DB08598007F534"/>
+		
+		<dropForeignKeyConstraint constraintName="FK3DB08591CC24034" baseTableName="booking" />
+		<dropIndex tableName="booking" indexName="FK3DB08591CC24034"/>
+		
+		<createIndex tableName="booking" indexName="IDX_BOOKING_TEACHER">
+			<column name="teacher_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_BOOKING_TEACHER" baseTableName="booking"
+			baseColumnNames="teacher_id" referencedTableName="teacher" referencedColumnNames="id" />
+		
+		<createIndex tableName="booking" indexName="IDX_BOOKING_PUPIL">
+			<column name="pupil_id"></column>
+		</createIndex>
+		<addForeignKeyConstraint constraintName="FK_BOOKING_PUPIL" baseTableName="booking"
+			baseColumnNames="pupil_id" referencedTableName="pupil" referencedColumnNames="id" />
+	</changeSet>
+	
+<!-- 	<changeSet id="drop_message_person_fks" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql"> -->
+<!-- 		<dropForeignKeyConstraint constraintName="FK_MESSAGE_RECIPIENT_PERSON" baseTableName="message" /> -->
+<!-- 		<dropForeignKeyConstraint constraintName="FK38EB0007E0E4002A" baseTableName="message" /> -->
+		
+<!-- 		<dropIndex tableName="message" indexName="FK38EB0007E0E4002A"/> -->
+<!-- 	</changeSet> -->
+	
+<!-- 	<changeSet id="create_message_teacher_pupil_fks" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql"> -->
+<!-- 		<addForeignKeyConstraint constraintName="FK_MESSAGE_RECIPIENT_PUPIL" baseTableName="message" -->
+<!-- 			baseColumnNames="recipient" referencedTableName="pupil" referencedColumnNames="id" /> -->
+		
+<!-- 		<createIndex tableName="message" indexName="IDX_MESSAGE_SENDER_TEACHER"> -->
+<!-- 			<column name="sender"></column> -->
+<!-- 		</createIndex> -->
+<!-- 		<addForeignKeyConstraint constraintName="FK_MESSAGE_SENDER_TEACHER" baseTableName="message" -->
+<!-- 			baseColumnNames="sender" referencedTableName="teacher" referencedColumnNames="id" /> -->
+<!-- 	</changeSet> -->
+	
+<!-- 	<changeSet id="drop_person_table" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql"> -->
+<!-- 		<dropForeignKeyConstraint constraintName="FKC4E39B551CC24034" baseTableName="person" /> -->
+	
+<!-- 		<dropTable tableName="person" /> -->
+<!-- 	</changeSet> -->
+
+	<changeSet id="flatten_teacher_attribute_table" author="Frank Bille &lt;frank@teachus.dk&gt;" dbms="mysql">
+		<addColumn tableName="teacher_attribute">
+			<column name="welcome_introduction" type="[text]">
+				<constraints nullable="true" />
+			</column>
+			<column name="timezone" type="varchar(30)">
+				<constraints nullable="true" />
+			</column>
+			<column name="calendar_narrow_times" type="tinyint(1)">
+				<constraints nullable="false" />
+			</column>
+		</addColumn>
+		<dropNotNullConstraint tableName="teacher_attribute" columnName="attribute" columnDataType="varchar(255)" />
+		<dropNotNullConstraint tableName="teacher_attribute" columnName="value" columnDataType="text" />
+		<sql>
+			INSERT INTO
+				teacher_attribute
+				(
+					version,
+					teacher_id,
+					welcome_introduction,
+					timezone,
+					calendar_narrow_times
+				)
+				SELECT
+					0,
+					t.teacher_id,
+					t1.value,
+					t2.value,
+					IF(t3.value='false',0,1)
+				FROM
+					teacher_attribute AS t
+					LEFT JOIN
+					teacher_attribute AS t1 ON t.teacher_id=t1.teacher_id AND t1.attribute='WELCOME_INTRODUCTION'
+					LEFT JOIN
+					teacher_attribute AS t2 ON t.teacher_id=t2.teacher_id AND t2.attribute='TIMEZONE'
+					LEFT JOIN
+					teacher_attribute AS t3 ON t.teacher_id=t3.teacher_id AND t3.attribute='CALENDARNARROWTIMES'
+				GROUP BY
+					t.teacher_id
+		</sql>
+		<sql>
+			DELETE FROM
+				teacher_attribute
+			WHERE
+				attribute IS NOT NULL
+		</sql>
+		<dropColumn tableName="teacher_attribute" columnName="attribute"/>
+		<dropColumn tableName="teacher_attribute" columnName="value"/>
+	</changeSet>
+	
+</databaseChangeLog>

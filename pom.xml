@@ -18,9 +18,9 @@
 
 	<modules>
 		<module>teachus-backend</module>
-		<module>teachus-backend-hibernate</module>
+		<module>teachus-backend-rdms</module>
 		<module>teachus-frontend</module>
-		<module>teachus-test</module>
+		
 	</modules>
 	
 	<properties>
@@ -41,7 +41,7 @@
 			</dependency>
 			<dependency>
 				<groupId>dk.teachus</groupId>
-				<artifactId>teachus-backend-hibernate</artifactId>
+				<artifactId>teachus-backend-rdms</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
@@ -50,12 +50,6 @@
 				<artifactId>teachus-frontend</artifactId>
 				<version>${project.version}</version>
 				<type>war</type>
-			</dependency>
-			<dependency>
-				<groupId>dk.teachus</groupId>
-				<artifactId>teachus-test</artifactId>
-				<version>${project.version}</version>
-				<type>jar</type>
 			</dependency>
 
 			<!-- Runtime/Compile dependencies -->
@@ -103,6 +97,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
@@ -117,9 +116,29 @@
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>3.6.10.Final</version>
+				<groupId>javax.jdo</groupId>
+				<artifactId>jdo-api</artifactId>
+				<version>3.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.datanucleus</groupId>
+				<artifactId>datanucleus-core</artifactId>
+				<version>3.0.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.datanucleus</groupId>
+				<artifactId>datanucleus-api-jdo</artifactId>
+				<version>3.0.8</version>
+			</dependency>
+			<dependency>
+				<groupId>org.datanucleus</groupId>
+				<artifactId>datanucleus-rdbms</artifactId>
+				<version>3.0.10</version>
+			</dependency>
+			<dependency>
+				<groupId>org.datanucleus</groupId>
+				<artifactId>datanucleus-enhancer</artifactId>
+				<version>3.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.liquibase</groupId>
@@ -192,7 +211,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>3.8.2</version>
+				<version>4.10</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>

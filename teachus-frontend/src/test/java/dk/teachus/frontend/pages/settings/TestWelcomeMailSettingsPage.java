@@ -20,26 +20,29 @@ import org.jmock.Expectations;
 
 import dk.teachus.backend.dao.PersonDAO;
 import dk.teachus.backend.domain.Teacher;
+import dk.teachus.backend.domain.impl.TeacherAttributeImpl;
 import dk.teachus.frontend.test.WicketTestCase;
 
 public class TestWelcomeMailSettingsPage extends WicketTestCase {
 	private static final long serialVersionUID = 1L;
-
+	
 	public void testRender() {
 		final TeachUsWicketTester tester = createTester();
 		
-		checking(new Expectations() {{
-			PersonDAO personDAO = mock(PersonDAO.class);
-			
-			one(personDAO).getPerson(2L);
-			Teacher teacher = createTeacher();
-			will(returnValue(teacher));
-			
-			one(personDAO).getAttributes(teacher);
-			will(returnValue(null));
-			
-			tester.setPersonDAO(personDAO);
-		}});
+		checking(new Expectations() {
+			{
+				final PersonDAO personDAO = mock(PersonDAO.class);
+				
+				one(personDAO).getPerson(2L);
+				final Teacher teacher = createTeacher();
+				will(Expectations.returnValue(teacher));
+				
+				one(personDAO).getAttribute(teacher);
+				will(Expectations.returnValue(new TeacherAttributeImpl()));
+				
+				tester.setPersonDAO(personDAO);
+			}
+		});
 		
 		tester.startPage(WelcomeMailSettingsPage.class);
 		

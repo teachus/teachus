@@ -22,7 +22,7 @@ import dk.teachus.backend.domain.Booking;
 import dk.teachus.backend.domain.Period;
 import dk.teachus.backend.domain.Teacher;
 
-public abstract class BookingImpl extends AbstractHibernateObject implements Booking {
+public abstract class BookingImpl extends AbstractJdoObject implements Booking {
 	private static final long serialVersionUID = 1L;
 
 	private boolean active = true;
