@@ -24,7 +24,7 @@
 	</modules>
 	
 	<properties>
-		<wicket.version>1.5.8</wicket.version>
+		<wicket.version>7.17.0</wicket.version>
 		<spring.version>3.1.2.RELEASE</spring.version>
 		<jetty.version>7.6.6.v20120903</jetty.version>
 		<jmock.version>2.5.1</jmock.version>
